@@ -1,0 +1,72 @@
+var
+  T : TTabSheet;
+  P : TPageControl;
+begin
+   // Create the PageControl
+   // need to reference the page control so we need a reference to it.
+
+  P := TPageControl.Create(application);
+  with P do begin
+    Parent := Form1;  // set how controls it.
+    Top := 30;
+    Left := 30;
+    Width := 200;
+    Height := 150;
+    end;  // with TPageControl
+
+    // Create 3 pages
+  T := TTabSheet.Create(P);
+  with T do begin
+    Visible := True;   // This is necessary or form does not repaint 
+                       // correctly
+    Caption := 'Page 1';
+    PageControl := P;  // Assign Tab to Page Control
+    end;  // with
+
+  T := TTabSheet.Create(P);
+  with T do begin
+    Visible := True;   // This is necessary or form does not repaint 
+                       // correctly
+    Caption := 'Page 2';
+    PageControl := P;  // Assign Tab to Page Control
+    end;  // with
+
+  T := TTabSheet.Create(P);
+  with T do begin
+    Visible := True;   // This is necessary or form does not repaint 
+                       // correctly
+    Caption := 'Page 3';
+    PageControl := P;  // Assign Tab to Page Control
+
+    end;  // with
+
+    // Create 3 buttons, 1 per page
+  with tbutton.create(application) do begin
+    Parent := P.Pages[0];  // Tell which page owns the Button
+    Caption := 'Hello Page 1';
+    Left := 0;
+    Top := 0;
+    end; // with
+
+  with tbutton.create(application) do begin
+    Parent := P.Pages[1];  // Tell which page owns the Button
+    Caption := 'Hello Page 2';
+    Left := 50;
+    Top := 50;
+    end; // with
+
+  with tbutton.create(application) do begin
+
+    Parent := P.Pages[2];  // Tell which page owns the Button
+    Caption := 'Hello Page 3';
+    Left := 100;
+    Top :=  90;
+    end; // with
+
+    // This needs to be done or the Tab does not sync to the 
+    // correct page, initially.  Only if you have more then 
+    // one page.
+  P.ActivePage := P.Pages[1];
+  P.ActivePage := P.Pages[0];  // page to really show 
+end;
+

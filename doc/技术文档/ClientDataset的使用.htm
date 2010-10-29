@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+<meta content="360doc" name="classification">
+<meta content="ClientDataset的使用" name=keywords>
+<meta content="ClientDataset的使用" name=description>
+<meta content="www.360doc.com" name="author">
+
+		
+<title>ClientDataset的使用</title>
+<link href="http://www.360doc.com/css/StickySystemIEBlue.css" rel="stylesheet" type="text/css" />
+<script>
+window.onerror = ignoreError;        
+function ignoreError() 
+{
+   return true;
+}  
+</script>
+</head>
+<body  onmouseup="setDragEnd()" onmousemove="DragDiv();" onclick="delAllDiv(event)">
+<div class="top2">
+	<div class="top_con">
+		<div class="logo02"><img src="http://pubimage.360doc.com/logo02.gif" alt="360doc" /></div>
+		<div class="nav_3">
+			<div class="ad01" id="ad01">
+
+			</div>
+				<span class="nav_2_tit02 link_underline">
+					<a target="_blank" href="http://www.360doc.com/help.html">帮助</a>&nbsp;
+					|&nbsp; 
+					<a target="_blank" href="http://www.360doc.com/advice.html">留言交流</a>&nbsp; 
+					|&nbsp;
+                                        <span id="loginstatus"></span>
+				</span>			
+		</div>
+		<div class="navcg1">
+				<div class="search_mokuaicg1">
+						<div class="mokuai_navcg1">
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/index.html">首页</a></span> 
+                                                   <span class="unclecked link_black"><a href="http://www.360doc.com/myfiles.aspx">我的图书馆</a></span>
+                                                   <span class="unclecked link_black"><a href="http://www.360doc.com/topic.html">主题阅读</a></span>
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/catalog.html">精彩目录</a></span>
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/firstarticle.html">精品文苑</a></span>
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/tags.html">Tags</a></span> 
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/topuser.html">会员浏览</a></span>
+                                                   <span class="uncleckedcg1 link_blackcg1"><a href="http://www.360doc.com/Books.html"><span style="font-size: 11px;">好书推荐</span></a></span> 
+                                                </div>
+						<div class="mokuai_concg1">
+							<div  style="display:none;" id="a_ul_0"></div>
+							<div style="display:none;" id="a_ul_1"></div>
+							<div style="display:none;" id="a_ul_2"></div>
+							<div style="display:none;" id="a_ul_3"></div>
+							<div style="display:none;" id="a_ul_4"></div>
+							<div style="display:none;" id="a_ul_5"></div>
+							<div style="display:none;" id="a_ul_6"></div>
+						</div>
+						
+					</div>	
+			</div>	
+				
+	</div>
+</div>
+<div class="index_main">
+	<div class="wenzhang_tit">ClientDataset的使用（转载）</div>
+
+       <div class="wenzhang_ft link_underline"><table><tr><td ><span class="link_green"><A href="http://www.360doc.com/UserHome/51673" target="_blank">xiao huan</A></span>  收录于2007-12-24 阅读数：<span id="360doc_Readnum"></span></td>  <td ><div id="360doc_saverNum"></div></td>  <td ><div id="360doc_artpermission">公众公开&nbsp;</div></td>  <td  valign="bottom"><span class="link_underlinecg"><a href='http://www.cnblogs.com/xiaokun111/articles/349330.html'  target="_blank">原文来源</a>　</span> </td></tr></table></div>
+
+        <div id="360docIsStrangerUp"></div>	
+	<div class="wenzhang_cz">
+		<table width="100%">
+            <tr>
+                <td align="left" valign="top">
+                    <div id="headFirst"><span class="wenzhang_cz_xx01 link_red"><img src="http://www.360doc.com/images/icon06.gif"	/>&nbsp;<a href="http://www.360doc.com/resaveArt.aspx?articleid=921460"  target="_blank" >我也要收藏</a></span></div>
+                </td>
+                <td align="right" valign="top">
+                    <div id="headSecond" style="float: right"></div>
+                </td>
+            </tr>
+        </table>
+	</div>	
+	
+	<table width="100%" border="0" cellspacing="1" cellpadding="1"  class="index_main">
+<tbody>
+	  <tr>
+		<td align="left" valign="top" width="740px">
+                        <div  style=' z-index:1'  >
+<div id='ADAboveArtContent'></div>
+<table><tr><td width=3></td></tr></table>
+</div>
+                        <span id="articlecontent" class="wenzhang_con" onmouseup="NewHighlight(event)" style="width: 740px"><div class="postTitle">
+<a id="AjaxHolder_ctl01_TitleUrl" href="http://www.cnblogs.com/xiaokun111/articles/349330.html">ClientDataset的使用</a>
+</div>
+<div class="postText">
+<p class="content" style="margin: 4px 2px 0px;">嵌套ClientDataset:<br>1: 当ClientDataset.packetRecords=-1时，不论客户端的ClientDataset.fetchOnDemand和服务端的DatasetProvider.FetchDetailOnDemand如何设置均会导致速度下降到难以忍受。<br>1.1原因解析：因为服务端datasetProvider指向的主表Dataset会在刚打开时就为每一条纪录整理其Detail<br>数据（循环发送Sql语句到数据库，并cache到子表的dataset,供以后的Filter使用）。所以服务端的Dataset打开会非常慢。<br><br>1.2：解决方案：只有返回一条以编辑或增加一条主表纪录时才使用嵌套ClientDataset。其他浏览时应动态刷新Detail控件。<br>1.3或者设定ClientDataset.packetRecords为一个比较小的值（100以内）。<br><br>1.3 clientdataset的fetchonDemand属性。基本不影响速度（它不影响无服务端封装Detail的行为）。它只设定clientdataset.next时是否自动GetNextPacket.<br>1.4 DatasetProvider.FetchDetailOnDemand；使用Table作为子表会影响一倍左右的速度（1条主表纪录对应平均4条子表纪录时。使用query作子表时速度基本一样。）<br>1.5 不论ClientDataset.packetRecords如何设置，服务端的主表qry都从数据库中一次取出全部纪录。<br>1.6 慎用ClientDataset.IndexName,它会导致读入所有纪录到客户端。 &nbsp;<br>2、
+结论：对于存在主子表显示或编辑要求的客户端需要使用PacketRecords属性设为较小值。（此类客户端一般不会要求显示太多数据）。可以将服务端
+的DatasetProvider.FetchDetailOnDemand设置为false影响不大，还可简化客户端代码。对于统计查询的数据不要使用
+主子表关系。Tips:在子表的Sql中可以返回连接表数据。并设置相关字段为not
+pfInUpdate，可以简化客户端代码（不用使用计算字段）并能够编辑更新子表数据。 <br><br><br>3.所有需要更新的Clientdataset均不能与其他的Clientdataset共享一个DatasetProvider.<br><br>4、设置PackageRecordcount&lt;&gt;-1的Clientdataset不能与其他的Clientdataset共享一个DatasetProvider.<br><br>5、对于浮点数可能会导致更新ClientDataset出现"Record Changed by Another user"错误，这是由于float截断导致的。将对应的DatasetProvider的Updatemode=whereKeyOnly.将联系的<br>query字段PKNO的providerFlag设置为pfInkey.<br><br>6、怎样更新一个多表连接的结果集？i.设置datasetProvider.onGetTableName事件，设定要更新的表。ii.将相关的query字段（来自其它表的字段）的provideFlag去除pfInputDate属性。<br><br>7、将编辑修改用的clientdataset和查询浏览用的clientdataset的provider分开的原因：使客户端的编辑窗口比较独立于其他窗口，降低耦合度，提高编辑浏览详细窗口的通用性。<br>8、不将编辑修改用的clientdataset和查询浏览用的clientdataset的provider分开的原因：修改后不用重新刷新查询的clientdataset。不用重新定义计算字段、<br><br>by chenglh<br>2003-07-10 </p>
+<br>
+<div style="border-bottom: 1px solid #8ca6de;" align="right">2003-11-25 14:09:00&nbsp; &nbsp; </div>
+<div class="inputcaption" style="border-bottom: 1px solid #8ca6de;">
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+    <tbody>
+        <tr>
+            <td></td>
+            <td align="right"><a href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=4566">查看评语&#187;&#187;&#187;</a>&nbsp; &nbsp; </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<span class="inputcaption" style="height: 20px;">&nbsp;2005-8-22 20:21:37&nbsp; </span>&nbsp; <span style="height: 20px;">关于主从嵌套TclientDataset补充</span>
+<p class="content" style="margin: 4px 2px 0px;">比较合理的主从表方案：不使用嵌套，但将全部符合条件的主表和从表读入客户端。<br>然后再客户端处理改变主表位置时的界面显示。这样速度最快。与服务段通讯（round trip）最少。<br>&nbsp; 例子：<br>2003年的工资单表和明细表。<br>&nbsp; cds工资单表.sql:=select * from 工资单表 where year =2003<br>&nbsp; cds工资明细表.sql:=select * from 工资单明细表 where 工资单表ID in (select ID from 工资单表. where year =2003)<br>&nbsp; 客户端的界面自己写代码处理动态显示相应的工资明细情况。<br><br>对于修改或增加工资记录。可以写一个比较通用的函数来处理外键的引用一致。（这个函数可以很简单地实现） </p>
+<div class="bline" align="right">&nbsp;</div>
+<span class="inputcaption" style="height: 20px;">&nbsp;2005-9-20 10:15:04&nbsp; </span>&nbsp; <span style="height: 20px;">利用TClientDataset作通用的数据库访问</span>
+<p class="content" style="margin: 4px 2px 0px;">如上所述，基本可以不用TClientDataset的嵌套功能。<br>当
+不使用嵌套功能时，可以利用TClientDataset的Data和Delta作一个通用的数据库读取和更新的数据模块。（实际上，在大多数情况下，客
+户端的TClientDataset是可以共用一个TDatasetProvider的）。
+这样客户端全部可以使用TClientDataset，程序从2层转到3层（或者反过来）时，修改的代码都在十几行内（不论项目有多大）。后面将给出这个
+实现方法的代码。<br><br>Tips:客户端的TClientDaset常常需要设置永久字段，用来更改Field的DisplayLabel,
+ProviderFlags等，另外，需要加入计算字段时，其他的非计算字段也必须设置为永久字段。
+&nbsp;如何给客户端的TClientDataset方便地加入永久字段？ &nbsp;方法是：用普通的方法连接好数据库,设置sql，然后用右键菜单"Add
+Fields"，把字段加进去。再进行设置。<br><br>Tips：怎样更新来自多表连接的sql取来的数据集cdsJoin？
+&nbsp;答：步骤：1、设置cdsJoin的永久字段,2、给不用更新的来自不用更新表中的字段，设置其ProviderFlags.pfInWhere,
+pfInUpdate均为False &nbsp; 3、用本笔记后面代码中的SaveCdsParital函数保存即可。 <br><br><br>下面是一个通用的数据访问代码。（注：本来为该代码定义的一个接口，为了简化，将接口去掉了。）<br><br>unit untDmDBDealer;<br>{<br>&lt;remark&gt;<br>&nbsp; 声明：您可以修改和分发本单元的代码。<br>如果您在项目中使用本代码，请保留该pas文件的文件头部说明。 &nbsp;<br>&nbsp; 功能：为untDBRoutine单元提供一个IDBDealer接口的实现。<br>&nbsp; 编制人：程龙华<br>&nbsp; 时间：2005-09-12<br>&nbsp; 注意：本单元为公共单元，不含与任何特定项目有关的业务逻辑。<br>&nbsp; 常用的（标准）使用方法：<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1.创建对象aInstance:=TdmDBDealer.create(aOwner);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2.设定对象的连接ADO字符串aInstance.ConnectionStr:=aStr;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3.将untDbRoutine.DBDealer指向该对象。untDbRoutine.DBDealer:=aInstance as IDbDealer;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4.现在才可以正常使用untDbRoutine单元的各个函数。<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; begin<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; untDBRoutine.OpenCDS(‘select * from Table where ...‘,ClientDataset1);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ...<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; untDBRoutine.ExecuteSQL(‘update table ...‘);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; end; &nbsp;<br>&lt;/remark&gt;<br>}<br>interface<br><br>uses<br>&nbsp; SysUtils,Forms, Classes, ADODB, Provider, DB, Variants, dxDBCtrl, dxDBTL, dxDBTLCl,<br>&nbsp; dxEdLib, dxDBELib, Controls, dxTL, DBClient, math, Windows,untDBRoutine,untCommon;<br><br>type<br>&nbsp; //数据模块，实现IDBDealer接口.<br>&nbsp; TdmDBDealer = class(TDataModule{,IDbDealer})<br>&nbsp; &nbsp; ADOConnection: TADOConnection;<br>&nbsp; &nbsp; ADOCmd: TADOCommand;<br>&nbsp; &nbsp; dsOpenData: TADODataSet;<br>&nbsp; &nbsp; dspOpenData: TDataSetProvider;<br>&nbsp; &nbsp; cdsTemp: TClientDataSet;<br>&nbsp; &nbsp; ADOQuery1: TADOQuery;<br>&nbsp; &nbsp; dsPartialSaveData: TADODataSet;<br>&nbsp; &nbsp; dspPartialSaveData: TDataSetProvider;<br>&nbsp; &nbsp; dsSaveData: TADODataSet;<br>&nbsp; &nbsp; dspSaveData: TDataSetProvider;<br>&nbsp; &nbsp; procedure dspSaveDataBeforeApplyUpdates(Sender: TObject;<br>&nbsp; &nbsp; &nbsp; var OwnerData: OleVariant);<br><br>&nbsp; &nbsp; procedure DataModuleCreate(Sender: TObject);<br>&nbsp; &nbsp; procedure dspSaveDataUpdateError(Sender: TObject;<br>&nbsp; &nbsp; &nbsp; DataSet: TCustomClientDataSet; E: EUpdateError;<br>&nbsp; &nbsp; &nbsp; UpdateKind: TUpdateKind; var Response: TResolverResponse);<br>&nbsp; &nbsp; procedure dspParitalSaveUpdateData(Sender: TObject;<br>&nbsp; &nbsp; &nbsp; DataSet: TCustomClientDataSet);<br>&nbsp; &nbsp; procedure dspPartialSaveDataGetTableName(Sender: TObject; DataSet: TDataSet;<br>&nbsp; &nbsp; &nbsp; var TableName: String);<br>&nbsp; &nbsp; procedure DataModuleDestroy(Sender: TObject);<br>&nbsp; &nbsp; procedure ADOConnectionWillConnect(Connection: TADOConnection;<br>&nbsp; &nbsp; &nbsp; var ConnectionString, UserID, Password: WideString;<br>&nbsp; &nbsp; &nbsp; var ConnectOptions: TConnectOption; var EventStatus: TEventStatus);<br>&nbsp; &nbsp; procedure dspPartialSaveDataBeforeApplyUpdates(Sender: TObject;<br>&nbsp; &nbsp; &nbsp; var OwnerData: OleVariant);<br>&nbsp; private<br>&nbsp; &nbsp; { Private declarations }<br>&nbsp; &nbsp; FLastError:string; <br>&nbsp; &nbsp; FConectionStr:string;<br><br>&nbsp; &nbsp; FIsPartialSave:boolean;<br>&nbsp; &nbsp; FFields:TStrings;<br>&nbsp; &nbsp; FTableToSave:string;<br>&nbsp; &nbsp; function GetConnectionStr: string;<br>&nbsp; &nbsp; procedure SetConnectionStr(const Value: string);<br>&nbsp; public<br>&nbsp; &nbsp; { Public declarations }<br>&nbsp; &nbsp; property ConnectionStr:string read GetConnectionStr write SetConnectionStr;<br><br>&nbsp; &nbsp; //implenmentation of IDbDealer<br>&nbsp; &nbsp; function OpenCDS(aSql:string;ACDS:TClientDataset):boolean;<br>&nbsp; &nbsp; function SaveCdsData(aCDS:TClientDataset):boolean;<br>&nbsp; &nbsp; function SaveCdsPartial(aCDS:TClientDataset;TableName:string):boolean;<br>&nbsp; &nbsp; function ExecuteSQL(aSql:string):boolean;<br>&nbsp; &nbsp; function GetLastError:string;<br>&nbsp; &nbsp; //end of the IDbDealer implenmentation<br><br>&nbsp; &nbsp;end;<br><br>function FieldsToText(aFields:TFields):string;<br><br>var<br>&nbsp; dmDBDealer: TdmDBDealer;<br><br>implementation<br><br>{$R *.dfm}<br><br>{ TdmDBDealer }<br><br><br>procedure TdmDBDealer.dspSaveDataBeforeApplyUpdates(Sender: TObject;<br>&nbsp; var OwnerData: OleVariant);<br>begin<br>&nbsp; dsSaveData.CommandText := VartoStr(OwnerData);<br>end;<br><br>procedure TdmDBDealer.DataModuleCreate(Sender: TObject);<br>begin<br>&nbsp; ADOConnection.Close;<br>&nbsp; FFields:=TStringList.Create;<br>&nbsp; //untDBRoutine.DBDealer:=(self as IDBDealer);<br>end;<br><br>procedure TdmDBDealer.dspSaveDataUpdateError(Sender: TObject;<br>&nbsp; DataSet: TCustomClientDataSet; E: EUpdateError; UpdateKind: TUpdateKind;<br>&nbsp; var Response: TResolverResponse);<br>begin<br>&nbsp; FLastError:=E.Message;<br>end;<br><br>procedure TdmDBDealer.dspParitalSaveUpdateData(Sender: TObject;<br>&nbsp; DataSet: TCustomClientDataSet);<br>var i:integer;<br>&nbsp; Flags:string;<br>begin<br>&nbsp; if not FIsPartialSave then<br>&nbsp; &nbsp; exit;<br>&nbsp; for i:=0 to Dataset.Fields.Count-1 do<br>&nbsp; begin<br>&nbsp; &nbsp; Flags:=FFields.Values[Dataset.Fields[i].FieldName];<br>&nbsp; &nbsp; Dataset.Fields[i].ProviderFlags:=[];<br>&nbsp; &nbsp; if Pos(‘pfInUpdate‘,Flags)&gt;0 then<br>&nbsp; &nbsp; &nbsp; Dataset.Fields[i].ProviderFlags:=Dataset.Fields[i].ProviderFlags+[pfInUpdate];<br>&nbsp; &nbsp; if Pos(‘pfInWhere‘,Flags)&gt;0 then<br>&nbsp; &nbsp; &nbsp; Dataset.Fields[i].ProviderFlags:=Dataset.Fields[i].ProviderFlags+[pfInWhere];<br>&nbsp; &nbsp; if Pos(‘pfInKey‘,Flags)&gt;0 then<br>&nbsp; &nbsp; &nbsp; Dataset.Fields[i].ProviderFlags:=Dataset.Fields[i].ProviderFlags+[pfInKey];<br>&nbsp; &nbsp; if Pos(‘pfHidden‘,Flags)&gt;0 then<br>&nbsp; &nbsp; &nbsp; Dataset.Fields[i].ProviderFlags:=Dataset.Fields[i].ProviderFlags+[pfHidden];<br>&nbsp; end;<br>end;<br><br>procedure TdmDBDealer.dspPartialSaveDataGetTableName(Sender: TObject; DataSet: TDataSet;<br>&nbsp; var TableName: String);<br>begin<br>&nbsp; if FIsPartialSave then<br>&nbsp; &nbsp; &nbsp;TableName:=FTableToSave;<br>end;<br><br>procedure TdmDBDealer.DataModuleDestroy(Sender: TObject);<br>begin<br>&nbsp; FFields.free;<br>&nbsp; if untDbRoutine.DbDealer=(self as IDbDealer) &nbsp;then<br>&nbsp; &nbsp; untDBRoutine.SetDBDealer(nil);<br>end;<br><br>function TdmDBDealer.ExecuteSQL(aSql: string): boolean;<br>begin<br>&nbsp; try<br>&nbsp; &nbsp; ADOCmd.CommandText := aSQL;<br>&nbsp; &nbsp; ADOCmd.CommandType := cmdText;<br>&nbsp; &nbsp; ADOCmd.Execute;<br>&nbsp; except<br>&nbsp; &nbsp; on e: Exception do<br>&nbsp; &nbsp; begin<br>&nbsp; &nbsp; &nbsp; FLastError := e.Message;<br>&nbsp; &nbsp; &nbsp; raise;<br>&nbsp; &nbsp; end;<br>&nbsp; end;<br>&nbsp; result:=(FLastError=‘‘)<br>end;<br><br>function TdmDBDealer.OpenCDS(aSql: string; ACDS: TClientDataset):boolean;<br>begin<br>&nbsp; Result:=true;<br>&nbsp; ACDS.Close;<br>&nbsp; aCDS.Filtered:=false;<br>&nbsp; aCDS.Filter:=‘‘;<br>&nbsp; ACDS.commandText:=aSql;<br>&nbsp; try<br>&nbsp; &nbsp; try<br>&nbsp; &nbsp; &nbsp; dsOpenData.CommandText := aSQL;<br>&nbsp; &nbsp; &nbsp; dsOpenData.Open;<br>&nbsp; &nbsp; &nbsp; aCDS.Data:= dspOpenData.Data;<br>&nbsp; &nbsp; except<br>&nbsp; &nbsp; &nbsp; on e: Exception do<br>&nbsp; &nbsp; &nbsp; begin<br>&nbsp; &nbsp; &nbsp; &nbsp; Result:=false;<br>&nbsp; &nbsp; &nbsp; &nbsp; raise;<br>&nbsp; &nbsp; &nbsp; &nbsp; FLastError := e.Message;<br>&nbsp; &nbsp; &nbsp; end;<br>&nbsp; &nbsp; end;//inner try<br>&nbsp; finally<br>&nbsp; &nbsp; dsOpenData.Active := false;<br>&nbsp; end;//outer try<br>end;<br><br>function TdmDBDealer.SaveCdsData(aCDS: TClientDataset): boolean;<br>var<br>&nbsp; vOwnerData:OleVariant;<br>&nbsp; iErrCount:integer;<br>begin<br>&nbsp; if aCds.ChangeCount&gt;0 then<br>&nbsp; begin<br>&nbsp; &nbsp; vOwnerData:=aCDS.commandText;<br>&nbsp; &nbsp; dspSaveData.ApplyUpdates(aCDS.Delta, 0, iErrCount,vOwnerData );<br>&nbsp; &nbsp; if FLastError=‘‘ then<br>&nbsp; &nbsp; &nbsp; &nbsp;aCDS.MergeChangeLog<br>&nbsp; &nbsp; else<br>&nbsp; &nbsp; begin<br>&nbsp; &nbsp; &nbsp; &nbsp;Application.MessageBox(PChar(FLastError),‘保存时出现错误。‘<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ,mb_ICONINFORMATION+MB_OK);<br>&nbsp; &nbsp; end;<br>&nbsp; &nbsp; Result := (FLastError=‘‘)<br>&nbsp; end<br>&nbsp; else<br>&nbsp; &nbsp; result:=true;<br>end;<br><br>function TdmDBDealer.SaveCdsPartial(aCDS: TClientDataset;<br>&nbsp; TableName: string): boolean;<br>var<br>&nbsp; iErrCount:integer;<br>&nbsp; vOwnerData:OleVariant;<br>begin<br>&nbsp; FIsPartialSave:=true;<br>&nbsp; FFields.Text:=FieldsToText(aCDS.Fields);<br>&nbsp; FTableToSave:=TableName;<br>&nbsp; vOwnerData:=aCDS.CommandText;<br>&nbsp; dspPartialSaveData.ApplyUpdates(aCDS.Delta, 0, iErrCount,vOwnerData);<br>&nbsp; result := (iErrCount=0);<br>&nbsp; if iErrCount=0 then<br>&nbsp; &nbsp; &nbsp;aCDS.MergeChangeLog;<br>&nbsp; FIsPartialSave:=false;<br>end;<br><br><br>function TdmDBDealer.GetConnectionStr: string;<br>begin<br>&nbsp; result:=ADOConnection.ConnectionString;<br>end;<br><br>procedure TdmDBDealer.SetConnectionStr(const Value: string);<br>begin<br>&nbsp; FConectionStr:=value;<br>end;<br><br>procedure TdmDBDealer.ADOConnectionWillConnect(Connection: TADOConnection;<br>&nbsp; var ConnectionString, UserID, Password: WideString;<br>&nbsp; var ConnectOptions: TConnectOption; var EventStatus: TEventStatus);<br>begin<br>&nbsp; if FConectionStr&lt;&gt;‘‘ then<br>&nbsp; &nbsp; ConnectionString:=FConectionStr;<br>end;<br><br>procedure TdmDBDealer.dspPartialSaveDataBeforeApplyUpdates(Sender: TObject;<br>&nbsp; var OwnerData: OleVariant);<br>begin<br>&nbsp; dsPartialSaveData.CommandText:=OwnerData;<br>end;<br><br>function TdmDBDealer.GetLastError: string;<br>begin<br>&nbsp; Result:=FLastError;<br>end;<br><br>function FieldsToText(aFields:TFields):string;<br>var i:integer;<br>&nbsp; sl:TStrings;<br>&nbsp; pfs:string;<br>begin<br>&nbsp; sl:=TStringList.Create;<br>&nbsp; for i:=0 to aFields.Count-1 do<br>&nbsp; begin<br>&nbsp; &nbsp; pfs:=‘‘;<br>&nbsp; &nbsp; if pfInUpdate in aFields[i].ProviderFlags then<br>&nbsp; &nbsp; &nbsp; &nbsp;pfs:=pfs+‘pfInUpdate‘;<br>&nbsp; &nbsp; if pfInWhere in aFields[i].ProviderFlags then<br>&nbsp; &nbsp; &nbsp; &nbsp;pfs:=pfs+‘,pfInWhere‘;<br>&nbsp; &nbsp; if pfInKey in aFields[i].ProviderFlags then<br>&nbsp; &nbsp; &nbsp; &nbsp;pfs:=pfs+‘,pfInKey‘;<br>&nbsp; &nbsp; if pfHidden in aFields[i].ProviderFlags then<br>&nbsp; &nbsp; &nbsp; &nbsp;pfs:=pfs+‘,pfHidden‘;<br>&nbsp; &nbsp; sl.Add(aFields[i].FieldName+‘=‘+pfs);<br>&nbsp; end;<br>&nbsp; result:=sl.Text;<br>&nbsp; sl.free;<br>end;<br><br>end.<br>&nbsp;<br>问题1：本单元的dfm代码是什么样子？ &nbsp;答：没有贴上对应的dfm代码，如果你对本代码感兴趣，可以自己根据上面的Pas文件恢复一个dfm文件出来。<br><br><br>问题2：本笔记下面列出的代码是基于2层的，怎样做一个3层的通用访问单元？ &nbsp;答：建立一个RemoteDataModule，将本单元中的AdoConnection，TdatasetProvider,TADODataset控件放入其中。编写相应事件代码即可。<br><br>-----声明：如果您在项目中使用本代码，请保留该pas文件的文件头部说明。 </p>
+<div class="bline" align="right">&nbsp;</div>
+<span class="inputcaption" style="height: 20px;">&nbsp;2005-10-8 14:35:19&nbsp; </span>&nbsp; <span style="height: 20px;">大量数据时提高Tclientdataset访问速度的方法。</span>
+<p class="content" style="margin: 4px 2px 0px;">当cdsLarge : Tclientdataset 记录数很多时（3000条以上）<br>&nbsp; 1:locate,lookup，post 访问都会很慢。<br>&nbsp; 2:设置Filter几乎不用时间，但取消Filter会花很长时间。<br>一个解决方案：<br>&nbsp;
+新建一个cdsSmall : Tclientdataset，
+用cdsSmall.clonecursor(cdsLarge,True)，设置cdsSmall的Filter，使cdsSmall
+记录数较小。在cdsSmall上执行locate,lookup，post 操作。用完不要取消cdsSmall的Filter,
+直接Free掉cdsSmall。 <br>&nbsp; 当在一个循环中有locate,lookup，post时， 这个方法可以将执行速度提高几百倍。 </p>
+<div class="bline" align="right">&nbsp;</div>
+<span class="inputcaption" style="height: 20px;">&nbsp;2005-10-13 20:06:52&nbsp; </span>&nbsp; <span style="height: 20px;">大量数据时提高Tclientdataset访问速度的方法(补)</span>
+<p class="content" style="margin: 4px 2px 0px;">当使用post函数时，要保证所有共享data的cds，（即clone自同一cds的cds），其过滤后数据集较小。有任意一个没有过滤，或者过滤后仍然记录很多，那么post仍然很慢。</p>
+</div></span>                                    
+                        <div id='360Ad07' style="text-align: center;">
+<script type="text/javascript"><!--
+google_ad_client = "pub-6625678643128649";
+/* 300x250,  10-7-26 */
+google_ad_slot = "0819923266";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> 
+</script>
+</div>
+                        <div id="360docIsStranger"></div>
+                        <div class="wenzhang_bt_list" id="UserPreNextArt"><div>上一篇：<a  href='http://www.360doc.com/content/07/1203/17/51673_867573.shtml' target='_blank'>祖传七道汤，对失眠有特效</a></div><div>下一篇：<a   href='http://www.360doc.com/content/08/1224/14/51673_2188849.shtml' target='_blank'>健康“自助餐”：上班族如何缓解疲劳 - 心理-Psychology Express-中国心理学爱好者的8小时之外!</a></div></div>
+			<div class="wenzhang_cz2">
+                                <span id="saverDiv"></span>				
+				<span id="360docCopyArtUrl"></span> &nbsp;
+				(<span class="link_green"><A href="http://www.360doc.com/UserHome/51673" target="_blank">xiao huan</A></span> 的分类目录 <span class="link_underlinecg">[<A href="http://www.360doc.com/userHome.aspx?userid=51673&cid=9" target="_blank">Delphi</A>])</span>
+			</div>
+﻿<div class="ad02" id="ad02New">
+</div>
+
+
+
+ <div id="divadleft" style="position: absolute; width: 120px; word-break: break-all;
+        top: 250px; left: 0px; padding-left: 13px;">
+
+        <script type="text/javascript"><!--
+         function leftshow()
+         {
+            var screenwidth=screen.availWidth;
+            var ad_left= '';
+            try
+            {
+                if(screenwidth>1200) 
+                { 
+                    ad_left+='<'+'script type=\"text/javascript\">';
+                    ad_left+='google_ad_client = "pub-6625678643128649";';
+                    ad_left+='google_ad_slot =\"7792148991\";';
+                    ad_left+='google_ad_width =120;';
+                    ad_left+='google_ad_height = 600;';  
+                    ad_left+='</'+'script>';
+                    ad_left+='<'+'script type=\"text/javascript\"';
+                    ad_left+='src=\"http://pagead2.googlesyndication.com/pagead/show_ads.js\">';
+                    ad_left+='</'+'script>';
+                }
+                document.write(ad_left);
+            }
+            catch(e)
+            {
+            }
+        }
+
+        leftshow();
+        -->
+        </script>
+
+        <div style="float: right; padding-right: 2px; padding-top: 2px;background-color:#fff;" class="link_underline">
+            <a href="#" onclick="document.getElementById('divadleft').style.display='none'">关闭</a></div>
+    </div>
+ <script>
+    var screenwidth=screen.availWidth;
+    try
+    {
+        if(screenwidth<=1200) 
+        { 
+            document.getElementById("divadleft").style.display="none";
+            document.getElementById("divadright").style.display="none";
+        }   
+    }
+    catch(e)
+    {
+    }
+    </script>  <div class="wenzhang_bt">相关文章</div><div class="wenzhang_bt_list"><ul><li><a   href='http://www.360doc.com/content/07/0511/11/17598_493780.shtml' target='_blank'>在Delphi中使用由.NET开发的Web Service返回的...</a><span class="time3 link_green">2007-05-11     <a href="http://www.360doc.com/UserHome/17598" target='_blank'>素行</a></span> </li><li><a   href='http://www.360doc.com/content/06/0824/19/9861_190002.shtml' target='_blank'>Delphi中关于NMUDP控件的用法(原创)</a><span class="time3 link_green">2006-08-24     <a href="http://www.360doc.com/UserHome/9861" target='_blank'>jojo1981</a></span> </li><li><a   href='http://www.360doc.com/content/05/0808/21/527_5032.shtml' target='_blank'>一个值得大家来考虑的dll问题</a><span class="time3 link_green">2005-08-08     <a href="http://www.360doc.com/UserHome/527" target='_blank'>frie</a></span> </li><li><a   href='http://www.360doc.com/content/09/0715/09/162813_4274464.shtml' target='_blank'>delphi多线程编程</a><span class="time3 link_green">2009-07-15     <a href="http://www.360doc.com/UserHome/162813" target='_blank'>江文</a></span> </li><li><a   href='http://www.360doc.com/content/10/0102/01/183083_12476566.shtml' target='_blank'>DevExpress部分使用技巧(原创)_大海拾贝</a><span class="time3 link_green">2010-01-02     <a href="http://www.360doc.com/UserHome/183083" target='_blank'>天已</a></span> </li><li><a   href='http://www.360doc.com/content/09/0915/09/219800_5988979.shtml' target='_blank'>DELPHI启动或停止服务</a><span class="time3 link_green">2009-09-15     <a href="http://www.360doc.com/UserHome/219800" target='_blank'>zengbj</a></span> </li><li><a   href='http://www.360doc.com/content/05/0804/15/527_4533.shtml' target='_blank'>最小化到托盘上</a><span class="time3 link_green">2005-08-04     <a href="http://www.360doc.com/UserHome/527" target='_blank'>frie</a></span> </li><li><a   href='http://www.360doc.com/content/05/1024/17/1821_23326.shtml' target='_blank'>设计模式之singleton</a><span class="time3 link_green">2005-10-24     <a href="http://www.360doc.com/UserHome/1821" target='_blank'>无边落雨</a></span> </li></ul><div style="float:right; font-size:12px;" class="link_underline"><a href="http://www.360doc.com/relevant/0/6/4/1/921460_more.shtml"  target="_blank">查看更多文章>></a></div></div>
+                <div id='adbelowRel'><script type="text/javascript"> /*728*15��������2010-8-20������ҳ�·�*/ 
+var cpro_id = 'u160114';</script>
+<script type="text/javascript" src="http://cpro.baidu.com/cpro/ui/c.js"></script>
+</div>	
+                <div><span id="Reflction"><div id="360docRefTN" class="wenzhang_bt" style="display:none;"></div><div id="360docRefCT"></div><div id="360docRefPB"></div></span></div>	
+			<div class="wenzhang_bt">发表评论 <span id="isLogInSpan" class="wenzhang_pl_fb_tit link_red"></span></div>
+			<div class="wenzhang_bt_1" id="loginNickname"></div>
+			
+                              <table width="100%"  cellpadding="0" cellspacing="0">
+                                 <tr>
+                                   <td align="left" valign="top">
+                                      <textarea name="textarea" id="TextBox1"  rows="12"  style="width:95%;"></textarea>  
+                                  </td>
+                                  <td id="360docTdAdID" align="right" valign="top" >
+                                     <div id="360docAdReflection" >
+                                      
+                                     </div>
+                                  </td>
+                                </tr>
+                                <tr><td height="5px"></td><td></td></tr>
+                                <tr>
+                                  <td> 
+                                      <div id="360docRelfection" align="left">
+                                         <input name="" type="checkbox" id="isCopy"  checked="checked" value="" />发送评论时内容自动复制到剪切板 
+                                        <input name="" type="button" id="Button1"  onclick="SubmitReflection();" value="发送" class="botton" />
+                                     </div>
+                                 </td>
+                                 <td>
+                                 </td>            
+                               </tr>
+                            </table>	
+		</td>
+                <td width="10px">
+                </td>
+		<td valign="top" align="center">
+                      <div><script type='text/javascript'>google_ad_client = 'pub-6625678643128649';google_ad_slot = '0378477824';google_ad_width = 200;google_ad_height = 90;</script><script type='text/javascript' src='http://pagead2.googlesyndication.com/pagead/show_ads.js'></script></div><div class="WidthRight"><div class="wenzhang_bt">热点推荐</div><div class="wenzhang_bt_listCG"><ul><li><a href="http://www.360doc.com/content/09/0209/11/37063_2496448.shtml" target="_blank" >国学入门:书目及其读法... </a></li><li><a href="http://www.360doc.com/content/08/0927/00/37063_1681764.shtml" target="_blank" >中国古代7大谜团——任... </a></li><li><a href="http://www.360doc.com/content/08/0919/22/37063_1658619.shtml" target="_blank" >朝、美、韩、中四方描述... </a></li><li><a href="http://www.360doc.com/content/08/0609/07/29457_1318446.shtml" target="_blank" >前苏联军官泣血告中国：... </a></li><li><a href="http://www.360doc.com/content/08/0113/10/26382_968894.shtml" target="_blank" >荷花吟 (图文乐) </a></li><li><a href="http://www.360doc.com/content/06/1120/23/10302_267066.shtml" target="_blank" >浅谈用Google S... </a></li><li><a href="http://www.360doc.com/content/08/0217/16/9807_1049992.shtml" target="_blank" >戏说当代女人八想 </a></li><li><a href="http://www.360doc.com/content/09/0226/23/62878_2655424.shtml" target="_blank" >网友实拍： 黄埔军校现... </a></li><li><a href="http://www.360doc.com/content/09/0115/14/37063_2338925.shtml" target="_blank" >站在中国改革开放三十年... </a></li><li><a href="http://www.360doc.com/content/08/0117/09/51540_980494.shtml" target="_blank" >婚姻中有种感动叫守口如瓶 </a></li><li><a href="http://www.360doc.com/content/07/0129/20/7986_349194.shtml" target="_blank" >难得一见的明星大腕们的... </a></li><li><a href="http://www.360doc.com/content/07/0209/16/9737_361724.shtml" target="_blank" >[智慧哲文]中国古代座... </a></li><li><a href="http://www.360doc.com/content/09/0216/11/37063_2558221.shtml" target="_blank" >时尚爆笑的疯狂语录(经... </a></li><li><a href="http://www.360doc.com/content/08/0930/09/42071_1693639.shtml" target="_blank" >环球音乐极品典藏1 </a></li><li><a href="http://www.360doc.com/content/07/0409/10/5368_437981.shtml" target="_blank" >1896年李鸿章访美盛大场面 </a></li><li><a href="http://www.360doc.com/content/09/0116/15/66222_2346446.shtml" target="_blank" >文 革 邮 票 全 集... </a></li><li><a href="http://www.360doc.com/content/08/1228/23/38195_2219575.shtml" target="_blank" >风情万种俏丽美眉 梅婷... </a></li><li><a href="http://www.360doc.com/content/08/0129/23/26382_1015015.shtml" target="_blank" >小年的风俗来历 ( 图文乐) </a></li><li><a href="http://www.360doc.com/content/06/1009/15/2343_226132.shtml" target="_blank" >什么是碱性食物 什么是... </a></li><li><a href="http://www.360doc.com/content/09/0120/14/11633_2370763.shtml" target="_blank" >(转)太晚睡觉等于自杀... </a></li></ul><br/></div></div><div id="AdArtRight" align="center"></div><div id="360docAdBetween"></div><div class="WidthRight"><div class="wenzhang_bt">主题阅读</div><div class="wenzhang_bt_listCG"><ul><li><a href="http://www.360doc.com/content/09/0110/10/50944_2302366.shtml" target="_blank" >那些在中国变了味的流行... </a></li><li><a href="http://www.360doc.com/content/09/0102/14/90415_2245353.shtml" target="_blank" >女性网友收藏夹里最爱不... </a></li><li><a href="http://www.360doc.com/content/08/1216/15/88829_2136917.shtml" target="_blank" >颜色搭配 </a></li><li><a href="http://www.360doc.com/content/09/0121/17/77937_2378397.shtml" target="_blank" >不同腿型的女生---选... </a></li><li><a href="http://www.360doc.com/content/06/0104/22/2632_53911.shtml" target="_blank" >丝巾、披肩、围巾的系法... </a></li><li><a href="http://www.360doc.com/content/08/0117/19/54736_981885.shtml" target="_blank" >令肤色变白的9种穿衣法... </a></li><li><a href="http://www.360doc.com/content/06/0711/19/142_153875.shtml" target="_blank" >20种女性穿衣技巧 喜... </a></li><li><a href="http://www.360doc.com/content/07/0403/06/13012_427679.shtml" target="_blank" >服饰搭配巧妙的把小肚子藏起来 </a></li><li><a href="http://www.360doc.com/content/07/0906/20/43208_724322.shtml" target="_blank" >小个子穿衣★六款小个子... </a></li><li><a href="http://www.360doc.com/content/06/0919/16/11347_211292.shtml" target="_blank" >服饰搭配与装扮大揭密 </a></li><li><a href="http://www.360doc.com/content/09/0327/21/99869_2938245.shtml" target="_blank" >服饰搭配中色彩、体形、... </a></li><li><a href="http://www.360doc.com/content/08/1025/20/66650_1824978.shtml" target="_blank" >男士服装搭配原则_流行密码 </a></li></ul><br/></div></div><div ID="Getbook_list" class="WidthRight" style='display:none;'></div> 
+									
+		 </td>
+	  </tr>
+</tbody>
+	</table>
+
+</div>
+<div style="display:none" id="ImgCache"></div>
+
+
+<script language="javascript" type="text/javascript">
+
+
+       
+
+
+       var ArticleID=921460;
+        var userid=51673;
+        var SearchByArt="href='http://www.google.cn/search?hl=zh-CN&amp;q=clientdataset%2bdataset%2bacds&amp;lr=lang_zh-CN' target='_blank'";
+        var xmlHttp=null;
+        var xmlDom =null;
+        var xslDom =null;
+
+
+
+ var appName = navigator.appName.toLowerCase();
+   if (appName.indexOf("microsoft internet explorer")>-1)
+   {
+       document.write("<scr"+"ipt type='text/javascript' src='http://www.360doc.com/js/StickySystemIE090401.js'></sc"+"ript>");       
+   }
+   else
+   {
+      document.write("<scr"+"ipt type='text/javascript' src='http://www.360doc.com/js/StickySystemOther090401.js'></sc"+"ript>");
+   }
+
+ </script>
+
+
+
+
+
+
+
+<script>GerLookingUserInfo(0,1,1);</script>
+<script type="text/javascript" src="http://www.360doc.com/js/albb3.js"></script>
+﻿<div class="copyright">
+<div class="index_main">
+<table width="100%" border="0" cellspacing="2" cellpadding="2" >
+  <tr>
+    <td width="55%">（本文为 360doc 用户收藏，不代表 360doc 观点）<br />
+      <a target="_blank" href="http://www.360doc.com/help.html">360doc简介</a> <a target="_blank" href="http://www.360doc.com/service.html">服务条款</a> <a href="javascript:void(0)" onclick="setHomepage('http://www.360doc.com')">设360doc为首页</a> <a target="_blank" href="http://www.360doc.com/advice.html">留言交流</a> <a target="_blank" href="http://www.360doc.com/contactus.html">联系我们</a> 客服QQ:524562434<br />
+      Copyright &copy; 2010 360doc.com</td>
+    <td valign="top" width="45%"><div align="left">360doc个人图书馆------您的知识管理平台
+      <br />
+      <a href="http://www.360doc.com" target="_blank"><img src="http://pubimage.360doc.com/copyright_bt.gif"  width="150" height="39" border="0"  /></a>
+	  </td>
+  </tr>
+</table>
+
+</div>
+</div>
+</body>
+</html>

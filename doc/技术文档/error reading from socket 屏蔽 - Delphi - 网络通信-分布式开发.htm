@@ -1,0 +1,829 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0077)http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>error reading from socket 屏蔽 - Delphi / 网络通信/分布式开发</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="error reading from socket 屏蔽 Delphi 网络通信/分布式开发" name=Keywords>
+<META 
+content="请大家帮忙 三曾数据库开发中 socketconnetion error reading from socket如何捕获 在数据正在传输过程中 如果突然关闭服务器就会出现这样 错误 且用try except end 无法处理" 
+name=description><LINK 
+href="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/t5.css" 
+type=text/css rel=stylesheet><LINK href="http://www.csdn.net/images/favicon.ico" 
+rel="SHORTCUT ICON">
+<SCRIPT type=text/javascript>
+var tinfo = {
+	pdate: "2007-05-29 14:44:09"
+	,sid: "86fda20c-918f-4004-9a60-83ac6156c017"
+	,tid: "439586d3-6ace-44e5-80c4-979991314612"
+	,ba: "Delphi"
+	,sa: "DelphiNetwork"
+};
+</SCRIPT>
+
+<SCRIPT 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/t5.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/AreaCounter.js" 
+type=text/javascript></SCRIPT>
+
+<META content="MSHTML 6.00.6000.17080" name=GENERATOR></HEAD>
+<BODY id=bbscsdn_wrap>
+<DIV class=tad><IFRAME id=Topic_Top marginWidth=0 marginHeight=0 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/ad1.htm" 
+frameBorder=0 width="100%" scrolling=no height=0></IFRAME></DIV>
+<DIV class=nav><A 
+href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#"><IMG 
+class=logo alt="" 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/pic_logo.gif"></A> 
+
+<UL class=txt>
+  <LI><A href="http://www.csdn.net/" target=_blank>首页</A>| </LI>
+  <LI><A href="http://news.csdn.net/" target=_blank>资讯</A>| </LI>
+  <LI><A href="http://mobile.csdn.net/" target=_blank>移动</A>| </LI>
+  <LI><A href="http://cloud.csdn.net/" target=_blank>云计算</A>| </LI>
+  <LI><A href="http://hi.csdn.net/" target=_blank>空间</A>| </LI>
+  <LI><A href="http://bbs.csdn.net/" target=_blank>论坛</A>| </LI>
+  <LI><A href="http://blog.csdn.net/" target=_blank>博客</A>| </LI>
+  <LI><A href="http://download.csdn.net/" target=_blank>下载</A>| </LI>
+  <LI><A href="http://wz.csdn.net/" target=_blank>网摘</A>| </LI>
+  <LI><A href="http://www.programmer.com.cn/" target=_blank>程序员</A>| <!--<li><a href="http://www.itliyu.com/" target="_blank">求职招聘</a>|</li>--></LI>
+  <LI><A href="http://www.dearbook.com.cn/" target=_blank>书店</A>| </LI>
+  <LI><A href="http://edu.csdn.net/" target=_blank>乐知教育</A> <!--<li><a href="http://daohang.csdn.net/" target="_blank">网址</a></li>--></LI></UL>
+<UL class=user style="FLOAT: right; WIDTH: 742px; TEXT-ALIGN: right">
+  <LI>欢迎您：<SPAN><A id=vName href="http://hi.csdn.net/my.html">游客</A></SPAN><SPAN 
+  id=exit style="DISPLAY: none">|<A 
+  href="http://forum.csdn.net/User/LoginOut.aspx">退出</A></SPAN><SPAN 
+  id=login>|<A 
+  href="http://passport.csdn.net/UserLogin.aspx?from=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html">登录</A><A 
+  href="http://passport.csdn.net/CSDNUserRegister.aspx">注册</A></SPAN>|<A 
+  href="http://community.csdn.net/Help/HelpCenter.htm" target=_blank>帮助</A> 
+  <INPUT onblur="if(!this.value)this.value='这里也许就有你要的答案... ';return true;" 
+  onkeyup=GoKeyDown(event); 
+  onfocus="if(this.value=='这里也许就有你要的答案... ')this.value='';return true;" size=25 
+  value="这里也许就有你要的答案... " name=key> <INPUT class=btn 
+  onclick="Search(event,'');return false;" type=image 
+  src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/search1.gif"> 
+  <INPUT class=btn onclick="Search(event,'advanced');return false;" type=image 
+  src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/search2.gif"> 
+  </LI></UL></DIV><INPUT id=hf_cardUrl type=hidden 
+value=http://forum.csdn.net/PointForum/UserCard.ashx?user=> 
+<DIV class=loc>
+<P><!-- a href="http://wz.csdn.net/rxsg/index.aspx" target="_blank" onclick='LogClickCount(this,117);'><img src="http://c.csdn.net/bbs/t/5/i/rxsg.jpg" alt="热血三国" /></a --><A 
+href="http://www.csdn.net/" target=_blank>CSDN</A>-<A 
+href="http://community.csdn.net/" target=_blank>CSDN社区</A>-<A 
+href="http://forum.csdn.net/BList/Delphi/" target=_blank>Delphi</A>-<A 
+href="http://forum.csdn.net/SList/DelphiNetwork//" target=_blank>网络通信/分布式开发</A> 
+</P></DIV>
+<DIV class=fm>
+<UL class=menu>
+  <LI class=bt1><A class=bt1 href="javascript:;">管理菜单<!--[if IE 7]><!--></A><!--<![endif]--><!--[if lte IE 6]><table><tr><td><![endif]--> 
+
+  <UL>
+    <LI><A id=a_head_recreate 
+    href="http://forum.csdn.net/PointForum/BuildTopic.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;return=">生成帖子</A> 
+    </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/Tops/InsertTop.aspx?topicUrl=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html&amp;text=error+reading+from+socket+%e5%b1%8f%e8%94%bd&amp;sectionID=86fda20c-918f-4004-9a60-83ac6156c017',width:600,height:265,title:'置顶'});}catch(ex){}return false;" 
+    href="javascript:;">置顶</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/SetPrime.aspx?forumid=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicid=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:400,height:255,title:'推荐'});}catch(ex){}return false;" 
+    href="javascript:;">推荐</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/SetNotPrime.aspx?topicid=439586d3-6ace-44e5-80c4-979991314612&amp;forumid=86fda20c-918f-4004-9a60-83ac6156c017&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:400,height:255,title:'取消推荐'});}catch(ex){}return false;" 
+    href="javascript:;">取消推荐</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/LockTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:425,height:330,title:'锁定'});}catch(ex){}return false;" 
+    href="javascript:;">锁定</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/UnlockTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:425,height:330,title:'解锁'});}catch(ex){}return false;" 
+    href="javascript:;">解锁</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/MoveTopic.aspx?fid=86fda20c-918f-4004-9a60-83ac6156c017&amp;tid=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09',width:580,height:270,title:'移动'});}catch(ex){}return false;" 
+    href="javascript:;">移动</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/ModifyTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:670,height:655,title:'编辑'});}catch(ex){}return false;" 
+    href="javascript:;">编辑</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/DeleteTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09',width:425,height:330,title:'删除'});}catch(ex){}return false;" 
+    href="javascript:;">删除</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Forum/TopicAddPoint.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09&amp;v=13',width:420,height:300,title:'帖子加分'});}catch(ex){}return false;" 
+    href="javascript:;">帖子加分</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/TitleStyle.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;url=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html',width:670,height:307,title:'帖子高亮'});}catch(ex){}return false;" 
+    href="javascript:;">帖子高亮</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/RemoveTitleStyle.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;url=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html',width:670,height:255,title:'取消高亮'});}catch(ex){}return false;" 
+    href="javascript:;">取消高亮</A> </LI></UL><!--[if lte IE 6]></td></tr></table></a><![endif]--></LI>
+  <LI><A class=bt2 
+  href="http://forum.csdn.net/PointForum/Manage/TopicManageView.aspx?forumID=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicID=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09&amp;v=13">结&nbsp;&nbsp;帖</A> 
+  </LI>
+  <LI><A class=bt3 
+  href="http://forum.csdn.net/PointForum/Forum/PostTopic.aspx?forumID=86fda20c-918f-4004-9a60-83ac6156c017" 
+  target=_blank>发&nbsp;&nbsp;帖</A> </LI>
+  <LI><A class=bt4 onclick="try{ReplyBoxFocus();return false}catch(ex){}" 
+  href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#r_achor">回&nbsp;&nbsp;复</A> 
+  </LI></UL></DIV>
+<DIV class=tit>
+<H1><DFN><A onclick="try{addToWZ();}catch(ex){}return false;" 
+href="javascript:;">收藏</A></DFN> <CITE><SELECT 
+  onchange=changeViewMode(this);><OPTION value=5 
+  selected>不显示删除回复</OPTION><OPTION value=0>显示所有回复</OPTION><OPTION 
+  value=1>显示星级回复</OPTION><OPTION value=3>显示得分回复</OPTION></SELECT></CITE> <SPAN 
+class=prime csdnid="prime"></SPAN><SPAN class=lock csdnid="lock"></SPAN><A 
+name=top></A><SPAN csdnid="titleStyle"><!-- google_ad_section_start -->error 
+reading from socket 屏蔽<!-- google_ad_section_end --></SPAN><EM>[问题点数:<SPAN 
+csdnid="point">50</SPAN>分<SPAN csdnid="check"></SPAN>]</EM></H1></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/nightxing" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'nightxing')}catch(ex){};" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/noavatar_2.gif"></A> 
+
+        <LI title=总技术分：0；总技术排名：426890><DFN><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/nightxing" target=_blank>nightxing</A></DFN> 
+        <LI title=总技术分：0；总技术排名：426890>(星石) 
+        <LI class=honor>
+        <LI title=总技术分：0；总技术排名：426890>等　级：<IMG class="grade user1" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank.gif"> 
+
+        <LI>结帖率：<LABEL 
+        onmouseover="showHint(this, '截至2010-09-05 22:39:31\n用户结帖率33.33%\n总发帖：12\n正常结帖：4\n未结帖：8\n')" 
+        onmouseout=hideHint(this)><FONT color=red>33.33%</FONT></LABEL> 
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><EM>楼主</EM>发表于：2007-05-29 14:44:09</DIV>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=body csdnid="body"><!-- google_ad_section_start -->
+            <DIV class=msgfont>请大家帮忙：三曾数据库开发中 <BR>socketconnetion &nbsp; 的error 
+            &nbsp; reading &nbsp; from &nbsp; socket如何捕获。 
+            <BR>在数据正在传输过程中，如果突然关闭服务器就会出现这样的错误，且用try..except..end &nbsp; 无法处理。 
+            <BR></DIV><!-- google_ad_section_end --><!--End_body//--></TD></TR>
+        <TR>
+          <TD csdnid="link"></TD></TR>
+        <TR>
+          <TD csdnid="modify"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb><IFRAME id=tad2 marginWidth=0 marginHeight=0 
+      src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/ad2.htm" 
+      frameBorder=0 width="100%" scrolling=no height=0></IFRAME>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该帖子被0个用户给予好评 
+        csdnid="acount">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该帖子被0个用户给予差评 
+        csdnid="ucount">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(0);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(0);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>回复次数：<SPAN title=该帖回复数为7 csdnid="rcount">7</SPAN><!-- | 
+		浏览次数：<span csdnid="vcount" title="该帖阅读数为245">245</span>--> 
+  </DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV><IFRAME id=Iframe1 marginWidth=0 marginHeight=0 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/ad3.htm" 
+frameBorder=0 width="100%" scrolling=no height=0></IFRAME><!-- google_ad_section_start(weight=ignore) -->
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_41101092">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/nightxing" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'nightxing')}catch(ex){};" 
+        title=nightxing用户自定义头像 alt=nightxing用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/noavatar_2.gif"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：0；截至2010-09-05日，用户的总技术分排名为：426890"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/nightxing" 
+        target=_blank>nightxing</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：0；截至2010-09-05日，用户的总技术分排名为：426890">(星石) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：0；截至2010-09-05日，用户的总技术分排名为：426890">等　级：<IMG 
+        class="grade user1" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#1楼 得分：0</DFN>回复于：2007-05-30 13:52:40</DIV><A 
+      name=r_41101092></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_41101092 csdnid="rbody_41101092">
+            <DIV class=msgfont>高手都去哪了</DIV><!--End_rbody_41101092//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_41101092"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=41101092&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_41101092">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=41101092&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_41101092">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(1);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(1);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=41101092&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=41101092&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_47204266">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/hy0754" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'hy0754')}catch(ex){};" 
+        title=hy0754用户自定义头像 alt=hy0754用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/noavatar_2(1).gif"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：10；截至2010-09-05日，用户的总技术分排名为：272295"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/hy0754" 
+        target=_blank>hy0754</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：10；截至2010-09-05日，用户的总技术分排名为：272295">
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：10；截至2010-09-05日，用户的总技术分排名为：272295">等　级：<IMG 
+        class="grade user1" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#2楼 得分：0</DFN>回复于：2008-01-29 20:26:06</DIV><A 
+      name=r_47204266></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_47204266 csdnid="rbody_47204266">
+            <DIV class=msgfont>在窗口上加一个 
+            ApplicationEvents<BR>在onException中加入<BR>if 
+            (AnsiString((E-&gt;ClassType())-&gt;ClassName()) == 
+            "ESocketConnectionError"){...}<BR>如果不是ESocketConnectionError错误的话就捕捉(E-&gt;ClassType())-&gt;ClassName()名&nbsp; 
+            <BR><BR></DIV><!--End_rbody_47204266//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_47204266"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=47204266&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_47204266">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=47204266&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_47204266">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(2);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(2);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=47204266&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=47204266&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_48060802">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/mrbu74" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'mrbu74')}catch(ex){};" 
+        title=mrbu74用户自定义头像 alt=mrbu74用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/noavatar_2(2).gif"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：51；截至2010-09-05日，用户的总技术分排名为：152851"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/mrbu74" 
+        target=_blank>mrbu74</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：51；截至2010-09-05日，用户的总技术分排名为：152851">(奋斗&amp;小鬼) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:39:31，用户的总技术分为：51；截至2010-09-05日，用户的总技术分排名为：152851">等　级：<IMG 
+        class="grade user1" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#3楼 得分：0</DFN>回复于：2008-03-26 10:08:30</DIV><A 
+      name=r_48060802></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_48060802 csdnid="rbody_48060802">
+            <DIV class=msgfont>定下 
+        我也遇到这样的错误</DIV><!--End_rbody_48060802//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_48060802"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=48060802&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_48060802">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=48060802&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_48060802">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(3);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(3);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=48060802&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=48060802&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_48987848">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/knowledge_Is_Life" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'knowledge_Is_Life')}catch(ex){};" 
+        title=knowledge_Is_Life用户自定义头像 alt=knowledge_Is_Life用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/2_knowledge_is_life.jpg"></A> 
+
+        <LI 
+        title="截至2010-09-04 16:52:49，用户的总技术分为：14800；截至2010-08-29日，用户的总技术分排名为：1334"><DFN><A 
+        onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/knowledge_Is_Life" 
+        target=_blank>knowledge_Is_Life</A></DFN> 
+        <LI 
+        title="截至2010-09-04 16:52:49，用户的总技术分为：14800；截至2010-08-29日，用户的总技术分排名为：1334">(阿凡) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-04 16:52:49，用户的总技术分为：14800；截至2010-08-29日，用户的总技术分排名为：1334">等　级：<IMG 
+        class="grade user3" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#4楼 得分：0</DFN>回复于：2008-05-01 01:53:44</DIV><A 
+      name=r_48987848></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_48987848 csdnid="rbody_48987848">
+            <DIV class=msgfont>支持搂主，收藏</DIV><!--End_rbody_48987848//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_48987848"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=48987848&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_48987848">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=48987848&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_48987848">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(4);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(4);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=48987848&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=48987848&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_53681207">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/willflyz" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'willflyz')}catch(ex){};" 
+        title=willflyz用户自定义头像 alt=willflyz用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/2_willflyz.jpg"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:17:13，用户的总技术分为：6261；截至2010-09-05日，用户的总技术分排名为：4155"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/willflyz" 
+        target=_blank>willflyz</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:17:13，用户的总技术分为：6261；截至2010-09-05日，用户的总技术分排名为：4155">(积累，沉淀。。。) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:17:13，用户的总技术分为：6261；截至2010-09-05日，用户的总技术分排名为：4155">等　级：<IMG 
+        class="grade user5" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#5楼 得分：0</DFN>回复于：2008-11-19 14:20:37</DIV><A 
+      name=r_53681207></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_53681207 csdnid="rbody_53681207">
+            <DIV class=msgfont>OK<BR><BR>procedure 
+            TfmLogin.ApplicationEvents1Exception(Sender: TObject;<BR>&nbsp; E: 
+            Exception);<BR>begin<BR>&nbsp; if E.ClassType.ClassName = 
+            'ESocketConnectionError' then<BR>&nbsp; 
+            showmessage(E.ClassType.ClassName)<BR>&nbsp; else<BR>&nbsp; raise 
+            E;<BR>end;</DIV><!--End_rbody_53681207//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_53681207"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681207&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_53681207">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681207&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_53681207">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(5);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(5);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681207&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681207&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_53681509">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/unsigned" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'unsigned')}catch(ex){};" 
+        title=unsigned用户自定义头像 alt=unsigned用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/2_unsigned.jpg"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/unsigned" 
+        target=_blank>unsigned</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47">(僵哥（自然界因不公平生生不息）) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47">等　级：<IMG 
+        class="grade star4" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI>
+        <DIV class=medalregion>
+        <DIV title="勋章:进士 获得原因: 2008年 总版技术专家分年内排行榜第九" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/jinshi_1.gif) no-repeat; WIDTH: 30px; HEIGHT: 40px"></DIV>
+        <DIV 
+        title="勋章:红花 获得原因: 2005年7月 C++ Builder大版内专家分月排行榜第一;2008年1月 Delphi大版内专家分月排行榜第一;2008年6月 Delphi大版内专家分月排行榜第一;2008年10月 Delphi大版内专家分月排行榜第一;2008年11月 Delphi大版内专家分月排行榜第一;2008年12月 Delphi大版内专家分月排行榜第一;2009年1月 C++ Builder大版内专家分月排行榜第一" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/red_2.gif) no-repeat; WIDTH: 35px; HEIGHT: 40px">
+        <P class=medalnum>7</P></DIV>
+        <DIV 
+        title="勋章:黄花 获得原因: 2005年7月 Delphi大版内专家分月排行榜第二;2008年7月 Delphi大版内专家分月排行榜第二;2008年12月 C++ Builder大版内专家分月排行榜第二;2009年1月 Delphi大版内专家分月排行榜第二" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/yellow_2.gif) no-repeat; WIDTH: 35px; HEIGHT: 40px">
+        <P class=medalnum>4</P></DIV>
+        <DIV title=更多用户unsigned获得的勋章 
+        style="LEFT: 5px; FLOAT: left; TOP: 17px; HEIGHT: 40px"><A 
+        class=moremedal 
+        href="http://medal.csdn.net/Medal/UserMedalList.aspx?username=unsigned" 
+        target=_blank>更多勋章</A></DIV></DIV></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#6楼 得分：0</DFN>回复于：2008-11-19 14:31:31</DIV><A 
+      name=r_53681509></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_53681509 csdnid="rbody_53681509">
+            <DIV 
+            class=msgfont>这个问题,记得很早之前就有讨论过.基本上可以通过拦截掉SocketConnection相关消息句柄上的消息THREAD_EXCEPTION来处理.应该使用Google搜索THREAD_EXCEPTION可以找到一些相关贴子.</DIV><!--End_rbody_53681509//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_53681509"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681509&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_53681509">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681509&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_53681509">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(6);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(6);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681509&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681509&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV>
+<TABLE class=mframe cellSpacing=0 cellPadding=0 csdnid="rt_53681573">
+  <TBODY>
+  <TR>
+    <TD class=lf rowSpan=2>
+      <DIV class=df>
+      <UL>
+        <LI class=center><A onclick=LogClickCount(this,111); 
+        href="http://hi.csdn.net/unsigned" target=_blank><IMG 
+        onmouseover="try{showUserCard(this,'unsigned')}catch(ex){};" 
+        title=unsigned用户自定义头像 alt=unsigned用户头像 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/2_unsigned.jpg"></A> 
+
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47"><DFN><A 
+        onclick=LogClickCount(this,111); href="http://hi.csdn.net/unsigned" 
+        target=_blank>unsigned</A></DFN> 
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47">(僵哥（自然界因不公平生生不息）) 
+
+        <LI class=honor>
+        <LI 
+        title="截至2010-09-05 22:08:26，用户的总技术分为：132450；截至2010-09-05日，用户的总技术分排名为：47">等　级：<IMG 
+        class="grade star4" alt="" 
+        src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/blank(1).gif"> 
+
+        <LI>
+        <DIV class=medalregion>
+        <DIV title="勋章:进士 获得原因: 2008年 总版技术专家分年内排行榜第九" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/jinshi_1.gif) no-repeat; WIDTH: 30px; HEIGHT: 40px"></DIV>
+        <DIV 
+        title="勋章:红花 获得原因: 2005年7月 C++ Builder大版内专家分月排行榜第一;2008年1月 Delphi大版内专家分月排行榜第一;2008年6月 Delphi大版内专家分月排行榜第一;2008年10月 Delphi大版内专家分月排行榜第一;2008年11月 Delphi大版内专家分月排行榜第一;2008年12月 Delphi大版内专家分月排行榜第一;2009年1月 C++ Builder大版内专家分月排行榜第一" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/red_2.gif) no-repeat; WIDTH: 35px; HEIGHT: 40px">
+        <P class=medalnum>7</P></DIV>
+        <DIV 
+        title="勋章:黄花 获得原因: 2005年7月 Delphi大版内专家分月排行榜第二;2008年7月 Delphi大版内专家分月排行榜第二;2008年12月 C++ Builder大版内专家分月排行榜第二;2009年1月 Delphi大版内专家分月排行榜第二" 
+        style="BACKGROUND: url(http://csdnimg.cn/bbs/m/i/yellow_2.gif) no-repeat; WIDTH: 35px; HEIGHT: 40px">
+        <P class=medalnum>4</P></DIV>
+        <DIV title=更多用户unsigned获得的勋章 
+        style="LEFT: 5px; FLOAT: left; TOP: 17px; HEIGHT: 40px"><A 
+        class=moremedal 
+        href="http://medal.csdn.net/Medal/UserMedalList.aspx?username=unsigned" 
+        target=_blank>更多勋章</A></DIV></DIV></LI></UL></DIV></TD>
+    <TD class=rw>
+      <DIV class=fbart><DFN>#7楼 得分：0</DFN>回复于：2008-11-19 14:33:53</DIV><A 
+      name=r_53681573></A>
+      <TABLE class=mtxt cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD id=rbody_53681573 csdnid="rbody_53681573">
+            <DIV class=msgfont><A 
+            href="http://topic.csdn.net/u/20080927/09/d543fb3a-157e-4e44-b46f-3700f4f255f9.html" 
+            target=_blank>http://topic.csdn.net/u/20080927/09/d543fb3a-157e-4e44-b46f-3700f4f255f9.html</A></DIV><!--End_rbody_53681573//--></TD></TR>
+        <TR>
+          <TD csdnid="rmodify_53681573"></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD class=rb>
+      <DIV class=fbarb>
+      <UL>
+        <LI><A class="dr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681573&amp;type=0&amp;v=13');LogClickCount(this,113);}catch(ex){}return false;" 
+        href="javascript:;">对我有用</A>[<SPAN title=该回复被0个用户给予好评 
+        csdnid="racount_53681573">0</SPAN>] </LI>
+        <LI><A class="gr nob" 
+        onclick="try{Estimate(this,'http://forum.csdn.net/PointForum/Forum/EstimateReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;replyId=53681573&amp;type=1&amp;v=13');LogClickCount(this,114);}catch(ex){}return false;" 
+        href="javascript:;">丢个板砖</A>[<SPAN title=该回复被0个用户给予差评 
+        csdnid="rucount_53681573">0</SPAN>] </LI>
+        <LI><A class=gr onclick="try{Quote(7);}catch(ex){};return false" 
+        href="javascript:;">引用</A> </LI>
+        <LI><A class=dr onclick="try{report(7);}catch(ex){}return false;" 
+        href="javascript:;">举报</A> </LI>
+        <LI><A class=gr 
+        onmousemove="try{showMenu(this,'http://forum.csdn.net/PointForum/Manage/ModifyReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681573&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13','http://forum.csdn.net/PointForum/Manage/DeleteReply.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;replyId=53681573&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13');return false}catch(ex){}" 
+        href="javascript:;">管理</A> </LI>
+        <LI><A class=nob 
+        href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#top">TOP</A> 
+        </LI></UL>
+      <DIV class=rt></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV class=clear></DIV><!--append reply--><!-- google_ad_section_end -->
+<DIV class=fm>
+<UL class=menu>
+  <LI class=bt1><A class=bt1 href="javascript:;">管理菜单<!--[if IE 7]><!--></A><!--<![endif]--><!--[if lte IE 6]><table><tr><td><![endif]--> 
+
+  <UL>
+    <LI><A id=a_head_recreate 
+    href="http://forum.csdn.net/PointForum/BuildTopic.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;return=">生成帖子</A> 
+    </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/Tops/InsertTop.aspx?topicUrl=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html&amp;text=error+reading+from+socket+%e5%b1%8f%e8%94%bd&amp;sectionID=86fda20c-918f-4004-9a60-83ac6156c017',width:600,height:265,title:'置顶'});}catch(ex){}return false;" 
+    href="javascript:;">置顶</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/SetPrime.aspx?forumid=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicid=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:400,height:255,title:'推荐'});}catch(ex){}return false;" 
+    href="javascript:;">推荐</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/SetNotPrime.aspx?topicid=439586d3-6ace-44e5-80c4-979991314612&amp;forumid=86fda20c-918f-4004-9a60-83ac6156c017&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:400,height:255,title:'取消推荐'});}catch(ex){}return false;" 
+    href="javascript:;">取消推荐</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/LockTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:425,height:330,title:'锁定'});}catch(ex){}return false;" 
+    href="javascript:;">锁定</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/UnlockTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:425,height:330,title:'解锁'});}catch(ex){}return false;" 
+    href="javascript:;">解锁</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/MoveTopic.aspx?fid=86fda20c-918f-4004-9a60-83ac6156c017&amp;tid=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09',width:580,height:270,title:'移动'});}catch(ex){}return false;" 
+    href="javascript:;">移动</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/ModifyTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;v=13',width:670,height:655,title:'编辑'});}catch(ex){}return false;" 
+    href="javascript:;">编辑</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/DeleteTopic.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09',width:425,height:330,title:'删除'});}catch(ex){}return false;" 
+    href="javascript:;">删除</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Forum/TopicAddPoint.aspx?forumId=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicId=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09&amp;v=13',width:420,height:300,title:'帖子加分'});}catch(ex){}return false;" 
+    href="javascript:;">帖子加分</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/TitleStyle.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;url=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html',width:670,height:307,title:'帖子高亮'});}catch(ex){}return false;" 
+    href="javascript:;">帖子高亮</A> </LI>
+    <LI><A 
+    onclick="try{showWindow({url:'http://forum.csdn.net/PointForum/Manage/RemoveTitleStyle.aspx?topicId=439586d3-6ace-44e5-80c4-979991314612&amp;postDate=2007-05-29+14%3a44%3a09&amp;url=http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html',width:670,height:255,title:'取消高亮'});}catch(ex){}return false;" 
+    href="javascript:;">取消高亮</A> </LI></UL><!--[if lte IE 6]></td></tr></table></a><![endif]--></LI>
+  <LI><A class=bt2 
+  href="http://forum.csdn.net/PointForum/Manage/TopicManageView.aspx?forumID=86fda20c-918f-4004-9a60-83ac6156c017&amp;topicID=439586d3-6ace-44e5-80c4-979991314612&amp;date=2007-05-29+14%3a44%3a09&amp;v=13">结&nbsp;&nbsp;帖</A> 
+  </LI>
+  <LI><A class=bt3 
+  href="http://forum.csdn.net/PointForum/Forum/PostTopic.aspx?forumID=86fda20c-918f-4004-9a60-83ac6156c017" 
+  target=_blank>发&nbsp;&nbsp;帖</A> </LI>
+  <LI><A class=bt4 onclick="try{ReplyBoxFocus();return false}catch(ex){}" 
+  href="http://topic.csdn.net/u/20070529/14/439586d3-6ace-44e5-80c4-979991314612.html#r_achor">回&nbsp;&nbsp;复</A> 
+  </LI></UL></DIV>
+<DIV class=sq>
+<DL>
+  <DT>相关问题 </DT>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/t/20051222/23/4476197.html" target=_blank>发生error 
+  reading from socket的错误Delphi / 网络通信/分布式开发 ...</A> </DD>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/t/20051018/17/4334644.html" 
+  target=_blank>偶尔出现&amp;quot;Error establishing socket&amp;quot; 错误！！ Java / 
+  Web 开发- CSDN ...</A> </DD>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/t/20041014/10/3454659.html" 
+  target=_blank>为什么会出现&amp;quot;error establishing socket&amp;quot; 错误! Java / 
+  J2EE / EJB ...</A> </DD>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/t/20030921/15/2284080.html" 
+  target=_blank>SOCKET莫名出错!急！ C++ Builder / 网络及通讯开发- CSDN社区 ...</A> </DD>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/t/20031218/11/2576390.html" 
+  target=_blank>求救Connection reset by peer: socket write error Web 开发/ 应用 
+  ...</A> </DD>
+  <DD><A onclick=LogClickCount(this,116); 
+  href="http://topic.csdn.net/u/20081210/15/3c82121a-581d-4e00-8d0d-9d4b8504df0b.html" 
+  target=_blank>[急]java.net.SocketException: Connection reset by peer: socket 
+  ...</A> </DD></DL></DIV>
+<TABLE class=comt cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR>
+    <TD style="WIDTH: 200px"><IFRAME id=Iframe1 marginWidth=0 marginHeight=0 
+      src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/ad4.htm" 
+      frameBorder=0 width=200 scrolling=no height=415></IFRAME></TD>
+    <TD><IFRAME class=replyframe id=replyframe 
+      src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/ReplyT.htm" 
+      frameBorder=0 width="100%" scrolling=no height=415 
+      csdnid="rframe"></IFRAME></TD></TR></TBODY></TABLE>
+<SCRIPT type=text/javascript>
+new Image().src="http://forum.csdn.net/Common/TopicRead.ashx?postDate=2007-05-29+14%3a44%3a09&topicID=439586d3-6ace-44e5-80c4-979991314612&"+(new Date().getTime().toString(36));
+
+new Image().src="http://forum.csdn.net/PointForum/SetLatestVisitedForum.ashx?sectionid=86fda20c-918f-4004-9a60-83ac6156c017";
+</SCRIPT>
+
+<SCRIPT 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/publib_footer.js" 
+type=text/javascript></SCRIPT>
+<IMG style="DISPLAY: none" height=0 alt="" 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/pv.aspx" 
+width=0 border=0> 
+<DIV>
+<SCRIPT 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/counter.js" 
+type=text/javascript></SCRIPT>
+</DIV>
+<SCRIPT 
+src="error%20reading%20from%20socket%20屏蔽%20-%20Delphi%20-%20网络通信-分布式开发_files/urchin.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT type=text/javascript>
+	_uacct = "UA-2919357-1";
+	urchinTracker();
+</SCRIPT>
+
+<DIV id=ad_left 
+style="DISPLAY: none; LEFT: 10px; WIDTH: 120px; POSITION: absolute; TOP: 184px">
+<SCRIPT type=text/javascript>
+	try {
+		var pdate = "" + parent.eval("tinfo.pdate");
+		if (pdate) {
+			pdate = new Date(pdate.replace(/-/g, "/"));
+			var today = new Date();
+			showad = (today.getTime() - pdate.getTime()) / 1000 / 60 / 60 / 24 / 30 > 6;
+		}
+	} catch (ex) { };
+
+	try {
+		var ad_left = "";
+		if (showad && screen.availWidth >= 1280) {
+			ad_left += '<' + 'script type=\"text/javascript\">';
+			ad_left += 'google_ad_client = "pub-1076724771190722";';
+			ad_left += 'google_ad_slot =\"5633584852\";';
+			ad_left += 'google_ad_width = 120;';
+			ad_left += 'google_ad_height = 600;';
+			ad_left += '</' + 'script>';
+			ad_left += '<' + 'script type=\"text/javascript\"';
+			ad_left += 'src=\"http://pagead2.googlesyndication.com/pagead/show_ads.js\">';
+			ad_left += '</' + 'script>';
+		}
+		document.write(ad_left);
+		document.getElementById("ad_left").style.display = "";
+	} catch (e) { }
+</SCRIPT>
+</DIV>
+<DIV id=ad_right 
+style="DISPLAY: none; RIGHT: 10px; WIDTH: 120px; POSITION: absolute; TOP: 184px">
+<SCRIPT type=text/javascript>
+	try {
+		var ad_right = "";
+		if (showad && screen.availWidth >= 1280) {
+			ad_right += '<' + 'script type=\"text/javascript\">';
+			ad_right += 'google_ad_client = "pub-1076724771190722";';
+			ad_right += 'google_ad_slot =\"9259923286\";';
+			ad_right += 'google_ad_width = 120;';
+			ad_right += 'google_ad_height = 600;';
+			ad_right += '</' + 'script>';
+			ad_right += '<' + 'script type=\"text/javascript\"';
+			ad_right += 'src=\"http://pagead2.googlesyndication.com/pagead/show_ads.js\">';
+			ad_right += '</' + 'script>';
+		}
+		document.write(ad_right);
+		document.getElementById("ad_right").style.display = "";
+	} catch (e) { }
+</SCRIPT>
+</DIV></BODY></HTML>

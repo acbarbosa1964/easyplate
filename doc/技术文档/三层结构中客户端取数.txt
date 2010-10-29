@@ -1,0 +1,718 @@
+耐心看下去，多少有点启发......
+
+目的：
+
+   三层结构中客户端取数一般是采用
+     TClientDataSet  =====>  TDataSetProvider + TDataSet
+   有些人使用TDataSetProvider + TTable，然后在设计期间设置TTable的属性
+   缺点很明显：
+       1、不能使用SQL实现复杂的查询
+       2、TTable的属性在设计期间完全确定了，也就只能只能打开固定的一个表，
+          要使用多个表怎么办？只好在RemoteDataModule中放无数的
+          TDataSetProvider和TTable
+
+
+   这种做法不能满足我们的要求，我们需要的是：
+     1、在Client端使用SQL语句打开数据集
+     2、Provider应该能访问任意数据，
+        最好做到多个ClientDataSet同时使用一个Provider访问不同的数据
+
+
+   Delphi的帮助里没有例子，不过我们还是很容易就找到了实现方法：
+     Server端：TDataSetProvider + TQuery
+     Client端：TClientDataSet
+
+     // for Delphi 5:
+         TDataSetProvider.Options属性中应该包括poAllowCommandText，
+         允许ClientDataSet使用SQL命令
+
+     Client端程序：
+     with ClientDataSet do
+     begin
+       Close;
+       CommandText := 'Select xxx ......';
+       Open;
+     end;
+
+     // for Delphi 4:
+     手头找不到D4了，因此不知道D4是否支持TClientDataSet.CommandText，
+     我们以前是这样做的：
+
+     Client端程序：
+     with ClientDataSet do
+     begin
+       Close;
+       DataRequest('Select xxx ......');
+       Open;
+     end;
+     Server端程序：
+     TDataSetProvider.OnDataRequest(Sender: TObject; Input: OleVariant): OleVariant;
+     begin
+       // 这里的Input就是客户端的ClientDataSet调用DataRequest方法时传递的参数
+       // 将它赋值给Query.SQL.Text就可以了
+       Query.SQL.Text := Input;
+     end;
+
+     好了，用上面的方法我们在Client端使用SQL了，也使得Provider与数据集无关，
+     Server端只需要公布一个Provider就可以供Client端的多个ClientDataSet使用了，
+     看起来真不错，问题似乎得到了完美的解决  :))
+  
+
+
+来自：李颖, 时间：2000-4-20 23:51:00, ID：226558
+发现了BUG： :<<<
+
+  按上面的方法，Server端使用一个DataSetProvider
+
+
+  Client端使用两个TClientDataSet，都使用Server端的同一个Provider，
+
+  分别打开两个表，
+  如下：
+
+  with ClientDataSet1 do
+  begin
+    Close;
+    CommandText := 'Select * from Table1';
+    Open;
+  end;
+
+  with ClientDataSet2 do
+  begin
+    Close;
+    CommandText := 'Select * from Table2';
+    Open;
+  end;
+
+  上面的代码中ClientDataSet与数据库表的对应关系如下：
+     ClientDataSet1  =====>  "Table1"
+     ClientDataSet2  =====>  "Table2"
+
+  注意顺序为先打开表1，再打开表2
+  然后我们修改ClientDataSet1中的数据，再调用
+     ClientDataSet1.ApplyUpdates(-1)方法提交数据，却发现无论如何都成功不了，
+
+  奇怪！
+  同样的数据直接在两层C/S结构的程序中可以成功地写入表中，可以肯定数据没问题
+  程序绝对正确，同样的程序早就调试通过了，现在却突然不能提交数据了，
+  而且，奇怪的是，错误很稳定，100%提交失败，系统重起N次也没影响  
+
+
+来自：李颖, 时间：2000-4-20 23:52:00, ID：226560
+分析：
+  打开Delphi 源代码 provider.pas ，搜索ApplyUpdates之类的东西，看究竟是如何实现的，
+  最后看到了根源，如下：
+
+  // Delphi 源代码 provider.pas
+
+  procedure TDataSetResolver.DoUpdate(Tree: TUpdateTree);
+  begin
+    with Tree do
+    begin
+      ...
+      Source.Edit;
+      ...
+    end;
+  end;
+
+  procedure TDataSetResolver.DoDelete(Tree: TUpdateTree);
+  begin
+    with Tree do
+    begin
+      ...
+      Source.Delete
+      ...
+    end;
+  end;
+
+  procedure TDataSetResolver.DoInsert(Tree: TUpdateTree);
+  begin
+    Tree.Source.Append;
+    ...
+  end;
+
+  其中TUpdateTree.Source定义为
+  TUpdateTree = class(TObject)
+    ...
+    property Source: TDataSet read FSourceDS;
+    ...
+  end;
+
+  水平有限，具体如何没看完，不过根据前面调试的结果，和上面的源代码结合起来，
+  估计这个Source: TDataSet最终就等于TDataSetProvider.DataSet
+  这样一来，如果我们用同一个Provider同时打开多个表，
+  只有最后打开的ClientDataSet可以保证Server端的TDataSetProvider.DataSet和它对应着相同的数据集
+  二前面打开的ClientDataSet就根本不能提交了，
+
+  这样一来，我们前面提出的方案就彻底崩溃了，根本原因就在于：
+  TDataSetProvider的根本就是为单个客户端设计的，完全没有考虑到同时访问多个数据集的问题，
+  实际运行中永远只有最后打开的一个数据集能够保持存在，因而也就只有最后打开的一个ClientDatSet
+  能提交数据成功
+  
+
+
+来自：Li zhaoyang, 时间：2000-4-21 0:43:00, ID：226598
+@_@  
+
+
+来自：yysun, 时间：2000-4-21 1:11:00, ID：226612
+李兄：我做过一个试验，
+Server端：TDataSetProvider TTable, TTableName由接口函数指定。
+Client端：TClientDataSet。
+启动多个客户端的exe打开编辑不同TTable成功。
+这时实际上它是启动了多个 RemoteDataModule 的 Instance.
+
+一个TDataSetProvider应该只能连接一个 Dataset。
+也许您应该想办法解决的创建多个 RemoteDataModule 的 Instance。  
+
+
+来自：千中元, 时间：2000-4-21 1:24:00, ID：226617
+listen  
+
+
+来自：lha, 时间：2000-4-21 7:48:00, ID：226675
+我认为　一个TDataSetProvider应该只能连接一个 Dataset。
+如你用多个 TQuery ,可让每个TQuery都导出一个接口.  
+
+
+来自：谭俊峰, 时间：2000-4-21 9:00:00, ID：226709
+Delphi的多个数据集问题是靠RemoteDataModule提供的，
+两个ClientDataSet连的是同一个线程的DataSetProvider，必然产生冲突，
+可以让ClientDataSet分别连两个不同的RemoteServer,
+或可解决.....
+  
+
+
+来自：ouke, 时间：2000-4-21 9:41:00, ID：226773
+对我一般来说是一个Tquery对一个Tdatasetprovider对一个Tclientdataset.
+我看了许多书都是这么用的。
+yysun说的创建多个 RemoteDataModule 的 Instance。我非常赞成，
+我决的企业物件对象就是要一个对象用一个RemoteDataModule  
+
+
+来自：Chenlili, 时间：2000-4-21 9:50:00, ID：226787
+@_@
+ 
+Delphi5已作了改动，详见李维《实战DELPHI5》  
+
+
+来自：y_zl, 时间：2000-4-21 11:06:00, ID：226860
+援引提问者{{
+这样一来，我们前面提出的方案就彻底崩溃了，根本原因就在于：
+  TDataSetProvider的根本就是为单个客户端设计的，完全没有
+考虑到同时访问多个数据集的问题，  实际运行中永远只有最后
+打开的一个数据集能够保持存在，因而也就只有最后打开的一个
+ClientDatSet  能提交数据成功}}
+
+   我觉得该方案失败不能归咎于TDataSetProvider,当
+Tclientdataset提交时,实际用到的是client端数据集更
+改数据包(即Tclientdataset.Delta),其中也包括了数据
+表及字段信息,试想TDataSetProvider得到的表及字段信
+息与其最后保留的信息不符,它如何能正确提交呢?
+   建议牺牲灵活性,让一个数据集(可以是多表关联得到的
+结果集)对应一个TDataSetProvider.
+
+
+  
+
+
+来自：adminis, 时间：2000-4-21 13:25:00, ID：227026
+哈哈，李大虾，怎么这个问题你现在才发现？？？
+说穿了好简单，在提交任一个表之前把打开表的SQL语句传回给TQuery就可以了
+（但不执行）。提交总是对的。这不算什么BUG。  
+
+
+来自：孔枫, 时间：2000-4-21 15:03:00, ID：227097
+高手华山论DELPHI
+我只能来观摩观摩  
+
+
+来自：rixin, 时间：2000-4-21 15:15:00, ID：227108
+delphi5中有一個重要屬性:
+
+即: server端Tdatasetprovider的Resoluetodata要設True  
+
+
+来自：cmldy, 时间：2000-4-21 21:20:00, ID：227425
+这也是BUG？看一下DEMO里有这样用的吗？
+不明白什么方案要这样设计  
+
+
+来自：李颖, 时间：2000-4-21 23:17:00, ID：227558
+上次没贴完，继续：
+==============================================
+结论：
+  要解决应该很简单，TDataSetProvider应做以下修改：
+  1、建立一个内部的DataSet队列
+  2、ClientDataSet打开数据集时，创建一个新的DataSet，加入到DataSet队列中
+  3、ClientDataSet关闭时，从DataSet队列中删除对应的DataSet
+  4、创建新DataSet时，可以根据TDataSetProvider.DataSet属性来确定使用的实际DataSet类
+     也就是说，如果DataSet指定为一个TQuery，那么就创建一个TQuery；
+     如果是一个TTable，那么就创建一个TQuery
+     这点很容易实现
+  5、创建新DataSet后，应该将TDataSetProvider.DataSet对应的TDataSet的全部属性赋值给新DataSet
+  6、定义一套规范，将ClientDataSet与DataSet队列中的TDataSet一一对应
+  7、取数、传递数据包、提交数据的代码都不需要变动，只需要根据ClientDataSet
+     在DataSet队列中找到对应的TDataSet，其余的工作完全一样
+
+  说起来简单，这种事情我们做不了，恐怕应该由Borland自己来干了！
+
+
+  写到最后，得出的结论基本上是悲剧性的：
+  1、最初提出的方案基本可行
+  2、但是绝对不能让多个ClientDataSet同时使用同一个Provider访问数据
+     否则将只有最后打开的ClientDataSet能提交数据成功
+  3、如果有多个ClientDataSet都需要修改数据集并提交的话，那么就不能只用一个Provider了，
+     只好在RemoteServer中公布几个Provider
+  4、注意，错误只出在"同时"访问数据时，因此轮流使用还是可以的
+
+  唉！！真是悲哀啊！！！  
+
+
+来自：李颖, 时间：2000-4-21 23:26:00, ID：227571
+to 歪歪孙：
+>> 李兄：我做过一个试验，
+>> Server端：TDataSetProvider TTable, TTableName由接口函数指定。
+>> Client端：TClientDataSet。
+>> 启动多个客户端的exe打开编辑不同TTable成功。
+>> 这时实际上它是启动了多个 RemoteDataModule 的 Instance.
+>> 一个TDataSetProvider应该只能连接一个 Dataset。
+>> 也许您应该想办法解决的创建多个 RemoteDataModule 的 Instance。
+
+看来大家对我的观点有点误解，我不是说在多个客户端的情况，
+这种问题用多实例的RemoteServer就可以搞定了，
+
+2 lha、y_zl：
+>> 建议牺牲灵活性,让一个数据集(可以是多表关联得到的
+>> 结果集)对应一个TDataSetProvider.
+
+最初的愿望是想通过一个Provider就可以存取任意数据，当然是通过SQL了，
+不只是指定表名那么简单
+灵活性是绝对不能牺牲的，否则如果表多，查询逻辑复杂，就完蛋了，
+因此你们的建议无法接受。。。。  
+
+
+来自：李颖, 时间：2000-4-21 23:28:00, ID：227573
+又少贴了一部分，补上：
+=============================================
+调试：
+  程序和数据都没问题，实在想不出错在哪里，只好用最低级的方式了，
+  打开M$ SQL Trace，睁大眼睛看提交到SQL Server上的所有SQL语句
+
+  然后，在三层结构下提交数据、在两层C/S结构下提交数据，比较SQL语句有什么不同
+  这下更奇怪了，程序中Insert一条记录，ApplyUpdates后看到的SQL语句是
+     insert into xxxx(xx,xx,...) values(xx,xx,...)
+  拿出来执行，返回的错误信息居然是'invalid column name xxxxxx'，字段不存在？？？？
+
+  Select * from xxxx 看到字段明明在那里嘛！
+
+  难道SQL有毛病？？ 删掉表，重建，再来一遍错误一模一样，奇怪！
+
+
+  重复N遍之后，终于发现，Insert语句中操作的表居然是Table2！！！
+  但是程序中打开的是Table1，
+  这么说来，MIDAS在提交数据时操作的目标表错了，跟本就不是Client端实际使用的表！！  
+
+
+来自：李颖, 时间：2000-4-21 23:39:00, ID：227579
+2 adminis、rixin：
+  看来你们明白我的意思了，我去试一下你们的方法，如果正确的话就给分
+
+
+
+adminis：
+  所谓“在提交任一个表之前把打开表的SQL语句传回给TQuery就可以了”怎么实现？
+是否ClientDataSet调用ApplyUpdates之前先调用
+  DataReqesut('Select xxx ....')？？
+
+可是这样一来，如果Server端再次执行这段SQL，它得到的是新数据，
+不能保证数据同步啊，
+我是说，如果多用户情况下，数据被其他人更新过了，
+那么Server在提交数据时得到的数据可能与最初发送到Client的数据不一致，
+那么很可能找不到某些记录，导致提交失败
+
+你可以试试看，用你的方案写一段程序：
+1、Client取数
+2、在别的程序中删除一些记录
+3、Client修改记录
+4、提交
+如果3中修改的记录实际上已经在2中被删除了，
+那么上面说的情况可能就会发生了，你认为呢？
+
+ps: 纯粹是猜测，没实验过，不如你去试一下？？  
+
+
+来自：李颖, 时间：2000-4-21 23:43:00, ID：227585
+TMD！怎么老是丢数据？？气死我了。
+
+
+抱歉各位，上面贴的东西老是丢，只好不断重发，顺序全乱了，
+正确顺序是:
+"目的" => "发现Bug" => "调试" => "分析" => "结论"  
+
+
+来自：cmldy, 时间：2000-4-21 23:54:00, ID：227596
+请看Delphi帮助里的定义
+Use TDataSetProvider to provide data from a dataset to a client dataset and to resolve updates from a client dataset back to that dataset or to its underlying database. TDataSetProvider is usually placed in the application server of a multi-tiered application.  It serves as a data broker between <a> remote database server and <a> client dataset in the desktop client application.  
+
+
+来自：CJ, 时间：2000-4-22 0:10:00, ID：227607
+问题一实际上已经解决了,只是D4不支持COMMANDTEXT
+问题二估计是解决不了了,我想个变通的方法就是:
+放可能多个并发访问的provider
+因为不能实现
+CD1.OPEN;CD2.OPEN,CD1.SAVE
+但是,可以实现:
+CD1.OPEN,CD1.SAVE.CD2.OPEN,CD2.SAVE...CDN.OPEN,CDN.SAVE
+不过,这样一来好象会比较乱.  
+
+
+来自：李颖, 时间：2000-4-22 0:25:00, ID：227616
+CJ：
+所谓变通其实行不通啊，难道Client端用到多个表的时候，还要先排队？？
+怎么控制？再说，Close、Open、Close、Open....
+重复N次后数据不是传N遍？？性能狂降
+
+这种方法还不如用多个Provider呢，
+最多分析一下需求，需要同时存取的用不同的Provider
+其他的仍然用同一个
+
+我现在还是寄希望于rixin说的：
+>> delphi5中有一個重要屬性:
+>> 即: server端Tdatasetprovider的Resoluetodata要設True
+还没实验，不知可否
+ 
+ 
+  
+
+
+来自：adminis, 时间：2000-4-22 2:33:00, ID：227674
+看到你提的解决方案是维护那么多的DataSet，真是吓了我一小跳。
+我不是说很清楚了吗，只传过去，不执行。也就是说，传你的SQL和
+Delta过去，ApplyUpdates不在客户端，而是在服务端进行。这样
+可以保证你能用一个Query和Provider，同时有无数的ClientDataSet连进来，
+随便查询和更新。
+我刚来大富翁不久，好不容易为李大虾解决一个难题，您可记得多赏点分，
+鼓励鼓励。  
+
+
+来自：guojun, 时间：2000-4-22 3:17:00, ID：227691
+  听听  
+
+
+来自：sea713, 时间：2000-4-22 7:08:00, ID：227700
+listen  
+
+
+来自：CJ, 时间：2000-4-22 11:17:00, ID：227811
+所以我说:
+>不过,这样一来好象会比较乱.
+
+Resoluetodata我也没实验过,不过看帮助好象不是那个意思?
+
+adminis:我还是不明白传递INSERT/UPDATE过去?
+
+  
+
+
+来自：lyh001, 时间：2000-4-22 13:54:00, ID：227946
+？  
+
+
+来自：wrench, 时间：2000-4-22 14:56:00, ID：227999
+adminis的意思是在客户端写SQL,并且传给服务端
+并且在服务端执行ApplyUpdates？？
+
+去试试看
+  
+
+
+来自：李颖, 时间：2000-4-22 20:09:00, ID：228193
+=========================================================
+2 rixin:
+ 你的方法不行，测试结果如下：
+
+TDataSetProvider.ResolveToDataSet设置为True后，只打开一个表也提交不了
+用SQL Trace只看到开表的SQL，根本看不到提交数据的SQL
+
+我看Delphi帮助关于TDataSetProvider.ResolveToDataSet中说：
+
+============================================================
+<B>  设置ResolveToDataSet属性以确定数据如何提交。
+当ResolveToDataSet为True, Resolver属性将被设置为一个TDataSetResolver组件, 
+再由这个TDataSetResolver组件将数据直接提交到DataSet属性指定的数据集中. 
+这种方法主要适用于以下情况：
+  1、应用程序使用了DataSet组件的事件
+<font color=red>  2、DatSet没有直接从Database Server得到数据，比如一个ClientDataSet</font>
+
+当ResolveToDataSet为False, Resolver属性将被设置为一个TSQLResolver组件,
+这个TSQLResolver组件将数据直接提交到DataSet连接的数据库.
+这种方式省去了使用DataSet来提交数据的中间步骤，因此效率更高。
+<B>
+============================================================
+
+按我的理解，上面的红字表示：
+ResolveToDataSet属性设置为True后，
+数据将写到DataSet中，而不是直接提交到数据库，
+因此无法提交大概是因为TQuery.RequestLive属性为False的缘故。
+
+将TQuery.RequestLive属性设置为True后，运行结果和前面说的完全一样，
+仍然只能提交最后打开的表，前面打开的表根本提交不了，
+而且结果更糟：
+  当ResolveToDataSet为False时，数据直接用SQL语句提交到数据库，因此失败后不会有错误提示
+  当ResolveToDataSet为True时，数据被写入Server端的DataSet，结果导致"Field xxx not found"
+        Exception发生在Server端，同时也显示在Client端，极难看！
+
+结论：ResolveToDataSet属性只用来控制数据提交方式，是直接用SQL写到数据库，还是写到DataSet
+而前面的问题是TDataSetProvider无法确定当前提交的目标表，两个问题之间根本没关系  
+
+
+来自：李颖, 时间：2000-4-22 20:11:00, ID：228194
+Delphi帮助关于TDataSetProvider.ResolveToDataSet中说：
+
+============================================================
+<B>  设置ResolveToDataSet属性以确定数据如何提交。
+当ResolveToDataSet为True, Resolver属性将被设置为一个TDataSetResolver组件, 
+再由这个TDataSetResolver组件将数据直接提交到DataSet属性指定的数据集中. 
+这种方法主要适用于以下情况：
+  1、应用程序使用了DataSet组件的事件
+<font color=red>  2、DatSet没有直接从Database Server得到数据，比如一个ClientDataSet</font>
+
+当ResolveToDataSet为False, Resolver属性将被设置为一个TSQLResolver组件,
+这个TSQLResolver组件将数据直接提交到DataSet连接的数据库.
+这种方式省去了使用DataSet来提交数据的中间步骤，因此效率更高。
+</B>
+============================================================
+
+看到上面的红字部分受到启发，觉得可以用这种方法来实现数据路由控制，
+实现对分布式数据库的访问，注意，是数据本身分布在网络上，比如几个独立服务器上
+这种情况很普遍，例如多个收费站连接到一个城域网，
+而各收费站的数据可能不是立即提交到同一个DB Server
+而是先保存到本地的DB Server，当日工作结束后再提交
+这种情况下，如果要实时访问那些没有提交到中央DB Server而存在于各个收费站本地DB Server的数据时
+就涉及到分布式数据库的访问问题了
+
+如果用普通的三层结构，有两种方法：
+  1、Client端判断数据位置，访问相应的Server
+  2、Server端判断数据位置，访问相应的DB Server
+这两种方法都不好，系统结构本身没有解决数据路由问题，而需要程序自身去查找，实现起来很困难
+
+解决方法应该是增加一个数据路由层，
+这个数据路由层负责判断数据来源，然后用TClientDataSet从DB Server中取数，返回给Client
+Client提交后，Provider将数据直接写入Server端的TClientDataSet再提交到DB Server中
+实际上就是四层结构：
+
+
+       ------------            ------------
+      |  DB Server |   ....   |  DB Server |
+      |     1      |          |     N      |
+       ------------            ------------
+           ||  AppServer(1)        ||  AppServer(N)
+       ------------            ------------
+      |  TDataSet  |          |  TDataSet  |
+      |    ||      |   ....   |    ||      |
+      | TProvider  |          |  TProvider |
+       ------------            ------------
+           ||                      ||
+             =======================
+                        ||
+                --------------------- 
+               |    ClientDataSet    |
+ App Server    |        ||           |
+               |      Provider       |
+                --------------------- 
+                        ||
+                        ||
+                   ------------ 
+                  |   Client   |
+                   ------------
+
+我想这种思路应该可以很好地解决分布式数据库访问问题  
+
+
+来自：Nose, 时间：2000-4-22 20:19:00, ID：228198
+Listen  
+
+
+来自：李颖, 时间：2000-4-22 20:27:00, ID：228206
+抱歉,各位,题外话说得太多,而且有段html代码写错了,抱歉抱歉
+
+问题其实已经很清楚了,关键在于Server在提交数据时把最后打开的表作为目标表
+
+2 CJ:
+>> 我还是不明白传递INSERT/UPDATE过去?
+对数据的修改不需要自己生成,Server会根据Delta部分自动确定,
+只需要让Server知道该修改哪个表就一切都解决了
+
+2 adminis:
+现在看来只有你说得有道理,不过你好象是说自己在Server端实现ApplyUpdates?
+是不是太过分了点?
+
+我还是希望能用正常的方式,只要能让Server修改正确的表就行了
+
+在D4中,我们以前的方法是通过DataRequest方法发送SQL语句
+那么现在是否在ApplyUpdates前再调用一次同样的DataRequest方法?
+但是我怎么知道原来取数的SQL语句呢?把取数时的SQL照抄过来?
+那么程序也太不通用了...
+
+在D5中,我们是用CommandText属性指定SQL语句的,
+是否可用DataRequest(CommandText)的形式实现,
+然后Server端的Provider在OnDataRequest中写
+  Query.SQL.Text := Input
+这样可以吗?
+
+我会去实验一下,如果后一种方法可行,那么就这么办了,
+不过又带来一个新的问题:
+DataRequest方法已经被我用来传递当前登录用户及口令了,
+这个冲突恐怕只好增加一个参数来作为标志,表示当前DataRequest到底要干什么
+这样很不舒服,不过也只好这么办了
+
+2 all:
+还有其他方法吗?
+<font color=red>只要在Client端提交数据时能让Server端知道该修改哪个表,就一切OK!!</font>  
+
+
+来自：3boy, 时间：2000-4-22 21:10:00, ID：228242
+听教受益！哈哈！  
+
+
+来自：adminis, 时间：2000-4-23 14:38:00, ID：228740
+李大虾：
+看看这段代码就明白了：
+  ADOQuery1.SQL.Text := SQLSTR;  //注意下面没有OPEN
+  DataSetProvider1.ApplyUpdates(Delta,MaxError,ErrorCount);
+其中SQLSTR、Delta是从客户端传过来的，ErrorCount是要返回客户端的。
+每个表提交时把打开它的SQL和做的改动一起传给服务端，让服务端做真正
+的提交工作。ErrorCount>0表示提交失败。
+可以跟踪一下后台的SQL，每次提交都会提交给 ADOQuery1.SQL.Text 中牵涉的
+那个数据表。明白了吧？
+试一试这段代码，你的问题立刻就可以得到解决。  
+
+
+来自：wrench, 时间：2000-4-23 16:22:00, ID：228821
+好象有道理
+试试去  
+
+
+来自：guojun, 时间：2000-4-23 17:51:00, ID：228895
+  接着听... ...  
+
+
+来自：李颖, 时间：2000-4-23 18:34:00, ID：228922
+adminis，数据提交的问题已解决，
+我是这么干的：
+  在ClientDataSet.BeforeApplyUpdates中传入SQL语句
+  在Provider.BeforeApplyUpdates中将得到的SQL语句赋值给TQuery.SQL.Text
+程序如下：
+Client端：
+  procedure xxxx.ClientDataSetBeforeApplyUpdates(Sender: TObject; var OwnerData: OleVariant);
+  begin
+    with Sender as TClientDataSet do
+      OwnerData := CommandText;
+  end;
+
+Server端：
+  procedure xxxx.ProviderBeforeApplyUpdates(Sender: TObject;
+    var OwnerData: OleVariant);
+  begin
+    qrDataProvider.SQL.Text := OwnerData;
+  end;
+  
+
+
+来自：李颖, 时间：2000-4-23 18:44:00, ID：228928
+2 adminis：
+问题解决了，关键只要让Provider知道该更改哪个表就可以了，
+你的方案绕得太远了，我觉得我的方法更简洁，你认为呢？
+
+主要还是受你启发，所以300分给你了
+
+2 all：
+其他同志也有分，<a href=DispQ.asp?LID=228926>请到这里来拿</a>，感谢参与！
+  
+
+
+来自：李颖, 时间：2000-4-23 18:48:00, ID：228930
+纯粹是题外话：
+
+========================================================
+又看了一下Delphi的源代码，
+  //unit provider.pas
+  procedure TSQLResolver.InitTreeData(Tree: TUpdateTree);
+  begin
+    ....
+    TableName := VarToStr(Tree.Delta.GetOptionalParam(szTABLE_NAME));
+    if TableName = '' then
+      TableName := <font color=red>IProviderSupport(Tree.Source).PSGetTableName</font>;
+    Provider.DoGetTableName(Tree.Source, TableName);
+    if TableName <> '' then
+      Info.QuotedTable := GetQuotedTableName(Info.IsSQLBased, Info.QuoteChar, TableName);
+    ....
+  end;
+
+这一段就是TSQLResolver确定目标表的代码，其中Tree.Source定义为TDataSet，
+估计就等于TDataSetProvider.DataSet，我们这里是一个TQuery
+在DBTables.pas中可以看到TQuery.PSGetTableName方法如下：
+  function TQuery.PSGetTableName: string;
+  begin
+    Result := GetTableNameFromSQL(SQL.Text);
+  end;
+其中GetTableNameFromSQL定义在DBCommon.pas中，
+
+各位，这下发现宝贝了！！！！
+这个单元里包括一些SQL语法分析程序，定义相当完备，
+比如这个GetTableNameFromSQL函数分析一段SQL语句的目标表名，
+只用了20行就搞定了，是不是很厉害？？
+
+这个单元没有包括在Delphi Help中，也不算很复杂，interface部分只有230行左右
+快去看看吧，肯定有收获  
+
+
+来自：dingbaosheng, 时间：2000-4-23 23:16:00, ID：229140
+@_@
+   
+
+
+来自：ljfree, 时间：2000-4-30 23:06:00, ID：235292
+:)  
+
+
+来自：吴下阿蒙, 时间：2001-9-26 0:29:00, ID：645019
+好文章，我的问题解决了，温故而知新。。。  
+
+
+来自：hcai, 时间：2001-12-28 22:42:00, ID：820003
+季颖： 有问题：我采用您这样方法，在保存表格数据时，有一些非空的的字段我没有输入
+保存时当然出错啦，填完这些非空数据，并进行保存（ApplyUpdates（-1））时又出错了：
+Record not found or changed by another user，请帮忙，谢谢！  
+
+
+来自：上帝鼓, 时间：2002-1-28 16:20:00, ID：890194
+李兄，说个题外话，你的不缺少password文件的dbbackup控件在哪里可以下载，急需看里面的代码！！  
+
+
+来自：white0212, 时间：2002-1-30 13:04:00, ID：895120
+lis  
+
+
+来自：HON, 时间：2003-8-10 17:03:00, ID：2098489
+adminis，数据提交的问题已解决，
+我是这么干的：
+ 在ClientDataSet.BeforeApplyUpdates中传入SQL语句
+ 在Provider.BeforeApplyUpdates中将得到的SQL语句赋值给TQuery.SQL.Text
+程序如下：
+Client端：
+ procedure xxxx.ClientDataSetBeforeApplyUpdates(Sender: TObject; var OwnerData: OleVariant);
+ begin
+   with Sender as TClientDataSet do
+     OwnerData := CommandText;
+ end;
+
+Server端：
+ procedure xxxx.ProviderBeforeApplyUpdates(Sender: TObject;
+   var OwnerData: OleVariant);
+ begin
+   qrDataProvider.SQL.Text := OwnerData;//此句怎解?
+ end;
+  
+

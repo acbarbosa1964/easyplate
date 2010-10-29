@@ -1,0 +1,5 @@
+2009-07-03
+Delphi 出现Never-build package 'a' requires always-build package 'b'错误的解决 - [Delphi]版权声明：转载时请以超链接形式标明文章原始出处和作者信息及本声明
+http://samver.blogbus.com/logs/41852626.html
+
+两个BPL包，如果A包requires B包，那么A包与B包的Build Control 必须一致，或者A包为Rebuild as needed(Always-build)，B包为Explicit rebuild(Never-build)。原因是：如果A包为Explicit rebuild,B包为Rebuild as needed，就是说A包是很稳定的，不需要编译，但A包requires的B包却是常变的，要经常编译的。那么，当B包改变的时候，理应要更新，而A包是Explicit rebuild,所以A包还是不编译，那么造成A包的内容是旧的，最终造成包的更新失败，如果，当应用程序调用A包的时候，就出错了。所以在A包requires B包的情况下，不允许出现“A包为Explicit rebuild,B包为Rebuild as needed”这种组合。Delphi就提示Never-build package 'a' requires always-build package 'b'这个Error了。

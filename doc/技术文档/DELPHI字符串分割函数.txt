@@ -1,0 +1,147 @@
+【关键词】: 字符串;split;  
+  
+dephi中没有象VB中的split函数,但是使用TStringList类的 Delimter 和 DelimtedText 两个属性可以很容易的把字符串分割,然后放入 TStrings里面.
+
+例:
+s:='aa,bb,cc,dd'
+ts := TStringList.Create
+ts.Delimter := ','
+ts.DelimtedText := s
+//这时 ts里面就存放了 aa bb cc dd 这四个strings了. 你只要通过 ts[0]就可以取第一个数据
+
+function SplitString(Source, Deli: string ): TStringList;stdcall; 
+var 
+EndOfCurrentString: byte; 
+StringList:TStringList; 
+begin 
+StringList:=TStringList.Create; 
+while Pos(Deli, Source)>0 do 
+begin 
+EndOfCurrentString := Pos(Deli, Source); 
+StringList.add(Copy(Source, 1, EndOfCurrentString - 1)); 
+Source := Copy(Source, EndOfCurrentString + length(Deli), length(Source) - EndOfCurrentString); 
+end; 
+Result := StringList; 
+StringList.Add(source); 
+end;
+
+ procedure StrToStrs(str:string;strs:tstrings);
+var temp:string;
+    i:integer;
+label B,E;
+begin
+B:
+i:= ansipos('|',str);
+if i=0 THEN GOTO E;
+strs.Add(ansileftstr(str,i-1));
+str:=ansirightstr(str,length(str)-i);
+GOTO B;
+E:
+end;
+
+
+Trackback: http://tb.blog.csdn.net/TrackBack.aspx?PostId=590744
+
+
+TStringList的用法 
+TStrings是一个抽象类，在实际开发中，是除了基本类型外，应用得最多的。
+常规的用法大家都知道，现在来讨论它的一些高级的用法。
+先把要讨论的几个属性列出来：
+1、CommaText
+2、Delimiter & DelimitedText
+3、Names & Values & ValueFromIndex
+先看第一个：CommaText。怎么用呢？用代码说话：
+const
+  constr :String = 'aaa,bbb,ccc,ddd';
+var
+  strs :TStrings;
+  i :Integer;
+begin
+  strs := TStringList.Create;
+  strs.CommaText := constr;
+  for i := 0 to Strs.Count-1 do
+    ShowMessage(Strs[i]);
+end;
+执行了这段代码后，可以看到ShowMessage显示出来的分别是：aaa bbb ccc ddd。
+也就是说，strs.CommaText := constr这一句的作用，就是把一个字符串以','为分割符，分段添加到TStrings中。
+那么如果不是以','来分割，又该怎么做呢？现在看第二个例子。使用Delimiter和DelimitedText。
+const
+  constr :String = 'aaa\bbb\ccc\ddd';
+var
+  strs :TStrings;
+  i :Integer;
+begin
+  strs := TStringList.Create;
+  strs.Delimiter := '\';
+  strs.DelimitedText := constr;
+  for i := 0 to Strs.Count-1 do
+    ShowMessage(Strs[i]);
+end;
+可以看到， 显示的效果和第一个例子是一模一样的。解释一下：
+Delimiter为分隔符，默认为：','。DelimitedText就是按Delimiter为分隔符的一个串，得到赋值后回把这个字符串按Delimiter的字符添加到TStrings中。
+说到这里，有想起一个属性，QuoteChar。其默认值为：'"'（不包括单引号）
+有何用呢？看例子：
+const
+  constr :String = '"aaa"\"bbb"\"ccc"\"ddd"';
+var
+  strs :TStrings;
+  i :Integer;
+begin
+  strs := TStringList.Create;
+  strs.Delimiter := '\';
+  strs.DelimitedText := constr;
+  for i := 0 to Strs.Count-1 do
+    ShowMessage(Strs[i]);
+end;
+显示出来的仍然是aaa bbb ccc ddd。为什么不是："aaa" "bbb" "ccc" "ddd"呢？
+再来看一个例子：
+const
+  constr :String = '|aaa|\|bbb|\|ccc|\|ddd|';
+var
+  strs :TStrings;
+  i :Integer;
+begin
+  strs := TStringList.Create;
+  strs.Delimiter := '\';
+  strs.QuoteChar := '|';
+  strs.DelimitedText := constr;
+  for i := 0 to Strs.Count-1 do
+    ShowMessage(Strs[i]);
+end;
+显示出来的又是aaa bbb ccc ddd。对比一下，应该不难明白吧？这个就不多说了，用得也不多。
+但是还要多说一句，当Delimiter为：','而QuoteChar为：'"'时，DelimitedText和CommaText是同等的。
+最后要说的三个是：Names & Values & ValueFromIndex。
+看看下面的代码：
+const
+  constr :String = '0=aaa,1=bbb,2=ccc,3=ddd';
+var
+  strs :TStrings;
+  i :Integer;
+begin
+  strs := TStringList.Create;
+  strs.CommaText := constr;
+  for i := 0 to strs.Count-1 do
+  begin
+    ShowMessage(strs.Names[i]);
+    ShowMessage(strs.Values[strs.Names[i]]);
+    ShowMessage(strs.ValueFromIndex[i]);
+  end;
+end;
+通过这个例子不难看出：
+这个时候strs中的内容是：
+0=aaa
+1=bbb
+2=ccc
+3=ddd
+而Names中则是：
+0
+1
+2
+3
+在Values中则是：
+aaa
+bbb
+ccc
+ddd 
+
+ 

@@ -1,0 +1,80 @@
+unit Unit3;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  TForm3 = class(TForm)
+    Memo1: TMemo;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+
+implementation
+
+{$R *.dfm}
+
+//列出一个目录下所有目录(包括嵌套)的函数
+
+type
+  TSearchType = (stCurrent, stSub, stAll);
+
+procedure GetDirs(dirName: string; List: TStrings; ASerachType: TSearchType = stCurrent);
+const
+ attr: Integer = faDirectory; {文件属性常量, 表示这是文件夹}
+var
+ SRec: TSearchRec;           {定义 TSearchRec 结构变量}
+ dir : string;
+begin
+  dirName := ExcludeTrailingBackslash(dirName) + '\'; {不知道最后是不是 \; 先去掉, 再加上}
+  dir := dirName + '*.*'; {加上 \; *.* 或 * 表示所有文件, 系统会把目录也当作一个文件}
+  if FindFirst(dir, attr, SRec) = 0 then {开始搜索,并给 SRec 赋予信息, 返回0表示找到第一个}
+  begin
+    repeat
+      if (SRec.Attr = attr) and             {如果是文件夹}
+          (SRec.Name <> '.') and             {排除上层目录}
+          (SRec.Name <> '..') then           {排除根目录}
+      begin
+        case ASerachType of
+          stCurrent:
+             begin
+               List.Add(dirName + SRec.Name);     {用List记下结果}
+             end;
+          stSub:
+             begin
+               List.Add(dirName + SRec.Name);     {用List记下结果}
+               GetDirs(dirName + SRec.Name, List); {这句就是递归调用, 如果没有这句, 只能搜索当前目录}
+             end;
+          stAll:
+             begin
+               List.Add(dirName + SRec.Name);     {用List记下结果}
+               GetDirs(dirName + SRec.Name, List); {这句就是递归调用, 如果没有这句, 只能搜索当前目录}
+             end;
+        end;
+      end;
+    until(FindNext(SRec)<>0);               {找下一个, 返回0表示找到}
+  end;
+ FindClose(SRec);                           {结束搜索}
+end;
+
+procedure TForm3.Button1Click(Sender: TObject);
+var
+ list: TStrings;
+begin
+ list := TStringList.Create;
+ GetDirs('E:\hehf\工作文档', list, stAll);
+ Memo1.Lines := list;
+ list.Free;
+end;
+
+end.

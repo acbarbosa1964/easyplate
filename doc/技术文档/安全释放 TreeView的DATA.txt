@@ -1,0 +1,196 @@
+安全释放 TreeView的DATA！ Delphi中使用ListView和TreeView的Item中的Data可能被忽略的内存泄漏问题，使用了Data作为指针的数据，在删除项目时，这些内存将不会释放，可以在OnDeletion事件中加入Dispose(Item.Data); 语句来实现释放。
+
+
+Delphi中大家在使用 ListView和TreeView时，一般都会使用到Item的Data属性来保存大家自己的内部数据，这个Data的声明如下：
+
+property Data: Pointer;
+
+大家可以看到它就是一个指针，使用上一般类似如下代码（以ListView为）
+
+添加时
+
+  PViewItemState = ^TViewItemState;
+  TViewItemState = record
+    ViewItemId: integer;
+  end;
+
+var
+  nLoop: integer;
+  li: TListItem;
+  pp: PViewItemState;
+begin
+  for nLoop := 0 to 10 do
+  begin
+    li := ListView1.Items.Add;
+    li.Caption := IntToStr(nLoop);
+    new(pp);
+    pp^.ViewItemId := nLoop;
+    li.Data := pp;
+  end;
+end;
+
+
+删除相应的项时多数采用
+
+  ListView1.DeleteSelected;  或
+
+  ListView1.Clear;
+
+就结束了操作。
+
+但是这里存在非常大的危险，就是我们的自己分配的Data内容有没有释放，Delphi文档中也没有关于这个问题的说明，所以我做了一个测试，发现Delphi是不自动释放这些数据的，这些未释放的数据在一个包含较多修改的ListView或者TreeView中将非常危险，如果是长期运行的系统将更危险，Delphi文档中也没有提示这些数据需要释放。
+
+其实这个问题容易被大家忽略，解决办法还是有的，而且也不难，这里就要使用到ListView或者TreeView的OnDeletion事件，Delphi中关于OnDeletion的说明如下：
+
+Occurs when an item in the list view is about to be deleted.
+
+Delphi syntax:
+
+property OnDeletion: TLVDeletedEvent;
+
+C++ syntax:
+
+__property TLVDeletedEvent OnDeletion = {read=FOnDeletion, write=FOnDeletion};
+
+Description
+
+Write an OnDeletion event handler to respond when an item in the list is about to be deleted. The Item parameter is the TListItem object from the Items property that is about to be deleted.
+
+也就是说当需要删除项目时会触发这个事件，在VCL Source 中也可以看到调用过程，其实解决方法就是在这个事件中加入一个语句就可以了，并且是不可以缺少的语句，代码如下：
+
+procedure TForm1.ListView1Deletion(Sender: TObject; Item: TListItem);
+begin
+  Dispose(Item.Data);
+end;
+
+
+这样就可以安全的释放掉Data的内存了。
+
+ 
+
+ 
+
+ 
+
+转载地址：http://www.mcxb.com/NetProgram/cNet/154769.html
+
+Tag标签: delphi,treeview data,释放Treeview
+ypq
+关注 - 0
+粉丝 - 0
+关注博主0 0 0 
+(请您对文章做出评价)? 上一篇：delphi中遍历枚举类型的方法
+? 下一篇：关于cxGrid选中行操作关联数据集的一种方法
+posted @ 2008-10-17 15:29 ypq 阅读(610) 评论(0) 编辑 收藏  
+注册用户登录后才能发表评论，请 登录 或 注册，返回博客园首页。
+IT新闻:
+· Java 7 最快要到 2012 年中发布
+· 阿里巴巴推出电子商务新闻网站Alizila
+· Google Instant 让我们失去了什么？
+· Chrome Dev 升级到 7.0.517.0
+· Android横行只因苹果造就？
+更多IT新闻... 
+知识库最新文章:
+
+如何走出海量数据及访问量压力困境
+极限挑战—C#+ODP 100万条数据导入Oracle数据库仅用不到1秒
+漫谈.Net关键字系列之一Sealed与Final
+通过SQL Server 2008 访问Oracle 10g
+C#中使用#region指令的一些想法
+
+ 
+网站导航：
+博客园首页  IT新闻  个人主页  闪存  程序员招聘  社区  博问 
+
+China-pub 计算机图书网上专卖店！6.5万品种2-8折！
+China-Pub 计算机绝版图书按需印刷服务
+
+
+相关搜索:
+delphi treeview data 释放Treeview 
+
+最简洁阅读版式：
+安全释放 TreeView的DATA！公告粉丝 - 0
+关注 - 0
+我的主页  个人资料
+我的闪存  发短消息
+< 2008年10月 > 
+ 
+日 一 二 三 四 五 六 
+28 29 30 1 2 3 4 
+5 6 7 8 9 10 11 
+12 13 14 15 16 17 18 
+19 20 21 22 23 24 25 
+26 27 28 29 30 31 1 
+2 3 4 5 6 7 8 
+
+搜索 
+ 
+常用链接我的随笔 
+我的空间 
+我的短信 
+我的评论 
+更多链接 
+我的参与 
+我的新闻 
+最新评论 
+我的标签 
+我的标签delphi(2)
+枚举(1)
+遍历枚举类型(1)
+treeview data(1)
+释放Treeview(1)
+cxGird(1)
+ORA-12514(1)
+12514(1)
+英语标点(1)
+MX(1) 
+随笔档案2010年7月 (1) 
+2008年10月 (1) 
+2008年9月 (1) 
+2008年7月 (2) 
+2008年6月 (1) 
+2008年5月 (5) 
+2008年4月 (2) 
+2008年2月 (1) 
+文章分类《大话设计模式》学习笔记 (rss) 
+DELPHI(1) (rss) 
+Hacker (rss) 
+ORACLE(5) (rss) 
+华为3COM配置(1) (rss) 
+英语园地(1) (rss) 
+文章档案2008年4月 (1) 
+2008年3月 (3) 
+2008年2月 (4) 
+收藏夹Delphi(2) (rss) 
+ASPASP学习网 
+不错的ASP教程网站 
+ASP.NETASP源码下载站 
+老赵点滴 (rss) 
+DELPHI大少 
+哈巴狗的小窝　 
+Hacker寒月清风(HACKER) 
+Music捌零音乐论坛 
+深度无损音乐论坛 
+Oracleeygle's blog(DBExpert) 
+turner's blog 
+面向对象设计MM官方 
+www.dofactory.com 
+伍迷家园 (rss) 
+站长工具实用工具 
+积分与排名积分 - 11102 
+排名 - 6246 
+最新评论1. re: [转载]oracle备份与恢复精华资料 
+good (··过客··) 
+2. re: delphi中遍历枚举类型的方法 
+不错 基础扎实 (MSTARSOFT) 
+阅读排行榜1. 域名”A记录，MX记录，CNAME记录,TTL值,URL转发”解释(3235) 
+2. 反向解析（PTR）(转)：(1442) 
+3. 数据库表行转列，列转行终极方案(转)(827) 
+4. 安全释放 TreeView的DATA！(610) 
+5. [转载]oracle备份与恢复精华资料 (370) 
+评论排行榜1. [转载]oracle备份与恢复精华资料 (1) 
+2. delphi中遍历枚举类型的方法(1) 
+3. oracle临时表的两种方式(0) 
+4. 关于PLSQL的存储过程参数(0) 
+5. 创建variant二维数组(0) 

@@ -1,0 +1,135 @@
+BODY {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+P {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+PRE {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+TABLE {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+TD {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+SELECT {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+TEXTAREA {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+DIV {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+MARQUEE {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+FORM {
+	FONT-SIZE: 12px; LINE-HEIGHT: 150%; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+INPUT {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 133%; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+TEXTAREA {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 133%; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "Î¢ÈíÑÅºÚ2", "ËÎÌå" , "MS Song"
+}
+HR {
+	HEIGHT: 1px
+}
+TABLE {
+	BORDER-COLLAPSE: collapse
+}
+.TBtitle {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: bold; BACKGROUND: #cedbff; PADDING-BOTTOM: 2px; COLOR: black; PADDING-TOP: 2px; HEIGHT: 21px
+}
+.inputcaption {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; BACKGROUND: #e7ebff; PADDING-BOTTOM: 2px; COLOR: black; PADDING-TOP: 2px
+}
+.inputcontent {
+	BACKGROUND: white; COLOR: black
+}
+.TBstat {
+	BACKGROUND: #e7ebff; COLOR: black
+}
+TABLE.TBborder {
+	BORDER-RIGHT: #8ca6de 1px solid; BORDER-TOP: #8ca6de 1px solid; BACKGROUND: #e7ebff; BORDER-LEFT: #8ca6de 1px solid; BORDER-BOTTOM: #8ca6de 1px solid
+}
+FORM {
+	MARGIN: 0px
+}
+.bline {
+	BORDER-BOTTOM: #8ca6de 1px solid
+}
+.tablecontent {
+	BORDER-RIGHT: #e1e9ff 1px solid; BORDER-TOP: #e1e9ff 1px solid; BACKGROUND: white; BORDER-LEFT: #e1e9ff 1px solid; COLOR: black; BORDER-BOTTOM: #e1e9ff 1px solid
+}
+.tablecontent TD {
+	BORDER-RIGHT: #e1e9ff 1px solid; BORDER-TOP: #e1e9ff 1px solid; BORDER-LEFT: #e1e9ff 1px solid; BORDER-BOTTOM: #e1e9ff 1px solid
+}
+#r1 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#r2 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#r3 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#r4 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#r5 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#c1 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#c2 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#c3 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#c4 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#c5 {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+A {
+	COLOR: #2255ff; TEXT-DECORATION: none
+}
+A:link {
+	TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #0000aa; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+.FormText {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 150%; BORDER-BOTTOM: #000000 1px solid
+}
+.Button {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 140%; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "Î¢ÈíÑÅºÚ", "ËÎÌå" , "MS Song"; HEIGHT: 23px
+}
+.GreenButton {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BACKGROUND: #e1e9ff; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 140%; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "Î¢ÈíÑÅºÚ", "ËÎÌå" , "MS Song"; HEIGHT: 23px
+}
+.YellowButton {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BACKGROUND: #fff9d9; BORDER-LEFT: #000000 1px solid; LINE-HEIGHT: 140%; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "Î¢ÈíÑÅºÚ", "ËÎÌå" , "MS Song"; HEIGHT: 23px
+}
+.text {
+	FONT-SIZE: 14px; LINE-HEIGHT: 150%
+}
+.forum {
+	FONT-SIZE: 13px; COLOR: #003399; TEXT-DECORATION: none
+}
+.forum:unknown {
+	COLOR: #003399
+}
+.forum:hover {
+	COLOR: #666699; TEXT-DECORATION: underline
+}

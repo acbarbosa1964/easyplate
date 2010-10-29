@@ -1,0 +1,108 @@
+ClientDataSet 探讨 
+
+1. 
+
+    与TTable、TQuery一样，TClientDataSet也是从TDataSet继承下来的，它通常用于多层体系结构的客户端。很多数据库应用程序都用了BDE，BDE往往给发布带来很大的不便，因而TClientDataSet最大的特点是它不依赖于BDE(Borland Database Engine)，但它需要一个动态链接库的支持，这个动态链接库叫DBCLIENT.DLL。在客户端，也不需要用TDatabase构件，因为客户端并不直接连接数据库。由于TClientDataSet是从TDataSet继承下来的，所以，它支持诸如编辑、搜索、浏览、纠错、过滤等功能。由于TClientDataSet在内存中建立了数据的本地副本，上述操作的执行速度很快。也正是由于TClientDataSet并不直接连接数据库，因此，客户程序必须提供获取数据的机制。 
+在Delphi 4中，TClientDataSet有三种途径获取数据： 
+1、从文件中存取数据。 
+2、从本地的另一个数据集中获取数据。 
+3、通过IProvider接口从远程数据库服务器获取数据。 
+在一个客户程序中，可以同时运用上述三种机制获取数据。 
+
+和其他数据集构件一样，可以用标准的数据控件显示由TClientDataSet引入的数据集，当然，这需要借助于TDataSource构件。由于TClientDataSet是从TDataSet继承下来的，所以，凡是其他数据集构件支持的功能，TClientDataSet构件也大致具备。不同的是，TClientDataSet能够在内存中建立数据的副本，因此，TClientDataSet比其他数据集构件增加了一些特殊的功能。 
+在运行期，可以调用诸如First、GotoKey、Last、Next和Prior等函数来浏览数据。TClientDataSet也支持书签(BookMark)功能，可以用书签来标记某条记录，以后就可以方便地找到这条记录。对于TTable、TQuery等数据集构件来说，只能读RecNo属性来判断当前记录的序号。对于TClientDataSet构件来说，还可以写RecNo属性，使某一序号的记录成为当前记录。 
+
+1、从文件中存取数据要从文件中读取数据，可以调用LoadFromFile函数。LoadFromFile函数需要传递一个参数，用于指定文件名。文件名应包含完整的路径。如果客户程序总是从一个固定的文件中读取数据，可以设置FileName属性指定一个文件名，以后，当TClientDataSet引入的数据集打开时，就自动从这个文件中读取数据，不需要调用LoadFromFile。要从流中读取数据，可以调用LoadFromStream。LoadFromStream需要传递一个参数，用于指定一个流对象。注意：LoadFromFile(LoadFromStream)只能从先前用SaveToFile(SaveToStream)保存的文件中读取数据。要把数据保存到文件中，可以调用SaveToFile函数。SaveToFile需要传递一个参数，用于指定文件名。如果指定的文件已存在，文件中的数据将被覆盖。如果客户程序总是把数据保存到一个固定的文件中，可以设置FileName属性指定一个文件名，当TClientDataSet引入的数据集关闭时，就自动把数据保存到这个文件中，不需要调用SaveToFile。要把数据保存到流中，可以调用SaveToStream。SaveToStream需要传递一个参数，指定一个流对象。注意：当把数据保存到文件或流中时，日志中记载的修改仍然保留。这样，当下次调用LoadFromFile或LoadFromStream读取数据时，仍然可以恢复原来的数据。 
+
+ClientDataSet强大的数据复制技术： 
+   通过ClientDataSet.Data属性可以访问客户程序从应用服务器检索到的数据。程序示例如下： 
+   Procedure TForm1.Button1Click(Sender: TObject); 
+   Begin 
+     ClientDataSet1.Data := 
+     ClientDataSet1.Provider.DataRequest(FilterEdit.Text);//在Delphi4版本之上有所改变 
+   End; 
+   也可以直接赋值： 
+   ClientDataSet1.Data:=ClientDataSet2.Data;//(相当于把ClientDataSet2的数据拷贝给ClientDataSet1,是不是很方便) 
+   从其他数据集获取数据(除ClientDataSet)： 
+   DataSetProvider1.DataSet:=DataSet;//DataSet代表一个数据集 
+   ClientDataSet1.Data := DataSetProvider1.Data; 
+
+3. 排序 
+
+ClientDataSet排序 
+1、简单排序 
+ClientDataSet1.IndexFieldNames:='排序字段' 
+2、复杂排序（建立索引） 
+下面这个过程仅供参考（因为用到三方控件DBGridEh）： 
+procedure TDM1.DsSort(SortColumn: TColumnEh); 
+var 
+OldIndex:string; 
+begin 
+if (SortColumn.Grid.DataSource=nil) or (SortColumn.Grid.DataSource.DataSet=nil) or (not SortColumn.Grid.DataSource.DataSet.Active) then Exit; 
+OldIndex:=TClientDataSet(SortColumn.Field.DataSet).IndexName; 
+if OldIndex<>'' then 
+begin 
+   TClientDataSet(SortColumn.Field.DataSet).IndexName:=''; 
+   TClientDataSet(SortColumn.Field.DataSet).DeleteIndex(OldIndex); 
+end; 
+case SortColumn.Title.SortMarker of 
+   smNoneEh, 
+   smUpEh   :TClientDataSet(SortColumn.Field.DataSet).AddIndex('px',SortColumn.Field.FieldName,[ixDescending]); 
+   smDownEh:TClientDataSet(SortColumn.Field.DataSet).AddIndex('px',SortColumn.Field.FieldName,[ixPrimary]); 
+end; 
+TClientDataSet(SortColumn.Field.DataSet).IndexName:='px'; 
+end; 
+
+把上面的过程稍做修改，可用于标准DBGridvar 
+ASC:Boolean=True;//是否升序排列 
+procedure TDM1.DsSort(SortColumn: TColumn); 
+var 
+OldIndex:string; 
+begin 
+if (SortColumn.Grid.DataSource=nil) or (SortColumn.Grid.DataSource.DataSet=nil) or (not SortColumn.Grid.DataSource.DataSet.Active) then Exit; 
+OldIndex:=TClientDataSet(SortColumn.Field.DataSet).IndexName; 
+if OldIndex<>'' then 
+begin 
+TClientDataSet(SortColumn.Field.DataSet).IndexName:=''; 
+TClientDataSet(SortColumn.Field.DataSet).DeleteIndex(OldIndex); 
+end; 
+case ASC of 
+Ture :TClientDataSet(SortColumn.Field.DataSet).AddIndex('px',SortColumn.Field.FieldName,[ixDescending]);//已经是升序就按降序排列 
+else//否则按升序排列 
+TClientDataSet(SortColumn.Field.DataSet).AddIndex('px',SortColumn.Field.FieldName,[ixPrimary]); 
+end;{end case} 
+TClientDataSet(SortColumn.Field.DataSet).IndexName:='px'; 
+ASC:=not ASC; 
+end; 
+
+4. 提交更新过程： 
+首先，客户程序要调用ApplyUpdates函数向应用服务器提出申请，ApplyUpdates函数将通过IProvider接口把Delta(数据变动情况)属性传递给应用服务器。应用服务器收到客户程序的申请后，再向远程数据库服务器提出申请，并且把被远程数据库服务器认为出错的记录暂时缓存起来。应用服务器上的TDataSetProvider或TProvider构件把出错的记录返回给客户程序，其中包括错误信息和错误代码。客户程序收到这些出错的记录后，可以进行核对和修改，然后继续更新。注意：如果应用服务器端使用MTS类型的远程数据模块，就无法提供IProvider接口，这种情况下，必须通过远程数据模块的接口直接申请更新数据。 
+if ClientDataSet1.ChangeCount>0 then//有未决的修改 
+   ClientDataSet1.ApplyUpdates(MaxErrors);//将修改提交到服务器 
+参数MaxErrors用于指定一个最大错误数，如果出错的记录数超过了这个参数的值，此次更新就停止。如果MaxErrors参数设为0，只要应用服务器发现有一个错误的记录，更新操作就停止。如果MaxErrors参数设为-1，当应用服务器发现有错误的记录，就尝试更新下一个记录，等所有的记录都尝试过以后才返回。ApplyUpdates函数将返回实际遇到的错误数，同时，应用服务器将返回那些有错误的记录。 
+当应用服务器收到客户的提交请求后，触发OnUpdateData，这时就可以对客户提交的数据进行检查和编辑： 
+如 
+Procedure TDataModule1.Provider1UpdateData(Sender:TObject;DataSet: TClientDataSet); 
+Begin 
+With DataSet Do 
+Begin 
+    First; 
+    While not Eof Do 
+    Begin 
+      If UpdateStatus = usInserted then 
+      Begin 
+        Edit; 
+        FieldByName('DateCreated').AsDateTime := Date; 
+        Post; 
+      End; 
+      Next; 
+    End; 
+End; 
+End; 
+然后将编辑后的数据提交到数据库服务器。 
+ClientDataSet1.CancelUpdates;//恢复所有修改过但未提交（包括提交未成功的）的记录 
+ClientDataSet1.UndoLastChange;//恢复前一次的修改，相当于Undo功能 
+注意使用这种提交方式（ApplyUpdates）在查询时尽可能避免使用数据处理（关联、分组、求和等等等），否则不能提交（除非自己写一些特殊处理程序）
+
+
+本文来自CSDN博客，转载请标明出处：http://blog.csdn.net/genispan/archive/2009/01/10/3746234.aspx

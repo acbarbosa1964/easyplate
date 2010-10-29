@@ -1,0 +1,6 @@
+是不是觉得 Delphi 自带的那个 Hand 光标很难看？没关系，一行代码解决问题：
+
+
+Screen.Cursors[crHandPoint] := LoadCursor(0, IDC_HAND);
+放在主窗体 OnCreate 事件里，或放在任意一个单元 initialization 节都可以。
+同样的方法还可以替换掉其它感觉不爽的默认光标。

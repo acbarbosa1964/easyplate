@@ -1,0 +1,41 @@
+导出同名函数是不可能的。否则就不会有mangled   name了（见过C++输出的函数名吧？）。   
+    
+  Michaelyfj提到的overload是可以对名称相同但参数表不同的函数进行重载，但是在输出的时候，虽然有相同的名称编译器并不会报错，但是在实际引入时无法确定调用的到底是哪一个，因此显然将导致无法预测的堆栈错误。   
+    
+  怎么办？在exports时候为函数的不同版本明确指定不同名称即可。如下：   
+    
+  library   BeepLib;   
+    
+  uses   
+      Windows,   SysUtils;   
+    
+  procedure   Beep(seed:   PWideChar);   overload;   stdcall;   
+  begin   
+      Windows.Beep(StrToIntDef(seed),0),1000);   
+  end;   
+    
+  procedure   Beep(seed:   PChar);   overload;   stdcall;   
+  begin   
+      Windows.Beep(StrToIntDef(seed,0),1000);   
+  end;   
+    
+  exports   
+      Beep(seed:   PWideChar)   name   'BeepW',   
+      Beep(seed:   PChar)   name   'BeepA';   
+    
+  end.   
+    
+  在调用时引入的时候同样附上name属性即可：   
+  project   TestOverload;   
+    
+  procedure   Beep(freq:   PWideChar);   stdcall;   
+      external   'BeepLib.dll'   name   'BeepW';   overload;   
+  procedure   Beep(freq:   PChar);   stdcall;   
+      external   'BeepLib.dll'   name   'BeepA';   overload;   
+    
+  begin   
+      Beep(StrToOleStr('10000'));   
+      Beep(PChar('5000'));   
+  end.   
+    
+  相信有更好的办法解决你的实际需求。

@@ -1,0 +1,90 @@
+上次我写了一篇关于如何使用Tlist的文章（DELPHI中使用Tlist类的简单分析）。可是不少朋友反映，看了以后还是不能熟练的使用Tlist。今天我就以一个实际的例子讲述如何正确的使用Tlist类。
+我的这个例子是：
+有一个链表UserList，这个链表中保存的是用户的信息。在另一个链表CardList，中保存的是用户的牌信息。其中CardList中牌的信息是会随着用户出牌的要求而变化的。但是UserList中的用户信息是不变的。
+
+首先，我们来定义两个结构
+//用户信息结构
+RuserInfo= record
+       UserID:String[20];
+       Sex:Boolean;
+       Face:Byte;
+       Score:Integer;
+End;
+PuserInfo = ^ RuserInfo;
+
+//用户牌对应结构
+RuserCardInfo = record
+       UserInfo: PuserInfo;
+       CardInfo:String[20];
+End;
+PuserCardInfo = ^ RuserCardInfo;
+
+下来我们定义两个链表
+UserList，CardList：Tlist;
+
+当用户加入这个桌子的时候写入UserList中
+Procedure UserInfoFun(UserID:String;Sex:Boolean;Face:Byte;Score:Integer);
+Var
+p_User:PuserInfo;
+begin
+New(p_User);
+p_User.UserID:= UserID;
+p_User.Sex:= Sex;
+p_User.Face:= Face;
+p_User.Score:= Score;
+UserList.Add(p_User);
+……
+End;
+当给用户发牌的时候
+Procedure UserCardInfoFun（UserID：String）;
+Var
+       p_Card: PuserCardInfo
+p_User:PuserInfo;
+I,Count:Integer;
+Flag:Boolean;
+Begin
+       //首先从用户链表中找出此用户的信息
+Count:= UserList.Count;
+       Flag:=false;
+       For I:=0 to Count-1 do
+       Begin
+              p_User:= UserList.Item[I];
+If UserID = UserID then
+Begin
+       Flag:=true;
+Break;
+End;
+       End;
+       //新生成一个用户牌信息指针，并加入到牌信息链表中
+       If Flag then
+       Begin
+              New(p_Card);
+              p_Card. CardInfo:=’H1H2H3H4’;
+              p_Card. UserInfo^:= p_User^;
+              CardList.Add(p_Card);
+       End;
+End;
+
+当要从链表中删除用户出牌信息时
+Procedure DelUserCardInfoFun(UserID:String);
+Var
+       p_Card: PuserCardInfo;
+I,Count:Integer;
+Begin
+       Count:= CardList.Count;
+       For I:=0 to Count-1 do
+       Begin
+              p_Card:= CardList.Item[I];
+              If p_Card. UserInfo.UserID = UserID then
+              Begin
+                     CardList.Delete(I);
+                     DisPose(p_Card);
+                     Exit;
+              End;
+       End;
+End;
+
+需要注意的是，我在加入牌信息的时候使用了p_Card. UserInfo^:= p_User^;方法。这个方法是将p_User的内容直接复制给p_Card. UserInfo。也就是说，现在有两份用户信息。所以在后面删除用户牌信息的时候，我直接使用了DisPose函数来销毁。
+
+其实上面的例子是一个很简单的例子，我想用它作为以前我写的文章的一个补充。希望能对大家使用Tlist有个帮助。 
+http://www.daxie.net/blog/read.php?49
