@@ -90,10 +90,10 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=..\..\bin
-UnitOutputDir=
+OutputDir=$(EPP)\bin
+UnitOutputDir=$(EPP)\Src\dcu
 PackageDLLOutputDir=
-PackageDCPOutputDir=
+PackageDCPOutputDir=$(EPP)\Src\dcp
 SearchPath=
 Packages=vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;Rave50CLX;Rave50VCL;dclOfficeXP;TMSD7;tb2k_d7;tbx_d7;TntUnicodeVcl_R70;SpTBXLib_d7;cxLibraryVCLD7;dxLayoutControlD7;dxComnD7;dxBarD7;dxBarDBNavD7;dxBarExtItemsD7;dxBarExtDBItemsD7;dxsbD7;dxDockingD7;dxmdsD7;dxdbtrD7;dxtrmdD7;dxorgcD7;dxdborD7;dxFlowChartD7;dxMasterViewD7;cxSpreadSheetVCLD7;dxNavBarD7;dxPSCoreD7;dxPsPrVwAdvD7;dxPSLnksD7;dxPSdxDBTVLnkD7;dxPSdxMVLnkD7;dxPSdxOCLnkD7;dxPSdxDBOCLnkD7;dxPSdxFCLnkD7;dxPSdxLCLnkD7;dxPScxSSLnkD7;cxEditorsVCLD7;cxPageControlVCLD7;cxGridVCLD7;PNG_D7;PngComponentsD7;RaizeComponentsVcl;RaizeComponentsVclDb;TeeUI87;Tee87;TeeDB87;TeeGL87;TeeImage87;TeePro87;TeeLanguage87;pkMap
 Conditionals=
@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=32
+Build=33
 Debug=0
 PreRelease=1
 Special=1
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=Splash Form
-FileVersion=1.0.0.32
+FileVersion=1.0.0.33
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -136,9 +136,9 @@ ProductVersion=1.0.0.0
 Comments=
 PrivateBuild=
 SpecialBuild=
-LastCompiledTime=2010-10-28 18:32:08
+LastCompiledTime=2010-10-30 7:40:21
 [Excluded Packages]
-E:\MyProject\Easy ProjectExt\bin\pkEasyUtilRWConfig.bpl=(untitled)
+C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
 E:\MyProject\Easy ProjectExt\bin\pkEasyDBConnection.bpl=(untitled)
 E:\MyProject\Easy ProjectExt\bin\pkEasyPlateBaseForm.bpl=(untitled)
 E:\MyProject\Easy ProjectExt\bin\pkEasyUtilFunction.bpl=(untitled)
@@ -152,3 +152,15 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=G:\EasyBarCode\dcu
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=G:\EasyBarCode\bin
+[HistoryLists\hlBPLOutput]
+Count=1
+Item0=G:\EasyBarCode\dcu
+[HistoryLists\hlDCPOutput]
+Count=1
+Item0=G:\EasyBarCode\dcu

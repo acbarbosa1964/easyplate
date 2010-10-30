@@ -91,9 +91,9 @@ ImageBase=4194304
 ExeDescription=
 [Directories]
 OutputDir=
-UnitOutputDir=
-PackageDLLOutputDir=
-PackageDCPOutputDir=
+UnitOutputDir=$(EPP)\Src\dcu
+PackageDLLOutputDir=$(EPP)\bin
+PackageDCPOutputDir=$(EPP)\Src\dcp
 SearchPath=
 Packages=vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;vcldb;VclSmp;bdertl;webdsnap;adortl;visualclx;visualdbclx;vclshlctrls;dclOfficeXP;dxGDIPlusD7;cxLibraryVCLD7;cxEditorsVCLD7;dxThemeD7;cxDataD7;cxExtEditorsVCLD7;cxPageControlVCLD7;cxGridD7;AdvOfficePagerPkgd7;RaizeComponentsVcl;RaizeComponentsVclDb;Rz30Ctls70;Rz30DBCtls70;
 Conditionals=
@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=50
+Build=52
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=RW ini Files
-FileVersion=1.0.0.50
+FileVersion=1.0.0.52
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,10 +134,10 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2010-10-28 19:58:04
+LastCompiledTime=2010-10-30 9:01:57
 [Excluded Packages]
-c:\program files\borland\delphi7\Projects\Bpl\pkEasyDBConnection.bpl=(untitled)
 C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
+E:\MyProject\Easy ProjectExt\bin\pkEasyDBConnection.bpl=(untitled)
 E:\MyProject\Easy ProjectExt\bin\pkEasyPlateBaseForm.bpl=(untitled)
 E:\MyProject\Easy ProjectExt\bin\pkEasyUtilFunction.bpl=(untitled)
 C:\Program Files\RemObjects Software\Everwood\Bin\RemObjects_Everwood_D7.bpl=RemObjects Everwood for Delphi
@@ -150,3 +150,15 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=G:\EasyBarCode\dcu
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=G:\EasyBarCode\bin
+[HistoryLists\hlBPLOutput]
+Count=1
+Item0=G:\EasyBarCode\dcu
+[HistoryLists\hlDCPOutput]
+Count=1
+Item0=G:\EasyBarCode\dcu

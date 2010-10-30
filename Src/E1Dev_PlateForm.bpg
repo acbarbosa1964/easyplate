@@ -9,8 +9,51 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS =
+PROJECTS = EasyOS.dll EasyCalendar.dll EasyEncrypt.dll EasyIMCode.dll \
+  EasyString.dll EasySysShell.dll EasyComputerInfo.dll EasyPlateMain.exe \
+  SplashForm.dll pkEasyDBConnection.bpl pkEasyUtilRWConfig.bpl \
+  pkEasyUtilClasses.bpl pkEasyUtilFunction.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
- 
+
+EasyOS.dll: EasyUtilDLL\os\EasyOS.dpr
+  $(DCC)
+
+EasyCalendar.dll: EasyUtilDLL\Calendar\EasyCalendar.dpr
+  $(DCC)
+
+EasyEncrypt.dll: EasyUtilDLL\Encrypt\EasyEncrypt.dpr
+  $(DCC)
+
+EasyIMCode.dll: EasyUtilDLL\IMCode\EasyIMCode.dpr
+  $(DCC)
+
+EasyString.dll: EasyUtilDLL\String\EasyString.dpr
+  $(DCC)
+
+EasySysShell.dll: EasyUtilDLL\SysShell\EasySysShell.dpr
+  $(DCC)
+
+EasyComputerInfo.dll: EasyUtilDLL\computerinfo\EasyComputerInfo.dpr
+  $(DCC)
+
+EasyPlateMain.exe: Client\EasyPlateMain\EasyPlateMain.dpr
+  $(DCC)
+
+SplashForm.dll: EaysUtilPlugins\SplashForm\SplashForm.dpr
+  $(DCC)
+
+pkEasyDBConnection.bpl: EaysUtilPlugins\pkEasyDBConnection\pkEasyDBConnection.dpk
+  $(DCC)
+
+pkEasyUtilRWConfig.bpl: EaysUtilPlugins\pkEasyUtilRWConfig\pkEasyUtilRWConfig.dpk
+  $(DCC)
+
+pkEasyUtilClasses.bpl: EasyUtilDLL\EasyUtilClass\pkEasyUtilClasses.dpk
+  $(DCC)
+
+pkEasyUtilFunction.bpl: EasyUtilDLL\EasyUtilFunction\pkEasyUtilFunction.dpk
+  $(DCC)
+
+
