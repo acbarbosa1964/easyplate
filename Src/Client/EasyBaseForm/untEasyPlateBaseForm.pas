@@ -55,8 +55,12 @@ type
   private
     { Private declarations }
     FFormId      : String;
-    FLangID      : string;           //语言类别  
+    FLangID      : string;           //语言类别
+    FEasyAppPath : string;           //应用程序运行路径
+    FEasyPlugPath: string;           //插件存放路径
+    FEasyImagePath: string;          //系统所使用的图片存放路径
     FIsKeyPreView: Boolean;
+    FEasyRootGUID    : string;           //根节点和根窗体的GUID
     FLegalCompanyName : String;     //公司名称
     FFileDescription  : String;     //文件描述
     FFileVersion      : String;     //文件版本
@@ -94,6 +98,11 @@ type
     property FileDescription: string read GetFileDescription write SetFileDescription;
     property FileVersion: string read GetFileVersion write SetFileVersion;
     property LegalCopyright: string read GetLegalCopyright write SetLegalCopyright;
+    //
+    property EasyApplicationPath: string read FEasyAppPath write FEasyAppPath;
+    property EasyPlugPath: string read FEasyPlugPath write FEasyPlugPath;
+    property EasyRootGUID: string read FEasyRootGUID write FEasyRootGUID;
+    property EasyImagePath: string read FEasyImagePath write FEasyImagePath;
   end;
 
 var
@@ -208,7 +217,12 @@ var
   I       : Integer;
   cdsName,
   dspName : String;
+  ATmpDsp : TDataSetProvider;
 begin
+  FEasyAppPath := ExtractFilePath(Application.ExeName);
+  FEasyPlugPath := FEasyAppPath + 'plugins\';
+  FEasyImagePath := FEasyAppPath + 'images\';
+  FEasyRootGUID := '{00000000-0000-0000-0000-000000000000}';
   for i := 0 to ComponentCount - 1 do
   begin
     //创建ClientDataSet的相关设置
@@ -222,15 +236,15 @@ begin
         //如果TWaxDataSetProvider不存在才自动创建
         if FindComponent(dspName) = nil then
         begin
-          with TDataSetProvider.Create(Self) do
-          begin
-            Name := dspName;
-            DataSet := DMEasyDBConnection.EasyQry;
-            Options := Options + [poAllowCommandText];
-          end;
+          if Trim(dspName) = '' then
+            dspName := 'EasyDSP' + cdsName;
+          ATmpDsp := TDataSetProvider.Create(Self);
+          ATmpDsp.Name := dspName;
+          ATmpDsp.DataSet := DMEasyDBConnection.EasyQry;
+          ATmpDsp.Options := ATmpDsp.Options + [poAllowCommandText];
         end;
 
-        (Components[I] as TClientDataSet).ProviderName := dspName;
+        (Components[I] as TClientDataSet).ProviderName := ATmpDsp.Name;
       end;
     end
     else if DMEasyDBConnection.EasyAppType = 'CAS' then
