@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=575
+Build=617
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=Easy工作平台主程序
-FileVersion=1.0.0.575
+FileVersion=1.0.0.617
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,9 +134,8 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2010-10-30 10:11:38
+LastCompiledTime=2010-10-30 16:28:40
 [Excluded Packages]
-c:\program files\borland\delphi7\Projects\Bpl\pkEasyBaseForm.bpl=(untitled)
 c:\program files\borland\delphi7\Projects\Bpl\pkGraph.bpl=(untitled)
 C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
 C:\Program Files\RemObjects Software\Everwood\Bin\RemObjects_Everwood_D7.bpl=RemObjects Everwood for Delphi
@@ -149,21 +148,12 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=1
-Item0=$(DELPHI)\Lib\Debug
 [HistoryLists\hlUnitOutputDirectory]
-Count=2
+Count=1
 Item0=$(EPP)\Src\dcu
-Item1=G:\EasyBarCode\dcu
-[HistoryLists\hlOutputDirectorry]
-Count=2
-Item0=$(EPP)\bin
-Item1=G:\EasyBarCode\bin
 [HistoryLists\hlBPLOutput]
 Count=1
-Item0=G:\EasyBarCode\dcu
+Item0=$(EPP)\bin
 [HistoryLists\hlDCPOutput]
-Count=2
-Item0=$(EPP)\Src\dcu
-Item1=G:\EasyBarCode\dcu
+Count=1
+Item0=$(EPP)\Src\dcp

@@ -87,7 +87,9 @@ const
     
   //计算公历iYear年iMonth月iDay日对应的节气   0-24，0表不是节气   
   function   l_GetLunarHolDay(iYear,iMonth,iDay:Word):Word; stdcall;   
-    
+
+  function GetChinaDay: PChar; stdcall;
+
   implementation
 
 //uses untHhfConst;
@@ -604,5 +606,19 @@ const
       Result:=GetLunarHolDay(EncodeDate(iYear,iMonth,iDay));   
   end;   
     
-end.   
+  function GetChinaDay: PChar;
+  var   
+    iY,   iM,iD:   Word;   
+    iLY,   iLM,   iLD:   Word;   
+  begin
+    DecodeDate(Now, iY, iM,  iD);
+    GetLunarDate(Now, iLY, iLM, iLD);
+    if   GetLeapMonth(iLY)   =   iLM   then
+      Result := PChar('农历   ' + FormatLunarYear(iLY)   +   '闰'
+                + FormatMonth(iLM) + FormatLunarDay(iLD) +   GetLunarHolDay(Now))
+    else
+      Result := PChar('农历   ' + FormatLunarYear(iLY) + FormatMonth(iLM) +
+                FormatLunarDay(iLD)   +   GetLunarHolDay(Now));
+  end;
+end.
 

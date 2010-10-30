@@ -48,7 +48,9 @@ uses
     GetLunarHolDay(InDate:TDateTime) name 'GetLunarHolDay_A',
     GetLunarHolDay(iYear,iMonth,iDay:Word) name 'GetLunarHolDay_B',
     l_CalcLunarDate,
-    l_GetLunarHolDay;
+    l_GetLunarHolDay,
+    //2010-10-30 15:27:42  hehf +
+    GetChinaDay;
 
 begin
 end.

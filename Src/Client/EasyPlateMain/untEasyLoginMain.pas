@@ -71,7 +71,7 @@ uses untEasyUtilConst, untEasyUtilDLL, untEasyPlateMain;
 
 procedure TfrmEasyLoginMain.bbtnCancelClick(Sender: TObject);
 begin
-  Application.Terminate;
+  Close;
 end;
 
 procedure TfrmEasyLoginMain.bbtnLoginClick(Sender: TObject);

@@ -6,6 +6,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   Menu = mmMain
   OldCreateOrder = True
   WindowState = wsMaximized
+  OnClose = FormClose
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
@@ -11872,5 +11873,11 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       Caption = #20840#37096#20851#38381
       OnClick = N11Click
     end
+  end
+  object cdsMainTV: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 193
+    Top = 154
   end
 end

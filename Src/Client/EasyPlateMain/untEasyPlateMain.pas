@@ -34,6 +34,21 @@ uses
   DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc;
 
 type
+
+  PEasytvNavRecord = ^TEasytvNavRecord;
+  TEasytvNavRecord = record
+    sGUID,
+    sEName,
+    sCName,
+    sParentGUID  : string;
+    iOrder,
+    iImage1,
+    iImage2,
+    bDir,
+    iFlag        : Integer;
+    sPlugFileName: string;  //Add 新增 Edit 编辑 Del 删除
+  end;
+
   TfrmEasyPlateMain = class(TfrmEasyPlateBaseForm)
     mmMain: TEasyMainMenu;
     pmMain: TEasyPopupMenu;
@@ -106,6 +121,7 @@ type
     EasyWaterImage1: TEasyWaterImage;
     ppMDITab: TEasyPopupMenu;
     N11: TMenuItem;
+    cdsMainTV: TClientDataSet;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -119,6 +135,7 @@ type
     procedure tvNavDblClick(Sender: TObject);
     procedure About1Click(Sender: TObject);
     procedure N11Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -291,25 +308,12 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.InitStbMain;
-var
-  iY, iM,iD: Word;
-  iLY, iLM, iLD: Word;
 begin
-
   //本地时间初始化
-  DecodeDate(Now, iY, iM, iD);
-  GetLunarDate_B(Now, iLY, iLM, iLD);
-  if  GetLeapMonth(iLY) = iLM   then
-    stbMain.Panels[2].Text:='<a color="clblue">农历   ' + FormatLunarYear_B(iLY) + '闰'
-            + FormatMonth_B(iLM) + FormatLunarDay_B(iLD) + GetLunarHolDay_A(Now)
-            + '  ' + FormatDateTime('YYYY-MM-DD', Date) + '</a>'
-  else
-    stbMain.Panels[2].Text:='<a color="clblue">农历   ' + FormatLunarYear_B(iLY) + FormatMonth_B(iLM)
-            + FormatLunarDay_B(iLD) + GetLunarHolDay_A(Now) + '  ' + FormatDateTime('YYYY-MM-DD', Date)
+  stbMain.Panels[2].Text:='<a color="clblue">农历   ' + GetChinaDay + '  ' + FormatDateTime('YYYY-MM-DD', Date)
             + '</a>';
   //网络连接信息
-  with stbMain.
-  Panels[7] do
+  with stbMain.Panels[7] do
   begin
     Width := 25;
     Style := psImage;
@@ -320,7 +324,6 @@ begin
       ImageIndex := 8;
   end;
   //服务器信息
-
   stbMain.Panels[8].Text := '<a color="clblue">' + EASY_STATUBAR_APP
                           + DMEasyDBConnection.EasyAppType
 
@@ -335,11 +338,26 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.InitTreeViewNav;
+var
+  I: Integer;
+  ATmpNode: TTreeNode;
 begin
   //清空树
   tvNav.Items.Clear;
-  GetPluginsDirectoryList(nil, ExtractFilePath(Application.ExeName) + 'plugins\',
-                          '*.*', 1, 'init');
+  with cdsMainTV do
+  begin
+    Close;
+    CommandText := 'SELECT * FROM sysPluginsDirectory ';
+    Open;
+    First;
+    for I := 0 to RecordCount - 1 do
+    begin
+      if FieldByName('sParentGUID').AsString = '{00000000-0000-0000-0000-000000000000}' then
+
+    end;  
+  end;
+//  GetPluginsDirectoryList(nil, ExtractFilePath(Application.ExeName) + 'plugins\',
+//                          '*.*', 1, 'init');
 end;
 
 procedure TfrmEasyPlateMain.InitWorks;
@@ -350,11 +368,7 @@ end;
 procedure TfrmEasyPlateMain.actExitExecute(Sender: TObject);
 begin
   inherited;
-  if Application.MessageBox('确定要退出系统吗?', '提示', MB_OKCANCEL + 
-    MB_ICONQUESTION) = IDOK then
-  begin
-    Application.Terminate;
-  end;
+  Close;
 end;
 
 procedure TfrmEasyPlateMain.actVisibleNavExecute(Sender: TObject);
@@ -367,13 +381,18 @@ procedure TfrmEasyPlateMain.FormShow(Sender: TObject);
 begin
   //弹出登录窗体 进行登录验证
   ShowCheckLoginUser;
-  inherited;
-  //显示进度窗体
-  CreatePG(Init_LoadPlugs, '系统初始化...');
-  //显示用户信息：当前登录用户、部门
-  DisplayCurrUserInfo(EasyLoginUserID);
-  //补充状态栏位
-  InitStbMain;   
+  if Trim(EasyLoginUserID) = '' then
+    Application.Terminate
+  else
+  begin
+    inherited;
+    //显示进度窗体
+    CreatePG(Init_LoadPlugs, '系统初始化...');
+    //显示用户信息：当前登录用户、部门
+    DisplayCurrUserInfo(EasyLoginUserID);
+    //补充状态栏位
+    InitStbMain;
+  end;
 end;
 
 //+AFlag 判断是程序初始化进入还是其它进入
@@ -544,9 +563,9 @@ end;
 function TfrmEasyPlateMain.Init_LoadPlugs: Boolean;
 begin
   frmEasyPlateLoading.EasyProgressBar1.Position := 10;
-//  初始化主菜单
+  //初始化主菜单
   InitMainMenu;
-//  初始化导航树
+  //初始化导航树
   InitTreeViewNav;
   Result := True;
   //加载窗体的进度条
@@ -585,13 +604,24 @@ begin
     EasyMDITabSet1.Components[I].Free;
 end;
 
-procedure TfrmEasyPlateMain.ShowCheckLoginUser;
+procedure TfrmEasyPlateMain.ShowCheckLoginUser();
 begin
   try
     frmEasyLoginMain := TfrmEasyLoginMain.Create(Application);
     frmEasyLoginMain.ShowModal;
   finally
     frmEasyLoginMain.Free;
+  end;
+end;
+
+procedure TfrmEasyPlateMain.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  if Application.MessageBox('确定要退出系统吗?', '提示', MB_OKCANCEL + 
+    MB_ICONQUESTION) = IDOK then
+  begin
+    Application.Terminate;
   end;
 end;
 

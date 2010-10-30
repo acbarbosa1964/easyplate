@@ -491,6 +491,5 @@ initialization
 
 finalization
   CoUninitialize;
-  if DMEasyDBConnection <> nil then
-    DMEasyDBConnection.Free;
-end.
+
+end.                                   
