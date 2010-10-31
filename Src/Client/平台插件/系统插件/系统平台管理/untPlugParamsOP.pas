@@ -14,9 +14,10 @@ type
     btnOK: TEasyBitButton;
     btnCancel: TEasyBitButton;
     procedure btnCancelClick(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
   private
     { Private declarations }
-    FAData: PEasytvDirectoryRecord;
+    FAData: PEasytvParamsRecord;
   public
     { Public declarations }
   end;
@@ -24,18 +25,22 @@ type
 var
   frmPlugParamsOP: TfrmPlugParamsOP;
 
-  procedure ShowfrmPlugParamsOP(var AData: PEasytvDirectoryRecord; AFlag: string);
+  procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
   
 implementation
 
 {$R *.dfm}
 
-procedure ShowfrmPlugParamsOP(var AData: PEasytvDirectoryRecord; AFlag: string);
+uses
+  untEasyUtilMethod;
+
+procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
 begin
   try
     frmPlugParamsOP := TfrmPlugParamsOP.Create(Application);
     if AFlag = 'Add' then
     begin
+      frmPlugParamsOP.FAData := AData;
       frmPlugParamsOP.Caption := frmPlugParamsOP.Caption + '-¡¾ÐÂÔö¡¿';
     end
     else
@@ -58,6 +63,15 @@ end;
   
 procedure TfrmPlugParamsOP.btnCancelClick(Sender: TObject);
 begin
+  Close;
+end;
+
+procedure TfrmPlugParamsOP.btnOKClick(Sender: TObject);
+begin
+  FAData^.sParamEName := Trim(edtEName.Text);
+  FAData^.sParamCName := Trim(edtCName.Text);
+  FAData^.sValueType := 'S';
+  FAData^.sValue := Trim(edtParam.Text);
   Close;
 end;
 

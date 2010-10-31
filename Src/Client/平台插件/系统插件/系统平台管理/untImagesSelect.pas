@@ -55,6 +55,7 @@ end;
 
 procedure TfrmImagesSelect.ListView1Click(Sender: TObject);
 begin
+  if ListView1.Selected = nil then Exit;
   if FControlFlag = 1 then
     frmTvDirectoryOper.edtImage1.Text := IntToStr(ListView1.Selected.Index)
   else if FControlFlag = 2 then

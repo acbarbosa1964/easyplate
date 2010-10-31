@@ -3,7 +3,7 @@ object frmPlugParamsOP: TfrmPlugParamsOP
   Top = 312
   BorderStyle = bsDialog
   Caption = #25554#20214#21442#25968#32500#25252
-  ClientHeight = 157
+  ClientHeight = 136
   ClientWidth = 288
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -33,11 +33,12 @@ object frmPlugParamsOP: TfrmPlugParamsOP
   end
   object edtCName: TEasyLabelEdit
     Left = 88
-    Top = 48
+    Top = 80
     Width = 153
     Height = 19
     BorderColor = clGray
-    TabOrder = 1
+    TabOrder = 2
+    Visible = False
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -49,11 +50,11 @@ object frmPlugParamsOP: TfrmPlugParamsOP
   end
   object edtParam: TEasyLabelEdit
     Left = 88
-    Top = 80
+    Top = 56
     Width = 153
     Height = 19
     BorderColor = clGray
-    TabOrder = 2
+    TabOrder = 1
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -65,7 +66,7 @@ object frmPlugParamsOP: TfrmPlugParamsOP
   end
   object btnOK: TEasyBitButton
     Left = 80
-    Top = 120
+    Top = 104
     Width = 65
     Height = 25
     Caption = #30830#23450
@@ -102,10 +103,11 @@ object frmPlugParamsOP: TfrmPlugParamsOP
     ParentColor = False
     Style = bsModern
     TabOrder = 3
+    OnClick = btnOKClick
   end
   object btnCancel: TEasyBitButton
     Left = 168
-    Top = 120
+    Top = 104
     Width = 65
     Height = 25
     Caption = #21462#28040
