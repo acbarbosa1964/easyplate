@@ -90,18 +90,18 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=$(EPP)\bin
+OutputDir=
 UnitOutputDir=$(EPP)\Src\dcu
-PackageDLLOutputDir=
+PackageDLLOutputDir=$(EPP)\bin
 PackageDCPOutputDir=$(EPP)\Src\dcp
 SearchPath=
-Packages=vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;vcldb;VclSmp;bdertl;webdsnap;adortl;visualclx;visualdbclx;vclshlctrls;dclOfficeXP;dxGDIPlusD7;cxLibraryVCLD7;cxEditorsVCLD7;dxThemeD7;cxDataD7;cxExtEditorsVCLD7;cxPageControlVCLD7;cxGridD7;AdvOfficePagerPkgd7;RaizeComponentsVcl;RaizeComponentsVclDb
+Packages=vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;vcldb;VclSmp;bdertl;webdsnap;adortl;visualclx;visualdbclx;vclshlctrls;dclOfficeXP;dxGDIPlusD7;cxLibraryVCLD7;cxEditorsVCLD7;dxThemeD7;cxDataD7;cxExtEditorsVCLD7;cxPageControlVCLD7;cxGridD7;AdvOfficePagerPkgd7;RaizeComponentsVcl;RaizeComponentsVclDb;Rz30Ctls70;Rz30DBCtls70
 Conditionals=
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=
+HostApplication=E:\MyProject\Easy ProjectExt\bin\EasyProjectExt.exe
 Launcher=
 UseLauncher=0
 DebugCWD=
@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=4
+Build=51
 Debug=0
 PreRelease=0
 Special=0
@@ -125,8 +125,8 @@ Locale=2052
 CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
-FileDescription=Get Chinese Spell
-FileVersion=1.0.0.4
+FileDescription=Util Function
+FileVersion=1.0.0.51
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,12 +134,10 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2010-10-30 7:25:35
+LastCompiledTime=2010-10-31 10:59:27
 [Excluded Packages]
+c:\program files\borland\delphi7\Projects\Bpl\pkGraph.bpl=(untitled)
 C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
-E:\MyProject\Easy ProjectExt\bin\pkEasyDBConnection.bpl=(untitled)
-E:\MyProject\Easy ProjectExt\bin\pkEasyPlateBaseForm.bpl=(untitled)
-E:\MyProject\Easy ProjectExt\bin\pkEasyUtilFunction.bpl=(untitled)
 C:\Program Files\RemObjects Software\Everwood\Bin\RemObjects_Everwood_D7.bpl=RemObjects Everwood for Delphi
 c:\program files\borland\delphi7\Projects\Bpl\bs.bpl=(untitled)
 D:\Program Files\Raize\RC5\Bin\RaizeComponentsVcl_Design70.bpl=Raize Components 5.1.2
@@ -151,13 +149,17 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=$(EPP)\Src\dcu
-[HistoryLists\hlBPLOutput]
 Count=2
-Item0=$(EPP)\bin\plugins
-Item1=$(EPP)\bin
+Item0=$(EPP)\Src\dcu
+Item1=G:\EasyBarCode\dcu
+[HistoryLists\hlOutputDirectorry]
+Count=2
+Item0=$(EPP)\bin
+Item1=G:\EasyBarCode\bin
+[HistoryLists\hlBPLOutput]
+Count=1
+Item0=G:\EasyBarCode\dcu
 [HistoryLists\hlDCPOutput]
 Count=2
-Item0=$(EPP)\Src\dcp
-Item1=$(EPP)\Src\dcu
+Item0=$(EPP)\Src\dcu
+Item1=G:\EasyBarCode\dcu

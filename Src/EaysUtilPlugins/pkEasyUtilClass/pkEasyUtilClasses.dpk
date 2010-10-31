@@ -1,4 +1,4 @@
-package pkEasyPlateBaseForm;
+package pkEasyUtilClasses;
 
 {$R *.res}
 {$ALIGN 8}
@@ -25,20 +25,9 @@ package pkEasyPlateBaseForm;
 {$IMPLICITBUILD ON}
 
 requires
-  vcljpg,
-  vcl,
-  rtl,
-  dbrtl,
-  dsnap,
-  dsnapcon,
-  adortl,
-  pkEasyStardard,
-  pkEasyAdditional,
-  pkEasyUtilRWConfig,
-  pkEasyDBConnection;
+  rtl;
 
 contains
-  untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
-  untEasyPlateDBBaseForm in 'untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm};
+  untEasyUtilClasses in 'untEasyUtilClasses.pas';
 
 end.

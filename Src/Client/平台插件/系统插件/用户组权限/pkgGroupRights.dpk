@@ -1,4 +1,4 @@
-package pkEasyPlateBaseForm;
+package pkgGroupRights;
 
 {$R *.res}
 {$ALIGN 8}
@@ -22,6 +22,7 @@ package pkEasyPlateBaseForm;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
@@ -30,15 +31,14 @@ requires
   rtl,
   dbrtl,
   dsnap,
+  pkEasyStardard,
   dsnapcon,
   adortl,
-  pkEasyStardard,
   pkEasyAdditional,
   pkEasyUtilRWConfig,
-  pkEasyDBConnection;
+  pkEasyPlateBaseForm;
 
 contains
-  untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
-  untEasyPlateDBBaseForm in 'untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm};
+  untGroupRights in 'untGroupRights.pas' {frmGroupRights};
 
 end.

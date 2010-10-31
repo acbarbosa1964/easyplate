@@ -1,0 +1,10 @@
+增加$(EPP)用户环境变量
+
+添加以下路径到搜索路径
+$(EPP)\Src\dcp
+$(EPP)\Src\dcu
+$(EPP)\Src\EaysUtilPlugins\pkEasyDBConnection
+$(EPP)\Src\EaysUtilPlugins\pkEasyUtilRWConfig
+$(EPP)\Src\EaysUtilPlugins\pkEasyUtilClass
+$(EPP)\Src\EaysUtilPlugins\pkEasyUtilFunction
+$(EPP)\src\easyplatebaseform

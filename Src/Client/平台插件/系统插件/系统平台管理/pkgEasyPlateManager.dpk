@@ -26,26 +26,27 @@ package pkgEasyPlateManager;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  vcl,
   vcljpg,
+  vcl,
+  rtl,
   dbrtl,
   dsnap,
-  pkEasyStardard,
+  vclx,
+  vcldb,
   dsnapcon,
   adortl,
+  pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilRWConfig,
   pkEasyGrid,
-  xmlrtl,
-  indy,
-  pkEasyUtilClasses,
-  pkEasyUtilFunction;
+  pkEasyUtilFunction,
+  pkEasyUtilRWConfig,
+  pkEasyDBConnection,
+  pkEasyPlateBaseForm;
 
 contains
   untEasyPlateManager in 'untEasyPlateManager.pas' {frmEasyPlateManage},
-  untTvDirectoryOper in 'untTvDirectoryOper.pas' {frmTvDirectoryOper},
   untImagesSelect in 'untImagesSelect.pas' {frmImagesSelect},
-  untPlugParamsOP in 'untPlugParamsOP.pas' {frmPlugParamsOP};
+  untPlugParamsOP in 'untPlugParamsOP.pas' {frmPlugParamsOP},
+  untTvDirectoryOper in 'untTvDirectoryOper.pas' {frmTvDirectoryOper};
 
 end.

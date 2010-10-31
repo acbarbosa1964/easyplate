@@ -1,0 +1,4 @@
+在EXE+DLL架构中，多个使用DEV控件的DLL中出现“A class named TTTT already exists”错误。
+
+把cxLibraryVCLD7.bpl拷到运行目录下，并且在工程的options中，把cxLibraryVCLD7.bpl加入到runtime packages中，可解决“A class named TcxRect already exists”错误。
+类似的错误，一般都是缺少运行时包所致，仔细排查都能解决。

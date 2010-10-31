@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, untEasyPlateDBBaseForm, StdCtrls, untEasyLabel, untEasyDBConnection,
+  Dialogs, untEasyPlateDBBaseForm, StdCtrls, untEasyLabel,
   untEasyPageControl, ExtCtrls, untEasyGroupBox, untEasyProgressBar,
   untEasyEdit, untEasyEditExt, untEasyButtons, Grids, untEasyBaseGrid,
   untEasyGrid, ComCtrls, untEasyTreeView, untEasyMemo, DB, DBClient,
@@ -169,9 +169,10 @@ var
 
 implementation
 
+{$R *.dfm}
+
 uses untTvDirectoryOper, ActiveX, untEasyUtilDLL, untPlugParamsOP;
 
-{$R *.dfm}
 
 var
   //操作对应的三种标志 增加 修改 删除

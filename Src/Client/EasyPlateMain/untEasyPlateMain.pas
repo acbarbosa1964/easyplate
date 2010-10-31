@@ -385,6 +385,10 @@ begin
     //补充状态栏位
     InitStbMain;
   end;
+
+  //限制窗体最小宽 870 高500
+  Self.Constraints.MinHeight := 500;
+  Self.Constraints.MinWidth := 870;
 end;
 
 procedure TfrmEasyPlateMain.FormCreate(Sender: TObject);
@@ -509,10 +513,12 @@ begin
   TmpNode := frmEasyPlateLoading.ATmpNode_Loading;
   //进度窗体进度
   frmEasyPlateLoading.EasyProgressBar1.Position := 10;
-  TmpPluginFile := PPlugin(TmpNode.Data).FileName;
+  TmpPluginFile := EasyPlugPath + PEasytvNavRecord(TmpNode.Data)^.sPluginFileName;
   if (pos('.bpl', TmpPluginFile) > 0) and (FileExists(TmpPluginFile)) then
+  begin
     LoadPkg(TmpPluginFile, FPluginParams, EasyMDITabSet1,
             frmEasyPlateLoading.EasyProgressBar1, ChildFormClose, 1);
+  end;
   Result := True;
   //进度窗体进度
   frmEasyPlateLoading.EasyProgressBar1.Position := 100;

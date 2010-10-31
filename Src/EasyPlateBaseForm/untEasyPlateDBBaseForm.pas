@@ -30,8 +30,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, untEasyPlateBaseForm, untEasyDBConnection, DB, ADODB, ExtCtrls,
-  untEasyGroupBox, untEasyWaterImage;
+  Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage,
+  untEasyPlateBaseForm;
 
 type
   TfrmEasyPlateDBBaseForm = class(TfrmEasyPlateBaseForm)
@@ -53,6 +53,8 @@ var
 implementation
 
 {$R *.dfm}
+
+uses untEasyDBConnection;
 
 procedure TfrmEasyPlateDBBaseForm.FormCreate(Sender: TObject);
 //var

@@ -10,12 +10,10 @@ uses
   IniFiles,
   untEasyUtilConst,
   untEasyDBConnection,
-  untEasyPlateBaseForm in '..\EasyBaseForm\untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
-  untEasyPlateDBBaseForm in '..\EasyBaseForm\untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm},
-  EasyPlateHint in 'EasyPlateHint.pas' {Form1},
   untEasyPlateLoading in 'untEasyPlateLoading.pas' {frmEasyPlateLoading},
-  untEasyPlateMain in 'untEasyPlateMain.pas' {frmEasyPlateMain},
-  untEasyLoginMain in 'untEasyLoginMain.pas' {frmEasyLoginMain};
+  EasyPlateHint in 'EasyPlateHint.pas' {Form1},
+  untEasyLoginMain in 'untEasyLoginMain.pas' {frmEasyLoginMain},
+  untEasyPlateMain in 'untEasyPlateMain.pas' {frmEasyPlateMain};
 
 type
   TShowSplashForm = function (AHandle: THandle): Boolean; stdcall;
