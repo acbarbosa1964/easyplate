@@ -275,20 +275,21 @@ function TfrmEasyPlateManage.DeleteDirectory(
 var
   DelSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     DelSQL := ' DELETE FROM sysPluginsDirectory WHERE GUID = ' + QuotedStr(AData^.sGUID);
     cdsDirManager.CommandText := DelSQL;
     cdsDirManager.Execute;
   //  AData^.sFlag := '';
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除】'
+                      + AData^.sCName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('删除【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除】'
-                    + AData^.sCName);
-  Result := True;
 end;
 
 function TfrmEasyPlateManage.InsertDirectory(
@@ -304,6 +305,7 @@ function TfrmEasyPlateManage.InsertDirectory(
 var
   InsSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     InsSQL := ' INSERT INTO sysPluginsDirectory (GUID, sEName, sCName, iOrder,'
@@ -321,14 +323,14 @@ begin
     cdsDirManager.CommandText := InsSQL;
     cdsDirManager.Execute;
     AData^.sFlag := '';
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增】'
+                        + AData^.sCName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('插入【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增】'
-                      + AData^.sCName);
-  Result := True;
 end;
 
 function TfrmEasyPlateManage.UpdateDirectory(
@@ -336,6 +338,7 @@ function TfrmEasyPlateManage.UpdateDirectory(
 var
   UdpSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     UdpSQL := ' Update sysPluginsDirectory SET '
@@ -351,14 +354,14 @@ begin
     cdsDirManager.CommandText := UdpSQL;
     cdsDirManager.Execute;
     AData^.sFlag := '';
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改】'
+                        + AData^.sCName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('更新【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改】'
-                      + AData^.sCName);
-  Result := True;
 end;
 
 procedure TfrmEasyPlateManage.btnAddClick(Sender: TObject);
@@ -687,7 +690,8 @@ var
   HT: THitTests;
 begin
   if tvSysDirectory.Selected = nil then Exit;
-  HT := tvSysDirectory.GetHitTestInfoAt(X, Y); 
+  AttachMode := naAdd;
+  HT := tvSysDirectory.GetHitTestInfoAt(X, Y);
   AnItem := tvSysDirectory.GetNodeAt(X, Y);
   if (HT - [htOnItem, htOnIcon, htNowhere, htOnIndent] <> HT) then 
   begin
@@ -929,19 +933,20 @@ function TfrmEasyPlateManage.DeleteParam(
 var
   DelSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     DelSQL := ' DELETE FROM sysPluginParams WHERE GUID = ' + QuotedStr(AData^.ParamGUID);
     cdsDirManager.CommandText := DelSQL;
     cdsDirManager.Execute;
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除参数】'
+                      + AData^.sParamEName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('删除【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除参数】'
-                    + AData^.sParamEName);
-  Result := True;
 end;
 
 function TfrmEasyPlateManage.InsertParam(
@@ -949,6 +954,7 @@ function TfrmEasyPlateManage.InsertParam(
 var
   InsSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     InsSQL := ' INSERT INTO sysPluginParams (GUID, PlugGUID, sEName, sCName, sValueType,'
@@ -962,14 +968,14 @@ begin
               + ')';
     cdsDirManager.CommandText := InsSQL;
     cdsDirManager.Execute;
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增参数】'
+                        + AData^.sParamEName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('插入【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增参数】'
-                      + AData^.sParamEName);
-  Result := True;
 end;
 
 function TfrmEasyPlateManage.UpdateParam(
@@ -977,6 +983,7 @@ function TfrmEasyPlateManage.UpdateParam(
 var
   UdpSQL: string;
 begin
+  Result := False;
   try
     cdsDirManager.Close;
     UdpSQL := ' Update sysPluginParams SET '
@@ -985,14 +992,14 @@ begin
               + ' WHERE GUID = ' + QuotedStr(AData^.ParamGUID);
     cdsDirManager.CommandText := UdpSQL;
     cdsDirManager.Execute;
+    //执行日志输出
+    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改参数】'
+                        + AData^.sParamEName);
+    Result := True;
   except on e: Exception do
     Application.MessageBox(PChar('更新【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
                             MB_OK + MB_ICONSTOP);
   end;
-  //执行日志输出
-  mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改参数】'
-                      + AData^.sParamEName);
-  Result := True;
 end;
 
 procedure TfrmEasyPlateManage.pgcSystemManagerChange(Sender: TObject);

@@ -95,7 +95,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Top = 1
       Width = 864
       Height = 582
-      ActivePage = tbsModulesUpdate
+      ActivePage = tbsDirectoryManage
       Align = alClient
       UseColoredTabs = True
       Font.Charset = DEFAULT_CHARSET
@@ -104,7 +104,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Font.Name = 'Verdana'
       Font.Style = []
       ParentFont = False
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       TabStyle = tsDoubleSlant
       OnChange = pgcSystemManagerChange

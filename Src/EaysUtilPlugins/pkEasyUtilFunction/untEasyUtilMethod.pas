@@ -28,9 +28,13 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, ActiveX, FileCtrl, UrlMon, TlHelp32, ExtCtrls,
   ComObj, WinSock, ComCtrls, DB, ADODB, IdGlobal, ImageHlp, untEasyTabSet,
-  Menus, untEasyProgressBar;
+  Menus, DBClient, untEasyProgressBar;
 
 type
+
+  //数据打开类方式
+  TOpenClientDataSetStyle = (ocdOpen, ocdExecute);
+   
   //关闭子窗体事件类
   TMDICloseNotify = procedure (Sender: TObject; var Action: TCloseAction) of object;
   //插件导出函数
@@ -219,9 +223,27 @@ const
   //写入日志文档内容
   //存成文本文件、以Base64编码
   procedure WriteLog_H(ALogPath: String; AContent: String);
+
+  //生成GUID
+  function GenerateGUID: string;
+
+  //2010-11-06 16:19:43 +打开数据集能用方法
+  //失败返回 -1 成功返回 1
+  function OpenClientDataSet(AClientDataSet: TClientDataSet;
+                              AOpenClientDataSetStyle: TOpenClientDataSetStyle = ocdOpen): string;
+
 implementation
 
 uses untEasyUtilConst;
+
+function GenerateGUID: string;
+var
+  ATmp: TGUID;
+begin
+  Result := '';
+  if CoCreateGuid(ATmp) = S_OK then
+    Result := GUIDToString(ATmp);
+end;
 
 procedure ChangeByteOrder( var Data; Size : Integer );
 var
@@ -782,7 +804,7 @@ var
   TmpForm     : TForm;
   ATmpMenuItem: TMenuItem;
   AExitsForm  : TForm; //判断一个窗体是否存在
-  I           : Integer;
+//  I           : Integer;
 begin
   if not FileExists(APluginFile) then
   begin
@@ -917,6 +939,22 @@ begin
 
     Flush(TmpFileLog);
     CloseFile(TmpFileLog);
+  end;
+end;
+
+function OpenClientDataSet(AClientDataSet: TClientDataSet;
+          AOpenClientDataSetStyle: TOpenClientDataSetStyle = ocdOpen): string;
+begin
+  Result := '-1';
+  try
+    if AOpenClientDataSetStyle = ocdExecute then
+      AClientDataSet.Execute
+    else
+    if AOpenClientDataSetStyle = ocdOpen then
+      AClientDataSet.Open;
+    Result := '1';
+  except on e:Exception do
+    //
   end;
 end;
 
