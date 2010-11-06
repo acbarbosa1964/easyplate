@@ -1,20 +1,20 @@
-program EasyPlateServer;
+
+{*******************************************************}
+{                                                       }
+{       Borland Delphi Visual Component Library         }
+{       Borland Socket Server source code               }
+{                                                       }
+{       Copyright (c) 1997,99 Inprise Corporation       }
+{                                                       }
+{*******************************************************}
+
+program ScktSrvr;
 
 uses
-  SvcMgr,
-  Forms,
-  Windows,
-  SysUtils,
-  WinSvc,
-  ScktCnst,
-  untEasyPlateServerMain in 'untEasyPlateServerMain.pas' {frmEasyPlateServerMain},
-  EasyPlateServer_TLB in 'EasyPlateServer_TLB.pas',
-  untRDMEasyPlateServer in 'untRDMEasyPlateServer.pas' {RDMEasyPlateServer: TRemoteDataModule} {RDMEasyPlateServer: CoClass},
-  ScktMain in 'Sckt\ScktMain.pas' {SocketForm};
+  SvcMgr, Forms, Windows, SysUtils, WinSvc, ScktCnst,
+  ScktMain in 'ScktMain.pas' {SocketForm};
 
-{$R *.TLB}
-
-{$R *.res}     
+{$R *.RES}
 
 function Installing: Boolean;
 begin
@@ -75,8 +75,8 @@ begin
   begin
     SvcMgr.Application.Initialize;
     SocketService := TSocketService.CreateNew(SvcMgr.Application, 0);
-    SvcMgr.Application.CreateForm(TfrmEasyPlateServerMain, frmEasyPlateServerMain);
-  SvcMgr.Application.Run;
+    SvcMgr.Application.CreateForm(TSocketForm, SocketForm);
+    SvcMgr.Application.Run;
   end else
   begin
     Forms.Application.ShowMainForm := False;
@@ -84,8 +84,5 @@ begin
     Forms.Application.CreateForm(TSocketForm, SocketForm);
     SocketForm.Initialize(False);
     Forms.Application.Run;
-  end;  
-  Application.Initialize;
-  Application.CreateForm(TSocketForm, SocketForm);
-  Application.Run;
+  end;
 end.

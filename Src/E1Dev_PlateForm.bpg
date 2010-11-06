@@ -11,7 +11,7 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkEasyUtilRWConfig.bpl \
   pkgEasyPlateManager.bpl pkEasyPlateBaseForm.bpl pkEasyUtilClasses.bpl \
-  pkEasyUtilFunction.bpl pkgGroupRights.bpl
+  pkEasyUtilFunction.bpl pkgGroupRights.bpl EasyPlateServer.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -38,6 +38,9 @@ pkEasyUtilFunction.bpl: EaysUtilPlugins\pkEasyUtilFunction\pkEasyUtilFunction.dp
   $(DCC)
 
 pkgGroupRights.bpl: Client\平台插件\系统插件\用户组权限\pkgGroupRights.dpk
+  $(DCC)
+
+EasyPlateServer.exe: Server\EasyPlateServer.dpr
   $(DCC)
 
 

@@ -37,8 +37,22 @@ type
     EasyRDMADOConn: TADOConnection;
     EasyRDMQry: TADOQuery;
     EasyRDMDsp: TDataSetProvider;
+    cdsOutPutInfo: TClientDataSet;
     procedure RemoteDataModuleCreate(Sender: TObject);
     procedure RemoteDataModuleDestroy(Sender: TObject);
+    procedure EasyRDMDspBeforeApplyUpdates(Sender: TObject;
+      var OwnerData: OleVariant);
+    procedure EasyRDMDspBeforeExecute(Sender: TObject;
+      var OwnerData: OleVariant);
+    procedure EasyRDMDspBeforeGetParams(Sender: TObject;
+      var OwnerData: OleVariant);
+    procedure EasyRDMDspBeforeGetRecords(Sender: TObject;
+      var OwnerData: OleVariant);
+    procedure EasyRDMDspBeforeRowRequest(Sender: TObject;
+      var OwnerData: OleVariant);
+    procedure EasyRDMDspBeforeUpdateRecord(Sender: TObject;
+      SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+      UpdateKind: TUpdateKind; var Applied: Boolean);
   private
     { Private declarations }
     //获取库类型 MSSQL、ORACLE
@@ -67,6 +81,9 @@ type
     procedure SetDBUserName(const Value: string);
     function GetDBIniFilePath: string;
     procedure SetDBIniFilePath(const Value: string);
+
+    //
+    procedure OutPutDspInfo(AFlagStr: string; var OwnerData: OleVariant);
   protected
     class procedure UpdateRegistry(Register: Boolean; const ClassID, ProgID: string); override;
   public
@@ -90,7 +107,7 @@ var
   
 implementation
 
-uses untEasyPlateServerMain;
+uses untEasyPlateServerMain, ScktMain;
 
 {$R *.DFM}
 
@@ -241,6 +258,78 @@ procedure TRDMEasyPlateServer.RemoteDataModuleDestroy(Sender: TObject);
 begin
   if Assigned(FEasyDBIni) then
     FEasyDBIni.Free;
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeApplyUpdates(Sender: TObject;
+  var OwnerData: OleVariant);
+var
+  I: integer;
+  sField: string;
+begin
+  cdsOutPutInfo.Data := OwnerData;
+  for I := 0 to cdsOutPutInfo.FieldCount - 1 do
+    sField := cdsOutPutInfo.Fields[I].Name + ' ';
+  SocketForm.mmServerlog.Lines.Add(sField);
+  cdsOutPutInfo.First;
+  for I := 0 to cdsOutPutInfo.RecordCount - 1 do
+  begin
+    sField := cdsOutPutInfo.Fields[I].AsString + ' ';
+    SocketForm.mmServerlog.Lines.Add(sField);
+    cdsOutPutInfo.Next;
+//    SocketForm.mmServerlog.
+  end;
+end;
+
+procedure TRDMEasyPlateServer.OutPutDspInfo(AFlagStr: string; var OwnerData: OleVariant);
+var
+  I: integer;
+  sField: string;
+begin
+  cdsOutPutInfo.Data := OwnerData;
+  SocketForm.mmServerlog.Lines.Add(AFlagStr);
+  for I := 0 to cdsOutPutInfo.FieldCount - 1 do
+    sField := cdsOutPutInfo.Fields[I].Name + ' ';
+  SocketForm.mmServerlog.Lines.Add(sField);
+  cdsOutPutInfo.First;
+  for I := 0 to cdsOutPutInfo.RecordCount - 1 do
+  begin
+    sField := cdsOutPutInfo.Fields[I].AsString + ' ';
+    SocketForm.mmServerlog.Lines.Add(sField);
+    cdsOutPutInfo.Next;
+  end;
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeExecute(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  OutPutDspInfo('运行之前', OwnerData);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeGetParams(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  OutPutDspInfo('获取参数之前', OwnerData);
+
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeGetRecords(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  SocketForm.mmServerlog.Lines.Add('获取记录');
+//  OutPutDspInfo('获取记录之前', OwnerData);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeRowRequest(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  OutPutDspInfo('行请求之前', OwnerData);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeUpdateRecord(Sender: TObject;
+  SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
+  UpdateKind: TUpdateKind; var Applied: Boolean);
+begin
+  SocketForm.mmServerlog.Lines.Add('更新记录');
 end;
 
 initialization
