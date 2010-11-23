@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage,
-  untEasyPlateBaseForm;
+  untEasyPlateBaseForm, untEasyDBDevExt;
 
 type
   TfrmEasyPlateDBBaseForm = class(TfrmEasyPlateBaseForm)
@@ -43,6 +43,8 @@ type
     procedure SetUtilADOConn(const Value: TADOConnection);
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     //发布ADO数据连接
     property EasyUtilADOConn: TADOConnection read GetUtilADOConn write SetUtilADOConn;
   end;
@@ -56,13 +58,25 @@ implementation
 
 uses untEasyDBConnection;
 
+constructor TfrmEasyPlateDBBaseForm.Create(AOwner: TComponent);
+begin
+  inherited;
+
+end;
+
+destructor TfrmEasyPlateDBBaseForm.Destroy;
+begin
+
+  inherited;
+end;
+
 procedure TfrmEasyPlateDBBaseForm.FormCreate(Sender: TObject);
-//var
-//  I       : Integer;
+var
+  I       : Integer;
 begin
   inherited;
   FEasyDBConn := DMEasyDBConnection.EasyADOConn;
- { for i := 0 to ComponentCount - 1 do
+  for i := 0 to ComponentCount - 1 do
   begin
     if Self.Components[i] is TEasyDevDBTextEdit then
     begin
@@ -109,7 +123,7 @@ begin
        (Components[i] as TEasyDevDBCalcEdit).ImeName := '';
        (Components[i] as TEasyDevDBCalcEdit).ImeMode := imDontCare;
     end;
-  end; }
+  end; 
 end;
 
 function TfrmEasyPlateDBBaseForm.GetUtilADOConn: TADOConnection;

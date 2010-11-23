@@ -1,4 +1,4 @@
-package pkEasyPlateBaseForm;
+package pkEasyUtilFunction;
 
 {$R *.res}
 {$ALIGN 8}
@@ -25,29 +25,23 @@ package pkEasyPlateBaseForm;
 {$IMPLICITBUILD ON}
 
 requires
-  vcljpg,
-  vcl,
   rtl,
+  vcl,
   dbrtl,
   dsnap,
-  dsnapcon,
+  vclx,
+  indy,
   adortl,
+  vcljpg,
+  vcldb,
   pkEasyStardard,
-  pkEasyAdditional,
-  pkEasyUtilRWConfig,
-  pkEasyDBConnection,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7,
-  cxExtEditorsVCLD7,
-  cxPageControlVCLD7,
-  cxGridVCLD7,
-  EasyDevExt;
+  pkEasyAdditional;
 
 contains
-  untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
-  untEasyPlateDBBaseForm in 'untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm},
-  untEasyPlateDBForm in 'untEasyPlateDBForm.pas' {frmEasyPlateDBForm};
+  untEasyUtilDLL in 'untEasyUtilDLL.pas',
+  untEasyUtilInit in 'untEasyUtilInit.pas',
+  untEasyUtilMethod in 'untEasyUtilMethod.pas',
+  untEasyUtilConst in 'untEasyUtilConst.pas';
 
 end.
+

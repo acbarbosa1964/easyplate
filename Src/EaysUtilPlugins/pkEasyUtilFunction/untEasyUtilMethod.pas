@@ -231,7 +231,9 @@ const
   //失败返回 -1 成功返回 1
   function OpenClientDataSet(AClientDataSet: TClientDataSet;
                               AOpenClientDataSetStyle: TOpenClientDataSetStyle = ocdOpen): string;
-
+  //获取用户模块权限
+  function getUserModuleRight(FormId, CurrUserID: string): string;
+  
 implementation
 
 uses untEasyUtilConst;
@@ -958,4 +960,10 @@ begin
   end;
 end;
 
+//获取用户模块权限
+function getUserModuleRight(FormId, CurrUserID: string): string;
+begin
+  Result := '';
+end;
+  
 end.
