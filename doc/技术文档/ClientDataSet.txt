@@ -1,0 +1,6 @@
+ClientDataSet1.CancelUpdates;//恢复所有修改过但未提交（包括提交未成功的）的记录 
+ClientDataSet1.UndoLastChange;//恢复前一次的修改，相当于Undo功能 
+
+if ClientDataSet1.ChangeCount>0 then//有未决的修改 
+   ClientDataSet1.ApplyUpdates(MaxErrors);//将修改提交到服务器 
+参数MaxErrors用于指定一个最大错误数，如果出错的记录数超过了这个参数的值，此次更新就停止。如果MaxErrors参数设为0，只要应用服务器发现有一个错误的记录，更新操作就停止。如果MaxErrors参数设为-1，当应用服务器发现有错误的记录，就尝试更新下一个记录，等所有的记录都尝试过以后才返回。ApplyUpdates函数将返回实际遇到的错误数，同时，应用服务器将返回那些有错误的记录。 
