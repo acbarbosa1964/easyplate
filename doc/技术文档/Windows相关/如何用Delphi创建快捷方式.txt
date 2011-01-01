@@ -1,0 +1,60 @@
+如何用Delphi创建快捷方式2008年10月20日 星期一 17:27如果我们编写的程序能自动创建快捷方式，将大大方便用户的使用。但是如何在程序中建立快捷方式呢，下面我们给出一个实例。 
+　　由于我们是通过OLE Interface实现此功能的，因此在程序单元的uses语句中要加入ComObj、ActiveX和ShlObj这三个单元。
+
+　　在单元的声明部分加入以下代码(以下为引用片段）：
+
+procedure CreateLink(ProgramPath, ProgramArg, LinkPath, Descr: String);
+
+其中，ProgramPath是快捷方式的目标文件的全路径(包括文件名和路径);
+
+　　ProgramArg是目标文件的参数;LinkPath是快捷方式的全路径;Descr是对此快捷方式的描述。
+
+　　在单元的实现部分加入以下代码(以下为引用片段）：
+
+procedure CreateLink(ProgramPath, ProgramArg, LinkPath, Descr: String); 
+　　var 
+　　AnObj: IUnknown; 
+　　ShellLink: IShellLink; 
+　　AFile: IPersistFile; 
+　　FileName: WideString; 
+　　begin 
+　　if UpperCase(ExtractFileExt(LinkPath)) 〈〉 ′.LNK′ then //检查扩展名是否正确 
+　　begin 
+　　raise Exception.Create(′快捷方式的扩展名必须是 ′′LNK′′!′);/ 
+　　/若不是则产生异常 
+　　end; 
+　　try 
+　　OleInitialize(nil);//初始化OLE库，在使用OLE函数前必须调用初始化 
+　　AnObj := CreateComObject(CLSID_ShellLink);//根据给定的ClassID生成 
+　　一个COM对象，此处是快捷方式 
+　　ShellLink := AnObj as IShellLink;//强制转换为快捷方式接口 
+　　AFile := AnObj as IPersistFile;//强制转换为文件接口 
+　　//设置快捷方式属性，此处只设置了几个常用的属性 
+　　ShellLink.SetPath(PChar(ProgramPath)); // 快捷方式的目标文件，一般 
+　　为可执行文件 
+　　ShellLink.SetArguments(PChar(ProgramArg));// 目标文件参数 
+　　ShellLink.SetWorkingDirectory(PChar(ExtractFilePath(ProgramPath))) 
+　　;//目标文件的工作目录 
+　　ShellLink.SetDescription(PChar(Descr));// 对目标文件的描述 
+　　FileName := LinkPath;//把文件名转换为WideString类型 
+　　AFile.Save(PWChar(FileName), False);//保存快捷方式 
+　　finally 
+　　OleUninitialize;//关闭OLE库，此函数必须与OleInitialize成对调用 
+　　end; 
+　　end; 
+　　以上编写了一个通用函数，下面我们用它来创建快捷方式。在窗体中放置一 
+　　个按钮，双击按钮写入如下代码即可： 
+　　procedure TForm1.Button1Click(Sender: TObject); 
+　　var 
+　　tmp: array [0..MAX—PATH] of Char; 
+　　WinDir: string; 
+　　begin 
+　　GetWindowsDirectory(tmp,MAX—PATH); 
+　　WinDir:=String(tmp); 
+　　if Length(WinDir) 〉 3 then 
+　　WinDir:=WinDir+′\′;//得到Windows的目录 
+　　//在桌面上放置本程序的快捷方式 
+　　CreateLink(ParamStr(0),′′,WinDir+′desktop\′+Application.Tit 
+　　le+′.lnk′,′Application.Title′); 
+　　end;
+ 
