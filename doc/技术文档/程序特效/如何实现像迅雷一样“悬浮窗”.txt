@@ -1,0 +1,201 @@
+如何实现像迅雷一样“悬浮窗”2008年10月10日 星期五 14:33"网络蚂蚁"和"FlashGet"的悬浮窗口的实现 
+
+（加入日期:2002-4-6 点击数:1054） 
+【对此文发表评论】 【编程爱好者论坛】 【保存文章至硬盘】 【打印文章】 
+Borland开发讨论区 微软开发讨论区 C/C++讨论区 新手入门专区 
+oopsware（原作） 
+关键字 悬浮窗口 
+
+最近有网友问道如何用 Delphi 实现"网络蚂蚁"和"FlashGet"的悬浮窗口,笔者对使用 
+到的相关技巧做了整理如下: 
+
+1.悬浮窗口 
+Delphi 的 TForm.FormStyle 具有 fsStayOnTop 属性,但只是对其程序本身而言的, 
+也就是说只在此应用程序本身的窗口中是前端显示的,其他的程序的窗口仍然可以覆盖 
+此类型的窗口。这是应为此窗口的父窗口是 TApplication 。要让悬浮窗口独立的显示 
+在屏幕前端,应在创建窗口时将其父窗口设置为"桌面"。 
+Form2 := TForm2.CreateParented(GetDesktopWindow); 
+
+2.允许 Client 区域拖动窗口 
+这只要捕获窗口的 WM_NCHITTEST 消息,将客户区HitTest(HTCLIENT)变成标题栏 
+的HitTest(HTCAPTION)就可以了。 
+
+3.半透明 
+Windows2000/XP 给窗口增加了WS_EX_LAYERED 属性,并通过 API 
+SetLayeredWindowAttributes(); 来设置此属性的详细信息。Delphi 6 的 Forms 单元 
+已经支持此窗口属性。 
+property AlphaBlend default False; // 是否使用半透明效果 
+property AlphaBlendValue default 255; // 透明度 0..255 
+property TransparentColor default False; // 是否使用穿透色 
+property TransparentColorValue default 0; // 穿透色 
+(*此功能仅 Windows2000/XP 支持,不要在 Win9x 尝试此特效) 
+
+4.接收来自 Shell 的鼠标拖拽 
+这将使用到 ActiveX 单元的 IDropTarget 接口,并扩展你的 Form 类。 
+TForm2 = class(TForm, IDropTarget) 
+.... 
+end; 
+并在窗口拥有句柄后,用 RegisterDragDrop() 注册成为 DragDrop 接受目标。 
+
+
+以下是实现的代码: 
+
+unit DropBin; 
+
+interface 
+
+uses 
+Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+Dialogs, Menus, ExtCtrls, ActiveX, ComObj; 
+
+type 
+TfrmDropBin = class(TForm, IDropTarget) 
+private 
+procedure WMNCHitTest(var Msg:TWMNCHitTest); message WM_NCHITTEST; 
+protected 
+procedure CreateParams(var Params: TCreateParams); override; 
+procedure CreateWnd; override; 
+procedure DestroyWnd; override; 
+procedure DoClose(var Action: TCloseAction); override; 
+// DragDrop 支持 
+function DragEnter(const dataObj: IDataObject; grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+function IDropTarget_DragOver(grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+function IDropTarget.DragOver = IDropTarget_DragOver; // 解决 IDropTarget.DragOver 与 TForm.DragOver 冲突问题 
+function DragLeave: HResult; stdcall; 
+function Drop(const dataObj: IDataObject; grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+public 
+constructor Create(AOwner: TComponent); override; 
+end; 
+
+var 
+frmDropBin: TfrmDropBin; 
+
+procedure ShowDropBin(Sender: TMenuItem); 
+
+implementation 
+
+{$R *.dfm} 
+
+type 
+// 虽然 Delphi 的 Windows 单元定义了 SetLayeredWindowAttributes(); ( external 'User32.dll' ) 
+// 但为了兼容 Win9x, 不能直接调用。 
+TSetLayeredWindowAttributes = function (Hwnd: THandle; crKey: COLORREF; bAlpha: Byte; dwFlags: DWORD): Boolean; stdcall; 
+
+var 
+User32ModH: HMODULE; 
+SetLayeredWindowAttributes: TSetLayeredWindowAttributes = nil; 
+
+procedure ShowDropBin(Sender: TMenuItem); 
+begin 
+if Assigned(frmDropBin) then frmDropBin.Close 
+else begin 
+frmDropBin := TfrmDropBin.CreateParented(GetDesktopWindow); 
+end; 
+end; 
+
+constructor TfrmDropBin.Create(AOwner: TComponent); 
+begin 
+inherited Create(AOwner); 
+Width := 32; 
+Height := 32; 
+end; 
+
+procedure TfrmDropBin.CreateParams(var Params: TCreateParams); 
+begin 
+inherited CreateParams(Params); 
+with Params do begin 
+Style := WS_POPUP or WS_CLIPSIBLINGS {or WS_BORDER}; 
+ExStyle := WS_EX_TOOLWINDOW or WS_EX_TOPMOST; 
+end; 
+end; 
+
+procedure TfrmDropBin.CreateWnd; 
+begin 
+inherited CreateWnd; 
+Visible := True; 
+// 为 2000/XP 创建半透明、穿透效果 
+if Assigned(SetLayeredWindowAttributes) then begin 
+SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_LAYERED); 
+SetLayeredWindowAttributes(Handle, clWhite, 128, LWA_ALPHA or LWA_COLORKEY); 
+end; 
+// 设置为接受拖拽 
+OleCheck(RegisterDragDrop(Handle, Self)); 
+end; 
+
+procedure TfrmDropBin.DestroyWnd; 
+begin 
+if HandleAllocated then RevokeDragDrop(Handle); 
+inherited DestroyWnd; 
+end; 
+
+function TfrmDropBin.DragEnter(const dataObj: IDataObject; grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+begin 
+// 
+// 也可以在此判断是否接受拖拽,修改 dwEffect 可以得到不同的效果 ... 
+// 
+dwEffect := DROPEFFECT_COPY; 
+Result := S_OK; 
+end; 
+
+function TfrmDropBin.IDropTarget_DragOver(grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+begin 
+dwEffect := DROPEFFECT_COPY; 
+Result := S_OK; 
+end; 
+
+function TfrmDropBin.DragLeave: HResult; stdcall; 
+begin 
+Result := S_OK; 
+end; 
+
+function TfrmDropBin.Drop(const dataObj: IDataObject; grfKeyState: Longint; pt: TPoint; var dwEffect: Longint): HResult; stdcall; 
+begin 
+// 
+// 处理 dataObj 中包含的拖拽内容 ... 
+// 
+dwEffect := DROPEFFECT_NONE; 
+Result := S_OK; 
+end; 
+
+procedure TfrmDropBin.DoClose(var Action: TCloseAction); 
+begin 
+Action := caFree; 
+frmDropBin := nil; 
+end; 
+
+procedure TfrmDropBin.WMNCHitTest(var Msg:TWMNCHitTest); 
+begin 
+// 通过 Client 区拖动窗口 
+DefaultHandler(Msg); 
+if Msg.Result = HTCLIENT then 
+Msg.Result:= HTCAPTION; 
+end; 
+
+initialization 
+OleInitialize(nil); 
+// 为兼容 Win9x 
+User32ModH := GetModuleHandle('User32.dll'); 
+if User32ModH <> 0 then @SetLayeredWindowAttributes := GetProcAddress(User32ModH, 'SetLayeredWindowAttributes'); 
+
+finalization 
+OleUninitialize; 
+
+end. 
+
+
+作者主页: http://oopsware.delphibbs.com/ 
+
+----- End of File ----- 
+
+
+
+Top 
+2 楼jackie168（http://soft.eastrise.net） 回复于 2005-01-13 10:17:43 得分 20
+procedure TForm1.FormCreate(Sender: TObject); 
+begin 
+with Application do 
+SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) and 
+not WS_EX_APPWINDOW or WS_EX_TOOLWINDOW); 
+SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE); 
+end;
+ 

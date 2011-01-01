@@ -1,0 +1,45 @@
+不知道大家在使用QQ时有没有想到它的缩入伸出的功能是如何实现的呢？实现这个效果的关键在于如何判断当前鼠标指针下面的窗体是不是我们的程序窗体。GetCursorPos()是一个可以获得鼠标指针在屏幕中的坐标的API函数，利用它与FindVCLWindow()的结合就可以轻易地获得鼠标指针下的VCL可视组件，但当一个窗体中不只一个VCL可视组件，例如可能还有TPanel、TMemo等等类型时，那么我们就必须要查找到它们的Parent级，最终得到TForm，那就是指我们的程序窗体。按照这个思路我自定义了GetFormNameAt()函数，它可获得当前鼠标指针下面的窗体的名称。以下列出程序的主要实现代码，供大家参考：
+
+//自定义函数GetFormNameAt，获得鼠标针指下窗体的Name
+function GetFormNameAt ( X, Y : integer ) : string;
+　var
+　　P:TPoint;
+　　W:TWinControl;
+　begin
+　　P.X := X;
+　　P.Y := Y;
+　　W := FindVCLWindow(P); //得到鼠标指针下的VCL可视组件
+　　if ( nil <> W ) then
+　　begin
+　　　while w.Parent<>nil do //当W的上级Parent不为空时就继续往上找
+　　　　w:=w.Parent;
+　　　　Result := W.Name;//最后返回窗体的名称Name
+　　　end
+　　else
+　　begin
+　　　Result := ’’;
+　　end;
+　end;
+　procedure TForm1.Timer1Timer(Sender: TObject);
+　var
+　　winPos:TPoint;
+　begin
+　　if (form1.Top<=3) or (form1.Left>=screen.Width-form1.Width-3) then //判斷
+　　begin
+　　　GetCursorPos(winpos); //得到当前鼠标指针的在屏幕上的坐标
+　　　//当鼠标指针下的窗体的Name等于form1.name时
+　　　if form1.name=GetFormNameAt(winpos.X,winpos.Y) then
+　　　　{在此我们可以为form1取一个特别的名称，以防有别的窗体名称与它相同}
+　　　begin
+　　　　form1.Timer2.Enabled:=false; //停用Timer2
+　　　　form1.Top:=0; //form1的Top与屏幕对齐
+　　　end
+　　else
+　　　form1.Timer2.Enabled:=true; //开启Timer2
+　　end;
+　end;
+　procedure TForm1.Timer2Timer(Sender: TObject);
+　begin
+　　if form1.Top<=20 then
+　　　form1.Top:=-(form1.Height-10);//将form1向上移，在屏幕上方露出10像素
+　　end; 

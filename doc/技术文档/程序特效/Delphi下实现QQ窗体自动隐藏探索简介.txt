@@ -1,0 +1,128 @@
+Delphi下实现QQ窗体自动隐藏探索简介2008年10月10日 星期五 14:32腾讯QQ是当前流行的网络聊天工具之一，由于它在应用设计上有很多独特之处，所以也吸引了很多程序员对之进行研究和模仿。在这里，我将利用Delphi对QQ的窗体自动隐藏效果提出自己的实现方法。 
+一、问题的提出 
+
+熟悉QQ使用的朋友都知道，当QQ窗体区域超出屏幕四边时，窗体就会自动“消失”，只留下窗体一边的小部分显露在桌面上。当用鼠标移动到显露部分之上，窗体就会在隐藏位置重新完整显示；但当鼠标离开窗体区域后，窗体便会重新进入隐藏状态。 
+
+对隐藏的全过程进行分析，可以得出两点推测：第一，窗体隐藏的处理是与窗体移动过程有关；第二，窗体隐藏的触发条件。 
+
+对第一点推测，可以通过对窗体移动时产生的Windows消息进行拦截处理加以实现。对第二点推测，如何去表示“窗体区域已经超出屏幕可视范围”这一条件为实现的关键。 
+
+二、基本的分析 
+
+让我们先留意一下Windows环境下窗体移动的过程与效果。当使用鼠标移动窗体的时候，窗体本身并没有立刻随鼠标的移动而发生位置的改变；相反，鼠标正在拖动的是一个大小与窗体一致的透明区域（确切的说一个虚线边框的矩形）。当鼠标释放矩形后，窗体本身才会在矩形最后停留的地方出现，从而完成整个移动的过程。（注意：在Windows 2000及XP环境下，如果在显示属性中选中“拖动时显示窗体内容”的显示效果选项，则上述过程无法观察。） 
+
+对QQ窗体，其移动过程与上述无异，但却有一处不同。当我们把矩形移动到屏幕四边且已有部分超出时，矩形就会自动地停留在超出位置上并完整显示。此时不论我们怎样试图把矩形再向超出方向上移动，矩形也只保持在该位置。当释放鼠标之后，窗体的隐藏效果也就出现了。 
+
+从上述过程可以推断，触发隐藏条件后，即使仍处于移动过程但矩形本身却已经被锁定，因此对窗体位置的判断是发生在移动过程中，也就是说我们要拦截处理的Windows消息是WM_MOVING。其次，在移动过程中首先发生位置变化的是矩形而不是窗体本身，因此实现隐藏的关键是对矩形参数的判断与设置。 
+
+我们可以先留意一下WM_MOVING消息的语法结构： 
+
+WM_MOVING 
+
+WPARAM wParam 
+
+LPARAM lParam， 
+
+其中，WPARAM不被使用，而LPARAM则是一个指针，所指向的是一个RECT结构。RECT结构中包含了Left、Top、Right、Bottom四个参数，分别用于描述矩形的左上角与右下角，“该RECT记录了窗体相对于屏幕的当前位置；当要改变拖动矩形的位置时，程序本身必须改变RECT结构中各成员变量的相关值”。由此可知，我们要处理的矩形其实已经在WM_MOVING消息中被提到，我们要处理的也就是LPARAM所指向的RECT结构的有关参数。 
+
+接下来我们要设置一个由隐藏条件激活的计时器，目的是监控鼠标相对窗体的位置。因为窗体隐藏后的隐现是靠鼠标激活的，所以若检测到鼠标位于窗体之上，则说明窗体在显示状态；反之，窗体在隐藏状态。我们只需在相关的判断下加入对窗体Top和Left属性的赋值即可实现隐现效果。 
+
+至此，有关自动隐藏效果的实现分析就基本完成了。不过还要注意一点，因为我们是在WM_MOVING消息的拦截处理中判断隐藏条件，而通过计时器的OnTimer事件处理隐现效果。在此隐藏条件是否满足在两个过程中的传递将成为关键。同时我们要知道的不仅是隐藏条件是否满足，还必须知道窗体是在屏幕的那一边上发生隐藏。为此，我们需要定义一个集合去描述窗体隐藏的位置，例如： 
+
+type 
+
+　HidePosKind = (hpTop,hpLeft,hPBottom,hpRight); 
+
+type 
+
+　THidePos = set of HidePosKind; 
+
+不过，类似的集合在Delphi本身就已经存在，譬如TAnchors集合。TAnchors集合原来是用于指明一个控件如何锚定于其父类控件的位置，我们在这里则借用来描述窗体对屏幕的隐藏位置。 
+
+在TAnchors集合中也包含了四个值，其定义如下： 
+
+type TAnchorKind = (akTop, akLeft, akRight, akBottom); 
+
+type TAnchors = set of TAnchorKind; 
+
+在代码的实现中，我们将定义一个TAnchors类型的全局变量FAnchors去描述窗体隐藏的位置。 
+
+三、初步的实现 
+
+首先我们定义一个过程对WM_MOVING消息进行拦截处理，代码如下： 
+
+
+.. 
+private 
+　FAnchors: TAnchors; 
+procedure WMMOVING(var Msg: TMessage); message WM_MOVING; 
+　.. 
+　uses Math,type; 
+procedure TForm1.WMMOVING(var Msg: TMessage); 
+begin 
+　inherited; 
+　with PRect(Msg.LParam)^ do 
+　begin 
+　　Left := Min(Max(0, Left), Screen.Width - Width); 
+　　Top := Min(Max(0, Top), Screen.Height - Height); 
+　　Right := Min(Max(Width, Right), Screen.Width); 
+　　Bottom := Min(Max(Height, Bottom), Screen.Height); 
+　　FAnchors := []; 
+　　if Left = 0 then Include(FAnchors, akLeft); 
+　　if Right = Screen.Width then 
+　　　Include(FAnchors, akRight); 
+　　if Top = 0 then Include(FAnchors, akTop); 
+　　if Bottom = Screen.Height then 
+　　　Include(FAnchors, akBottom); 
+　　　Timer1.Enabled := FAnchors <> []; 
+　　end; 
+end;
+ 
+在该过程中，我们通过对矩形参数Left、Top、Right、Bottom的判断确定窗体所处位置是否符合隐藏条件，判断结果存放在全局变量Fanchors之中。当触发隐藏时，在Fanchors中将至少有一个值而不多于两个值。（为什么呢？） 
+
+判断条件的设置似乎和我们一般的理解有点不同。以Left参数的判断为例，在判断了Max(0, Left)之后还为什么一定要与Screen.Width-Width 的值再作比较呢？这其实是为了对一些较为极端的情况（例如窗体的宽度大于屏幕宽度）所作的伪处理，大家如果有兴趣的可自己试验一下这些极端的效果。当然，如果我们的窗体限制了宽、高的最大值，那么判断也就可以简化为我们最初的理解。 
+
+最后需要注意的是，代码中出现的Left、Top、Right、Bottom都是RECT的参数，而Width和Height才是窗体Form1的属性。 
+
+接下来我们要处理TTimer的OnTimer事件了。在WMMOVING过程中，当Fanchors不为空时，TTimer启动；反之，TTimer关闭。OnTimer事件的代码如下： 
+
+
+procedure TForm1.Timer1Timer(Sender: TObject); 
+　const 
+　　cOffset = 2; 
+　begin 
+　　if WindowFromPoint(Mouse.CursorPos) = Handle then 
+　　begin 
+　　　if akLeft in FAnchors then Left := 0; 
+　　　if akTop in FAnchors then Top := 0; 
+　　　if akRight in FAnchors then 
+　　　　Left := Screen.Width - Width; 
+　　　if akBottom in FAnchors then 
+　　　　Top := Screen.Height - Height; 
+　　　end else 
+　　　begin 
+　　　　if akLeft in FAnchors then Left := -Width + cOffset; 
+　　　　if akTop in FAnchors then Top := -Height + cOffset; 
+　　　　if akRight in FAnchors then 
+　　　　　Left := Screen.Width - cOffset; 
+　　　　if akBottom in FAnchors then 
+　　　　　Top := Screen.Height - cOffset; 
+　　end; 
+end;
+ 
+在这里，我们首先定义一个常量cOffset去表示窗体隐藏后显露部分的大小。然后我们利用WindowFromPoint这个Windows API函数检测鼠标是否位于窗体之上。接下来的判断就是处理在显示和隐藏状态下窗体Left 和Top 属性值的设置。注意，针对Fanchors中存在不同值的情况，窗体Left和Top的设置是各不相同的，但是这些设置只有顺序上的差异而并没有优先级别的差异。（为什么要提到这一点呢？） 
+
+最后需要注意的是：在本事件中Top、Left、Width和Height都是窗体Form1的属性值。 
+
+好了，有关窗体隐藏的核心代码已经介绍完毕了，不过要达到预期效果，窗体Form1在创建时还必须做一些准备工作，代码如下： 
+
+
+procedure TForm1.FormCreate(Sender: TObject); 
+begin 
+　Timer1.Enabled := False; 
+　Timer1.Interval := 200; 
+　FormStyle := fsStayOnTop; 
+end;
+ 
+这里的代码相对简单，不过值得指出的是对Form1的FormStyle 属性的设置。FormStyle 为fsStayOnTop时可保证Form1始终位于最前显示。从效果角度看，当系统工具栏为“总在最前显示”时是最为明显的，因为若窗体移动到系统工具栏上时也不会被其所遮盖。 
+ 

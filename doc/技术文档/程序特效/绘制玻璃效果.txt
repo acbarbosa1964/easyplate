@@ -1,0 +1,263 @@
+绘制玻璃效果2008年07月28日 星期一 10:40前言
+       现代软件对于用户体验的要求越来越高，特别是对于界面，当人们不再喜欢泛味的经典风格时，渐变效果的界面出来了，这一点在Office2003可以体显出来。但现在，渐变效果似乎也不能满足审美要求了，越来越多的软件尝试用玻璃效果来呈现，Vista整个就是玻璃的界面。
+
+       玻璃效果的实现大多采用图片的方式，对于资源是很大的浪费；其实用程序的方法也是可以实现的，下面的描述将向你展示玻璃效果如何用程序来实现，所列的代码可以放心地应用到你的工程中。
+
+
+正文
+       仔细研究一些玻璃的表面，发现其实可以用渐变来组合，假设有一个矩形区域，那么玻璃效果可以分解成下面的部分：
+
+       
+
+       边框可能不是必须的，但对于一个实体来说，加上边框会显得完整一些，我们将边框分成外边框和内边框，内边框是为了突显一些3D的效果。
+
+       渐变分成两个部分，这也是玻璃效果最重要的表现形式，其中的配色将决定玻璃效果的好坏。如何确定渐变的颜色？很简单，找一些玻璃效果的图然后取色就是了，下面是MSN Space的一个效果：
+
+       
+
+       为了不分散代码，我将整个单元列出来，可以直接拷贝到你的工程中，不过希望能保留作者名。
+
+{**********************************************************}
+{ 摘要： 玻璃效果的绘制                                        }
+{                                                           }
+{ 作者： LinZhenqun                                         }
+{ 日期： 2007-10-5                                          }
+{ 邮件： linzhenqun@gmail.net                               }
+{**********************************************************}
+
+unit GlassUtils;
+
+interface
+uses
+   Graphics, Windows, Classes;
+
+type
+   { 渐变API的声明 }
+   PTriVertex = ^TTriVertex;
+   TTriVertex = packed record
+     x: Longint;
+     y: Longint;
+     Red: WORD;
+     Green: WORD;
+     Blue: WORD;
+     Alpha: WORD;
+  end;
+function GradientFill(DC: HDC; Vertex: PTriVertex; NumVertex: ULONG;
+   Mesh: Pointer; NumMesh, Mode: ULONG): BOOL; stdcall;
+
+type
+   {渐变方向: 从左到右，从上到下}
+   TGradDirection = (gdLeftRight, gdTopBottom);
+    
+   { 玻璃效果的颜色配置 }
+   TGlassColorCfg = record
+     OutBorder,         //外框，如果为clNone将不绘制
+     InBorder,          //内框，如果为clNone将不绘制
+     Grad1Start,        //上半部分渐变的开始颜色
+     Grad1End,          //上半部分渐变的结束颜色
+     Grad2Start,        //下半部分渐变的开始颜色
+     Grad2End: TColor   //下半部分渐变的结束颜色
+  end;
+  
+var
+   { 默认颜色配置，蓝色玻璃 }
+   DefGlassColorCfg: TGlassColorCfg = (OutBorder: clBlack; 
+
+InBorder: $00E1D0AA;
+
+Grad1Start: $00D1AE7A; 
+
+Grad1End: $00B98835; 
+
+Grad2Start: $00975F00; 
+
+Grad2End: $00C6A46A);
+
+{ 颜色值转RGB }
+procedure GetRGB(C: TColor; out R, G, B: Integer);
+
+{ 渐变函数 }
+procedure FillGradient(const Canvas: TCanvas; const ARect: TRect;
+  const StartColor, EndColor: TColor; const Direction: TGradDirection);
+
+{ 玻璃效果绘制函数 }
+procedure DrawGlassFace(Canvas: TCanvas; ARect: TRect;
+  const GlassColorCfg: TGlassColorCfg);
+
+implementation
+
+function GradientFill; external msimg32;
+
+procedure GetRGB(C: TColor; out R, G, B: Integer);
+begin
+  if Integer(C) < 0 then C := GetSysColor(C and $000000FF);
+   R := C and $FF;
+   G := C shr 8 and $FF;
+   B := C shr 16 and $FF;
+end;
+
+procedure FillGradient(const Canvas: TCanvas; const ARect: TRect;
+  const StartColor, EndColor: TColor; const Direction: TGradDirection);
+var
+   Vert: array[0..1] of TTriVertex;
+   gRect: TGradientRect;
+   nMode: Cardinal;
+   R, G, B: Integer;
+begin
+   vert[0].x := ARect.Left;
+   vert[0].y := ARect.Top;
+   GetRGB(StartColor, R, G, B);
+   Vert[0].Red := R shl 8;
+   Vert[0].Green := G shl 8;
+   Vert[0].Blue := B shl 8;
+   vert[0].Alpha := 0;
+
+   vert[1].x := ARect.Right;
+   vert[1].y := ARect.Bottom;
+   GetRGB(EndColor, R, G, B);
+   Vert[1].Red := R shl 8;
+   Vert[1].Green := G shl 8;
+   Vert[1].Blue := B shl 8;
+   vert[1].Alpha := 0;
+
+   gRect.UpperLeft := 0;
+   gRect.LowerRight := 1;
+  if Direction = gdLeftRight then
+     nMode := GRADIENT_FILL_RECT_H
+  else
+     nMode := GRADIENT_FILL_RECT_V;
+
+   GradientFill(Canvas.Handle, @vert, 2, @gRect, 1, nMode);
+end;
+
+procedure DrawGlassFace(Canvas: TCanvas; ARect: TRect;
+  const GlassColorCfg: TGlassColorCfg);
+var
+   R: TRect;
+begin
+   Canvas.Brush.Style := bsClear;
+  with GlassColorCfg do
+  begin
+    if OutBorder <> clNone then
+    begin
+       //外框
+       Canvas.Pen.Color := OutBorder;
+       Canvas.Rectangle(ARect);
+    end;
+    if InBorder <> clNone then
+    begin
+       //内框
+       InflateRect(ARect, -1, -1);
+       Canvas.Pen.Color := InBorder;
+       Canvas.Rectangle(ARect);
+    end;
+     //上下渐变效果
+     InflateRect(ARect, -1, -1);
+    with ARect do
+       R := Rect(Left, Top, Right, Top + (Bottom - Top) div 2);
+     FillGradient(Canvas, R, Grad1Start, Grad1End, gdTopBottom);
+       R := Rect(R.Left, R.Bottom, R.Right, ARect.Bottom);
+     FillGradient(Canvas, R, Grad2Start, Grad2End, gdTopBottom);
+  end;
+end;
+
+end.
+
+
+这个单元中FillGradient绘制渐变效果，DrawGlassFace绘制玻璃效果，这两个都是非常有用的界面函数，也算是我的宝贝之一了，若在你的工程中能帮到一些忙，记得感谢一下哦。
+
+TGlassColorCfg是玻璃效果的颜色配置，而DefGlassColorCfg则默认实现了蓝色的玻璃效果，事实上与上面的MSN Space的效果一样。
+
+下面看看怎么用这个单元，新建一个工程，在主窗体上放三个按钮，再放一个PaintBox，主窗体的代码如下：
+
+unit Unit1;
+
+interface
+
+uses
+   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+   Dialogs, StdCtrls, ExtCtrls, GlassUtils;
+
+type
+   TForm1 = class(TForm)
+     btnBlue: TButton;
+     pbGlass: TPaintBox;
+     btnGreen: TButton;
+     btnBlack: TButton;
+    procedure pbGlassPaint(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnGreenClick(Sender: TObject);
+    procedure btnBlueClick(Sender: TObject);
+    procedure btnBlackClick(Sender: TObject);
+  private
+     { Private declarations }
+  public
+     { Public declarations }
+     FGlassColorCfg: TGlassColorCfg;
+  end;
+
+var
+   Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.pbGlassPaint(Sender: TObject);
+begin
+   DrawGlassFace(pbGlass.Canvas, pbGlass.ClientRect, FGlassColorCfg);
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+   FGlassColorCfg := DefGlassColorCfg;
+end;
+
+procedure TForm1.btnGreenClick(Sender: TObject);
+begin
+   //绿色玻璃配色方案
+   FGlassColorCfg.OutBorder := clNone; //clBlack
+   FGlassColorCfg.InBorder := clNone;   //$00C4E3CF;
+   FGlassColorCfg.Grad1Start := $00AED2BA;
+   FGlassColorCfg.Grad1End := $0067AD7D;
+   FGlassColorCfg.Grad2Start := $001F8741;
+   FGlassColorCfg.Grad2End := $00359F58;
+   pbGlass.Invalidate;
+end;
+
+procedure TForm1.btnBlueClick(Sender: TObject);
+begin
+   FGlassColorCfg := DefGlassColorCfg;
+   pbGlass.Invalidate;
+end;
+
+procedure TForm1.btnBlackClick(Sender: TObject);
+begin
+   //黑色玻璃配色方案
+   FGlassColorCfg.OutBorder := clBlack;
+   FGlassColorCfg.InBorder := $00AFAFAF;
+   FGlassColorCfg.Grad1Start := $007D7D7D;
+   FGlassColorCfg.Grad1End := $00353535;
+   FGlassColorCfg.Grad2Start := clBlack;
+   FGlassColorCfg.Grad2End := $0071716A;
+   pbGlass.Invalidate;
+end;
+
+end.
+
+       例子工程实现了三个种玻璃效果：蓝色，绿色，和黑色，看看下面的效果图：
+
+
+
+
+
+
+
+
+
+
+效果自我感觉还是可以的，不知你觉得如何？发挥你的灵感与想象力，也许可以配出更加亮丽的颜色来，要记得在这里回馈一下哦。
+
+
+
+ 
