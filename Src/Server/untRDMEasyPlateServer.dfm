@@ -18,19 +18,7 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
   end
   object EasyRDMDsp: TDataSetProvider
     DataSet = EasyRDMQry
-    BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
-    BeforeApplyUpdates = EasyRDMDspBeforeApplyUpdates
-    BeforeGetRecords = EasyRDMDspBeforeGetRecords
-    BeforeRowRequest = EasyRDMDspBeforeRowRequest
-    BeforeExecute = EasyRDMDspBeforeExecute
-    BeforeGetParams = EasyRDMDspBeforeGetParams
     Left = 56
-    Top = 80
-  end
-  object cdsOutPutInfo: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 144
     Top = 80
   end
 end

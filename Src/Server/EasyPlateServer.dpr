@@ -9,8 +9,7 @@ uses
   ScktCnst,
   untEasyPlateServerMain in 'untEasyPlateServerMain.pas' {frmEasyPlateServerMain},
   EasyPlateServer_TLB in 'EasyPlateServer_TLB.pas',
-  untRDMEasyPlateServer in 'untRDMEasyPlateServer.pas' {RDMEasyPlateServer: TRemoteDataModule} {RDMEasyPlateServer: CoClass},
-  ScktMain in 'Sckt\ScktMain.pas' {SocketForm};
+  untRDMEasyPlateServer in 'untRDMEasyPlateServer.pas' {RDMEasyPlateServer: TRemoteDataModule} {RDMEasyPlateServer: CoClass};
 
 {$R *.TLB}
 
@@ -67,25 +66,26 @@ begin
     CreateMutex(nil, True, 'SCKTSRVR');
     if GetLastError = ERROR_ALREADY_EXISTS then
     begin
-      MessageBox(0, PChar(SAlreadyRunning), SApplicationName, MB_ICONERROR);
+      MessageBox(0, PChar(EAlreadyRunning), EApplicationName, MB_ICONERROR);
       Halt;
     end;
   end;
-  if Installing or StartService then
+  {if Installing or StartService then
   begin
     SvcMgr.Application.Initialize;
     SocketService := TSocketService.CreateNew(SvcMgr.Application, 0);
     SvcMgr.Application.CreateForm(TfrmEasyPlateServerMain, frmEasyPlateServerMain);
-  SvcMgr.Application.Run;
-  end else
+    //创建附属SvcMgr的远程数据模块
+    SvcMgr.Application.CreateForm(TRDMEasyPlateServer, RDMEasyPlateServer);
+    SvcMgr.Application.Run;
+  end
+  else  }
   begin
-    Forms.Application.ShowMainForm := False;
     Forms.Application.Initialize;
-    Forms.Application.CreateForm(TSocketForm, SocketForm);
-    SocketForm.Initialize(False);
+    Forms.Application.CreateForm(TfrmEasyPlateServerMain, frmEasyPlateServerMain);
+    frmEasyPlateServerMain.Initialize(False);
+    //创建附属Forms的远程数据模块
+    Forms.Application.CreateForm(TRDMEasyPlateServer, RDMEasyPlateServer);
     Forms.Application.Run;
-  end;  
-  Application.Initialize;
-  Application.CreateForm(TSocketForm, SocketForm);
-  Application.Run;
+  end;
 end.

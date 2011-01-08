@@ -491,6 +491,7 @@ end;
 
 function TSocketForm.GetSelectedSocket: TServerSocket;
 begin
+  ShowMessage(IntToStr(ItemIndex));
   Result := TServerSocket(PortList.Items.Objects[ItemIndex]);
 end;
 
