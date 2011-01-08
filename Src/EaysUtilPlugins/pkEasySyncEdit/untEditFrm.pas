@@ -1,0 +1,486 @@
+{ *************************************************************************** }
+{                                                                             }
+{ EControl Syntax Editor (MDI Application)                                    }
+{                                                                             }
+{ Copyright (c) 2004 - 2006 EControl Ltd., Zaharov Michael                    }
+{     www.econtrol.ru                                                         }
+{     support@econtrol.ru                                                     }
+{                                                                             }
+{ *************************************************************************** }
+unit untEditFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ecSyntAnal, ExtCtrls, ecSyntMemo, Menus, ecActns, StdActns, ActnList,
+  ComCtrls, ImgList, ecSpell, ecExtHighlight, ActiveX, ecOleDrag, ecEmbObj;
+
+type
+  TfrmEditorFrame = class(TFrame)
+    EditorSlave: TSyntaxMemo;
+    Splitter2: TSplitter;
+    EditorMaster: TSyntaxMemo;
+    ecSpellChecker1: TecSpellChecker;
+    HyperlinkHighlighter1: THyperlinkHighlighter;
+    TextSource: TecEmbeddedObjects;
+    procedure EditorMasterEnter(Sender: TObject);
+    procedure EditorMasterSetBookmark(Snder: TObject; Bookmark: TBookmark;
+      var Accept: Boolean);
+    procedure FrameResize(Sender: TObject);
+    procedure SplitterMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure EditorMasterGetTokenHint(Sender: TObject;
+      TokenIndex: Integer; var HintText: String);
+    procedure EditorMasterChange(Sender: TObject);
+    procedure EditorMasterCaretPosChanged(Sender: TObject);
+    procedure EditorSlaveGetStyleEntry(Sender: TObject; CurPos: Integer;
+      StyleList: TList; var NextPos: Integer);
+    procedure EditorMasterGetLineNumberStr(Sender: TObject; Line: Integer;
+      var NumberStr: String);
+    procedure EditorMasterGetGutterImage(Sender: TObject;
+      const Line: Integer; List: TList);
+    procedure SyncEditClick(Sender: TObject; Line: integer; Shift: TShiftState);
+    procedure EditorMasterGetStyleEntry(Sender: TObject; CurPos: Integer;
+      StyleList: TList; var NextPos: Integer);
+    procedure EditorMasterExecuteCommand(Sender: TObject; Command: Integer;
+      Data: Pointer; var Handled: Boolean);
+    procedure EditorMasterOleDragEnter(Sender: TObject;
+      const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
+      var Effect: Integer; var Handled: Boolean);
+    procedure EditorMasterOleDragOver(Sender: TObject; const DataObject: IDataObject; KeyState: Integer;
+      Pt: TPoint; var Effect: Integer; var Handled: Boolean);
+    procedure EditorMasterOleDrop(Sender: TObject;
+      const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
+      var Effect: Integer; var Handled: Boolean);
+    procedure EditorMasterCheckChar(Sender: TObject; C: Word;
+      var IsWord: Boolean);
+  private
+    FFileName: string;
+    FOnTitleChanged: TNotifyEvent;
+    FPrevMod: Boolean;
+    procedure SetFileName(const Value: string);
+    function GetModified: boolean;
+    procedure SetModified(const Value: boolean);
+    function GetTitle: string;
+  protected
+    procedure TitleChanged;
+  public
+    constructor Create(AOwner: TComponent); override;
+    procedure SaveFile(const AFileName: string);
+    procedure LoadFile(const AFileName: string);
+    function IsTheFile(const AFileName: string): Boolean;
+    function IsNewFile: Boolean;
+
+    property FileName: string read FFileName write SetFileName;
+    property Modified: boolean read GetModified write SetModified;
+    property Title: string read GetTitle;
+    property OnTitleChanged: TNotifyEvent read FOnTitleChanged write FOnTitleChanged;
+  end;
+
+implementation
+
+uses main, ecStrUtils, ecCmdConst;
+
+const
+  SUntitledFile = 'Untitled';
+
+{$R *.dfm}
+
+// Initializing events
+type
+  TControlHack = class(TControl);
+constructor TfrmEditorFrame.Create(AOwner: TComponent);
+begin
+  inherited;
+  TControlHack(Splitter2).OnMouseDown := SplitterMouseDown;
+  ecSpellChecker1.Dictionary := SyntEditMain.ecDictionary1;
+  EditorMaster.DoubleBuffered := True;
+  TextSource.Lines.SetObjectsStore;
+  EditorMaster.PopupMenu := SyntEditMain.PopupMenu2;
+  EditorSlave.PopupMenu := SyntEditMain.PopupMenu2;
+  EditorMaster.Gutter.Images := SyntEditMain.ImageList1;
+  EditorSlave.Gutter.Images := SyntEditMain.ImageList1;
+end;
+
+procedure TfrmEditorFrame.EditorMasterEnter(Sender: TObject);
+begin
+  SyntEditMain.CurrentEditor := (Sender as TSyntaxMemo);
+end;
+
+procedure TfrmEditorFrame.EditorMasterSetBookmark(Snder: TObject;
+  Bookmark: TBookmark; var Accept: Boolean);
+begin
+  with Bookmark do
+   if (BmIndex >= 0) and (BmIndex < 10) then
+    begin
+     ImageIndex := 13 + BmIndex;
+     Hint := 'Bookmark ' + IntToStr(BmIndex);
+    end;
+end;
+
+procedure TfrmEditorFrame.SetFileName(const Value: string);
+begin
+  FFileName := Value;
+end;
+
+procedure TfrmEditorFrame.SaveFile(const AFileName: string);
+var attr: integer;
+begin
+  with TextSource do
+    begin
+      {$IFDEF EC_UNICODE}
+      if (Lines.TextCoding = tcAnsi) and  Lines.ContainUnicode and
+         (MessageBox(Handle, 'Text contains Unicode characters. Would you like to save text in Unicode format?',
+          'Warning', MB_ICONWARNING or MB_YESNO) = IDYES) then
+        Lines.TextCoding := tcUnicode;
+      {$ENDIF}
+      if FileExists(FileName) then
+        begin
+          attr := FileGetAttr(AFileName);
+          if (attr and faReadOnly) <> 0 then
+            if MessageBox(Handle, 'Do you want to overwrite read only file?',
+                 'Warning', MB_ICONWARNING or MB_YESNO ) = IDNO then
+               Exit
+            else
+               FileSetAttr(FileName, attr and (not faReadOnly));
+        end;
+      EditorMaster.SaveToFile(AFileName);
+//      EditorSlave.Modified := False;
+      FFileName := AFileName;
+      TitleChanged;
+    end;
+end;
+
+procedure TfrmEditorFrame.LoadFile(const AFileName: string);
+begin
+  EditorMaster.LoadFromFile(AFileName);
+  EditorSlave.Modified := False;
+  FFileName := ExpandFileName(AFileName);
+  TitleChanged;
+end;
+
+procedure TfrmEditorFrame.FrameResize(Sender: TObject);
+begin
+  if not EditorSlave.Visible or (EditorSlave.Height = 0) then
+    EditorSlave.Top := 0;
+end;
+
+procedure TfrmEditorFrame.SplitterMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  FrameResize(Self);
+end;
+
+function TfrmEditorFrame.GetModified: boolean;
+begin
+  Result := EditorMaster.Modified;
+end;
+
+procedure TfrmEditorFrame.SetModified(const Value: boolean);
+begin
+  EditorSlave.Modified := Value;
+  EditorMaster.Modified := Value;
+end;
+
+function TfrmEditorFrame.GetTitle: string;
+begin
+  if FFileName = '' then
+    Result := SUntitledFile
+  else
+    Result := ExtractFileName(FFileName);
+  if Modified then
+    Result := Result + '*';
+  FPrevMod := Modified;
+end;
+
+procedure TfrmEditorFrame.TitleChanged;
+begin
+  if Parent <> nil then
+    if Parent is TTabSheet then
+      (Parent as TTabSheet).Caption := Title else
+    if Parent is TCustomForm then
+      (Parent as TCustomForm).Caption := Title;
+  if Assigned(FOnTitleChanged) then
+    FOnTitleChanged(Self);
+end;
+
+function TfrmEditorFrame.IsTheFile(const AFileName: string): Boolean;
+var s1, s2: string;
+begin
+  // To use MS CharUpper
+  Result := (Length(FFileName) = Length(AFileName)) and
+            (Length(FFileName) > 0);
+  if Result then
+    begin
+      s1 := Copy(FFileName, 1, Length(FFileName));
+      s2 := Copy(AFileName, 1, Length(AFileName));
+      Result := not IsNewFile and
+                (string(CharUpper(PChar(s1))) =
+                 string(CharUpper(PChar(s2))));
+    end;
+end;
+
+function TfrmEditorFrame.IsNewFile: Boolean;
+begin
+  Result := FFileName = '';
+end;
+
+procedure TfrmEditorFrame.EditorMasterGetTokenHint(Sender: TObject;
+  TokenIndex: Integer; var HintText: String);
+var p: TPoint;
+begin
+ try
+// This example show how to get token information and use it for hint showing
+  if (Sender as TSyntaxMemo).SyntObj <> nil then
+  with (Sender as TSyntaxMemo).SyntObj do
+   begin
+    HintText := 'Token:      ' + TagStr[TokenIndex] + sLineBreak;
+    if Length(HintText) > 100 then HintText := '';
+    p := TagPos[TokenIndex];
+    HintText := HintText +
+               'Rule:       ' + Tags[TokenIndex].Rule.DisplayName + sLineBreak +
+               'Token pos:  ' + Format('(X: %d; Y: %d)', [p.X + 1, p.Y + 1]) + sLineBreak +
+               'Position: ' + IntToStr(TokenIndex);
+   end;
+ except
+  on E: Exception do
+   HintText := E.Message;
+ end;
+end;
+
+procedure TfrmEditorFrame.EditorMasterChange(Sender: TObject);
+begin
+  if FPrevMod <> Modified then TitleChanged;
+  SyntEditMain.UpdateStatusBar(Sender);
+end;
+
+procedure TfrmEditorFrame.EditorMasterCaretPosChanged(Sender: TObject);
+begin
+  SyntEditMain.UpdateStatusBar(Sender);
+end;
+
+procedure TfrmEditorFrame.EditorSlaveGetStyleEntry(Sender: TObject;
+  CurPos: Integer; StyleList: TList; var NextPos: Integer);
+var tmp: integer;
+begin
+  NextPos := ecSpellChecker1.GetStyleList(CurPos, StyleList);
+  tmp := HyperlinkHighlighter1.GetStyleList(CurPos, StyleList);
+  if (tmp <> -1) and (tmp < NextPos) or (NextPos = -1) then
+    NextPos := tmp; 
+end;
+
+procedure TfrmEditorFrame.EditorMasterGetLineNumberStr(Sender: TObject;
+  Line: Integer; var NumberStr: String);
+begin
+  if ((Line + 1) mod 10 = 0) or
+     (EditorMaster.Collapsed.GetCollapsedIndex(Line) <> -1) or
+     (Line = EditorMaster.CaretPos.Y) then
+    NumberStr := IntToStr(Line + 1)
+  else
+  if (Line + 1) mod 5 = 0 then
+    NumberStr := '-'
+  else
+    NumberStr := '.';
+end;
+
+procedure TfrmEditorFrame.EditorMasterGetGutterImage(Sender: TObject;
+  const Line: Integer; List: TList);
+var gi: TGutterObject;
+    Memo: TSyntaxMemo;
+begin
+  Memo := EditorMaster;
+  if (Memo.SelLength > 0) and
+     (Line = Memo.StrPosToCaretPos(Memo.SelStart + Memo.SelLength).Y) then
+   begin
+    gi := TGutterObject.Create(nil);
+    gi.OnClick := SyncEditClick;
+    gi.ImageIndex := 58;
+    gi.Hint := 'Create sync range';
+    List.Add(gi);
+    Exit;
+   end;
+  if Memo.SyncEditing.RangeEndAtLine(Line) <> -1 then
+   begin
+    gi := TGutterObject.Create(nil);
+    gi.ImageIndex := 59;
+    gi.Hint := 'Remove sync range';
+    gi.OnClick := SyncEditClick;
+    List.Add(gi);
+    Exit;
+   end;
+end;
+
+procedure TfrmEditorFrame.SyncEditClick(Sender: TObject; Line: integer;
+  Shift: TShiftState);
+var idx: integer;
+begin
+  if EditorMaster.SelLength > 0 then
+    EditorMaster.SyncEditing.AddCurSelection
+  else
+   begin
+    idx := EditorMaster.SyncEditing.RangeEndAtLine(Line);
+    if idx <> -1 then
+      EditorMaster.SyncEditing.Delete(idx);
+   end;
+end;
+
+procedure TfrmEditorFrame.EditorMasterGetStyleEntry(Sender: TObject;
+  CurPos: Integer; StyleList: TList; var NextPos: Integer);
+const OFFSET = 72;
+var p: TPoint;
+    L: integer;
+begin
+  with EditorMaster do
+   begin
+     p := StrPosToCaretPos(CurPos);
+     L := Lines.LineLength(p.Y);
+     if (p.X >= OFFSET) and (p.X < L) then
+      begin
+       NextPos := CurPos + L - p.X;
+       StyleList.Add(TStyleEntry.Create(HyperlinkHighlighter1.Style,
+           CurPos + L - OFFSET, NextPos));
+      end else
+      begin
+       p.X := OFFSET;
+       while (p.Y < Lines.Count) and (Lines.LineLength(p.Y) < OFFSET) do
+         Inc(p.Y);
+       if p.Y = Lines.Count then NextPos := -1
+        else NextPos := CaretPosToStrPos(p);
+      end;
+   end;
+end;
+
+procedure TfrmEditorFrame.EditorMasterExecuteCommand(Sender: TObject;
+  Command: Integer; Data: Pointer; var Handled: Boolean);
+begin
+  if Command = smTab then
+    begin
+      Handled := TCustomSyntaxMemo(Sender).HaveSelection;
+      if Handled then
+        TCustomSyntaxMemo(Sender).ExecCommand(smBlockIndent);
+    end;
+end;
+
+// OLE color assignment
+var
+  CF_DRAGCOLOR: Word = 0;
+const
+  CFSTR_DRAGCOLOR = 'Datras Drag Color';
+
+procedure TfrmEditorFrame.EditorMasterOleDragEnter(Sender: TObject;
+  const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
+  var Effect: Integer; var Handled: Boolean);
+begin
+  Handled := GetFormatInfo(DataObject, CF_DRAGCOLOR);
+end;
+
+procedure TfrmEditorFrame.EditorMasterOleDragOver(Sender: TObject; const DataObject: IDataObject;
+  KeyState: Integer; Pt: TPoint; var Effect: Integer;
+  var Handled: Boolean);
+begin
+  Handled := GetFormatInfo(DataObject, CF_DRAGCOLOR);
+end;
+
+procedure TfrmEditorFrame.EditorMasterOleDrop(Sender: TObject;
+  const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
+  var Effect: Integer; var Handled: Boolean);
+var FormatInfo: TFormatEtc;
+    Fg: Boolean;
+    C: TColor;
+    Medium: TStgMedium;
+    Idx, W: integer;
+    Data: Pointer;
+begin
+  with Sender as TSyntaxMemo do
+   begin
+     Handled := GetFormatInfo(DataObject, CF_DRAGCOLOR, FormatInfo);
+     if Handled then
+       begin
+         Fg := (KeyState and MK_CONTROL) <> 0;
+         Pt := ScreenToClient(Pt);
+         if DataObject.GetData(FormatInfo, Medium) = S_OK then
+         begin
+           Data := GlobalLock(Medium.hGlobal);
+           if Data <> nil then
+           try
+             Move(Data^, C, SizeOf(C));
+           finally
+             GlobalUnlock(Medium.hGlobal);
+           end;
+           ReleaseStgMedium(Medium);
+         end;
+         if Gutter.Visible and (Pt.X < Gutter.Width) then
+           begin // Gutter
+             if Fg then
+               LineNumbers.Font.Color := C
+             else
+              begin
+               W := 0;
+               for Idx := 0 to Gutter.Bands.Count - 1 do
+                 begin
+                   if (Pt.X >= W) and (Pt.X < W + Gutter.Bands[Idx].Width) then
+                     begin
+                       if Gutter.Bands[Idx].Color = clNone then Break
+                        else Gutter.Bands[Idx].Color := C;
+                       Exit;
+                     end;
+                   Inc(W, Gutter.Bands[Idx].Width);
+                 end;
+               Gutter.Color := C;
+              end;
+           end else
+         if ShowRightMargin and (abs(Pt.X - RightMargin * DefTextExt.cx) < 2) then
+           begin
+             RightMarginColor := C;
+           end else
+           begin
+             Pt := MouseToCaret(Pt.X, Pt.Y);
+             if (SyntObj = nil) or
+                (Pt.Y < 0) or (Pt.Y >= Lines.Count) or
+                (Pt.X >= Lines.LineLength(Pt.Y)) then
+               begin // Default editor style
+                 if Fg then
+                   Font.Color := C
+                 else
+                   Color := C;
+               end else
+               begin
+                 Idx := SyntObj.TokenAtPos(CaretPosToStrPos(Pt));
+                 if (Idx <> -1) and (SyntObj.Tags[Idx].Rule <> nil) and
+                    (SyntObj.Tags[Idx].Rule.Style <> nil) then
+                   begin
+                     if Fg then
+                       SyntObj.Tags[Idx].Rule.Style.Font.Color := C
+                     else
+                       SyntObj.Tags[Idx].Rule.Style.BgColor := C;
+                   end;
+               end;
+           end;
+       end;
+   end;
+end;
+
+procedure TfrmEditorFrame.EditorMasterCheckChar(Sender: TObject; C: Word;
+  var IsWord: Boolean);
+begin
+  if Pos(ecChar(C), '$#') > 0 then
+    IsWord := True;
+end;
+
+function SelectedWordType(Memo: TSyntaxMemo; Pos: integer): integer;
+var idx: integer;
+begin
+   Result := -1;
+   if Assigned(Memo.SyntObj) then
+     begin
+       idx := Memo.SyntObj.TokenAtPos(Pos);
+       if idx <> -1 then
+         Result := Memo.SyntObj.Tags[idx].TokenType;
+     end;
+end;
+
+initialization
+  CF_DRAGCOLOR := RegisterClipBoardFormat(CFSTR_DRAGCOLOR);
+
+end.

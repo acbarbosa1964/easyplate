@@ -1,0 +1,22 @@
+object frmEasySyncEditMainMDIChild: TfrmEasySyncEditMainMDIChild
+  Left = 448
+  Top = 301
+  Width = 583
+  Height = 386
+  Caption = 'frmEasySyncEditMainMDIChild'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  FormStyle = fsMDIChild
+  OldCreateOrder = False
+  Position = poDefault
+  Visible = True
+  WindowState = wsMaximized
+  OnActivate = FormActivate
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+end
