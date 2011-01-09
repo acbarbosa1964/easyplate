@@ -12,7 +12,7 @@ unit EasyPlateServer_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2011-1-9 15:11:38 from Type Library described below.
+// File generated on 2011-1-9 21:17:03 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: E:\MyProject\E1Dev\Src\Server\EasyPlateServer.tlb (1)
@@ -73,15 +73,11 @@ type
 // *********************************************************************//
   IRDMEasyPlateServer = interface(IAppServer)
     ['{B7C21EDC-8A63-4176-9AEF-44D70F179AA5}']
-    function EasyGetRDMData(const ATableName: WideString; const ASQL: WideString): OleVariant; safecall;
+    function EasyGetRDMData(const ASQL: WideString): OleVariant; safecall;
     function EasySaveRDMData(const ATableName: WideString; ADelta: OleVariant; 
                              const AKeyField: WideString; AMaxErrors: SYSINT): OleVariant; safecall;
     function EasySaveRDMDatas(ATableNameOLE: OleVariant; ADelta: OleVariant; 
-                              AKeyFieldOLE: OleVariant; AMaxErrors: SYSINT; 
-                              AUpdateFields: OleVariant): OleVariant; safecall;
-    function EasySaveRDMDataByFields(const ATableName: WideString; ADelta: OleVariant; 
-                                     const AKeyField: WideString; AMaxErrors: SYSINT; 
-                                     AUpdateFields: OleVariant): OleVariant; safecall;
+                              AKeyFieldOLE: OleVariant; AMaxErrors: SYSINT): OleVariant; safecall;
   end;
 
 // *********************************************************************//
@@ -91,15 +87,11 @@ type
 // *********************************************************************//
   IRDMEasyPlateServerDisp = dispinterface
     ['{B7C21EDC-8A63-4176-9AEF-44D70F179AA5}']
-    function EasyGetRDMData(const ATableName: WideString; const ASQL: WideString): OleVariant; dispid 301;
+    function EasyGetRDMData(const ASQL: WideString): OleVariant; dispid 301;
     function EasySaveRDMData(const ATableName: WideString; ADelta: OleVariant; 
                              const AKeyField: WideString; AMaxErrors: SYSINT): OleVariant; dispid 302;
     function EasySaveRDMDatas(ATableNameOLE: OleVariant; ADelta: OleVariant; 
-                              AKeyFieldOLE: OleVariant; AMaxErrors: SYSINT; 
-                              AUpdateFields: OleVariant): OleVariant; dispid 303;
-    function EasySaveRDMDataByFields(const ATableName: WideString; ADelta: OleVariant; 
-                                     const AKeyField: WideString; AMaxErrors: SYSINT; 
-                                     AUpdateFields: OleVariant): OleVariant; dispid 304;
+                              AKeyFieldOLE: OleVariant; AMaxErrors: SYSINT): OleVariant; dispid 303;
     function AS_ApplyUpdates(const ProviderName: WideString; Delta: OleVariant; MaxErrors: Integer; 
                              out ErrorCount: Integer; var OwnerData: OleVariant): OleVariant; dispid 20000000;
     function AS_GetRecords(const ProviderName: WideString; Count: Integer; out RecsOut: Integer; 

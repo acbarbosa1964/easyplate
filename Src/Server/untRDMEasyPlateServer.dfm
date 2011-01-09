@@ -19,8 +19,9 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
   object EasyRDMDsp: TDataSetProvider
     DataSet = EasyRDMQry
     Options = [poAllowCommandText]
+    UpdateMode = upWhereKeyOnly
     OnUpdateError = EasyRDMDspUpdateError
-    OnGetTableName = EasyRDMDspGetTableName
+    BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
     Left = 56
     Top = 80
   end
