@@ -30,7 +30,8 @@ uses
   ExtCtrls, Grids, untEasyBaseGrid, untEasyGrid, untEasyStatusBar, Registry,
   untEasyStatusBarStylers, untEasyGroupBox, Menus, untEasyMenus, IniFiles,
   untEasyMenuStylers, untEasyTrayIcon, SvcMgr, ScktComp, ScktCnst, ActnList,
-  AdvNavBar, untEasyEdit, ComCtrls, ImgList;
+  AdvNavBar, untEasyEdit, ComCtrls, ImgList, untEasyPageControl,
+  untEasyMemo;
 
 const
   EApplicationName = 'EasyPlate服务程序';
@@ -76,9 +77,16 @@ type
     PortUpDown: TUpDown;
     ThreadUpDown: TUpDown;
     TimeoutUpDown: TUpDown;
-    ConnectionList: TListView;
     imgServer: TImageList;
     EasyToolBarButton1: TEasyToolBarButton;
+    EasyToolBarButton2: TEasyToolBarButton;
+    pgcServerMain: TEasyPageControl;
+    tbsConnHost: TEasyTabSheet;
+    tbsExecLog: TEasyTabSheet;
+    ConnectionList: TListView;
+    tbsErrorLog: TEasyTabSheet;
+    mmExecLog: TEasyMemo;
+    mmErrorLog: TEasyMemo;
     procedure FormCreate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure ApplyActionExecute(Sender: TObject);
@@ -94,6 +102,9 @@ type
     procedure DisconnectActionUpdate(Sender: TObject);
     procedure RemovePortActionUpdate(Sender: TObject);
     procedure ServerTrayIconCycle(Sender: TObject; Current: Integer);
+    procedure FormShow(Sender: TObject);
+    procedure mmErrorLogChange(Sender: TObject);
+    procedure mmExecLogChange(Sender: TObject);
   private
     { Private declarations }
     FFromService: Boolean;
@@ -107,11 +118,16 @@ type
     function GetSelectedSocket: TServerSocket; //保存端口列表
     procedure CheckValues;
     procedure UpdateStatus;
+    //输出日志
+    //App\log 运行日志App\log\ExecLog 错误日志 App\log\ErrorLog
+//    procedure SaveLogMemo(ALogFile: string);
   public
     { Public declarations }
     procedure Initialize(FromService: Boolean);
     property ItemIndex: Integer read GetItemIndex write SetItemIndex;
     property SelectedSocket: TServerSocket read GetSelectedSocket;
+    function GetLocalTime: string;
+    function GetLocalDate: string;
   protected
     procedure ReadSettings;
     procedure WriteSettings;
@@ -138,6 +154,12 @@ uses untRDMEasyPlateServer, SConnect, ActiveX, MidConst;
 
 {$R *.dfm}
 
+var
+  AppServerPath, ExecLogPath, ErrorLogPath: string;
+
+const
+  mmLogLineCount = 20000;
+  
 { TSocketDispatcherThread }
 
 type
@@ -667,7 +689,8 @@ end;
 procedure TfrmEasyPlateServerMain.RegisteredActionExecute(Sender: TObject);
 begin
   RegisteredAction.Checked := not RegisteredAction.Checked;
-  ShowMessage(SNotUntilRestart);
+  ShowMessage('重启服务程序更改生效!');
+//  ShowMessage(SNotUntilRestart);
 end;
 
 procedure TfrmEasyPlateServerMain.AllowXMLExecute(Sender: TObject);
@@ -756,6 +779,83 @@ procedure TfrmEasyPlateServerMain.ServerTrayIconCycle(Sender: TObject;
   Current: Integer);
 begin
 //
+end;
+
+procedure TfrmEasyPlateServerMain.FormShow(Sender: TObject);
+begin
+  pgcServerMain.ActivePageIndex := 0;
+  mmExecLog.ReadOnly := True;
+  mmErrorLog.ReadOnly := True;
+  //服务程序目录 处理日志目录
+  AppServerPath := ExtractFilePath(Forms.Application.ExeName);
+  ExecLogPath := AppServerPath + 'log\ExecLog\';
+  ErrorLogPath := AppServerPath + 'log\ErrorLog\';
+  if not DirectoryExists(AppServerPath + 'log') then
+  begin
+    try
+      if CreateDir(AppServerPath + 'log') then
+      begin
+        if not DirectoryExists(ExecLogPath) then
+        begin
+          try
+            CreateDir(ExecLogPath);
+          except on e:Exception do
+            ShowMessage('运行日志目录检查出错, 原因：' + e.Message);
+          end;
+        end;
+        if not DirectoryExists(ErrorLogPath) then
+        begin
+          try
+            CreateDir(ErrorLogPath);
+          except on e:Exception do
+            ShowMessage('错误日志目录检查出错, 原因：' + e.Message);
+          end;
+        end;
+      end;
+    except on e:Exception do
+      ShowMessage('日志目录检查出错, 原因：' + e.Message);
+    end;
+  end;
+end;
+
+function TfrmEasyPlateServerMain.GetLocalDate: string;
+begin
+  Result := FormatDateTime('YYYY-MM-DD', Now());
+end;
+
+function TfrmEasyPlateServerMain.GetLocalTime: string;
+begin
+  Result := FormatDateTime('YYYY-MM-DD HH:NN:SS', Now());
+end;
+
+procedure TfrmEasyPlateServerMain.mmErrorLogChange(Sender: TObject);
+begin
+  if TEasyMemo(Sender).Lines.Count > mmLogLineCount then
+  begin
+    if not DirectoryExists(ErrorLogPath + GetLocalDate) then
+    try
+      CreateDir(ErrorLogPath + GetLocalDate);
+    except on e:Exception do
+      ShowMessage(e.Message);
+    end;
+    while not FileExists(ErrorLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
+      mmErrorLog.Lines.SaveToFile(ErrorLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
+  end;
+end;
+
+procedure TfrmEasyPlateServerMain.mmExecLogChange(Sender: TObject);
+begin
+  if TEasyMemo(Sender).Lines.Count > mmLogLineCount then
+  begin
+    if not DirectoryExists(ExecLogPath + GetLocalDate) then
+    try
+      CreateDir(ExecLogPath + GetLocalDate);
+    except on e:Exception do
+      ShowMessage(e.Message);
+    end;
+    while not FileExists(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
+      mmErrorLog.Lines.SaveToFile(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
+  end;
 end;
 
 end.

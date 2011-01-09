@@ -18,7 +18,16 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
   end
   object EasyRDMDsp: TDataSetProvider
     DataSet = EasyRDMQry
+    Options = [poAllowCommandText]
+    OnUpdateError = EasyRDMDspUpdateError
+    OnGetTableName = EasyRDMDspGetTableName
     Left = 56
+    Top = 80
+  end
+  object EasyRDMCds: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 144
     Top = 80
   end
 end
