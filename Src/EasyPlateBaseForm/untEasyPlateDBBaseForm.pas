@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage,
-  untEasyPlateBaseForm, untEasyDBDevExt;
+  untEasyPlateBaseForm, untEasyDBDevExt, EasyPlateServer_TLB;
 
 type
   TfrmEasyPlateDBBaseForm = class(TfrmEasyPlateBaseForm)
@@ -41,12 +41,16 @@ type
     FEasyDBConn: TADOConnection;
     function GetUtilADOConn: TADOConnection;
     procedure SetUtilADOConn(const Value: TADOConnection);
+    function GetRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     //发布ADO数据连接
     property EasyUtilADOConn: TADOConnection read GetUtilADOConn write SetUtilADOConn;
+    //发布远程数据服务接口
+    //客户端调用服务端函数均使用此属性
+    property EasyRDMDisp: IRDMEasyPlateServerDisp read GetRDMEasyPlateServerDisp;
   end;
 
 var
@@ -124,6 +128,11 @@ begin
        (Components[i] as TEasyDevDBCalcEdit).ImeMode := imDontCare;
     end;
   end; 
+end;
+
+function TfrmEasyPlateDBBaseForm.GetRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
+begin
+  Result := DMEasyDBConnection.EasyIRDMEasyPlateServerDisp;
 end;
 
 function TfrmEasyPlateDBBaseForm.GetUtilADOConn: TADOConnection;

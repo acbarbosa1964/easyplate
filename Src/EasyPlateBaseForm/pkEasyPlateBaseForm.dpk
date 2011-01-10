@@ -43,11 +43,15 @@ requires
   cxExtEditorsVCLD7,
   cxPageControlVCLD7,
   cxGridVCLD7,
-  EasyDevExt;
+  EasyDevExt,
+  indy,
+  pkEasyUtilFunction;
 
 contains
   untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
   untEasyPlateDBBaseForm in 'untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm},
-  untEasyPlateDBForm in 'untEasyPlateDBForm.pas' {frmEasyPlateDBForm};
+  untEasyPlateDBForm in 'untEasyPlateDBForm.pas' {frmEasyPlateDBForm},
+  untEasyBaseConst in 'untEasyBaseConst.pas',
+  untReconcileError in 'untReconcileError.pas' {frmReconcileError};
 
 end.

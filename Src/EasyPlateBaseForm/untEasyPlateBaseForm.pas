@@ -90,6 +90,14 @@ type
     constructor Create(AOwner: TComponent); override;
     property FormId: string read GetFormId write SetFormId;
     property IsKeyPreView: Boolean read GetKeyPreView write SetIsKeyPreView;
+    //系统提示信息
+    function EasyErrorHint(AHint: string): Integer; virtual;
+    function EasyConfirmHint(AHint: string): Integer; virtual;
+    function EasyWarningHint(AHint: string): Integer; virtual;
+    function EasyHint(AHint: string): Integer; virtual;
+    function EasySelectHint(AHint: string): Integer; virtual;
+    //获取用户指定模块指定操作的权限
+    function GetUserRight: Boolean; virtual;
     //语言代码
     property LangID: string read GetLangID write SetLangID;
     //以下为公司版权信息
@@ -288,6 +296,41 @@ end;
 procedure TfrmEasyPlateBaseForm.SetControlCaption(AControl: TControl;
   ACaption: string);
 begin
+end;
+
+function TfrmEasyPlateBaseForm.EasyConfirmHint(AHint: string): Integer;
+begin
+  Result := Application.MessageBox(PChar(AHint), PChar(Application.Title),
+                                    MB_OKCANCEL + MB_ICONQUESTION);
+end;
+
+function TfrmEasyPlateBaseForm.EasyErrorHint(AHint: string): Integer;
+begin
+  Result := Application.MessageBox(PChar(AHint), PChar(Application.Title), MB_OK + 
+    MB_ICONSTOP);
+end;
+
+function TfrmEasyPlateBaseForm.EasyHint(AHint: string): Integer;
+begin
+  Result := Application.MessageBox(PChar(AHint), PChar(Application.Title), MB_OK + 
+    MB_ICONINFORMATION);
+end;
+
+function TfrmEasyPlateBaseForm.EasySelectHint(AHint: string): Integer;
+begin
+  Result := Application.MessageBox(PChar(AHint), PChar(Application.Title),
+    MB_YESNOCANCEL + MB_ICONQUESTION); 
+end;
+
+function TfrmEasyPlateBaseForm.EasyWarningHint(AHint: string): Integer;
+begin
+  Result := Application.MessageBox(PChar(AHint), PChar(Application.Title), MB_OK + 
+    MB_ICONWARNING);
+end;
+
+function TfrmEasyPlateBaseForm.GetUserRight: Boolean;
+begin
+  Result := True;
 end;
 
 end.
