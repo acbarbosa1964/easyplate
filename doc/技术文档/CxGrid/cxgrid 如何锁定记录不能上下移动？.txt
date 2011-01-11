@@ -1,0 +1,17 @@
+  在TcxGridDBTableView的OnCanFocusRecord事件中写代码就行了.如下:   
+
+  procedure   TFrmBillType.tvBillTypesCanFocusRecord(   
+
+      Sender:   TcxCustomGridTableView;   ARecord:   TcxCustomGridRecord;   
+
+      var   AAllow:   Boolean);   
+
+  begin   
+
+      inherited;   
+
+      if   bUInEdit   then   
+
+          AAllow   :=   false;   
+
+  end;   
