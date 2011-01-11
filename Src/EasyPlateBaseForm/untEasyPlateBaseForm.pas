@@ -105,7 +105,7 @@ type
     property FileDescription: string read GetFileDescription write SetFileDescription;
     property FileVersion: string read GetFileVersion write SetFileVersion;
     property LegalCopyright: string read GetLegalCopyright write SetLegalCopyright;
-    //
+    //系统路径属性
     property EasyApplicationPath: string read FEasyAppPath write FEasyAppPath;
     property EasyPlugPath: string read FEasyPlugPath write FEasyPlugPath;
     property EasyRootGUID: string read FEasyRootGUID write FEasyRootGUID;

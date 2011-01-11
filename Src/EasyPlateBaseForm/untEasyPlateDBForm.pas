@@ -84,8 +84,6 @@ type
     FNotCopyFieldList     : TStrings;
     FNotNullFieldColor    : TColor;        //非空字段颜色
     //设置非空字段的颜色的过程
-    procedure SetNotNullFieldColor; virtual;
-    procedure SetEasyDataState(const Value: TDataSetState);
     procedure SetEasyMainClientDataSet(const Value: TClientDataSet);
     function GetEasyMainClientDataSet: TClientDataSet;
 
@@ -126,18 +124,28 @@ type
     procedure SetNullFieldColor(const Value: TColor);
     function GetMainDeleteMark: string;
     procedure SetMainDeleteMark(const Value: string);
-  public
-    { Public declarations }
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-
+    //复制操作相关
+    function BuildCopyList(AClientDataSet: TClientDataSet; ANotCopyFieldList: TStrings): TStrings;
+    procedure CopyDataFromList(AClientDataSet: TClientDataSet; ACopyFieldList: TStrings);
+    function GetEasyDataState: TDataSetState;
+    procedure SetEasyDataState(const Value: TDataSetState);
+    procedure SetNotNullFieldColor(const Value: TColor);
     //非空和非复制字段处理
     procedure AddNotNullField(FieldName: string);
     procedure AddNotNullFields(FieldList: array of string);
     procedure AddNotCopyField(FieldName: string);
     procedure AddNotCopyFields(FieldList: array of string);
+    //设置非空字段的控件颜色
+    procedure SetNotNullFieldsControlColor;
+  public
+    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+    //保存之前检查必填字段是否有空
+    function CheckNotNullFields: Boolean;
     //非空字段的颜色
-    property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNullFieldColor;
+    property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNotNullFieldColor;
     //必须指定EasyMainClientDataSet
     property EasyMainClientDataSet: TClientDataSet read GetEasyMainClientDataSet
                                     write SetEasyMainClientDataSet;
@@ -148,6 +156,7 @@ type
     property ISCanHotKey : Boolean read FISCanHotKey write FISCanHotKey;
     //数据删除标志
     property MainDeleteMark: string read GetMainDeleteMark write SetMainDeleteMark;
+    property EasyDataState: TDataSetState read GetEasyDataState write SetEasyDataState;
     //初始化数据集信息
     property MainClientDataSet: TClientDataSet read GetMainClientDataSet write SetClientDataSet;
     property MainSQL: string read GetMainSQL write SetMainSQL;
@@ -167,22 +176,34 @@ uses
 
 procedure TfrmEasyPlateDBForm.AddNotCopyField(FieldName: string);
 begin
-
+  if not Assigned(FNotCopyFieldList) then
+    FNotCopyFieldList := TStringList.Create;
+  if FNotCopyFieldList.IndexOf(UpperCase(FieldName)) < 0 then
+    FNotCopyFieldList.Add(UpperCase(FieldName));
 end;
 
 procedure TfrmEasyPlateDBForm.AddNotCopyFields(FieldList: array of string);
+var
+  I: Integer;
 begin
-
+  for I := Low(FieldList) to High(FieldList) do
+    AddNotCopyField(FieldList[I]);
 end;
 
 procedure TfrmEasyPlateDBForm.AddNotNullField(FieldName: string);
 begin
-
+  if not Assigned(FNotNullFieldList) then
+    FNotNullFieldList := TStringList.Create;
+  if FNotNullFieldList.IndexOf(FieldName) < 0 then
+    FNotNullFieldList.Add(FieldName);
 end;
 
 procedure TfrmEasyPlateDBForm.AddNotNullFields(FieldList: array of string);
+var
+  I: Integer;
 begin
-
+  for I := Low(FieldList) to High(FieldList) do
+    AddNotNullField(FieldList[I]);
 end;
 
 function TfrmEasyPlateDBForm.AfterDelete(DataSet: TDataSet): Boolean;
@@ -192,12 +213,21 @@ end;
 
 function TfrmEasyPlateDBForm.AfterSave(DataSet: TDataSet): Boolean;
 begin
-
+  Result := True;
 end;
 
 function TfrmEasyPlateDBForm.Append: Boolean;
 begin
-
+  Result := False;
+  if Assigned(MainClientDataSet) then
+  begin
+    if not MainClientDataSet.Active then
+      MainClientDataSet.Open;
+    MainClientDataSet.Append;
+    //添加时间
+    //用户权限控制
+    Result := True;
+  end;  
 end;
 
 function TfrmEasyPlateDBForm.BeforeDelete(DataSet: TDataSet): Boolean;
@@ -207,17 +237,54 @@ end;
 
 function TfrmEasyPlateDBForm.BeforeSave(DataSet: TDataSet): Boolean;
 begin
-
+  Result := True;
 end;
 
 function TfrmEasyPlateDBForm.Cancel: Boolean;
 begin
-
+  Result := False;
+  if Assigned(MainClientDataSet) then
+  begin
+    MainClientDataSet.Cancel;
+    Result := True;
+  end;
 end;
 
 function TfrmEasyPlateDBForm.Copy: Boolean;
+var
+  CopyList    : TStrings;
+  bCanContinue: Boolean;
 begin
+  Result := False;
+  if Assigned(MainClientDataSet) then
+  begin
+    bCanContinue := True;
+    if not GetUserRight then
+    begin
+      bCanContinue := False;
+      EasyErrorHint(EasyErrorHint_NRight);
+    end;
+    if bCanContinue then
+    begin
+      CopyList := TStringList.Create;
+      if not Assigned(FNotCopyFieldList) then
+        FNotCopyFieldList := TStringList.Create;
+      //获取此表的主键字段和不可复制字段
+//      if FNotCopyFieldList.Count <= 0 then
+//        FNotCopyFieldList.AddStrings(GetUniqueKeys(GetTableName(FClientDataSet), Self.Connection, [ikPrimary, ikUnique]));
 
+      try
+        CopyList := BuildCopyList(MainClientDataSet, FNotCopyFieldList);
+        if Append then
+        begin
+          CopyDataFromList(MainClientDataSet, CopyList);
+          Result := True;
+        end;
+      finally
+        CopyList.Free;
+      end; 
+    end;
+  end;
 end;
 
 constructor TfrmEasyPlateDBForm.Create(AOwner: TComponent);
@@ -304,13 +371,18 @@ end;
 
 destructor TfrmEasyPlateDBForm.Destroy;
 begin
-
-  inherited;
+  if Assigned(FNotNullFieldList) then
+    FNotNullFieldList.Free;
+  if Assigned(FNotCopyFieldList) then
+    FNotCopyFieldList.Free;
+  if Assigned(MainClientDataSet) then
+    MainClientDataSet.Free;
+  inherited Destroy;
 end;
 
 procedure TfrmEasyPlateDBForm.DoSave(sender: TObject);
 begin
-
+  Self.Save;
 end;
 
 procedure TfrmEasyPlateDBForm.DoSetSQL(const Value: string);
@@ -321,18 +393,41 @@ end;
 procedure TfrmEasyPlateDBForm.DoShow;
 begin
   inherited;
-  SetNotNullFieldColor;
+  SetNotNullFieldsControlColor;
 end;
 
 function TfrmEasyPlateDBForm.Edit: Boolean;
+var
+  bCanContinues : Boolean;
 begin
-
+  Result := False;
+  //检查是否指定数据集
+  if Assigned(MainClientDataSet) then
+  begin
+    if not MainClientDataSet.Active then
+      MainClientDataSet.Open;
+    bCanContinues := True;
+    //检查用户权限
+    if not GetUserRight then
+    begin
+      bCanContinues := false;
+      EasyErrorHint(EasyErrorHint_NRight);
+    end;
+    //有用户权限 进入Edit
+    if bCanContinues then
+    begin
+      MainClientDataSet.Edit;
+      Result := True;
+    end
+    else
+      EasyErrorHint(EasyEditHint_Edit);
+  end;
 end;
 
 function TfrmEasyPlateDBForm.ExecuteDelete(
   AClientDataSet: TClientDataSet): Boolean;
 begin
-
+  Result := True;
 end;
 
 function TfrmEasyPlateDBForm.GetEasyMainClientDataSet: TClientDataSet;
@@ -342,17 +437,84 @@ end;
 
 function TfrmEasyPlateDBForm.Print: Boolean;
 begin
-
+  Result := True;
+  if Assigned(MainClientDataSet) then
+  begin
+    if not MainClientDataSet.Active then
+      MainClientDataSet.Open;
+    if not GetUserRight then
+    begin
+      EasyErrorHint(EasyErrorHint_NRight);
+      Result := False
+    end
+    else
+      Result := True;
+  end;
 end;
 
 function TfrmEasyPlateDBForm.Save: Boolean;
 begin
-
+  Result := False;
+  //在保存之前检查是否还NOT NULL字段未填，是否指定数据集
+  if not CheckNotNullFields and Assigned(MainClientDataSet) then
+  begin
+    if DMEasyDBConnection.EasyNetType = 'CS' then
+    begin
+      Screen.Cursor := crHourGlass;
+      try
+        //如果数据连接处于事务中则回滚，再开始新的事务处理
+        if DMEasyDBConnection.EasyADOConn.InTransaction then
+          DMEasyDBConnection.EasyADOConn.RollbackTrans;
+        DMEasyDBConnection.EasyADOConn.BeginTrans;
+        //如果ClientDataSet存在异常则回滚退出
+        if not BeforeSave(MainClientDataSet) then
+        begin
+          DMEasyDBConnection.EasyADOConn.RollbackTrans;
+          Screen.Cursor := crDefault;
+          Exit;
+        end;
+        try
+          //根据ClientDataState状态执行相应操作
+//          if Assigned(FHhfRelateUpdates.Provider) then
+//          begin
+//            if HhfDataState = dsInsert then
+//              FHhfRelateUpdates.RunUpdate(ukInsert, FClientDataSet)
+//            else
+//              FHhfRelateUpdates.RunUpdate(ukModify, FClientDataSet);
+//          end
+//          else
+//          begin
+//            FClientDataSet.ApplyUpdates(-1);
+//          end;
+          DMEasyDBConnection.EasyADOConn.CommitTrans;
+          //是否提示Hint信息
+          if ISSaveSuccessMsg then
+            EasyHint(EasySaveHint_Success);
+        except
+            on E:Exception do
+            begin
+              DMEasyDBConnection.EasyADOConn.RollbackTrans;
+              ShowMessage(EasySaveHint_Error + E.Message);
+            end;
+        end;
+      finally
+        Screen.Cursor := crDefault;
+      end;
+    end
+    else
+    if DMEasyDBConnection.EasyNetType = 'CAS' then
+    begin
+      try
+//      EasyRDMDisp.EasySaveRDMDatas();
+      finally
+      end;
+    end;
+  end;
 end;
 
 function TfrmEasyPlateDBForm.SaveError(DataSet: TDataSet): Boolean;
 begin
-
+  Result := True;
 end;
 
 procedure TfrmEasyPlateDBForm.SetAllControlStatus;
@@ -468,28 +630,29 @@ end;
 function TfrmEasyPlateDBForm.SetDeleteMark(
   AClientDataSet: TClientDataSet): Boolean;
 begin
-
+ { try
+ //   SetHhfDeleteMark(AClientDataSet,DeleteMark);
+    FHhfRelateUpdates.RunUpdate(ukModify, AClientDataSet);
+//    SetCttRefreshDeleteMark(AClientDataSet);
+    Result := True;
+  except
+    on E:Exception do
+    begin
+      SysErrorBox(NDeleteMark);
+      Result := False;
+    end;
+  end; }
 end;
 
 procedure TfrmEasyPlateDBForm.SetEasyDataState(const Value: TDataSetState);
 begin
-
+  FEasyDataState := Value;
 end;
 
 procedure TfrmEasyPlateDBForm.SetEasyMainClientDataSet(
   const Value: TClientDataSet);
 begin
   FMainClientDataSet := Value;
-end;
-
-procedure TfrmEasyPlateDBForm.SetNotNullFieldColor;
-begin
-
-end;
-
-procedure TfrmEasyPlateDBForm.SetSQL(AValue: string);
-begin
-
 end;
 
 procedure TfrmEasyPlateDBForm.btnExitClick(Sender: TObject);
@@ -650,6 +813,43 @@ procedure TfrmEasyPlateDBForm.__ReconcileError(
   UpdateKind: TUpdateKind; var Action: TReconcileAction);
 begin
   HandleReconcileError(DataSet, UpdateKind, E);
+end;
+
+function TfrmEasyPlateDBForm.BuildCopyList(AClientDataSet: TClientDataSet;
+  ANotCopyFieldList: TStrings): TStrings;
+begin
+
+end;
+
+procedure TfrmEasyPlateDBForm.CopyDataFromList(
+  AClientDataSet: TClientDataSet; ACopyFieldList: TStrings);
+begin
+
+end;
+
+function TfrmEasyPlateDBForm.GetEasyDataState: TDataSetState;
+begin
+  Result := FEasyDataState;
+end;
+
+procedure TfrmEasyPlateDBForm.SetNotNullFieldColor(const Value: TColor);
+begin
+  FNotNullFieldColor := Value;
+end;
+
+function TfrmEasyPlateDBForm.CheckNotNullFields: Boolean;
+begin
+
+end;
+
+procedure TfrmEasyPlateDBForm.SetSQL(AValue: string);
+begin
+
+end;
+
+procedure TfrmEasyPlateDBForm.SetNotNullFieldsControlColor;
+begin
+
 end;
 
 end.

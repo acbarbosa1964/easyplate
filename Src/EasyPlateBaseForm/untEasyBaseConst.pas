@@ -7,6 +7,9 @@ uses DB, DBClient;
 const
   EasyErrorHint_NRight = '无相应的操作权限!';
   EasyHint_ConfirmDelete = '是否执行删除操作？';
+  EasyEditHint_Edit = '编辑操作出错!';
+  EasySaveHint_Success = '保存成功!';
+  EasySaveHint_Error = '保存失败，原因：';
 
   ActionStr: array[TReconcileAction] of string = ('忽略', '中断', '合并',
     '正确', '取消', '刷新');
