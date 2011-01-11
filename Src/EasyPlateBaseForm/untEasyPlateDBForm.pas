@@ -88,6 +88,8 @@ type
     function GetEasyMainClientDataSet: TClientDataSet;
 
     procedure DoShow; override;
+  protected
+    { protected declarations }
     //改变按钮输入状态的过程
     procedure SetAllControlStatus; virtual;
     //当数据集无记录时
@@ -130,20 +132,20 @@ type
     function GetEasyDataState: TDataSetState;
     procedure SetEasyDataState(const Value: TDataSetState);
     procedure SetNotNullFieldColor(const Value: TColor);
-    //非空和非复制字段处理
-    procedure AddNotNullField(FieldName: string);
-    procedure AddNotNullFields(FieldList: array of string);
-    procedure AddNotCopyField(FieldName: string);
-    procedure AddNotCopyFields(FieldList: array of string);
     //设置非空字段的控件颜色
-    procedure SetNotNullFieldsControlColor;
+    procedure SetNotNullFieldsControlColor; virtual;
+    //保存之前检查必填字段是否有空
+    function CheckNotNullFields: Boolean; virtual;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    //保存之前检查必填字段是否有空
-    function CheckNotNullFields: Boolean;
+    //非空和非复制字段处理
+    procedure AddNotNullField(FieldName: string);
+    procedure AddNotNullFields(FieldList: array of string);
+    procedure AddNotCopyField(FieldName: string);
+    procedure AddNotCopyFields(FieldList: array of string);
     //非空字段的颜色
     property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNotNullFieldColor;
     //必须指定EasyMainClientDataSet
@@ -647,6 +649,8 @@ end;
 procedure TfrmEasyPlateDBForm.SetEasyDataState(const Value: TDataSetState);
 begin
   FEasyDataState := Value;
+  //重置按钮状态
+  SetAllControlStatus;
 end;
 
 procedure TfrmEasyPlateDBForm.SetEasyMainClientDataSet(
@@ -708,55 +712,79 @@ end;
 procedure TfrmEasyPlateDBForm.btnNewClick(Sender: TObject);
 begin
   inherited;
-//
+  if Append then
+    EasyDataState := dsInsert;
 end;
 
 procedure TfrmEasyPlateDBForm.btnEditClick(Sender: TObject);
 begin
   inherited;
-//
+  if Edit then
+    EasyDataState := dsEdit;
 end;
 
 procedure TfrmEasyPlateDBForm.btnDeleteClick(Sender: TObject);
 begin
   inherited;
-//
+  DeleteClick(MainClientDataSet);
 end;
 
 procedure TfrmEasyPlateDBForm.btnCancelClick(Sender: TObject);
 begin
   inherited;
-//
+  if Cancel then
+  begin
+    if MainClientDataSet.RecordCount > 0 then
+      EasyDataState := dsBrowse
+    else
+      SetBtnStatus_NoRecord;
+  end; 
 end;
 
 procedure TfrmEasyPlateDBForm.btnCopyClick(Sender: TObject);
 begin
   inherited;
-//
+  if Copy then
+    EasyDataState := dsInsert;
 end;
 
 procedure TfrmEasyPlateDBForm.btnSaveClick(Sender: TObject);
 begin
   inherited;
-//
+  DoSave(Sender);
 end;
 
 procedure TfrmEasyPlateDBForm.btnRefreshClick(Sender: TObject);
 begin
   inherited;
-//
+  if EasyDataState in [dsInsert, dsEdit] then
+  begin
+    if MessageDlg(EasyRefreshHint_Save, mtWarning, [mbYes, mbNo], 0) = mrYes then
+    begin
+      if Save then
+        EasyDataState := dsBrowse;
+    end;
+  end;
 end;
 
 procedure TfrmEasyPlateDBForm.btnFindClick(Sender: TObject);
 begin
   inherited;
-//
+  if EasyDataState in [dsInsert, dsEdit] then
+  begin
+    if MessageDlg(EasyFindHint_Save, mtWarning, [mbYes, mbNo], 0) = mrYes then
+    begin
+      if Save then
+        EasyDataState := dsBrowse;
+    end;
+  end;
 end;
 
 procedure TfrmEasyPlateDBForm.btnPrintClick(Sender: TObject);
 begin
   inherited;
-//
+  if not Print then
+    Exit;
 end;
 
 function TfrmEasyPlateDBForm.GetMainClientDataSet: TClientDataSet;
