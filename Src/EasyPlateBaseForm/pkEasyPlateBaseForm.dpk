@@ -52,6 +52,7 @@ contains
   untEasyPlateDBBaseForm in 'untEasyPlateDBBaseForm.pas' {frmEasyPlateDBBaseForm},
   untEasyPlateDBForm in 'untEasyPlateDBForm.pas' {frmEasyPlateDBForm},
   untEasyBaseConst in 'untEasyBaseConst.pas',
-  untReconcileError in 'untReconcileError.pas' {frmReconcileError};
+  untReconcileError in 'untReconcileError.pas' {frmReconcileError},
+  untEasyPlateSingleForm in 'untEasyPlateSingleForm.pas' {EasyPlateSingleForm};
 
 end.
