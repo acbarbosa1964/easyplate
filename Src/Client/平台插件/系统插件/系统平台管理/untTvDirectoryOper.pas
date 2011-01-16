@@ -28,9 +28,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure edtImage1ButtonClick(Sender: TObject);
     procedure edtImage2ButtonClick(Sender: TObject);
+    procedure rbDirectoryClick(Sender: TObject);
+    procedure rbModulesClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FAData: PEasytvDirectoryRecord;
+    function CheckNotNullControl: Boolean;
   public
     { Public declarations }
   end;
@@ -73,7 +77,10 @@ begin
           rbDirectory.Checked
         else
         if AData^.bDir = 1 then
+        begin
           rbModules.Checked;
+          edtFileName.Text := AData^.sPluginFileName;
+        end;
         speFlag.Value := AData^.iFlag;
       end;
     end;
@@ -92,6 +99,7 @@ end;
 
 procedure TfrmTvDirectoryOper.btnSaveClick(Sender: TObject);
 begin
+  if CheckNotNullControl then Exit;
   FAData^.sEName := Trim(edtEName.Text);
   FAData^.sCName := Trim(edtCName.Text);
   FAData^.iOrder := StrToInt(speOrder.Text);
@@ -102,6 +110,8 @@ begin
   else
     FAData^.bDir := 1;
   FAData^.iFlag := StrToInt(speFlag.Text);
+  if not rbDirectory.Checked then
+    FAData^.sPluginFileName := ExtractFileName(edtFileName.Text);
   Close;
 end;
 
@@ -145,6 +155,82 @@ begin
   frmImagesSelect.Width := edtImage2.Width;
   frmImagesSelect.FControlFlag := 2;
   frmImagesSelect.Show;
+end;
+
+procedure TfrmTvDirectoryOper.rbDirectoryClick(Sender: TObject);
+begin
+  if rbDirectory.Checked then
+    edtFileName.Enabled := False
+  else
+    edtFileName.Enabled := True
+end;
+
+procedure TfrmTvDirectoryOper.rbModulesClick(Sender: TObject);
+begin
+  if rbModules.Checked then
+    edtFileName.Enabled := True
+  else
+    edtFileName.Enabled := False;
+end;
+
+function TfrmTvDirectoryOper.CheckNotNullControl: Boolean;
+begin
+  Result := False;
+  if Trim(edtCName.Text) = '' then
+  begin
+    Application.MessageBox('模块中文名称不能为空!', '提示', MB_OK +
+      MB_ICONWARNING);
+    Result := True;
+    Exit;  
+  end;  
+  if Trim(edtEName.Text) = '' then
+  begin
+    Application.MessageBox('模块英文名称不能为空!', '提示', MB_OK + 
+      MB_ICONWARNING);
+    Result := True;
+    Exit;  
+  end;  
+  if Trim(speOrder.Text) = '' then
+  begin
+    Application.MessageBox('模块序号不能为空!', '提示', MB_OK + 
+      MB_ICONWARNING);
+    Result := True;
+    Exit;  
+  end;
+  if not rbDirectory.Checked then
+  begin
+    if Trim(edtFileName.Text) = '' then
+    begin
+      Application.MessageBox('模块文件不能为空!', '提示', MB_OK +
+        MB_ICONWARNING);
+      Result := True;
+      Exit;
+    end;
+  end;
+  if Trim(speFlag.Text) = '' then
+  begin
+    Application.MessageBox('模块标志不能为空!', '提示', MB_OK + 
+      MB_ICONWARNING);
+    Result := True;
+    Exit;  
+  end;  
+end;
+
+procedure TfrmTvDirectoryOper.FormShow(Sender: TObject);
+begin
+  edtCName.EditLabel.Font.Color  := clBlue;
+  speOrder.EditLabel.Font.Color  := clBlue;
+  edtFileName.EditLabel.Font.Color  := clBlue;
+  speFlag.EditLabel.Font.Color  := clBlue;
+  edtEName.EditLabel.Font.Color  := clBlue;
+
+  edtEName.EditLabel.Transparent := True;
+  edtCName.EditLabel.Transparent := True;
+  speFlag.EditLabel.Transparent := True;
+  speOrder.EditLabel.Transparent := True;
+  edtFileName.EditLabel.Transparent := True;
+  //默认选中目录 置文件选择框不可用
+  edtFileName.Enabled := False;
 end;
 
 end.

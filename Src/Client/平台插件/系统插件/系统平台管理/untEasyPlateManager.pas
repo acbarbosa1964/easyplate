@@ -19,12 +19,13 @@ type
     sGUID,
     sEName,
     sCName,
-    sParentGUID : string;
-    iOrder,
-    iImage1,
+    sParentGUID : string;     //父节点GUID
+    iOrder,                   //排序
+    iImage1,                  //节点\展开的图标
     iImage2,
-    bDir,
+    bDir,                     //0目录 1插件
     iFlag   : Integer;
+    sPluginFileName: string; //要调用的插件文件名称
     sFlag: string;  //Add 新增 Edit 编辑 Del 删除
   end;
 
@@ -309,7 +310,7 @@ begin
   try
     cdsDirManager.Close;
     InsSQL := ' INSERT INTO sysPluginsDirectory (GUID, sEName, sCName, iOrder,'
-              + 'iImage1, iImage2, iFlag, bDir, sParentGUID) VALUES ('
+              + 'iImage1, iImage2, iFlag, bDir, sParentGUID, sPluginFileName) VALUES ('
               + QuotedStr(AData^.sGUID)
               + ',' + QuotedStr(AData^.sEName)
               + ',' + QuotedStr(AData^.sCName)
@@ -319,6 +320,7 @@ begin
               + ',' + QuotedStr(IntToStr(AData^.iFlag))
               + ',' + QuotedStr(IntToStr(AData^.bDir))
               + ',' + QuotedStr(AData^.sParentGUID)
+              + ',' + QuotedStr(AData^.sPluginFileName)
               + ')';
     cdsDirManager.CommandText := InsSQL;
     cdsDirManager.Execute;
@@ -349,7 +351,8 @@ begin
               + ' iImage2 = ' + QuotedStr(IntToStr(AData^.iImage2))+ ','
               + ' iFlag = ' + QuotedStr(IntToStr(AData^.iFlag))  + ','
               + ' bDir = ' + QuotedStr(IntToStr(AData^.bDir))   + ','
-              + ' sParentGUID = ' + QuotedStr(AData^.sParentGUID) + ' '
+              + ' sParentGUID = ' + QuotedStr(AData^.sParentGUID) + ','
+              + ' sPluginFileName = ' + QuotedStr(AData^.sPluginFileName) + ' '
               + ' WHERE GUID = ' + QuotedStr(AData^.sGUID);
     cdsDirManager.CommandText := UdpSQL;
     cdsDirManager.Execute;
@@ -624,6 +627,7 @@ begin
     tvTmpData[High(tvTmpData)]^.iFlag := cdsDirManager.fieldbyname('iFlag').AsInteger;
     tvTmpData[High(tvTmpData)]^.sParentGUID := cdsDirManager.fieldbyname('sParentGUID').AsString;
     tvTmpData[High(tvTmpData)]^.bDir := cdsDirManager.fieldbyname('bDir').AsInteger;
+    tvTmpData[High(tvTmpData)]^.sPluginFileName := cdsDirManager.fieldbyname('sPluginFileName').AsString;
     //参数
     if cdsDirManager.fieldbyname('bDir').AsInteger = 1 then
     begin

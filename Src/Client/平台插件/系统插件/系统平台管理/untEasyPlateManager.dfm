@@ -86,7 +86,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
     Left = 0
     Top = 41
     Width = 866
-    Height = 584
+    Height = 591
     Align = alClient
     BorderOuter = fsFlat
     TabOrder = 2
@@ -94,7 +94,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Left = 1
       Top = 1
       Width = 864
-      Height = 582
+      Height = 589
       ActivePage = tbsDirectoryManage
       Align = alClient
       UseColoredTabs = True
@@ -115,26 +115,26 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 860
-          Height = 559
+          Height = 566
           Align = alClient
           TabOrder = 0
           object Splitter2: TSplitter
             Left = 249
             Top = 2
-            Height = 555
+            Height = 562
           end
           object EasyPanel12: TEasyPanel
             Left = 2
             Top = 2
             Width = 247
-            Height = 555
+            Height = 562
             Align = alLeft
             TabOrder = 0
             object tvSysDirectory: TEasyTreeView
               Left = 2
               Top = 33
               Width = 243
-              Height = 520
+              Height = 527
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Images = imgTv
@@ -430,7 +430,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             Left = 252
             Top = 2
             Width = 606
-            Height = 555
+            Height = 562
             ActivePage = EasyTabSheet3
             Align = alClient
             TabIndex = 0
@@ -867,26 +867,26 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 41
           Width = 860
-          Height = 518
+          Height = 525
           Align = alClient
           TabOrder = 1
           object Splitter1: TSplitter
             Left = 217
             Top = 2
-            Height = 514
+            Height = 521
           end
           object EasyPanel9: TEasyPanel
             Left = 2
             Top = 2
             Width = 215
-            Height = 514
+            Height = 521
             Align = alLeft
             TabOrder = 0
             object tvModules: TEasyTreeView
               Left = 2
               Top = 2
               Width = 211
-              Height = 510
+              Height = 517
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Indent = 19
@@ -897,7 +897,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             Left = 220
             Top = 2
             Width = 638
-            Height = 514
+            Height = 521
             Align = alClient
             TabOrder = 1
             object EasyLabelEdit1: TEasyLabelEdit
@@ -1284,6 +1284,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             PrintSettings.FooterFont.Name = 'MS Sans Serif'
             PrintSettings.FooterFont.Style = []
             PrintSettings.PageNumSep = '/'
+            ScrollWidth = 16
             SearchFooter.FindNextCaption = 'Find &next'
             SearchFooter.FindPrevCaption = 'Find &previous'
             SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -1452,6 +1453,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             PrintSettings.FooterFont.Name = 'MS Sans Serif'
             PrintSettings.FooterFont.Style = []
             PrintSettings.PageNumSep = '/'
+            ScrollWidth = 16
             SearchFooter.FindNextCaption = 'Find &next'
             SearchFooter.FindPrevCaption = 'Find &previous'
             SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -1474,7 +1476,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 860
-          Height = 559
+          Height = 566
           EditLabel.Width = 8
           EditLabel.Height = 13
           EditLabel.Caption = '  '
@@ -1495,7 +1497,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           TabOrder = 0
           DesignSize = (
             860
-            559)
+            566)
         end
       end
     end

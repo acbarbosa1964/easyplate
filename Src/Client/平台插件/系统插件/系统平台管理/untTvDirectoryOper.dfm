@@ -1,6 +1,6 @@
 object frmTvDirectoryOper: TfrmTvDirectoryOper
-  Left = 391
-  Top = 269
+  Left = 385
+  Top = 211
   BorderStyle = bsDialog
   Caption = #30446#24405#31649#29702
   ClientHeight = 333
@@ -14,6 +14,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object lblParentNode: TEasyLabel
@@ -85,7 +86,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Precision = 0
     SpinKind = sptNormal
     Value = 0
-    DateValue = 40476.916193576390000000
+    DateValue = 40559.928866817130000000
     BorderColor = clGray
     IncrementFloat = 0.100000000000000000
     MaxValue = 100
@@ -205,7 +206,6 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Top = 168
     Width = 121
     Height = 19
-    Cursor = crHandPoint
     BorderColor = clGray
     Button.Color = clBtnFace
     Button.ColorTo = clBtnFace
@@ -316,6 +316,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Checked = True
     TabOrder = 5
     TabStop = True
+    OnClick = rbDirectoryClick
   end
   object rbModules: TEasyRadioButton
     Left = 160
@@ -324,6 +325,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Height = 17
     Caption = #27169#22359
     TabOrder = 6
+    OnClick = rbModulesClick
   end
   object edtFileName: TEasyFileNameEdit
     Left = 88
@@ -525,7 +527,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Precision = 0
     SpinKind = sptNormal
     Value = 0
-    DateValue = 40476.916193576390000000
+    DateValue = 40559.928866817130000000
     BorderColor = clGray
     IncrementFloat = 0.100000000000000000
     MaxValue = 100
