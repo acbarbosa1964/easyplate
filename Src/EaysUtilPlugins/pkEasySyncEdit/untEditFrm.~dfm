@@ -1,4 +1,4 @@
-object EditorFrame: TEditorFrame
+object frmEditorFrame: TfrmEditorFrame
   Left = 0
   Top = 0
   Width = 443

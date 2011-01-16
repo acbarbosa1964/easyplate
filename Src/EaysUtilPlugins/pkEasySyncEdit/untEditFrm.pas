@@ -1,12 +1,3 @@
-{ *************************************************************************** }
-{                                                                             }
-{ EControl Syntax Editor (MDI Application)                                    }
-{                                                                             }
-{ Copyright (c) 2004 - 2006 EControl Ltd., Zaharov Michael                    }
-{     www.econtrol.ru                                                         }
-{     support@econtrol.ru                                                     }
-{                                                                             }
-{ *************************************************************************** }
 unit untEditFrm;
 
 interface
@@ -20,10 +11,10 @@ type
   TfrmEditorFrame = class(TFrame)
     EditorSlave: TSyntaxMemo;
     Splitter2: TSplitter;
-    EditorMaster: TSyntaxMemo;
     ecSpellChecker1: TecSpellChecker;
     HyperlinkHighlighter1: THyperlinkHighlighter;
     TextSource: TecEmbeddedObjects;
+    EditorMaster: TSyntaxMemo;
     procedure EditorMasterEnter(Sender: TObject);
     procedure EditorMasterSetBookmark(Snder: TObject; Bookmark: TBookmark;
       var Accept: Boolean);
@@ -80,7 +71,7 @@ type
 
 implementation
 
-uses main, ecStrUtils, ecCmdConst;
+uses ecStrUtils, ecCmdConst, untEasySyncEditMain;
 
 const
   SUntitledFile = 'Untitled';
@@ -94,18 +85,18 @@ constructor TfrmEditorFrame.Create(AOwner: TComponent);
 begin
   inherited;
   TControlHack(Splitter2).OnMouseDown := SplitterMouseDown;
-  ecSpellChecker1.Dictionary := SyntEditMain.ecDictionary1;
+  ecSpellChecker1.Dictionary := frmEasySyncEditMain.ecDictionary1;
   EditorMaster.DoubleBuffered := True;
   TextSource.Lines.SetObjectsStore;
-  EditorMaster.PopupMenu := SyntEditMain.PopupMenu2;
-  EditorSlave.PopupMenu := SyntEditMain.PopupMenu2;
-  EditorMaster.Gutter.Images := SyntEditMain.ImageList1;
-  EditorSlave.Gutter.Images := SyntEditMain.ImageList1;
+  EditorMaster.PopupMenu := frmEasySyncEditMain.PopupMenu2;
+  EditorSlave.PopupMenu := frmEasySyncEditMain.PopupMenu2;
+  EditorMaster.Gutter.Images := frmEasySyncEditMain.ImageList1;
+  EditorSlave.Gutter.Images := frmEasySyncEditMain.ImageList1;
 end;
 
 procedure TfrmEditorFrame.EditorMasterEnter(Sender: TObject);
 begin
-  SyntEditMain.CurrentEditor := (Sender as TSyntaxMemo);
+  frmEasySyncEditMain.CurrentEditor := (Sender as TSyntaxMemo);
 end;
 
 procedure TfrmEditorFrame.EditorMasterSetBookmark(Snder: TObject;
@@ -252,12 +243,12 @@ end;
 procedure TfrmEditorFrame.EditorMasterChange(Sender: TObject);
 begin
   if FPrevMod <> Modified then TitleChanged;
-  SyntEditMain.UpdateStatusBar(Sender);
+  frmEasySyncEditMain.UpdateStatusBar(Sender);
 end;
 
 procedure TfrmEditorFrame.EditorMasterCaretPosChanged(Sender: TObject);
 begin
-  SyntEditMain.UpdateStatusBar(Sender);
+  frmEasySyncEditMain.UpdateStatusBar(Sender);
 end;
 
 procedure TfrmEditorFrame.EditorSlaveGetStyleEntry(Sender: TObject;

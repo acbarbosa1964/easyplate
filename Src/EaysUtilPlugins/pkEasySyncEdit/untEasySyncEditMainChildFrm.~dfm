@@ -1,9 +1,9 @@
-object MDIChild: TMDIChild
-  Left = 448
-  Top = 301
+object frmEasySyncEditMainMDIChild: TfrmEasySyncEditMainMDIChild
+  Left = 384
+  Top = 194
   Width = 583
   Height = 386
-  Caption = 'MDIChild'
+  Caption = 'frmEasySyncEditMainMDIChild'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

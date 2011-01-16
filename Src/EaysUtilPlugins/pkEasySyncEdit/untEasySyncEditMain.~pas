@@ -1,12 +1,3 @@
-{ *************************************************************************** }
-{                                                                             }
-{ EControl Syntax Editor (MDI Application)                                    }
-{                                                                             }
-{ Copyright (c) 2004 - 2006 EControl Ltd., Zaharov Michael                    }
-{     www.econtrol.ru                                                         }
-{     support@econtrol.ru                                                     }
-{                                                                             }
-{ *************************************************************************** }
 unit untEasySyncEditMain;
 
 interface
@@ -32,13 +23,14 @@ uses
   ecSyntTree, ecKeyMap, ecActns, ecExports, ecPopupCtrl, ecSyntDlg,
   ecSyntMemo, ecSyntAnal, ecPrint, ecStylesCombo, ecPropManager, ecAutoReplace,
   {$IFDEF USE_LOCALIZER}
-  ecLocalizer, ecLocalizerEdit, untEditFrm,
+  ecLocalizer, ecLocalizerEdit,
   ecAutoReplDlg, ecCodeTemplDlg, ecCodeTemplListDlg, ecCustDlg, ecCustEditDlg,
   ecDictDlg, ecFReplDlg, ecFTextDlg, ecGoLineDlg, ecImpRulesDlg, ecKeyMapDlg,
   ecLexLibDlg, ecLocalizerEditText, ecMacroCmdEditDlg, ecMacroEditDlg,
   ecMultReplDlg, ecMultReplSelectDlg, ecPageSetupBase, ecPageSetupEditor,
   ecPreviewFm, ecsnColEdit, ecsnStyleEdit, ecStlDlg, ecSyntLexFm, ecsnCodeTempl,
-  {$ENDIF} ecSpell, AppEvnts, ecSingleInst, ecMacroRec, ActiveX, ecMultRepl;
+  {$ENDIF} ecSpell, AppEvnts, ecSingleInst, ecMacroRec, ActiveX,  untEditFrm,
+  ecMultRepl;
 
 type
 
@@ -186,7 +178,6 @@ type
     ToolButton35: TToolButton;
     ToolButton43: TToolButton;
     ApplicationEvents1: TApplicationEvents;
-    ecSingleInstance1: TecSingleInstance;
     ecMacroRecorder1: TecMacroRecorder;
     ecMacroRecord1: TecMacroRecord;
     ecMacroStop1: TecMacroStop;
@@ -308,10 +299,6 @@ type
     ileVertically1: TMenuItem;
     MinimizeAll1: TMenuItem;
     Arrange1: TMenuItem;
-    N8: TMenuItem;
-    Contents1: TMenuItem;
-    N5: TMenuItem;
-    About1: TMenuItem;
     PopupMenu2: TPopupMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -389,7 +376,6 @@ type
     procedure actSaveExecute(Sender: TObject);
     procedure actNewFileExecute(Sender: TObject);
     procedure actSaveAsExecute(Sender: TObject);
-    procedure About1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SyntaxMemo1IncSearchChange(Sender: TObject;
@@ -446,15 +432,15 @@ type
     FCurrentEditor: TSyntaxMemo;
     FMDIView: Boolean;
     FHyperlinkHlt: Boolean;
-    procedure SaveFrame(Frame: TEditorFrame; PromtDialog: Boolean = False);
+    procedure SaveFrame(Frame: TfrmEditorFrame; PromtDialog: Boolean = False);
     procedure ApplySharedStyles;
     procedure SetCurrentEditor(const Value: TSyntaxMemo);
-    procedure SetCurrentFrame(const Value: TEditorFrame);
-    function GetCurrentFrame: TEditorFrame;
+    procedure SetCurrentFrame(const Value: TfrmEditorFrame);
+    function GetCurrentFrame: TfrmEditorFrame;
     function GetFrameCount: integer;
-    function GetFrames(Index: integer): TEditorFrame;
+    function GetFrames(Index: integer): TfrmEditorFrame;
     function GetModifiedCount: integer;
-    function PromtToSave(Frame: TEditorFrame; AllowAll: Boolean): TModalResult;
+    function PromtToSave(Frame: TfrmEditorFrame; AllowAll: Boolean): TModalResult;
     procedure SetMDIView(const Value: Boolean);
     procedure ChildCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ChildClose(Sender: TObject; var Action: TCloseAction);
@@ -482,9 +468,9 @@ type
       UserData: Integer);
     {$ENDIF}
     procedure FrameChanged;
-    procedure FrameClosed(Frame: TEditorFrame);
-    procedure RegisterNewEditorFrame(Frame: TEditorFrame);
-    procedure CreateBind(Frame: TEditorFrame);
+    procedure FrameClosed(Frame: TfrmEditorFrame);
+    procedure RegisterNewEditorFrame(Frame: TfrmEditorFrame);
+    procedure CreateBind(Frame: TfrmEditorFrame);
     procedure LoadTreeImages;
     procedure UpdateToolsMenu;
     procedure ToolClick(Sender: TObject);
@@ -492,14 +478,14 @@ type
     procedure WndProc(var Message: TMessage); override;
   public
     constructor Create(AOwner: TComponent); override;
-    function OpenFile(const AFileName: string): TEditorFrame;
-    function CreateFrame(const FileName: string): TEditorFrame;
-    procedure CloseFrame(Frame: TEditorFrame);
+    function OpenFile(const AFileName: string): TfrmEditorFrame;
+    function CreateFrame(const FileName: string): TfrmEditorFrame;
+    procedure CloseFrame(Frame: TfrmEditorFrame);
 
     property CurrentEditor: TSyntaxMemo read FCurrentEditor write SetCurrentEditor;
-    property CurrentFrame: TEditorFrame read GetCurrentFrame write SetCurrentFrame;
+    property CurrentFrame: TfrmEditorFrame read GetCurrentFrame write SetCurrentFrame;
     property FrameCount: integer read GetFrameCount;
-    property Frames[Index: integer]: TEditorFrame read GetFrames;
+    property Frames[Index: integer]: TfrmEditorFrame read GetFrames;
   published
     property MDIView: Boolean read FMDIView write SetMDIView;
     property HyperlinkHlt: Boolean read FHyperlinkHlt write SetHyperlinkHlt;
@@ -510,7 +496,7 @@ var
 
 implementation
 
-uses ecStrUtils, ChildFrm, inifiles, ecExtHighlight, ecEmbObj;
+uses ecStrUtils, inifiles, ecExtHighlight, ecEmbObj, untEasySyncEditMainChildFrm;
 
 
 {$R *.dfm}
@@ -649,7 +635,7 @@ begin
   end;
 end;
 
-function TfrmEasySyncEditMain.OpenFile(const AFileName: string): TEditorFrame;
+function TfrmEasySyncEditMain.OpenFile(const AFileName: string): TfrmEditorFrame;
 var i: integer;
 begin
 
@@ -679,7 +665,7 @@ begin
 end;
 
 // Save specified frame
-procedure TfrmEasySyncEditMain.SaveFrame(Frame: TEditorFrame; PromtDialog: Boolean);
+procedure TfrmEasySyncEditMain.SaveFrame(Frame: TfrmEditorFrame; PromtDialog: Boolean);
 begin
   if Frame = nil then Exit;
   if not PromtDialog then
@@ -734,7 +720,7 @@ begin
    end;
 end;
 
-function TfrmEasySyncEditMain.PromtToSave(Frame: TEditorFrame; AllowAll: Boolean): TModalResult;
+function TfrmEasySyncEditMain.PromtToSave(Frame: TfrmEditorFrame; AllowAll: Boolean): TModalResult;
 var Buttons: TMsgDlgButtons;
 begin
   Buttons := [mbYes, mbNo, mbCancel];
@@ -790,11 +776,6 @@ begin
     SaveFrame(CurrentFrame, True);
 end;
 
-procedure TfrmEasySyncEditMain.About1Click(Sender: TObject);
-begin
-  TForm1.Create(Self).ShowModal;
-end;
-
 procedure TfrmEasySyncEditMain.PrintSetupActionExecute(Sender: TObject);
 begin
   PrinterSetupDialog1.Execute;
@@ -832,7 +813,7 @@ begin
 end;
 
 procedure TfrmEasySyncEditMain.actCloseExecute(Sender: TObject);
-var Frm: TEditorFrame;
+var Frm: TfrmEditorFrame;
 begin
   Frm := CurrentFrame;
   if Frm.Modified then
@@ -869,12 +850,12 @@ end;
 
 procedure TfrmEasySyncEditMain.ChildCloseQuery(Sender: TObject;
   var CanClose: Boolean);
-var Frm: TEditorFrame;
+var Frm: TfrmEditorFrame;
 begin
-  with Sender as TMDIChild do
+  with Sender as TfrmEasySyncEditMainMDIChild do
   if ControlCount > 0 then
     begin
-      Frm := TEditorFrame(Controls[0]);
+      Frm := TfrmEditorFrame(Controls[0]);
       if Frm.Modified then
        case PromtToSave(Frm, False) of
          mrYes: SaveFrame(Frm, False);
@@ -886,7 +867,7 @@ end;
 procedure TfrmEasySyncEditMain.ChildClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
-  FrameClosed(TEditorFrame(TForm(Sender).Controls[0]));
+  FrameClosed(TfrmEditorFrame(TForm(Sender).Controls[0]));
 end;
 
 procedure TfrmEasySyncEditMain.actMDIViewUpdate(Sender: TObject);
@@ -903,9 +884,9 @@ end;
 // Editors management
 //==============================================================================
 
-function TfrmEasySyncEditMain.CreateFrame(const FileName: string): TEditorFrame;
+function TfrmEasySyncEditMain.CreateFrame(const FileName: string): TfrmEditorFrame;
 begin
-  Result := TEditorFrame.Create(Self);
+  Result := TfrmEditorFrame.Create(Self);
   Result.Name := '';
   Result.OnTitleChanged := TitleChanged;
   Result.EditorSlave.KeyMapping := SyntKeyMapping1;
@@ -916,27 +897,29 @@ begin
   Result.HyperlinkHighlighter1.Active := FHyperlinkHlt;
 end;
 
-procedure TfrmEasySyncEditMain.CreateBind(Frame: TEditorFrame);
+//生成BPL插件
+//取消MDI功能
+procedure TfrmEasySyncEditMain.CreateBind(Frame: TfrmEditorFrame);
 var tab: TTabSheet;
     frm: TForm;
 begin
-  if FMDIView then
+ { if FMDIView then
     begin
-      frm := TMDIChild.Create(Self, Frame);
+      frm := TfrmEasySyncEditMainMDIChild.Create(Self, Frame);
       frm.Caption := Frame.Title;
       frm.OnCloseQuery := ChildCloseQuery;
       frm.OnClose := ChildClose;
     end
-  else
+  else  }
     begin
       tab := TTabSheet.Create(Self);
       tab.PageControl := PageControl1;
       tab.Caption := Frame.Title;
       Frame.Parent := tab;
     end;
-end;
+end;    
 
-procedure TfrmEasySyncEditMain.RegisterNewEditorFrame(Frame: TEditorFrame);
+procedure TfrmEasySyncEditMain.RegisterNewEditorFrame(Frame: TfrmEditorFrame);
 begin
   with Frame do
     begin
@@ -980,7 +963,7 @@ begin
    end;
 end;
 
-procedure TfrmEasySyncEditMain.SetCurrentFrame(const Value: TEditorFrame);
+procedure TfrmEasySyncEditMain.SetCurrentFrame(const Value: TfrmEditorFrame);
 begin
   if FMDIView then
     Value.Parent.SetFocus
@@ -989,18 +972,18 @@ begin
   FrameChanged;
 end;
 
-function TfrmEasySyncEditMain.GetCurrentFrame: TEditorFrame;
+function TfrmEasySyncEditMain.GetCurrentFrame: TfrmEditorFrame;
 begin
   Result := nil;
   if FMDIView then
     begin
       if ActiveMDIChild <> nil then
-        Result := TEditorFrame(ActiveMDIChild.Controls[0])
+        Result := TfrmEditorFrame(ActiveMDIChild.Controls[0])
     end
   else
     begin
       if (PageControl1.ActivePage <> nil) then
-        Result := TEditorFrame(PageControl1.ActivePage.Controls[0])
+        Result := TfrmEditorFrame(PageControl1.ActivePage.Controls[0])
     end;
 end;
 
@@ -1012,12 +995,12 @@ begin
     Result := PageControl1.PageCount;
 end;
 
-function TfrmEasySyncEditMain.GetFrames(Index: integer): TEditorFrame;
+function TfrmEasySyncEditMain.GetFrames(Index: integer): TfrmEditorFrame;
 begin
   if FMDIView then
-    Result := TEditorFrame(MDIChildren[Index].Controls[0])
+    Result := TfrmEditorFrame(MDIChildren[Index].Controls[0])
   else
-    Result := TEditorFrame(PageControl1.Pages[Index].Controls[0])
+    Result := TfrmEditorFrame(PageControl1.Pages[Index].Controls[0])
 end;
 
 procedure TfrmEasySyncEditMain.FrameChanged;
@@ -1053,7 +1036,7 @@ begin
      end;
 end;
 
-procedure TfrmEasySyncEditMain.FrameClosed(Frame: TEditorFrame);
+procedure TfrmEasySyncEditMain.FrameClosed(Frame: TfrmEditorFrame);
 begin
   if (CurrentEditor <> nil) and
      (CurrentEditor.Parent = Frame) then
@@ -1065,7 +1048,7 @@ begin
   FrameChanged;
 end;
 
-procedure TfrmEasySyncEditMain.CloseFrame(Frame: TEditorFrame);
+procedure TfrmEasySyncEditMain.CloseFrame(Frame: TfrmEditorFrame);
 var ts: TTabSheet;
 begin
   CurrentEditor := nil;
@@ -1096,7 +1079,7 @@ begin
           PageControl1.Visible := False;
           for i := PageControl1.PageCount - 1 downto 0 do
            begin
-            CreateBind(TEDitorFrame(PageControl1.Pages[i].Controls[0]));
+            CreateBind(TfrmEditorFrame(PageControl1.Pages[i].Controls[0]));
             PageControl1.Pages[i].Free;
            end;
           Color := clAppWorkSpace;
@@ -1106,7 +1089,7 @@ begin
           Color := clBtnFace;
           for i := MDIChildCount - 1 downto 0 do
             begin
-              CreateBind(TEDitorFrame(MDIChildren[i].Controls[0]));
+              CreateBind(TfrmEditorFrame(MDIChildren[i].Controls[0]));
               MDIChildren[i].Free;
             end;
           PageControl1.Visible := True;

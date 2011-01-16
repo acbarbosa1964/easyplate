@@ -1,12 +1,3 @@
-{ *************************************************************************** }
-{                                                                             }
-{ EControl Syntax Editor (MDI Application)                                    }
-{                                                                             }
-{ Copyright (c) 2004 - 2006 EControl Ltd., Zaharov Michael                    }
-{     www.econtrol.ru                                                         }
-{     support@econtrol.ru                                                     }
-{                                                                             }
-{ *************************************************************************** }
 unit untEditFrm;
 
 interface
@@ -17,7 +8,7 @@ uses
   ComCtrls, ImgList, ecSpell, ecExtHighlight, ActiveX, ecOleDrag, ecEmbObj;
 
 type
-  TEditorFrame = class(TFrame)
+  TfrmEditorFrame = class(TFrame)
     EditorSlave: TSyntaxMemo;
     Splitter2: TSplitter;
     EditorMaster: TSyntaxMemo;
@@ -80,7 +71,7 @@ type
 
 implementation
 
-uses main, ecStrUtils, ecCmdConst;
+uses ecStrUtils, ecCmdConst, untEasySyncEditMain;
 
 const
   SUntitledFile = 'Untitled';
@@ -90,25 +81,25 @@ const
 // Initializing events
 type
   TControlHack = class(TControl);
-constructor TEditorFrame.Create(AOwner: TComponent);
+constructor TfrmEditorFrame.Create(AOwner: TComponent);
 begin
   inherited;
   TControlHack(Splitter2).OnMouseDown := SplitterMouseDown;
-  ecSpellChecker1.Dictionary := SyntEditMain.ecDictionary1;
+  ecSpellChecker1.Dictionary := frmEasySyncEditMain.ecDictionary1;
   EditorMaster.DoubleBuffered := True;
   TextSource.Lines.SetObjectsStore;
-  EditorMaster.PopupMenu := SyntEditMain.PopupMenu2;
-  EditorSlave.PopupMenu := SyntEditMain.PopupMenu2;
-  EditorMaster.Gutter.Images := SyntEditMain.ImageList1;
-  EditorSlave.Gutter.Images := SyntEditMain.ImageList1;
+  EditorMaster.PopupMenu := frmEasySyncEditMain.PopupMenu2;
+  EditorSlave.PopupMenu := frmEasySyncEditMain.PopupMenu2;
+  EditorMaster.Gutter.Images := frmEasySyncEditMain.ImageList1;
+  EditorSlave.Gutter.Images := frmEasySyncEditMain.ImageList1;
 end;
 
-procedure TEditorFrame.EditorMasterEnter(Sender: TObject);
+procedure TfrmEditorFrame.EditorMasterEnter(Sender: TObject);
 begin
-  SyntEditMain.CurrentEditor := (Sender as TSyntaxMemo);
+  frmEasySyncEditMain.CurrentEditor := (Sender as TSyntaxMemo);
 end;
 
-procedure TEditorFrame.EditorMasterSetBookmark(Snder: TObject;
+procedure TfrmEditorFrame.EditorMasterSetBookmark(Snder: TObject;
   Bookmark: TBookmark; var Accept: Boolean);
 begin
   with Bookmark do
@@ -119,12 +110,12 @@ begin
     end;
 end;
 
-procedure TEditorFrame.SetFileName(const Value: string);
+procedure TfrmEditorFrame.SetFileName(const Value: string);
 begin
   FFileName := Value;
 end;
 
-procedure TEditorFrame.SaveFile(const AFileName: string);
+procedure TfrmEditorFrame.SaveFile(const AFileName: string);
 var attr: integer;
 begin
   with TextSource do
@@ -152,7 +143,7 @@ begin
     end;
 end;
 
-procedure TEditorFrame.LoadFile(const AFileName: string);
+procedure TfrmEditorFrame.LoadFile(const AFileName: string);
 begin
   EditorMaster.LoadFromFile(AFileName);
   EditorSlave.Modified := False;
@@ -160,30 +151,30 @@ begin
   TitleChanged;
 end;
 
-procedure TEditorFrame.FrameResize(Sender: TObject);
+procedure TfrmEditorFrame.FrameResize(Sender: TObject);
 begin
   if not EditorSlave.Visible or (EditorSlave.Height = 0) then
     EditorSlave.Top := 0;
 end;
 
-procedure TEditorFrame.SplitterMouseDown(Sender: TObject;
+procedure TfrmEditorFrame.SplitterMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FrameResize(Self);
 end;
 
-function TEditorFrame.GetModified: boolean; 
+function TfrmEditorFrame.GetModified: boolean;
 begin
   Result := EditorMaster.Modified;
 end;
 
-procedure TEditorFrame.SetModified(const Value: boolean);
+procedure TfrmEditorFrame.SetModified(const Value: boolean);
 begin
   EditorSlave.Modified := Value;
   EditorMaster.Modified := Value;
 end;
 
-function TEditorFrame.GetTitle: string;
+function TfrmEditorFrame.GetTitle: string;
 begin
   if FFileName = '' then
     Result := SUntitledFile
@@ -194,7 +185,7 @@ begin
   FPrevMod := Modified;
 end;
 
-procedure TEditorFrame.TitleChanged;
+procedure TfrmEditorFrame.TitleChanged;
 begin
   if Parent <> nil then
     if Parent is TTabSheet then
@@ -205,7 +196,7 @@ begin
     FOnTitleChanged(Self);
 end;
 
-function TEditorFrame.IsTheFile(const AFileName: string): Boolean;
+function TfrmEditorFrame.IsTheFile(const AFileName: string): Boolean;
 var s1, s2: string;
 begin
   // To use MS CharUpper
@@ -221,12 +212,12 @@ begin
     end;
 end;
 
-function TEditorFrame.IsNewFile: Boolean;
+function TfrmEditorFrame.IsNewFile: Boolean;
 begin
   Result := FFileName = '';
 end;
 
-procedure TEditorFrame.EditorMasterGetTokenHint(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterGetTokenHint(Sender: TObject;
   TokenIndex: Integer; var HintText: String);
 var p: TPoint;
 begin
@@ -249,18 +240,18 @@ begin
  end;
 end;
 
-procedure TEditorFrame.EditorMasterChange(Sender: TObject);
+procedure TfrmEditorFrame.EditorMasterChange(Sender: TObject);
 begin
   if FPrevMod <> Modified then TitleChanged;
-  SyntEditMain.UpdateStatusBar(Sender);
+  frmEasySyncEditMain.UpdateStatusBar(Sender);
 end;
 
-procedure TEditorFrame.EditorMasterCaretPosChanged(Sender: TObject);
+procedure TfrmEditorFrame.EditorMasterCaretPosChanged(Sender: TObject);
 begin
-  SyntEditMain.UpdateStatusBar(Sender);
+  frmEasySyncEditMain.UpdateStatusBar(Sender);
 end;
 
-procedure TEditorFrame.EditorSlaveGetStyleEntry(Sender: TObject;
+procedure TfrmEditorFrame.EditorSlaveGetStyleEntry(Sender: TObject;
   CurPos: Integer; StyleList: TList; var NextPos: Integer);
 var tmp: integer;
 begin
@@ -270,7 +261,7 @@ begin
     NextPos := tmp; 
 end;
 
-procedure TEditorFrame.EditorMasterGetLineNumberStr(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterGetLineNumberStr(Sender: TObject;
   Line: Integer; var NumberStr: String);
 begin
   if ((Line + 1) mod 10 = 0) or
@@ -284,7 +275,7 @@ begin
     NumberStr := '.';
 end;
 
-procedure TEditorFrame.EditorMasterGetGutterImage(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterGetGutterImage(Sender: TObject;
   const Line: Integer; List: TList);
 var gi: TGutterObject;
     Memo: TSyntaxMemo;
@@ -311,7 +302,7 @@ begin
    end;
 end;
 
-procedure TEditorFrame.SyncEditClick(Sender: TObject; Line: integer;
+procedure TfrmEditorFrame.SyncEditClick(Sender: TObject; Line: integer;
   Shift: TShiftState);
 var idx: integer;
 begin
@@ -325,7 +316,7 @@ begin
    end;
 end;
 
-procedure TEditorFrame.EditorMasterGetStyleEntry(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterGetStyleEntry(Sender: TObject;
   CurPos: Integer; StyleList: TList; var NextPos: Integer);
 const OFFSET = 72;
 var p: TPoint;
@@ -351,7 +342,7 @@ begin
    end;
 end;
 
-procedure TEditorFrame.EditorMasterExecuteCommand(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterExecuteCommand(Sender: TObject;
   Command: Integer; Data: Pointer; var Handled: Boolean);
 begin
   if Command = smTab then
@@ -368,21 +359,21 @@ var
 const
   CFSTR_DRAGCOLOR = 'Datras Drag Color';
 
-procedure TEditorFrame.EditorMasterOleDragEnter(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterOleDragEnter(Sender: TObject;
   const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
   var Effect: Integer; var Handled: Boolean);
 begin
   Handled := GetFormatInfo(DataObject, CF_DRAGCOLOR);
 end;
 
-procedure TEditorFrame.EditorMasterOleDragOver(Sender: TObject; const DataObject: IDataObject;
+procedure TfrmEditorFrame.EditorMasterOleDragOver(Sender: TObject; const DataObject: IDataObject;
   KeyState: Integer; Pt: TPoint; var Effect: Integer;
   var Handled: Boolean);
 begin
   Handled := GetFormatInfo(DataObject, CF_DRAGCOLOR);
 end;
 
-procedure TEditorFrame.EditorMasterOleDrop(Sender: TObject;
+procedure TfrmEditorFrame.EditorMasterOleDrop(Sender: TObject;
   const DataObject: IDataObject; KeyState: Integer; Pt: TPoint;
   var Effect: Integer; var Handled: Boolean);
 var FormatInfo: TFormatEtc;
@@ -461,7 +452,7 @@ begin
    end;
 end;
 
-procedure TEditorFrame.EditorMasterCheckChar(Sender: TObject; C: Word;
+procedure TfrmEditorFrame.EditorMasterCheckChar(Sender: TObject; C: Word;
   var IsWord: Boolean);
 begin
   if Pos(ecChar(C), '$#') > 0 then

@@ -1,6 +1,6 @@
 object frmEasySyncEditMainMDIChild: TfrmEasySyncEditMainMDIChild
-  Left = 448
-  Top = 301
+  Left = 384
+  Top = 194
   Width = 583
   Height = 386
   Caption = 'frmEasySyncEditMainMDIChild'

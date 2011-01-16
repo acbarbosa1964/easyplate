@@ -1,12 +1,3 @@
-{ *************************************************************************** }
-{                                                                             }
-{ EControl Syntax Editor (MDI Application)                                    }
-{                                                                             }
-{ Copyright (c) 2004 - 2006 EControl Ltd., Zaharov Michael                    }
-{     www.econtrol.ru                                                         }
-{     support@econtrol.ru                                                     }
-{                                                                             }
-{ *************************************************************************** }
 unit untEasySyncEditMainChildFrm;
 
 interface
@@ -22,7 +13,7 @@ type
   private
     { Private declarations }
   public
-    constructor Create(AOwner: TComponent; Frame: TCustomFrame);
+    constructor Create(AOwner: TComponent; Frame: TCustomFrame); 
   end;
 
 var
@@ -32,7 +23,7 @@ implementation
 
 {$R *.dfm}
 
-uses main, editFrm;
+uses untEasySyncEditMain, untEditFrm;
 
 { TMDIChild }
 
@@ -44,7 +35,7 @@ end;
 
 procedure TfrmEasySyncEditMainMDIChild.FormActivate(Sender: TObject);
 begin
-  SyntEditMain.CurrentFrame := TEditorFrame(Controls[0]);
+  frmEasySyncEditMain.CurrentFrame := TfrmEditorFrame(Controls[0]);
 end;
 
 procedure TfrmEasySyncEditMainMDIChild.FormClose(Sender: TObject; var Action: TCloseAction);

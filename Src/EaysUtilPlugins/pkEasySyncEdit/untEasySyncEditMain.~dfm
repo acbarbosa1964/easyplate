@@ -10,7 +10,6 @@ object frmEasySyncEditMain: TfrmEasySyncEditMain
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  FormStyle = fsMDIForm
   KeyPreview = True
   Menu = MainMenu1
   OldCreateOrder = True
@@ -5458,11 +5457,6 @@ object frmEasySyncEditMain: TfrmEasySyncEditMain
     Left = 376
     Top = 184
   end
-  object ecSingleInstance1: TecSingleInstance
-    AcceptInstInfo = ecSingleInstance1AcceptInstInfo
-    Left = 376
-    Top = 152
-  end
   object ecMacroRecorder1: TecMacroRecorder
     OnChange = ecMacroRecorder1Change
     Left = 408
@@ -5948,19 +5942,6 @@ object frmEasySyncEditMain: TfrmEasySyncEditMain
       end
       object Arrange1: TMenuItem
         Action = WindowArrange1
-      end
-    end
-    object N8: TMenuItem
-      Caption = '?'
-      object Contents1: TMenuItem
-        Action = HelpContents1
-      end
-      object N5: TMenuItem
-        Caption = '-'
-      end
-      object About1: TMenuItem
-        Caption = 'About ...'
-        OnClick = About1Click
       end
     end
   end

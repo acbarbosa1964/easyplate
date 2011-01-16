@@ -3,8 +3,7 @@ program pkEasySyncEdit;
 uses
   Forms,
   untEasySyncEditMain in 'untEasySyncEditMain.pas' {frmEasySyncEditMain},
-  untEditFrm in 'untEditFrm.pas' {frmEditorFrame: TFrame},
-  untEasySyncEditMainChildFrm in 'untEasySyncEditMainChildFrm.pas' {frmEasySyncEditMainMDIChild};
+  untEditFrm in 'untEditFrm.pas' {frmEditorFrame: TFrame};
 
 {$R *.res}
 

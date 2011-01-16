@@ -331,7 +331,6 @@ object frmEditorFrame: TfrmEditorFrame
     Style.FormatType = ftBackGround
     Style.BorderTypeBottom = blWavyLine
     Style.BorderColorBottom = clRed
-    Editor = EditorMaster
     Left = 244
     Top = 156
   end
@@ -367,7 +366,6 @@ object frmEditorFrame: TfrmEditorFrame
     Style.Font.Height = -13
     Style.Font.Name = 'Courier New'
     Style.Font.Style = [fsUnderline]
-    Editor = EditorMaster
     Left = 212
     Top = 156
   end

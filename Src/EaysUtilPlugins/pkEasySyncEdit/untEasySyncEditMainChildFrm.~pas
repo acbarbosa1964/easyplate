@@ -16,38 +16,38 @@ uses
   Dialogs;
 
 type
-  TMDIChild = class(TForm)
+  TfrmEasySyncEditMainMDIChild = class(TForm)
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
-    constructor Create(AOwner: TComponent; Frame: TCustomFrame);
+    constructor Create(AOwner: TComponent; Frame: TCustomFrame); 
   end;
 
 var
-  MDIChild: TMDIChild;
+  frmEasySyncEditMainMDIChild: TfrmEasySyncEditMainMDIChild;
 
 implementation
 
 {$R *.dfm}
 
-uses main, editFrm;
+uses untEasySyncEditMain, untEditFrm;
 
 { TMDIChild }
 
-constructor TMDIChild.Create(AOwner: TComponent; Frame: TCustomFrame);
+constructor TfrmEasySyncEditMainMDIChild.Create(AOwner: TComponent; Frame: TCustomFrame);
 begin
   inherited Create(AOwner);
   Frame.Parent := Self;
 end;
 
-procedure TMDIChild.FormActivate(Sender: TObject);
+procedure TfrmEasySyncEditMainMDIChild.FormActivate(Sender: TObject);
 begin
-  SyntEditMain.CurrentFrame := TEditorFrame(Controls[0]);
+  frmEasySyncEditMain.CurrentFrame := TfrmEditorFrame(Controls[0]);
 end;
 
-procedure TMDIChild.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfrmEasySyncEditMainMDIChild.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
 end;
