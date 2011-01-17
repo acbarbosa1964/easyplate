@@ -28,7 +28,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm, DB, DBClient, ImgList, untEasyToolBar,
-  untEasyToolBarStylers, untReconcileError;
+  untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox;
 
 type
   TfrmEasyPlateDBForm = class(TfrmEasyPlateDBBaseForm)
@@ -47,6 +47,7 @@ type
     btnRefresh: TEasyToolBarButton;
     btnSave: TEasyToolBarButton;
     cdsMain: TClientDataSet;
+    pnlContainer: TEasyPanel;
     procedure btnExitClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -67,6 +68,7 @@ type
     procedure __ReconcileError(DataSet: TCustomClientDataSet;
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FMainClientDataSet: TClientDataSet;         //绑定数据的ClientDataSet
@@ -83,6 +85,8 @@ type
     FNotNullFieldList     : TStrings;      //非空和非复制字段列表
     FNotCopyFieldList     : TStrings;
     FNotNullFieldColor    : TColor;        //非空字段颜色
+
+    FNotNullControlList   : TList;
     //设置非空字段的颜色的过程
     procedure SetEasyMainClientDataSet(const Value: TClientDataSet);
     function GetEasyMainClientDataSet: TClientDataSet;
@@ -147,7 +151,7 @@ type
     procedure AddNotCopyField(FieldName: string);
     procedure AddNotCopyFields(FieldList: array of string);
     //非空字段的颜色
-    property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNotNullFieldColor;
+    property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNotNullFieldColor default clBlue;
     //必须指定EasyMainClientDataSet
     property EasyMainClientDataSet: TClientDataSet read GetEasyMainClientDataSet
                                     write SetEasyMainClientDataSet;
@@ -172,7 +176,7 @@ implementation
 {$R *.dfm}
 
 uses
-   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst;
+   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo;
 
 { TfrmEasyPlateDBForm }
 
@@ -460,7 +464,7 @@ begin
   //在保存之前检查是否还NOT NULL字段未填，是否指定数据集
   if not CheckNotNullFields and Assigned(MainClientDataSet) then
   begin
-    if DMEasyDBConnection.EasyNetType = 'CS' then
+  {  if DMEasyDBConnection.EasyNetType = 'CS' then
     begin
       Screen.Cursor := crHourGlass;
       try
@@ -510,7 +514,7 @@ begin
 //      EasyRDMDisp.EasySaveRDMDatas();
       finally
       end;
-    end;
+    end;   }
   end;
 end;
 
@@ -662,6 +666,10 @@ end;
 procedure TfrmEasyPlateDBForm.btnExitClick(Sender: TObject);
 begin
   inherited;
+  if MainClientDataSet.ChangeCount > 0 then
+  begin
+//    if 
+  end;
 //
   Close;
 end;
@@ -683,6 +691,9 @@ begin
   //KeyPreview
   IsKeyPreView := True;
   MainClientDataSet := cdsMain;
+  //非空字段颜色默认为蓝色 clBlue
+  FNotNullFieldColor := clBlue;
+  FNotNullControlList := TList.Create;
 end;
 
 procedure TfrmEasyPlateDBForm.FormKeyUp(Sender: TObject; var Key: Word;
@@ -866,8 +877,29 @@ begin
 end;
 
 function TfrmEasyPlateDBForm.CheckNotNullFields: Boolean;
+var
+  I, J: Integer;
+  TmpComponent: TControl;
+  ACaption: string;
 begin
-
+  Result := False;
+  for I := 0 to FNotNullFieldList.Count - 1 do
+  begin
+    for J := 0 to pnlContainer.ControlCount - 1 do
+    begin
+      TmpComponent := pnlContainer.Controls[J];
+      if GetDBDataBinding(TmpComponent, ACaption) = FNotNullFieldList[I] then
+      begin
+        if VarToStrDef(GetDBDataBindingDataSet(TmpComponent).FieldByName(FNotNullFieldList[I]).Value,
+                        '') = '' then
+        begin
+          Result := True;
+          EasyHint('【' + ACaption +'】' + EasyNotNullField_Hint);
+          Break;
+        end;  
+      end;  
+    end;  
+  end;  
 end;
 
 procedure TfrmEasyPlateDBForm.SetSQL(AValue: string);
@@ -876,8 +908,29 @@ begin
 end;
 
 procedure TfrmEasyPlateDBForm.SetNotNullFieldsControlColor;
+var
+  I, J        : Integer;
+  TmpComponent: TControl;
+  ACaption    : string;
 begin
+  for I := 0 to FNotNullFieldList.Count - 1 do
+  begin
+    for J := 0 to pnlContainer.ControlCount - 1 do
+    begin
+      TmpComponent := pnlContainer.Controls[J];
+      if GetDBDataBinding(TmpComponent, ACaption) = FNotNullFieldList[I] then
+        SetEditLabelColor(TmpComponent, NotNullFieldColor);
+    end;
+  end;
+end;
 
+procedure TfrmEasyPlateDBForm.FormDestroy(Sender: TObject);
+var
+  I: Integer;
+begin
+  for I := FNotNullControlList.Count - 1 downto 0 do
+    TObject(FNotNullControlList[I]).Free;
+  inherited;                
 end;
 
 end.

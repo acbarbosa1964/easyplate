@@ -1,4 +1,4 @@
-package pkEasyUtilFunction;
+package pkEasyUnit;
 
 {$R *.res}
 {$ALIGN 8}
@@ -22,30 +22,38 @@ package pkEasyUtilFunction;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
   vcl,
-  dbrtl,
-  dsnap,
-  vclx,
-  indy,
-  adortl,
-  vcljpg,
-  vcldb,
   pkEasyStardard,
-  pkEasyAdditional,
+  vclx,
+  VclSmp,
+  TMSD7,
+  vcldb,
+  dbrtl,
+  vcljpg,
+  designide,
+  vclactnband,
+  dsnap,
   cxLibraryVCLD7,
   dxThemeD7,
   cxEditorsVCLD7,
-  cxDataD7;
+  cxDataD7,
+  cxExtEditorsVCLD7,
+  cxPageControlVCLD7,
+  cxGridVCLD7,
+  indy,
+  dsnapcon,
+  adortl,
+  EasyDevExt,
+  pkEasyAdditional,
+  pkEasyUtilFunction,
+  pkEasyPlateBaseForm;
 
 contains
-  untEasyUtilDLL in 'untEasyUtilDLL.pas',
-  untEasyUtilInit in 'untEasyUtilInit.pas',
-  untEasyUtilMethod in 'untEasyUtilMethod.pas',
-  untEasyUtilConst in 'untEasyUtilConst.pas';
+  untUnitMain in 'untUnitMain.pas' {frmEasyUnitMain};
 
 end.
-

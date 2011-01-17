@@ -140,17 +140,11 @@ c:\borland\delphi7\Projects\Bpl\SyntEditDB7.bpl=Econtrol DB Syntax Editor
 c:\borland\delphi7\Bin\dclclxdb70.bpl=Borland CLX Database Components
 c:\borland\delphi7\Bin\dcldss70.bpl=Borland Decision Cube Components
 [HistoryLists\hlConditionals]
-Count=3
-Item0=EC_NO_BPL;NEWNEWDESIGNER;EC_DSN_REG
-Item1=EC_DSN_REG;ARMD_VERSION
-Item2=ARMD_VERSION
+Count=1
+Item0=USE_RX_LIB;EC_REG
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=2
-Item0=$(DELPHI)\Lib\Debug;c:\Borland\Delphi7\jcl\lib\D6\debug;C:\Borland\Delphi6\LIBRAR~1\jcl\lib\D6\debug;..\..;..\..\no_bpl;..\..\no_bpl\DB;..\..\..\script;..\..\..\syntedit;$(DELPHI)\Source\ToolsApi;$(DELPHI)\Source\Property editors
-Item1=..\..\lib
-[HistoryLists\hlUnitOutputDirectory]
 Count=1
-Item0=Delphi5\lib
+Item0=$(DELPHI)\Lib\Debug;c:\Borland\Delphi7\jcl\lib\D5\debug;..\..

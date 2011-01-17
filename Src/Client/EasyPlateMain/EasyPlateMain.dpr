@@ -45,8 +45,7 @@ begin
     finally
       FreeLibrary(ASplashHandle);
     end;
-  end;  
-
+  end;
   Application.CreateForm(TfrmEasyPlateMain, frmEasyPlateMain);
   Application.Run;
 end.

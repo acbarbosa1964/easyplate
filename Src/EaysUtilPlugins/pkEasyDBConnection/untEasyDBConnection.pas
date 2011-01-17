@@ -30,7 +30,7 @@ interface
 
 uses
   SysUtils, Classes, DB, ADODB, IniFiles, Forms, untEasyUtilRWIni,
-  Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs;
+  Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB;
 
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
          exports GenrateEasyDBConnection;
@@ -112,6 +112,8 @@ type
   public
     { Public declarations }
     EasyApplicationHandle: Cardinal;      //主应用程序句柄
+    //如果是三层 获取远端的服务接口
+    EasyIRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
     property EasyDBIniFilePath: string read GetDBIniFilePath write SetDBIniFilePath;
     property EasyDBType: string read FDBType write SetDBType;
     property EasyNetType: string read FNetType write SetNetType;
@@ -137,6 +139,7 @@ type
     //存储当前登录的用户ID和数据模块句柄
     property EasyCurrLoginUserID: string read GetCurrLoginUserID write SetCurrLoginUserID;
     property EasyCurrLoginDBHandle: Cardinal read GetCurrLoginDBHandle write SetCurrLoginDBHandle;
+
   end;
 
 var
@@ -190,6 +193,9 @@ begin
   //调整负载均衡
 //  if not EasySOB.LoadBalanced then
 //    EasySOB.LoadBalanced := True;
+  //如果是三层就获取远程的服务接口
+  if UpperCase(EasyAppType) = 'CAS' then
+    EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
 end;
 
 function TDMEasyDBConnection.GetDBIniFilePath: string;
@@ -487,7 +493,7 @@ end;
 initialization
   CoInitialize(nil);
   DMEasyDBConnection := TDMEasyDBConnection.Create(Application);
-  Application.Handle := DMEasyDBConnection.EasyApplicationHandle;
+  Application.Handle := DMEasyDBConnection.EasyApplicationHandle;   
 
 finalization
   CoUninitialize;

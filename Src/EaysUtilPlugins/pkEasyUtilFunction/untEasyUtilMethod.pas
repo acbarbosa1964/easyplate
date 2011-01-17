@@ -233,10 +233,25 @@ const
                               AOpenClientDataSetStyle: TOpenClientDataSetStyle = ocdOpen): string;
   //获取用户模块权限
   function getUserModuleRight(FormId, CurrUserID: string): string;
-  
+
+  //获取指定对象是否具有某个属性 引用typinfo
+  function FindProperty(AClass: TObject; sPropertyName: String): Boolean;
+  //设置指定控件BondLabel的字体颜色
+  function SetEditLabelColor(AClass: TObject; AColor: TColor): Boolean;
+  //获取指定控件BondLabel的标题
+  function GetEditLabelCaption(AClass: TObject): string;
+
+  //获取控件的绑定数据字段
+  function GetDBDataBinding(AClass: TObject; var ABondLabelCaption: string): string;
+  //获取控件的绑定数据集
+  function GetDBDataBindingDataSet(AClass: TObject): TDataSet;
+
+  //设置指定控件所有子控件的BonLabel的字体颜色
+  procedure SetEditLabelsColor(AParentControl: TControl;
+                              AColor: TColor; var ASetControlList: TList);
 implementation
 
-uses untEasyUtilConst;
+uses untEasyUtilConst, TypInfo, cxDBEdit;
 
 function GenerateGUID: string;
 var
@@ -965,5 +980,128 @@ function getUserModuleRight(FormId, CurrUserID: string): string;
 begin
   Result := '';
 end;
-  
+
+//获取指定对象是否具有某个属性  引用typinfo
+function FindProperty(AClass: TObject; sPropertyName: String): Boolean;
+var
+  PropList     : PPropList;
+  ClassTypeInfo: PTypeInfo;
+  ClassTypeData: PTypeData;
+  i            : integer;
+begin
+  Result := False;
+  ClassTypeInfo := aClass.ClassType.ClassInfo;
+  ClassTypeData := GetTypeData(ClassTypeInfo);
+  if ClassTypeData.PropCount <> 0 then
+  begin
+    GetMem(PropList, SizeOf(PPropInfo) * ClassTypeData.PropCount);
+    try
+      GetPropInfos(AClass.ClassInfo, PropList);
+      for i := 0 to ClassTypeData.PropCount - 1 do
+        if (PropList[i]^.PropType^.Kind <> tkMethod)
+          and (UpperCase(PropList[i]^.Name) = UpperCase(sPropertyName)) then
+        begin
+          Result := True;
+          Break;
+        end;
+    finally
+      FreeMem(PropList, SizeOf(PPropInfo) * ClassTypeData.PropCount);
+    end;
+  end;
+end;
+
+//设置指定控件BondLabel的字体颜色
+function SetEditLabelColor(AClass: TObject; AColor: TColor): Boolean;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TBoundLabel;
+begin
+  Result := False;
+  PropInfoPtr:=GetPropInfo(AClass,'EditLabel');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TBoundLabel then
+    begin
+      BoundLabel := TBoundLabel(GetObjectProp(AClass, PropInfoPtr));
+      BoundLabel.Font.Color := AColor;
+      Result := True;
+    end;
+  end;
+end;
+
+//设置指定控件所有子控件的BonLabel的字体颜色
+procedure SetEditLabelsColor(AParentControl: TControl;
+                            AColor: TColor; var ASetControlList: TList);
+var
+  I: Integer;
+  TmpComponent: TComponent;
+begin
+  ASetControlList.Clear;
+  for I := 0 to AParentControl.ComponentCount - 1 do
+  begin
+    TmpComponent := AParentControl.Components[I];
+    if SetEditLabelColor(TmpComponent, AColor) then
+      ASetControlList.Add(TmpComponent);
+  end;
+end;
+
+//获取控件的绑定数据集
+function GetDBDataBindingDataSet(AClass: TObject): TDataSet;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  Result := nil;
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      Result := BoundLabel.DataSource.DataSet;
+    end;
+  end;
+end;
+
+//获取控件的绑定数据字段
+function GetDBDataBinding(AClass: TObject; var ABondLabelCaption: string): string;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  Result := '';
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      ABondLabelCaption := GetEditLabelCaption(AClass);
+      Result := BoundLabel.DataField;
+    end;
+  end;
+end;
+
+//获取指定控件BondLabel的标题
+function GetEditLabelCaption(AClass: TObject): string;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TBoundLabel;
+begin
+  Result := '';
+  PropInfoPtr := GetPropInfo(AClass,'EditLabel');
+  if PropInfoPtr = nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TBoundLabel then
+    begin
+      BoundLabel := TBoundLabel(GetObjectProp(AClass, PropInfoPtr));
+      Result := BoundLabel.Caption;
+    end;
+  end;
+end;  
+
 end.

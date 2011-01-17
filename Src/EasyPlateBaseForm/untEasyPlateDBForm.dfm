@@ -1,6 +1,7 @@
 inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
   Caption = 'frmEasyPlateDBForm'
   OnClose = FormClose
+  OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp
   PixelsPerInch = 96
   TextHeight = 13
@@ -256,6 +257,14 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         OnClick = btnSaveClick
       end
     end
+  end
+  object pnlContainer: TEasyPanel
+    Left = 0
+    Top = 28
+    Width = 862
+    Height = 245
+    Align = alTop
+    TabOrder = 2
   end
   object tlbStyDBForm: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181

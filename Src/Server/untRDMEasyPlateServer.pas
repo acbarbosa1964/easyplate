@@ -331,6 +331,7 @@ function TRDMEasyPlateServer.EasySaveRDMDatas(ATableNameOLE, ADelta,
 var
   I: Integer;
 begin
+  EasyRDMADOConn.
 //  EasyRDMADOConn.BeginTrans;
   try
     for I := VarArrayLowBound(ATableNameOLE, 1) to VarArrayHighBound(ATableNameOLE, 1) do

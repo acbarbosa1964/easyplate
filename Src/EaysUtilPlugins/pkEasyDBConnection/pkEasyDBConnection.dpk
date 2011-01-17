@@ -34,6 +34,7 @@ requires
   pkEasyUtilRWConfig;
 
 contains
-  untEasyDBConnection in 'untEasyDBConnection.pas' {DMEasyDBConnection: TDataModule};
+  untEasyDBConnection in 'untEasyDBConnection.pas' {DMEasyDBConnection: TDataModule},
+  EasyPlateServer_TLB in '..\..\Server\EasyPlateServer_TLB.pas';
 
 end.

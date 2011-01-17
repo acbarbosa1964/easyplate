@@ -12,6 +12,9 @@ const
   EasySaveHint_Error = '保存失败，原因：';
   EasyFindHint_Save = '是否保存当前更改，再进行查找操作？';
   EasyRefreshHint_Save = '是否保存当前更改，再进行刷新操作？';
+
+  EasyNotNullField_Hint = '字段不能为空!';
+
   ActionStr: array[TReconcileAction] of string = ('忽略', '中断', '合并',
     '正确', '取消', '刷新');
   UpdateKindStr: array[TUpdateKind] of string = ('修改', '插入',
