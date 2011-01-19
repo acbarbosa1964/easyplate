@@ -20,7 +20,7 @@ object frmEasyLoginMain: TfrmEasyLoginMain
     Left = 0
     Top = 0
     Width = 671
-    Height = 416
+    Height = 423
     Align = alClient
     Picture.Data = {
       0A544A504547496D616765AF560100FFD8FFE000104A46494600010201004800
@@ -2851,25 +2851,6 @@ object frmEasyLoginMain: TfrmEasyLoginMain
     LabelPosition = lpLeft
     LabelSpacing = 3
   end
-  object edtPassWord: TEasyMaskEdit
-    Left = 376
-    Top = 208
-    Width = 121
-    Height = 19
-    BorderColor = clGray
-    TextRightAlign = False
-    EnterTAB = True
-    FocusColor = clMoneyGreen
-    EditLabel.Width = 43
-    EditLabel.Height = 13
-    EditLabel.Caption = #23494#30721'(P)  '
-    EditLabel.Transparent = True
-    LabelPosition = lpLeft
-    LabelSpacing = 3
-    PasswordChar = '*'
-    TabOrder = 1
-    Text = '123456'
-  end
   object bbtnCancel: TEasyBitButton
     Left = 432
     Top = 248
@@ -2901,6 +2882,25 @@ object frmEasyLoginMain: TfrmEasyLoginMain
     Style = bsModern
     TabOrder = 2
     OnClick = bbtnLoginClick
+  end
+  object edtPassWord: TEasyLabelEdit
+    Left = 376
+    Top = 208
+    Width = 121
+    Height = 19
+    PasswordChar = '*'
+    BorderColor = clGray
+    TabOrder = 1
+    Text = '123456'
+    TextRightAlign = False
+    EnterTAB = True
+    FocusColor = clMoneyGreen
+    EditLabel.Width = 43
+    EditLabel.Height = 13
+    EditLabel.Caption = #23494#30721'(P)  '
+    EditLabel.Transparent = True
+    LabelPosition = lpLeft
+    LabelSpacing = 3
   end
   object hintBall: TEasyHintBalloonForm
     Left = 264

@@ -52,45 +52,8 @@ inherited frmEasyUnitMain: TfrmEasyUnitMain
     end
   end
   inherited pnlContainer: TEasyPanel
-    object EasyDevDBTextEdit1: TEasyDevDBTextEdit
-      Left = 120
-      Top = 16
-      DataBinding.DataField = 'GUID'
-      DataBinding.DataSource = dsUnit
-      TabOrder = 0
-      EditLabel.Tag = 100
-      EditLabel.Width = 103
-      EditLabel.Height = 13
-      EditLabel.Caption = 'EasyDevDBTextEdit1'
-      LabelPosition = lpLeft
-      LabelSpacing = 3
-      Width = 121
-    end
-    object EasyDevDBTextEdit2: TEasyDevDBTextEdit
-      Left = 120
-      Top = 48
-      DataBinding.DataField = 'sEmployeeCName'
-      DataBinding.DataSource = dsUnit
-      TabOrder = 1
-      EditLabel.Width = 103
-      EditLabel.Height = 13
-      EditLabel.Caption = 'EasyDevDBTextEdit2'
-      LabelPosition = lpLeft
-      LabelSpacing = 3
-      Width = 121
-    end
-    object EasyDevDBTextEdit3: TEasyDevDBTextEdit
-      Left = 120
-      Top = 80
-      DataBinding.DataField = 'sEmployeeEName'
-      DataBinding.DataSource = dsUnit
-      TabOrder = 2
-      EditLabel.Width = 103
-      EditLabel.Height = 13
-      EditLabel.Caption = 'EasyDevDBTextEdit3'
-      LabelPosition = lpLeft
-      LabelSpacing = 3
-      Width = 121
+    inherited pgcContainer: TEasyPageControl
+      FixedDimension = 0
     end
     object Button1: TButton
       Left = 560
@@ -98,7 +61,7 @@ inherited frmEasyUnitMain: TfrmEasyUnitMain
       Width = 75
       Height = 25
       Caption = 'Button1'
-      TabOrder = 3
+      TabOrder = 1
       OnClick = Button1Click
     end
   end

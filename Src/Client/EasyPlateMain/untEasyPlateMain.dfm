@@ -14,7 +14,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object Splitter1: TSplitter
     Left = 257
     Top = 65
-    Height = 362
+    Height = 370
     Color = 14986888
     ParentColor = False
   end
@@ -22,7 +22,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Left = 260
     Top = 65
     Width = 602
-    Height = 362
+    Height = 370
     Align = alClient
     Radius = 0
     Interval = 5000
@@ -904,7 +904,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   end
   object stbMain: TEasyStatusBar
     Left = 0
-    Top = 427
+    Top = 435
     Width = 862
     Height = 19
     AnchorHint = False
@@ -1418,7 +1418,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Left = 0
     Top = 65
     Width = 257
-    Height = 362
+    Height = 370
     ActivePage = tsbSysNav
     Align = alLeft
     UseColoredTabs = True
@@ -1451,7 +1451,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
         Left = 0
         Top = 0
         Width = 255
-        Height = 337
+        Height = 345
         SelectionPen.Color = clActiveCaption
         Align = alClient
         BorderStyle = bsNone

@@ -38,7 +38,6 @@ type
     imgLoginBC: TImage;
     EasyLabel1: TEasyLabel;
     edtUserName: TEasyLabelEdit;
-    edtPassWord: TEasyMaskEdit;
     bbtnCancel: TEasyBitButton;
     bbtnLogin: TEasyBitButton;
     lblCopyRight: TEasyLabel;
@@ -46,6 +45,7 @@ type
     hintBall: TEasyHintBalloonForm;
     cdsLogin: TClientDataSet;
     dspLogin: TDataSetProvider;
+    edtPassWord: TEasyLabelEdit;
     procedure bbtnCancelClick(Sender: TObject);
     procedure bbtnLoginClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

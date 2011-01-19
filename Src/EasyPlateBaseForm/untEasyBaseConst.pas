@@ -14,6 +14,7 @@ const
   EasyRefreshHint_Save = '是否保存当前更改，再进行刷新操作？';
 
   EasyNotNullField_Hint = '字段不能为空!';
+  EasyErrorHint_DirCreate = '目录创建出错，原因：';
 
   ActionStr: array[TReconcileAction] of string = ('忽略', '中断', '合并',
     '正确', '取消', '刷新');

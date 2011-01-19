@@ -3,6 +3,7 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object dkpDBForm: TEasyDockPanel
@@ -264,7 +265,17 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
     Width = 862
     Height = 245
     Align = alTop
+    BorderOuter = fsGroove
     TabOrder = 2
+    object pgcContainer: TEasyPageControl
+      Left = 2
+      Top = 2
+      Width = 858
+      Height = 241
+      Align = alClient
+      TabOrder = 0
+      FixedDimension = 0
+    end
   end
   object tlbStyDBForm: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181

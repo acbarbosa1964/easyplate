@@ -25,7 +25,27 @@ package pkEasyUtilClasses;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  vcl,
+  designide,
+  vclactnband,
+  vclx,
+  EasyDevExt,
+  pkHhfDB,
+  adortl,
+  dbrtl,
+  dsnap,
+  vcldb,
+  pkEasyStardard,
+  vcljpg,
+  cxGridVCLD7,
+  cxPageControlVCLD7,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  cxExtEditorsVCLD7,
+  cxDataD7,
+  cxEditorsVCLD7,
+  cxExportVCLD7;
 
 contains
   untEasyUtilClasses in 'untEasyUtilClasses.pas';

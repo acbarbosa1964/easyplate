@@ -9,7 +9,8 @@ uses
   cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   cxGridLevel, cxClasses, cxControls, cxGridCustomView, untEasyUtilMethod,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  cxContainer, cxTextEdit, cxDBEdit, untEasyDBDevExt, DBClient, StdCtrls;
+  cxContainer, cxTextEdit, cxDBEdit, untEasyDBDevExt, DBClient, StdCtrls,
+  untEasyPageControl;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
@@ -25,9 +26,6 @@ type
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
     cxGrid1DBTableView1Column2: TcxGridDBColumn;
     cxGrid1DBTableView1Column3: TcxGridDBColumn;
-    EasyDevDBTextEdit1: TEasyDevDBTextEdit;
-    EasyDevDBTextEdit2: TEasyDevDBTextEdit;
-    EasyDevDBTextEdit3: TEasyDevDBTextEdit;
     Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
@@ -61,6 +59,7 @@ begin
   inherited;
   cdsUnit.Active := True;
   AddNotNullField('GUID');
+  AddDFMFile('Unit1.dfm');
 end;
 
 procedure TfrmEasyUnitMain.btnSaveClick(Sender: TObject);
@@ -74,7 +73,8 @@ var
   I: Integer;
 begin
   inherited;
-  SetEditLabelColor(EasyDevDBTextEdit1, clRed);
+  LoadEasyDFM(EasyPlugPath + 'dfm\Unit1.dfm');
+//  SetEditLabelColor(EasyDevDBTextEdit1, clRed);
 //  for I := 0 to pnlContainer.ControlCount - 1 do
 //    ShowMessage(TControl(pnlContainer.Controls[I]).ClassName);
 end;

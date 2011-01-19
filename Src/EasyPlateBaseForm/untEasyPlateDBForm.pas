@@ -28,7 +28,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm, DB, DBClient, ImgList, untEasyToolBar,
-  untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox;
+  untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox,
+  untEasyPageControl, untEasyPlateDFM;
 
 type
   TfrmEasyPlateDBForm = class(TfrmEasyPlateDBBaseForm)
@@ -48,6 +49,7 @@ type
     btnSave: TEasyToolBarButton;
     cdsMain: TClientDataSet;
     pnlContainer: TEasyPanel;
+    pgcContainer: TEasyPageControl;
     procedure btnExitClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -69,6 +71,7 @@ type
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FMainClientDataSet: TClientDataSet;         //绑定数据的ClientDataSet
@@ -85,6 +88,7 @@ type
     FNotNullFieldList     : TStrings;      //非空和非复制字段列表
     FNotCopyFieldList     : TStrings;
     FNotNullFieldColor    : TColor;        //非空字段颜色
+    FDFMList              : TStrings;
 
     FNotNullControlList   : TList;
     //设置非空字段的颜色的过程
@@ -92,6 +96,9 @@ type
     function GetEasyMainClientDataSet: TClientDataSet;
 
     procedure DoShow; override;
+    //加载模块的配置界面所需要的函数
+    function BindRoot(Form: TComponent; AFileName: string): TfrmEasyPlateDFM;
+    procedure ReadError(Reader: TReader; const Message: string; var Handled: Boolean);
   protected
     { protected declarations }
     //改变按钮输入状态的过程
@@ -150,6 +157,10 @@ type
     procedure AddNotNullFields(FieldList: array of string);
     procedure AddNotCopyField(FieldName: string);
     procedure AddNotCopyFields(FieldList: array of string);
+    procedure AddDFMFile(FieldName: string);
+    procedure AddDFMFiles(FieldList: array of string);
+    //加载配置DFM文件
+    procedure LoadEasyDFM(DFMFile: string);
     //非空字段的颜色
     property NotNullFieldColor: TColor read GetNotNullFieldColor write SetNotNullFieldColor default clBlue;
     //必须指定EasyMainClientDataSet
@@ -176,7 +187,8 @@ implementation
 {$R *.dfm}
 
 uses
-   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo;
+   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo,
+   untEasyIODFM;
 
 { TfrmEasyPlateDBForm }
 
@@ -295,12 +307,14 @@ end;
 
 constructor TfrmEasyPlateDBForm.Create(AOwner: TComponent);
 begin
-  inherited;
+  inherited Create(AOwner);
   FEasyDataState := dsInactive;
   if not Assigned(FNotNullFieldList) then
     FNotNullFieldList := TStringList.Create;
   if not Assigned(FNotCopyFieldList) then
     FNotCopyFieldList := TStringList.Create;
+  if not Assigned(FDFMList) then
+    FDFMList := TStringList.Create;
   //打开数据集
   if MainSQL <> '' then
   begin
@@ -383,6 +397,8 @@ begin
     FNotCopyFieldList.Free;
   if Assigned(MainClientDataSet) then
     MainClientDataSet.Free;
+  if Assigned(FDFMList) then
+    FDFMList.Free;
   inherited Destroy;
 end;
 
@@ -931,6 +947,111 @@ begin
   for I := FNotNullControlList.Count - 1 downto 0 do
     TObject(FNotNullControlList[I]).Free;
   inherited;                
+end;
+
+function TfrmEasyPlateDBForm.BindRoot(Form: TComponent;
+  AFileName: string): TfrmEasyPlateDFM;
+var
+  Page: TEasyTabSheet;
+begin
+  if FDFMList.Count <= 1 then
+  begin
+    if Form is TForm then // 只有Form窗体才能挂靠
+    begin
+      with TForm(Form) do
+      begin
+        Parent := pnlContainer;
+        BorderStyle := bsNone;
+        Align := alClient;
+        Show;
+      end;
+    end
+    else
+      Result := nil;
+  end
+  else
+  begin
+    if Form is TForm then // 只有Form窗体才能挂靠
+    begin
+      Page := TEasyTabSheet.Create(Self);
+      Page.Caption := Form.Name;
+      Page.PageControl := pgcContainer;
+  //    Page.Hint := AFileName;
+      Result := TfrmEasyPlateDFM.Create(nil);
+      Result.Align := alClient;
+      Result.Parent := Page;
+      pgcContainer.ActivePage := Page;
+    end
+    else
+      Result := nil;
+  end;
+end;
+
+procedure TfrmEasyPlateDBForm.LoadEasyDFM(DFMFile: string);
+var
+  fm : TForm;
+begin
+  fm := TForm.Create(nil);
+  try
+    pgcContainer.Visible := False;
+    EasyReadForm(fm, DFMFile);
+  except on e: Exception do
+    begin
+      EasyErrorHint(e.Message);
+      fm.Free;
+    end;
+  end;
+  BindRoot(fm, DFMFile);
+//  fm := TForm.Create(nil);
+//  try
+//    EasyReadCmpFromFile(DFMFile, fm, ReadError);
+//  except
+//    fm.Free;
+//    Exit;
+//  end;
+//  BindRoot(fm, DFMFile);
+end;
+
+procedure TfrmEasyPlateDBForm.ReadError(Reader: TReader;
+  const Message: string; var Handled: Boolean);
+begin
+  Handled := True;
+end;
+
+procedure TfrmEasyPlateDBForm.AddDFMFile(FieldName: string);
+begin
+  if not Assigned(FDFMList) then
+    FDFMList := TStringList.Create;
+  if FDFMList.IndexOf(FieldName) = -1 then
+    FDFMList.Add(FieldName);
+end;
+
+procedure TfrmEasyPlateDBForm.AddDFMFiles(FieldList: array of string);
+var
+  I: Integer;
+begin
+  for I := Low(FieldList) to High(FieldList) do
+    AddDFMFile(FieldList[I]);
+end;
+
+procedure TfrmEasyPlateDBForm.FormShow(Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+  if not DirectoryExists(EasyPlugPath + 'dfm') then
+  begin
+    try
+      CreateDir(EasyPlugPath + 'dfm');
+    except on e:Exception do
+      EasyErrorHint(EasyErrorHint_DirCreate + e.Message);
+    end;
+  end;
+  for I := 0 to FDFMList.Count - 1 do
+  begin
+    if FileExists(EasyPlugPath + 'dfm\' + FDFMList.Strings[I]) then
+      LoadEasyDFM(EasyPlugPath + 'dfm\' + FDFMList.Strings[I]);
+  end;
 end;
 
 end.

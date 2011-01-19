@@ -45,7 +45,13 @@ requires
   cxGridVCLD7,
   EasyDevExt,
   indy,
-  pkEasyUtilFunction;
+  pkEasyUtilFunction,
+  designide,
+  vclactnband,
+  vclx,
+  pkHhfDB,
+  vcldb,
+  cxExportVCLD7;
 
 contains
   untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
@@ -53,6 +59,7 @@ contains
   untEasyPlateDBForm in 'untEasyPlateDBForm.pas' {frmEasyPlateDBForm},
   untEasyBaseConst in 'untEasyBaseConst.pas',
   untReconcileError in 'untReconcileError.pas' {frmReconcileError},
-  untEasyPlateSingleForm in 'untEasyPlateSingleForm.pas' {EasyPlateSingleForm};
+  untEasyPlateSingleForm in 'untEasyPlateSingleForm.pas' {EasyPlateSingleForm},
+  untEasyPlateDFM in 'untEasyPlateDFM.pas' {frmEasyPlateDFM: TFrame};
 
 end.

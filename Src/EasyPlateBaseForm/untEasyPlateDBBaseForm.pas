@@ -64,7 +64,7 @@ uses untEasyDBConnection;
 
 constructor TfrmEasyPlateDBBaseForm.Create(AOwner: TComponent);
 begin
-  inherited;
+  inherited Create(AOwner);
 
 end;
 

@@ -21,7 +21,7 @@ unit untEasyIODFM;
 interface
 
 uses
-  Windows, Classes;
+  Windows, Classes, Forms;
 
   //从流读取控件
   procedure EasyReadCmpFromStream(Stream: TStream; Root: TComponent;
@@ -41,6 +41,11 @@ uses
   //按ON标识符删除事件相关文本
   procedure EasyDeleteDFMEnventLines(list: TStrings);
 
+  function EasyGetObjectString(list: TStrings; BegLine: Integer = 0; TypeString: string=''): string;
+  procedure EasyReadForm(aFrom: TComponent; aFileName: string = '');
+  function EasyLoadTextForm(FileName: String): TForm;
+  function EasyLoadTextForm2(FileName: String): TForm;
+  
 implementation
 
 uses
@@ -253,5 +258,115 @@ begin
   end;
 end;
 
+function EasyGetObjectString(list: TStrings; BegLine: Integer = 0; TypeString: string=''): string;
+var
+  i,iBegCount,iEndCount  : Integer;
+  ObjString,Line,ClassStr: String;
+begin
+  iBegCount:=0;
+  iEndCount:=0;
+  ClassStr := Trim(UpperCase(TypeString));
+  for i := BegLine to list.Count - 1 do
+  begin
+    line := UpperCase(list[i]);
+    if Pos('OBJECT',line)>0 then
+    begin
+      if (TypeString='') or (Pos(': '+ClassStr,line)>0) then
+        Inc(iBegCount);
+    end
+    else
+    if (iBegCount>iEndCount) and (trim(line)='END') then
+      Inc(iEndCount);
+
+    if iBegCount>0 then
+      Result := Result + list[i] + #13#10;
+
+    if (iBegCount>0) and (iBegCount=iEndCount) then
+      Exit;
+  end;
+end;
+
+procedure EasyReadForm(aFrom: TComponent; aFileName: string = '');
+var
+  FrmStrings : TStrings;
+begin
+  if not FileExists(aFileName) then Exit;
+  RegisterClass(TPersistentClass(aFrom.ClassType));
+  FrmStrings := TStringlist.Create;
+  try
+    FrmStrings.LoadFromFile(aFileName);
+    while aFrom.ComponentCount > 0 do
+      aFrom.Components[0].Destroy;
+    aFrom := EasyStringToComponent(FrmStrings.Text, aFrom);
+  finally
+    FrmStrings.Free;
+  end;
+  UnRegisterClass(TPersistentClass(aFrom.ClassType));
+end;
+
+function EasyLoadTextForm(FileName: String): TForm;
+var
+  list     : TStrings;
+  FirstLine: String;
+  iPos     : Integer;
+  Form     : TForm;
+begin
+  Result := nil;
+  if not FileExists(FileName) then Exit;
+
+  Form := TForm.Create(Application);
+  list := TStringList.Create;
+  try
+    list.LoadFromFile(FileName);
+    if list.Count = 0 then Exit;
+
+    FirstLine := list[0];
+    iPos := Pos(': ',FirstLine);
+    if iPos = 0 then //找不到': '，格式不对
+      Exit;
+
+    list[0] := Copy(FirstLine,1,iPos)+' TForm';
+    EasyDeleteDFMEnventLines(list);
+    EasyStringToComponent(list.Text, Form);
+    Result := Form;
+  except
+    Form.Free;
+    Result := nil;
+  end;
+  list.Free;
+end;
+
+function EasyLoadTextForm2(FileName: String): TForm;
+var
+  list     : TStrings;
+  FirstLine: String;
+  iPos     : Integer;
+  Form     : TForm;
+begin
+  Result := nil;
+  if not FileExists(FileName) then Exit;
+  Form := TForm.Create(Application);
+  list := TStringList.Create;
+  try
+    list.LoadFromFile(FileName);
+    if list.Count=0 then Exit;
+
+    FirstLine := list[0];
+    iPos := Pos(': ',FirstLine);
+    if iPos = 0 then //找不到': '，格式不对
+      Exit;
+
+    list[0] := Copy(FirstLine, 1, iPos)+' TForm';
+    EasyDeleteDFMEnventLines(list);
+    EasyStringToComponent(list.Text, Form);
+    Result := Form;
+  except on e:exception do
+    begin
+      Form.Free;
+      Result := nil;
+    end;
+  end;
+  list.Free;
+end;
 
 end.

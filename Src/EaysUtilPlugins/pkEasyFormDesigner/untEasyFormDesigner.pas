@@ -210,7 +210,7 @@ var
 implementation
 
 uses
-   ed_RegComps, edUtils, edManager, untStdRegComps, TypInfo, edIOUtils,
+   ed_RegComps, edUtils, edManager, {untStdRegComps, }TypInfo, edIOUtils,
    DesignIntf, TreeIntf, edReg;
 
 {$R *.dfm}

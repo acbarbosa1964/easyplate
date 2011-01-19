@@ -186,7 +186,7 @@ implementation
 
 uses
   untEasyUtilInit, untEasyDBConnection, untEasyUtilDLL, untEasyUtilMethod,
-  untEasyUtilClasses, untEasyPlateLoading, untEasyUtilConst,
+  untEasyUtilClasses, untEasyPlateLoading, untEasyUtilConst, 
   untEasyProgressBar, untEasyLoginMain;
 
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);

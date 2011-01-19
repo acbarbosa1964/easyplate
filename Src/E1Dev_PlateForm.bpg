@@ -12,7 +12,7 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkEasyUtilRWConfig.bpl \
   pkgEasyPlateManager.bpl pkEasyPlateBaseForm.bpl pkEasyUtilClasses.bpl \
   pkEasyUtilFunction.bpl pkgGroupRights.bpl EasyPlateServer.exe pkEasyUnit.bpl \
-  Project1.exe pkEasyFormDesigner.bpl
+  Project1.exe pkEasyFormDesigner.bpl Project2111111111.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -51,6 +51,9 @@ Project1.exe: C:\TESTS\Project1.dpr
   $(DCC)
 
 pkEasyFormDesigner.bpl: EaysUtilPlugins\pkEasyFormDesigner\pkEasyFormDesigner.dpk
+  $(DCC)
+
+Project2111111111.exe: C:\Program Files\Borland\Delphi7\Projects\Project2111111111.dpr
   $(DCC)
 
 
