@@ -295,6 +295,8 @@ begin
   FrmStrings := TStringlist.Create;
   try
     FrmStrings.LoadFromFile(aFileName);
+    //É¾³ýÊÂ¼þ
+    EasyDeleteDFMEnventLines(FrmStrings);
     while aFrom.ComponentCount > 0 do
       aFrom.Components[0].Destroy;
     aFrom := EasyStringToComponent(FrmStrings.Text, aFrom);
