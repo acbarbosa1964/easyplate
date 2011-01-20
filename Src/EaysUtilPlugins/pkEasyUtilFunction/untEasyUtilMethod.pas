@@ -245,10 +245,23 @@ const
   function GetDBDataBinding(AClass: TObject; var ABondLabelCaption: string): string;
   //获取控件的绑定数据集
   function GetDBDataBindingDataSet(AClass: TObject): TDataSet;
+  //获取绑定数据属性   数据源
+  function GetEditDataSource(AClass: TObject): TDataSource;
+  //设置绑定数据属性   数据源
+  procedure SetEditDataSource(AClass: TObject; ADataSource: TDataSource);
+  //获取绑定数据属性   数据字段
+  function GetEditDataField(AClass: TObject): string;
+  //设置绑定数据属性   数据字段
+  procedure SetEditDataField(AClass: TObject; AFieldName: string);
 
   //设置指定控件所有子控件的BonLabel的字体颜色
   procedure SetEditLabelsColor(AParentControl: TControl;
                               AColor: TColor; var ASetControlList: TList);
+
+  //释放控件 包括所含的子控件
+  procedure FreeComponent_Child(AComponent: TComponent);
+  procedure FreeComponent_NoChild(AComponent: TComponent);
+
 implementation
 
 uses untEasyUtilConst, TypInfo, cxDBEdit;
@@ -1065,6 +1078,80 @@ begin
   end;
 end;
 
+//获取绑定数据属性
+function GetEditDataSource(AClass: TObject): TDataSource;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  Result := nil;
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      Result := BoundLabel.DataSource;
+    end;
+  end;
+end;
+
+//设置绑定数据属性
+procedure SetEditDataSource(AClass: TObject; ADataSource: TDataSource);
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      BoundLabel.DataSource := ADataSource;
+    end;
+  end;
+end;
+
+//获取绑定数据属性   数据字段
+function GetEditDataField(AClass: TObject): string;
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  Result := '';
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      Result := BoundLabel.DataField;
+    end;
+  end;
+end;
+
+//设置绑定数据属性   数据字段
+procedure SetEditDataField(AClass: TObject; AFieldName: string);
+var
+  PropInfoPtr: PPropInfo;
+  BoundLabel : TcxDBTextEditDataBinding;
+begin
+  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+  if PropInfoPtr=nil then exit;
+  if PropInfoPtr^.PropType^.Kind = tkClass then
+  begin
+    if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
+    begin
+      BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
+      BoundLabel.DataField := AFieldName;
+    end;
+  end;
+end;
+
 //获取控件的绑定数据字段
 function GetDBDataBinding(AClass: TObject; var ABondLabelCaption: string): string;
 var
@@ -1102,6 +1189,29 @@ begin
       Result := BoundLabel.Caption;
     end;
   end;
-end;  
+end;
+
+procedure FreeComponent_Child(AComponent: TComponent);
+begin
+  if AComponent.ComponentCount > 0 then
+  begin
+    while AComponent.ComponentCount > 0 do
+    begin
+      if AComponent.Components[0].ComponentCount > 0 then
+        FreeComponent_Child(AComponent.Components[0])
+    end;
+  end
+  else
+    FreeAndNil(AComponent);
+end;
+
+procedure FreeComponent_NoChild(AComponent: TComponent);
+begin
+  while AComponent.ComponentCount > 0 do
+  begin
+    if AComponent.Components[0].ComponentCount > 0 then
+      FreeComponent_Child(AComponent.Components[0])
+  end;
+end;
 
 end.

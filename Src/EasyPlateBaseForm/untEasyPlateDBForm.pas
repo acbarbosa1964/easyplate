@@ -28,8 +28,9 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm, DB, DBClient, ImgList, untEasyToolBar,
-  untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox,
-  untEasyPageControl, untEasyPlateDFM;
+  untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox, DBGrids,
+  untEasyPageControl, untEasyDevExt, untEasyDBDevExt, Buttons, Grids, ComCtrls,
+  StdCtrls, DBCtrls, dbcgrids, Tabs;
 
 type
   TfrmEasyPlateDBForm = class(TfrmEasyPlateDBBaseForm)
@@ -97,7 +98,7 @@ type
 
     procedure DoShow; override;
     //加载模块的配置界面所需要的函数
-    function BindRoot(Form: TComponent; AFileName: string): TfrmEasyPlateDFM;
+    procedure BindRoot(Form: TComponent; AFileName: string);
     procedure ReadError(Reader: TReader; const Message: string; var Handled: Boolean);
   protected
     { protected declarations }
@@ -188,7 +189,7 @@ implementation
 
 uses
    untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo,
-   untEasyIODFM;
+   untEasyIODFM, untEasyStdCmpsReg;
 
 { TfrmEasyPlateDBForm }
 
@@ -926,18 +927,43 @@ end;
 procedure TfrmEasyPlateDBForm.SetNotNullFieldsControlColor;
 var
   I, J        : Integer;
-  TmpComponent: TControl;
+  TmpComponent: TComponent;
   ACaption    : string;
 begin
-  for I := 0 to FNotNullFieldList.Count - 1 do
+  if FDFMList.Count = 0 then Exit;
+  if FDFMList.Count <= 1 then
   begin
-    for J := 0 to pnlContainer.ControlCount - 1 do
+    //1 为EasyPageControl 2 为后附加的窗体
+    if pnlContainer.ControlCount = 2 then
     begin
-      TmpComponent := pnlContainer.Controls[J];
-      if GetDBDataBinding(TmpComponent, ACaption) = FNotNullFieldList[I] then
-        SetEditLabelColor(TmpComponent, NotNullFieldColor);
+      for I := 0 to TForm(pnlContainer.Controls[1]).ComponentCount - 1 do
+      begin
+        TmpComponent := TForm(pnlContainer.Controls[1]).Components[I];
+        if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
+          SetEditLabelColor(TmpComponent, NotNullFieldColor);
+      end;
     end;
-  end;
+  end
+  else
+  begin
+    if pgcContainer.PageCount > 0 then
+      pgcContainer.ActivePageIndex := 0;
+    for I := 0 to pgcContainer.PageCount - 1 do
+    begin
+      if pgcContainer.ActivePage.ControlCount = 1 then
+      begin
+        for J := 0 to TForm(pgcContainer.Pages[I].Controls[0]).ComponentCount - 1 do
+        begin
+          TmpComponent := TForm(pgcContainer.Pages[I].Controls[0]).Components[J];
+          if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
+            SetEditLabelColor(TmpComponent, NotNullFieldColor);
+        end;
+      end;
+      pgcContainer.ActivePageIndex := pgcContainer.ActivePageIndex + 1;
+    end;  
+    if pgcContainer.PageCount > 0 then
+      pgcContainer.ActivePageIndex := 0;
+  end;    
 end;
 
 procedure TfrmEasyPlateDBForm.FormDestroy(Sender: TObject);
@@ -946,11 +972,18 @@ var
 begin
   for I := FNotNullControlList.Count - 1 downto 0 do
     TObject(FNotNullControlList[I]).Free;
-  inherited;                
+  if pgcContainer.Visible then
+  begin
+    while pgcContainer.PageCount > 0 do
+      FreeComponent_Child(pgcContainer.Pages[0]);
+  end
+  else
+    FreeComponent_NoChild(pnlContainer);
+  inherited;
 end;
 
-function TfrmEasyPlateDBForm.BindRoot(Form: TComponent;
-  AFileName: string): TfrmEasyPlateDFM;
+procedure TfrmEasyPlateDBForm.BindRoot(Form: TComponent;
+  AFileName: string);
 var
   Page: TEasyTabSheet;
 begin
@@ -965,35 +998,37 @@ begin
         Align := alClient;
         Show;
       end;
-    end
-    else
-      Result := nil;
+    end;
   end
   else
   begin
     if Form is TForm then // 只有Form窗体才能挂靠
     begin
       Page := TEasyTabSheet.Create(Self);
-      Page.Caption := Form.Name;
+      Page.Caption := TForm(Form).Caption;
       Page.PageControl := pgcContainer;
-  //    Page.Hint := AFileName;
-      Result := TfrmEasyPlateDFM.Create(nil);
-      Result.Align := alClient;
-      Result.Parent := Page;
-      pgcContainer.ActivePage := Page;
-    end
-    else
-      Result := nil;
+
+      with TForm(Form) do
+      begin
+        Parent := Page;
+        BorderStyle := bsNone;
+        Align := alClient;
+        Show;
+      end;
+      pgcContainer.ActivePageIndex := 0;
+    end;
   end;
 end;
 
 procedure TfrmEasyPlateDBForm.LoadEasyDFM(DFMFile: string);
 var
-  fm : TForm;
+  fm: TForm;
 begin
+  if FDFMList.Count = 0 then Exit;
+  if FDFMList.Count = 1 then
+    pgcContainer.Visible := False;
   fm := TForm.Create(nil);
   try
-    pgcContainer.Visible := False;
     EasyReadForm(fm, DFMFile);
   except on e: Exception do
     begin
@@ -1002,14 +1037,6 @@ begin
     end;
   end;
   BindRoot(fm, DFMFile);
-//  fm := TForm.Create(nil);
-//  try
-//    EasyReadCmpFromFile(DFMFile, fm, ReadError);
-//  except
-//    fm.Free;
-//    Exit;
-//  end;
-//  BindRoot(fm, DFMFile);
 end;
 
 procedure TfrmEasyPlateDBForm.ReadError(Reader: TReader;
@@ -1050,8 +1077,10 @@ begin
   for I := 0 to FDFMList.Count - 1 do
   begin
     if FileExists(EasyPlugPath + 'dfm\' + FDFMList.Strings[I]) then
-      LoadEasyDFM(EasyPlugPath + 'dfm\' + FDFMList.Strings[I]);
-  end;
+      LoadEasyDFM(EasyPlugPath + 'dfm\' + FDFMList.Strings[I])
+    else
+      EasyErrorHint(FDFMList.Strings[I] + EasyErrorHint_NotFile);
+  end;               
 end;
 
 end.

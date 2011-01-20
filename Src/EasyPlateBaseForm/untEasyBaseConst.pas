@@ -15,6 +15,7 @@ const
 
   EasyNotNullField_Hint = '字段不能为空!';
   EasyErrorHint_DirCreate = '目录创建出错，原因：';
+  EasyErrorHint_NotFile = ' 文件不存在！';
 
   ActionStr: array[TReconcileAction] of string = ('忽略', '中断', '合并',
     '正确', '取消', '刷新');

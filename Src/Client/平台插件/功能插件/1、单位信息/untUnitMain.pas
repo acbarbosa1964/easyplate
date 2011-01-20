@@ -26,7 +26,6 @@ type
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
     cxGrid1DBTableView1Column2: TcxGridDBColumn;
     cxGrid1DBTableView1Column3: TcxGridDBColumn;
-    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -60,6 +59,7 @@ begin
   cdsUnit.Active := True;
   AddNotNullField('GUID');
   AddDFMFile('Unit1.dfm');
+  AddDFMFile('Unit2.dfm');
 end;
 
 procedure TfrmEasyUnitMain.btnSaveClick(Sender: TObject);

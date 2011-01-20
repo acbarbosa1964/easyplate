@@ -60,6 +60,6 @@ contains
   untEasyBaseConst in 'untEasyBaseConst.pas',
   untReconcileError in 'untReconcileError.pas' {frmReconcileError},
   untEasyPlateSingleForm in 'untEasyPlateSingleForm.pas' {EasyPlateSingleForm},
-  untEasyPlateDFM in 'untEasyPlateDFM.pas' {frmEasyPlateDFM: TFrame};
+  untEasyStdCmpsReg in 'untEasyStdCmpsReg.pas';
 
 end.

@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=15
+Build=17
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=窗体设计器
-FileVersion=1.0.0.15
+FileVersion=1.0.0.17
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,7 +134,7 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2011-1-19 23:59:46
+LastCompiledTime=2011-1-20 16:44:52
 [Excluded Packages]
 c:\program files\borland\delphi7\Projects\Bpl\pkGraph.bpl=(untitled)
 C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
