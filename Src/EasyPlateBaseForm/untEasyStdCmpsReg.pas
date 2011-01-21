@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, DBCtrls, Grids, DBGrids, Buttons, StdCtrls,
+  Dialogs, ExtCtrls, DBCtrls, Grids, DBGrids, Buttons, StdCtrls, DB,
   ComCtrls,dbcgrids, Tabs, untEasyDevExt, untEasyDBDevExt;
 
 implementation
@@ -42,7 +42,9 @@ begin
   RegisterClass(TTabSet);
   RegisterClass(TTreeView);
   RegisterClass(TListView);
-  
+
+  RegisterClass(TDataSource);
+
   RegisterClass(TEasyDevTextEdit);
   RegisterClass(TEasyDevMaskEdit);
   RegisterClass(TEasyDevMemo);
@@ -139,7 +141,9 @@ begin
   UnRegisterClass(TTabSet);
   UnRegisterClass(TTreeView);
   UnRegisterClass(TListView);
-  
+
+  UnRegisterClass(TDataSource);
+
   UnRegisterClass(TEasyDevTextEdit);
   UnRegisterClass(TEasyDevMaskEdit);
   UnRegisterClass(TEasyDevMemo);

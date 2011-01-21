@@ -21,14 +21,11 @@ type
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
-    cdsUnit: TClientDataSet;
-    dsUnit: TDataSource;
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
     cxGrid1DBTableView1Column2: TcxGridDBColumn;
     cxGrid1DBTableView1Column3: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -56,27 +53,18 @@ end;
 procedure TfrmEasyUnitMain.FormCreate(Sender: TObject);
 begin
   inherited;
-  cdsUnit.Active := True;
   AddNotNullField('GUID');
   AddDFMFile('Unit1.dfm');
   AddDFMFile('Unit2.dfm');
+  MainSQL := 'SELECT * FROM hrHumanResource';
+//  MainClientDataSet := cdsMain;
+//  MainDataSource := dsMain;
 end;
 
 procedure TfrmEasyUnitMain.btnSaveClick(Sender: TObject);
 begin
   inherited;
-  EasyRDMDisp.EasySaveRDMData('', cdsUnit.Delta, 'GUID', 0);
-end;
-
-procedure TfrmEasyUnitMain.Button1Click(Sender: TObject);
-var
-  I: Integer;
-begin
-  inherited;
-  LoadEasyDFM(EasyPlugPath + 'dfm\Unit1.dfm');
-//  SetEditLabelColor(EasyDevDBTextEdit1, clRed);
-//  for I := 0 to pnlContainer.ControlCount - 1 do
-//    ShowMessage(TControl(pnlContainer.Controls[I]).ClassName);
+//  EasyRDMDisp.EasySaveRDMData('', cdsUnit.Delta, 'GUID', 0);
 end;
 
 end.

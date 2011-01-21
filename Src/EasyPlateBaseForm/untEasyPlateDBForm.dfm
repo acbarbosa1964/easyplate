@@ -1078,4 +1078,9 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
     Left = 384
     Top = 128
   end
+  object dsMain: TDataSource
+    DataSet = cdsMain
+    Left = 416
+    Top = 126
+  end
 end

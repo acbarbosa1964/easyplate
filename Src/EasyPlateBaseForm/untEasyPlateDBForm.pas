@@ -51,6 +51,7 @@ type
     cdsMain: TClientDataSet;
     pnlContainer: TEasyPanel;
     pgcContainer: TEasyPageControl;
+    dsMain: TDataSource;
     procedure btnExitClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -76,6 +77,7 @@ type
   private
     { Private declarations }
     FMainClientDataSet: TClientDataSet;         //绑定数据的ClientDataSet
+    FMainDataSource   : TDataSource;
     FMainSQL          : string;                 //窗体初始化时执行的SQL语句
     FDeleteMark: String;                    //删除标志
 
@@ -100,6 +102,8 @@ type
     //加载模块的配置界面所需要的函数
     procedure BindRoot(Form: TComponent; AFileName: string);
     procedure ReadError(Reader: TReader; const Message: string; var Handled: Boolean);
+    function GetMainDataSource: TDataSource;
+    procedure SetMainDataSource(const Value: TDataSource);
   protected
     { protected declarations }
     //改变按钮输入状态的过程
@@ -177,6 +181,7 @@ type
     property EasyDataState: TDataSetState read GetEasyDataState write SetEasyDataState;
     //初始化数据集信息
     property MainClientDataSet: TClientDataSet read GetMainClientDataSet write SetClientDataSet;
+    property MainDataSource: TDataSource read GetMainDataSource write SetMainDataSource;
     property MainSQL: string read GetMainSQL write SetMainSQL;
   end;
 
@@ -240,8 +245,6 @@ begin
   Result := False;
   if Assigned(MainClientDataSet) then
   begin
-    if not MainClientDataSet.Active then
-      MainClientDataSet.Open;
     MainClientDataSet.Append;
     //添加时间
     //用户权限控制
@@ -319,15 +322,21 @@ begin
   //打开数据集
   if MainSQL <> '' then
   begin
-    if DMEasyDBConnection.EasyNetType = 'CAS' then
+    if DMEasyDBConnection.EasyAppType = 'CAS' then
     begin
-      MainClientDataSet.Data := EasyRDMDisp.EasyGetRDMData(MainSQL);
-      if not MainClientDataSet.Active then
-        FEasyDataState := dsInactive;
-      if MainClientDataSet.RecordCount > 0 then
-        FEasyDataState := dsBrowse
-      else
-        SetBtnStatus_NoRecord;
+      if MainClientDataSet <> nil then
+      begin
+        if EasyRDMDisp = nil then
+          EasyErrorHint(EasyErrorHint_RDMDispNIL)
+        else
+        begin
+          MainClientDataSet.Data := EasyRDMDisp.EasyGetRDMData(MainSQL);
+          if MainClientDataSet.RecordCount > 0 then
+            FEasyDataState := dsBrowse
+          else
+            SetBtnStatus_NoRecord;
+        end;
+      end;
     end;
   end;  
 end;
@@ -634,7 +643,7 @@ begin
         SetInactiveButtons;
       end;
   end;
-  SetUserModuleButtonAuth;
+//  SetUserModuleButtonAuth;
 end;
 
 procedure TfrmEasyPlateDBForm.SetBtnStatus_NoRecord;
@@ -707,7 +716,8 @@ begin
   FISCanHotKey:=True;
   //KeyPreview
   IsKeyPreView := True;
-  MainClientDataSet := cdsMain;
+  FMainClientDataSet := cdsMain;
+  FMainDataSource := dsMain;
   //非空字段颜色默认为蓝色 clBlue
   FNotNullFieldColor := clBlue;
   FNotNullControlList := TList.Create;
@@ -939,6 +949,10 @@ begin
       for I := 0 to TForm(pnlContainer.Controls[1]).ComponentCount - 1 do
       begin
         TmpComponent := TForm(pnlContainer.Controls[1]).Components[I];
+        //绑定数据源
+        if MainDataSource <> nil then
+          SetEditDataSource(TmpComponent, MainDataSource);
+        //设置非空字段颜色
         if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
           SetEditLabelColor(TmpComponent, NotNullFieldColor);
       end;
@@ -955,6 +969,10 @@ begin
         for J := 0 to TForm(pgcContainer.Pages[I].Controls[0]).ComponentCount - 1 do
         begin
           TmpComponent := TForm(pgcContainer.Pages[I].Controls[0]).Components[J];
+          //绑定数据源
+          if MainDataSource <> nil then
+            SetEditDataSource(TmpComponent, MainDataSource);
+          //设置非空字段颜色
           if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
             SetEditLabelColor(TmpComponent, NotNullFieldColor);
         end;
@@ -1081,6 +1099,16 @@ begin
     else
       EasyErrorHint(FDFMList.Strings[I] + EasyErrorHint_NotFile);
   end;               
+end;
+
+function TfrmEasyPlateDBForm.GetMainDataSource: TDataSource;
+begin
+  Result := FMainDataSource;
+end;
+
+procedure TfrmEasyPlateDBForm.SetMainDataSource(const Value: TDataSource);
+begin
+  FMainDataSource := Value;
 end;
 
 end.

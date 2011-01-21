@@ -17,6 +17,8 @@ const
   EasyErrorHint_DirCreate = '目录创建出错，原因：';
   EasyErrorHint_NotFile = ' 文件不存在！';
 
+  EasyErrorHint_RDMDispNIL = '中间服务器获取异常，原因：接口返回为空值！';
+
   ActionStr: array[TReconcileAction] of string = ('忽略', '中断', '合并',
     '正确', '取消', '刷新');
   UpdateKindStr: array[TUpdateKind] of string = ('修改', '插入',

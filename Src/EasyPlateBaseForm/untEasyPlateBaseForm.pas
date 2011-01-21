@@ -258,7 +258,7 @@ begin
     end
     else if DMEasyDBConnection.EasyAppType = 'CAS' then
     begin
-      if (Components[I] is TClientDataSet) then
+      if Components[I] is TClientDataSet then
       begin
         with Components[I] as TClientDataSet do
         begin  
@@ -266,7 +266,7 @@ begin
           ProviderName := 'EasyRDMDsp';
         end;
       end;
-    end; 
+    end;
   end;
 end;
 

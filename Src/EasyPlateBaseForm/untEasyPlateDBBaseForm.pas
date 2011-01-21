@@ -75,12 +75,12 @@ begin
 end;
 
 procedure TfrmEasyPlateDBBaseForm.FormCreate(Sender: TObject);
-var
-  I       : Integer;
+//var
+//  I       : Integer;
 begin
   inherited;
   FEasyDBConn := DMEasyDBConnection.EasyADOConn;
-  for i := 0 to ComponentCount - 1 do
+  {for i := 0 to ComponentCount - 1 do
   begin
     if Self.Components[i] is TEasyDevDBTextEdit then
     begin
@@ -127,7 +127,7 @@ begin
        (Components[i] as TEasyDevDBCalcEdit).ImeName := '';
        (Components[i] as TEasyDevDBCalcEdit).ImeMode := imDontCare;
     end;
-  end; 
+  end;}
 end;
 
 function TfrmEasyPlateDBBaseForm.GetRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;

@@ -1,6 +1,6 @@
 inherited frmEasyUnitMain: TfrmEasyUnitMain
-  Left = 272
-  Top = 153
+  Left = 372
+  Top = 154
   Caption = 'frmEasyUnitMain'
   FormStyle = fsMDIChild
   Position = poDefault
@@ -32,7 +32,7 @@ inherited frmEasyUnitMain: TfrmEasyUnitMain
       TabOrder = 0
       object cxGrid1DBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
-        DataController.DataSource = dsUnit
+        DataController.DataSource = dsMain
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
@@ -55,17 +55,5 @@ inherited frmEasyUnitMain: TfrmEasyUnitMain
     inherited pgcContainer: TEasyPageControl
       FixedDimension = 0
     end
-  end
-  object cdsUnit: TClientDataSet
-    Aggregates = <>
-    CommandText = 'SELECT * FROM hrHumanResource'
-    Params = <>
-    Left = 208
-    Top = 228
-  end
-  object dsUnit: TDataSource
-    DataSet = cdsUnit
-    Left = 248
-    Top = 228
   end
 end

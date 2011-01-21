@@ -29,7 +29,7 @@ unit untEasyDBConnection;
 interface
 
 uses
-  SysUtils, Classes, DB, ADODB, IniFiles, Forms, untEasyUtilRWIni,
+  Windows, SysUtils, Classes, DB, ADODB, IniFiles, Forms, untEasyUtilRWIni,
   Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB;
 
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
@@ -183,8 +183,15 @@ begin
   ReadIniFile(EasyDBIniFilePath, 'ABC123_888888');
 
   if UpperCase(EasyAppType) = 'CAS' then
+  begin
     //打开Sckt连接
-    OpenEasyScktConnection
+    if OpenEasyScktConnection <> 1 then
+    begin
+      Application.MessageBox('中间层服务器连接异常!', '提示', MB_OK + 
+        MB_ICONWARNING);
+      Exit;    
+    end
+  end
   else
     //打开ADO两层数据连接
     OpenEasyADOConnection(EasyDBType, EasyNetType);  
@@ -195,7 +202,9 @@ begin
 //    EasySOB.LoadBalanced := True;
   //如果是三层就获取远程的服务接口
   if UpperCase(EasyAppType) = 'CAS' then
+  begin
     EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
+  end;
 end;
 
 function TDMEasyDBConnection.GetDBIniFilePath: string;
@@ -416,18 +425,18 @@ begin
   begin
     Address := EasyScktHost;
 ////    Host := EasyScktHost;
-  {  if Trim(EasyScktIGUID) <> '' then
-      InterceptGUID := EasyScktIGUID;  }
+    if Trim(EasyScktIGUID) <> '' then
+      InterceptGUID := EasyScktIGUID;
     if Trim(EasyScktIName) <> '' then
       InterceptName := EasyScktIName;
     Port := StrToInt(EasyScktPort);
-
-   { if Trim(EasyScktSGUID) <> '' then
-      ServerGUID := EasyScktSGUID; }
+    if Trim(EasyScktSGUID) <> '' then
+      ServerGUID := EasyScktSGUID;
     ServerName := EasyScktSName;
-    if not Connected then
-      Connected;
+    Open;
   end;
+  if EasyScktConn.Connected then
+    Result := 1;
 end;
 
 function TDMEasyDBConnection.GetScktHost: string;
@@ -493,7 +502,7 @@ end;
 initialization
   CoInitialize(nil);
   DMEasyDBConnection := TDMEasyDBConnection.Create(Application);
-  Application.Handle := DMEasyDBConnection.EasyApplicationHandle;   
+  Application.Handle := DMEasyDBConnection.EasyApplicationHandle;
 
 finalization
   CoUninitialize;
