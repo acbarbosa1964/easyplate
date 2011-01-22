@@ -1080,6 +1080,7 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
   end
   object dsMain: TDataSource
     DataSet = cdsMain
+    OnStateChange = dsMainStateChange
     Left = 416
     Top = 126
   end

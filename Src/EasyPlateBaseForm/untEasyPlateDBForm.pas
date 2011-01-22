@@ -30,9 +30,13 @@ uses
   Dialogs, untEasyPlateDBBaseForm, DB, DBClient, ImgList, untEasyToolBar,
   untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox, DBGrids,
   untEasyPageControl, untEasyDevExt, untEasyDBDevExt, Buttons, Grids, ComCtrls,
-  StdCtrls, DBCtrls, dbcgrids, Tabs;
+  StdCtrls, DBCtrls, dbcgrids, Tabs, cxGrid, cxGridDBTableView, cxGridCustomTableView,
+  cxGridTableView;
 
 type
+  //浏览 编辑(插入) 无记录 不可用状态
+  TEasyDataState = (edsBrowse, edsInsert, edsEdit, edsNoRecord, edsInactive);
+  
   TfrmEasyPlateDBForm = class(TfrmEasyPlateDBBaseForm)
     dkpDBForm: TEasyDockPanel;
     tlbDBForm: TEasyToolBar;
@@ -74,10 +78,12 @@ type
       var Action: TReconcileAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure dsMainStateChange(Sender: TObject);
   private
     { Private declarations }
     FMainClientDataSet: TClientDataSet;         //绑定数据的ClientDataSet
     FMainDataSource   : TDataSource;
+    FMainGrid         : TcxGrid;
     FMainSQL          : string;                 //窗体初始化时执行的SQL语句
     FDeleteMark: String;                    //删除标志
 
@@ -86,7 +92,7 @@ type
     FISBtnNotVisibleHotKey: Boolean;        //按钮在非可视状态下是否接收快捷键
     FISCanHotKey          : Boolean;
     
-    FEasyDataState        : TDataSetState; //数据集状态
+    FEasyDataState        : TEasyDataState; //数据集状态
 
     FNotNullFieldList     : TStrings;      //非空和非复制字段列表
     FNotCopyFieldList     : TStrings;
@@ -104,6 +110,8 @@ type
     procedure ReadError(Reader: TReader; const Message: string; var Handled: Boolean);
     function GetMainDataSource: TDataSource;
     procedure SetMainDataSource(const Value: TDataSource);
+    function GetMainGrid: TcxGrid;
+    procedure SetMainGrid(const Value: TcxGrid);
   protected
     { protected declarations }
     //改变按钮输入状态的过程
@@ -145,8 +153,8 @@ type
     //复制操作相关
     function BuildCopyList(AClientDataSet: TClientDataSet; ANotCopyFieldList: TStrings): TStrings;
     procedure CopyDataFromList(AClientDataSet: TClientDataSet; ACopyFieldList: TStrings);
-    function GetEasyDataState: TDataSetState;
-    procedure SetEasyDataState(const Value: TDataSetState);
+    function GetEasyDataState: TEasyDataState;
+    procedure SetEasyDataState(const Value: TEasyDataState);
     procedure SetNotNullFieldColor(const Value: TColor);
     //设置非空字段的控件颜色
     procedure SetNotNullFieldsControlColor; virtual;
@@ -178,10 +186,11 @@ type
     property ISCanHotKey : Boolean read FISCanHotKey write FISCanHotKey;
     //数据删除标志
     property MainDeleteMark: string read GetMainDeleteMark write SetMainDeleteMark;
-    property EasyDataState: TDataSetState read GetEasyDataState write SetEasyDataState;
+    property EasyDataState: TEasyDataState read GetEasyDataState write SetEasyDataState;
     //初始化数据集信息
     property MainClientDataSet: TClientDataSet read GetMainClientDataSet write SetClientDataSet;
     property MainDataSource: TDataSource read GetMainDataSource write SetMainDataSource;
+    property MainGrid: TcxGrid read GetMainGrid write SetMainGrid;
     property MainSQL: string read GetMainSQL write SetMainSQL;
   end;
 
@@ -243,6 +252,7 @@ end;
 function TfrmEasyPlateDBForm.Append: Boolean;
 begin
   Result := False;
+  MainClientDataSet.ReadOnly := False;
   if Assigned(MainClientDataSet) then
   begin
     MainClientDataSet.Append;
@@ -267,7 +277,7 @@ begin
   Result := False;
   if Assigned(MainClientDataSet) then
   begin
-    MainClientDataSet.Cancel;
+    MainClientDataSet.CancelUpdates;
     Result := True;
   end;
 end;
@@ -312,7 +322,8 @@ end;
 constructor TfrmEasyPlateDBForm.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FEasyDataState := dsInactive;
+  FEasyDataState := edsInactive;
+
   if not Assigned(FNotNullFieldList) then
     FNotNullFieldList := TStringList.Create;
   if not Assigned(FNotCopyFieldList) then
@@ -332,7 +343,7 @@ begin
         begin
           MainClientDataSet.Data := EasyRDMDisp.EasyGetRDMData(MainSQL);
           if MainClientDataSet.RecordCount > 0 then
-            FEasyDataState := dsBrowse
+            EasyDataState := edsBrowse
           else
             SetBtnStatus_NoRecord;
         end;
@@ -392,7 +403,7 @@ begin
   if Delete(MainClientDataSet, True) then
   begin
     if MainClientDataSet.RecordCount > 0 then
-      FEasyDataState := dsBrowse
+      EasyDataState := edsBrowse
     else
       SetBtnStatus_NoRecord;
     Result := True;
@@ -550,6 +561,24 @@ begin
 end;
 
 procedure TfrmEasyPlateDBForm.SetAllControlStatus;
+  //设置Grid的编辑状态
+  {procedure SetDBTableViewState(AState: Boolean);
+  var
+    I: Integer;
+  begin
+    if MainGrid <> nil then
+    begin
+      for I := 0 to MainGrid.ViewCount - 1 do
+      begin
+        if MainGrid.Views[I] is TcxGridDBTableView then
+        begin
+//          ShowMessage(TcxGridDBTableView(MainGrid.Views[I]).Name);
+          TcxGridDBTableView(MainGrid.Views[I]).OptionsData.Editing := AState;
+        end;
+      end;
+    end;
+  end;   }
+  //编辑状态
   procedure SetEditButtons;
   begin
     btnNew.Enabled := False;
@@ -560,6 +589,10 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnCopy.Enabled := False;
     btnFind.Enabled := False;
     btnPrint.Enabled := False;
+
+//    SetDBTableViewState(True);
+    //新增操作之前设置
+//    MainClientDataSet.ReadOnly := false;
   end;
 
   procedure SetBrowseButtons;
@@ -572,6 +605,9 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnCopy.Enabled := True;
     btnFind.Enabled := True;
     btnPrint.Enabled := True;
+
+//    SetDBTableViewState(False);
+    MainClientDataSet.ReadOnly := True;
   end;
 
   procedure SetInactiveButtons;
@@ -584,6 +620,9 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnCopy.Enabled := False;
     btnFind.Enabled := True;
     btnPrint.Enabled := False;
+
+//    SetDBTableViewState(False);
+    MainClientDataSet.ReadOnly := True;
   end;
 
   procedure SetNoRecordButtons;
@@ -596,6 +635,9 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnCopy.Enabled := False;
     btnFind.Enabled := True;
     btnPrint.Enabled := False;
+
+//    SetDBTableViewState(False);
+    MainClientDataSet.ReadOnly := True;
   end;
 
   procedure SetUserModuleButtonAuth;
@@ -629,19 +671,23 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
       btnPrint.Enabled := False;
   end;
 begin
-  case FEasyDataState of
-    dsInsert, dsEdit:
+  case EasyDataState of
+    edsEdit, edsInsert:
       begin
         SetEditButtons;
       end;
-    dsBrowse:
+    edsBrowse:
       begin
         SetBrowseButtons;
       end;
-    dsInactive:
+    edsInactive:
       begin
         SetInactiveButtons;
       end;
+    edsNoRecord:
+      begin
+        SetNoRecordButtons;
+      end;  
   end;
 //  SetUserModuleButtonAuth;
 end;
@@ -676,7 +722,7 @@ begin
   end; }
 end;
 
-procedure TfrmEasyPlateDBForm.SetEasyDataState(const Value: TDataSetState);
+procedure TfrmEasyPlateDBForm.SetEasyDataState(const Value: TEasyDataState);
 begin
   FEasyDataState := Value;
   //重置按钮状态
@@ -751,14 +797,14 @@ procedure TfrmEasyPlateDBForm.btnNewClick(Sender: TObject);
 begin
   inherited;
   if Append then
-    EasyDataState := dsInsert;
+    EasyDataState := edsInsert;
 end;
 
 procedure TfrmEasyPlateDBForm.btnEditClick(Sender: TObject);
 begin
   inherited;
   if Edit then
-    EasyDataState := dsEdit;
+    EasyDataState := edsEdit;
 end;
 
 procedure TfrmEasyPlateDBForm.btnDeleteClick(Sender: TObject);
@@ -773,9 +819,9 @@ begin
   if Cancel then
   begin
     if MainClientDataSet.RecordCount > 0 then
-      EasyDataState := dsBrowse
+      EasyDataState := edsBrowse
     else
-      SetBtnStatus_NoRecord;
+      EasyDataState := edsNoRecord;
   end; 
 end;
 
@@ -783,7 +829,7 @@ procedure TfrmEasyPlateDBForm.btnCopyClick(Sender: TObject);
 begin
   inherited;
   if Copy then
-    EasyDataState := dsInsert;
+    EasyDataState := edsInsert;
 end;
 
 procedure TfrmEasyPlateDBForm.btnSaveClick(Sender: TObject);
@@ -795,12 +841,12 @@ end;
 procedure TfrmEasyPlateDBForm.btnRefreshClick(Sender: TObject);
 begin
   inherited;
-  if EasyDataState in [dsInsert, dsEdit] then
+  if EasyDataState in [edsInsert, edsEdit] then
   begin
     if MessageDlg(EasyRefreshHint_Save, mtWarning, [mbYes, mbNo], 0) = mrYes then
     begin
       if Save then
-        EasyDataState := dsBrowse;
+        EasyDataState := edsBrowse;
     end;
   end;
 end;
@@ -808,12 +854,12 @@ end;
 procedure TfrmEasyPlateDBForm.btnFindClick(Sender: TObject);
 begin
   inherited;
-  if EasyDataState in [dsInsert, dsEdit] then
+  if EasyDataState in [edsInsert, edsEdit] then
   begin
     if MessageDlg(EasyFindHint_Save, mtWarning, [mbYes, mbNo], 0) = mrYes then
     begin
       if Save then
-        EasyDataState := dsBrowse;
+        EasyDataState := edsBrowse;
     end;
   end;
 end;
@@ -893,7 +939,7 @@ begin
 
 end;
 
-function TfrmEasyPlateDBForm.GetEasyDataState: TDataSetState;
+function TfrmEasyPlateDBForm.GetEasyDataState: TEasyDataState;
 begin
   Result := FEasyDataState;
 end;
@@ -1098,7 +1144,7 @@ begin
       LoadEasyDFM(EasyPlugPath + 'dfm\' + FDFMList.Strings[I])
     else
       EasyErrorHint(FDFMList.Strings[I] + EasyErrorHint_NotFile);
-  end;               
+  end;
 end;
 
 function TfrmEasyPlateDBForm.GetMainDataSource: TDataSource;
@@ -1109,6 +1155,36 @@ end;
 procedure TfrmEasyPlateDBForm.SetMainDataSource(const Value: TDataSource);
 begin
   FMainDataSource := Value;
+end;
+
+function TfrmEasyPlateDBForm.GetMainGrid: TcxGrid;
+begin
+  Result := FMainGrid;
+end;
+
+procedure TfrmEasyPlateDBForm.SetMainGrid(const Value: TcxGrid);
+begin
+  FMainGrid := Value;
+end;
+
+procedure TfrmEasyPlateDBForm.dsMainStateChange(Sender: TObject);
+begin
+  inherited;
+  case dsMain.State of
+    dsEdit:
+      EasyDataState := edsEdit;
+    dsInsert:
+      EasyDataState := edsInsert;
+    dsInactive:
+      EasyDataState := edsInactive;
+    dsBrowse:
+      begin
+        if cdsMain.RecordCount <= 0 then
+          EasyDataState := edsInactive
+        else
+          EasyDataState := edsBrowse;
+      end;  
+  end;
 end;
 
 end.
