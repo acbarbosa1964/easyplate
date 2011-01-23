@@ -22,6 +22,8 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
     UpdateMode = upWhereKeyOnly
     OnUpdateError = EasyRDMDspUpdateError
     BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
+    BeforeGetRecords = EasyRDMDspBeforeGetRecords
+    OnGetTableName = EasyRDMDspGetTableName
     Left = 56
     Top = 80
   end

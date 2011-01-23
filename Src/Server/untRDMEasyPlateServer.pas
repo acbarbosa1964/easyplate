@@ -47,9 +47,13 @@ type
     procedure EasyRDMDspBeforeUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind; var Applied: Boolean);
+    procedure EasyRDMDspGetTableName(Sender: TObject; DataSet: TDataSet;
+      var TableName: String);
+    procedure EasyRDMDspBeforeGetRecords(Sender: TObject;
+      var OwnerData: OleVariant);
   private
     { Private declarations }
-    I        : Integer;
+    FTableName: string;
     Params   : OleVariant;
     OwnerData: OleVariant;
     //获取库类型 MSSQL、ORACLE
@@ -80,19 +84,19 @@ type
     procedure SetDBIniFilePath(const Value: string);
 
     // 手工加入
-    function InnerGetData(strSQL: String): OleVariant;   
-    function InnerPostData(Delta: OleVariant; AMaxErrors: Integer): OleVariant;
+    function InnerGetData(strSQL: String): OleVariant;
+    function InnerPostData(Delta: OleVariant; out ErrorCode: Integer): OleVariant;
+    //获取当前操作时间
+    function GetOperTime: string;
+    procedure AddExecLog(ALogStr: string; AType: Integer = 0);
   protected
     class procedure UpdateRegistry(Register: Boolean; const ClassID, ProgID: string); override;
     function EasyGetRDMData(const ASQL: WideString): OleVariant; safecall;
     function EasySaveRDMData(const ATableName: WideString; ADelta: OleVariant;
-      const AKeyField: WideString; AMaxErrors: SYSINT): OleVariant;
+      const AKeyField: WideString; out AErrorCode: SYSINT): OleVariant;
       safecall;
-    function EasySaveRDMDatas(ATableNameOLE, ADelta, AKeyFieldOLE: OleVariant;
-      AMaxErrors: SYSINT): OleVariant; safecall;
-    function EasySaveRDMDataByFields(const ATableName: WideString;
-      ADelta: OleVariant; const AKeyField: WideString; AMaxErrors: SYSINT;
-      AUpdateFields: OleVariant): OleVariant; safecall;
+    function EasySaveRDMDatas(ATableNameOLE, ADeltaOLE, AKeyFieldOLE,
+      ACodeErrorOLE: OleVariant): OleVariant; safecall;
   public
     { Public declarations }
     property EasyDBIniFilePath: string read GetDBIniFilePath write SetDBIniFilePath;
@@ -268,6 +272,8 @@ procedure TRDMEasyPlateServer.RemoteDataModuleDestroy(Sender: TObject);
 begin
   if Assigned(FEasyDBIni) then
     FEasyDBIni.Free;
+  if EasyRDMADOConn.Connected then
+    EasyRDMADOConn.Close;
 end;
 
 function TRDMEasyPlateServer.EasyGetRDMData(const ASQL: WideString): OleVariant;
@@ -280,73 +286,99 @@ end;
 }
 function TRDMEasyPlateServer.EasySaveRDMData(const ATableName: WideString;
   ADelta: OleVariant; const AKeyField: WideString;
-  AMaxErrors: SYSINT): OleVariant;
+  out AErrorCode: SYSINT): OleVariant;
 var
   KeyField: TField;
 begin
+  //执行之前检查要更新的字段是否存在
   EasyRDMCds.Data := ADelta;
   if EasyRDMCds.IsEmpty then Exit;
   KeyField := EasyRDMCds.FindField(AKeyField);
-  if KeyField=nil then raise Exception.Create('主键字段未提供!');
-  try
-    EasyRDMADOConn.BeginTrans;
-    if KeyField.IsNull then
-    begin
-      EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
-    end
-    else
-    begin
-      EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE '
-                            + AKeyField + ' = ' + QuotedStr(KeyField.AsString);
-      EasyRDMQry.Open;
-      with EasyRDMQry.FieldByName(AKeyField) do
-        ProviderFlags := ProviderFlags + [pfInKey];
-      EasyRDMDsp.UpdateMode := upWhereKeyOnly;
-    end;
-    EasyRDMQry.Open;
-    Result := InnerPostData(ADelta, AMaxErrors);
-    EasyRDMADOConn.CommitTrans;
-  except
-    EasyRDMADOConn.RollbackTrans;
-  end;
+  if KeyField=nil then
+  begin
+    frmEasyPlateServerMain.mmErrorLog.Lines.Add('主键字段:' + AKeyField + '未提供');
+    Exit;
+  end;  
+  EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
+  EasyRDMQry.Open;
+  with EasyRDMQry.FieldByName(AKeyField) do
+    ProviderFlags := ProviderFlags + [pfInKey];
+  EasyRDMDsp.UpdateMode := upWhereKeyOnly;
+  Result := InnerPostData(ADelta, AErrorCode);
 end;
 
 function TRDMEasyPlateServer.InnerGetData(strSQL: String): OleVariant;
+var
+  I: Integer;
 begin
-  // 必须是CLOSE状态, 否则报错.   
+  // 必须是CLOSE状态, 否则报错.
   if EasyRDMQry.Active then
     EasyRDMQry.Active := False;   
   Result := Self.AS_GetRecords('EasyRDMDsp', -1, I, ResetOption+MetaDataOption,   
     strSQL, Params, OwnerData);
 end;
 
-function TRDMEasyPlateServer.InnerPostData(Delta: OleVariant; AMaxErrors: Integer): OleVariant;
+function TRDMEasyPlateServer.InnerPostData(Delta: OleVariant; out ErrorCode: Integer): OleVariant;
 begin
-  Result := Self.AS_ApplyUpdates('EasyRDMDsp', Delta, 0, AMaxErrors, OwnerData);
+  Result := Self.AS_ApplyUpdates('EasyRDMDsp', Delta, 0, ErrorCode, OwnerData);
 end;
 
 // ATableNameOLE、AKeyFieldOLE的值数量一定相同而且一定要表与主键要一一对应
-function TRDMEasyPlateServer.EasySaveRDMDatas(ATableNameOLE, ADelta,
-  AKeyFieldOLE: OleVariant; AMaxErrors: SYSINT): OleVariant;
+function TRDMEasyPlateServer.EasySaveRDMDatas(ATableNameOLE, ADeltaOLE,
+  AKeyFieldOLE, ACodeErrorOLE: OleVariant): OleVariant;
 var
-  I: Integer;
+  I, ErrorCode: Integer;
+  CanCommit: Boolean;
 begin
-//  EasyRDMADOConn.
-//  EasyRDMADOConn.BeginTrans;
+  CanCommit := True;
+  if EasyRDMADOConn.InTransaction then
+    EasyRDMADOConn.RollbackTrans;
+
+  if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(AKeyFieldOLE, 1) then
+  begin
+    AddExecLog('表数量<>主健数量', 1);
+    Exit;
+  end;
+  if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(ADeltaOLE, 1) then
+  begin
+    AddExecLog('表数量<>提交数据集数量', 1);
+    Exit;
+  end;
+  if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(ACodeErrorOLE, 1) then
+  begin
+    AddExecLog('表数量<>错误返回数量', 1);
+    Exit;
+  end;
+  
+  EasyRDMADOConn.BeginTrans;
+  AddExecLog('BeginTrans');
   try
     for I := VarArrayLowBound(ATableNameOLE, 1) to VarArrayHighBound(ATableNameOLE, 1) do
-      EasySaveRDMData(ATableNameOLE[I], ADelta, AKeyFieldOLE[I], AMaxErrors);
-//    EasyRDMADOConn.CommitTrans;
-  except
-//    EasyRDMADOConn.RollbackTrans;
+    begin
+      Result := EasySaveRDMData(ATableNameOLE[I], ADeltaOLE[I], AKeyFieldOLE[I], ErrorCode);
+      ACodeErrorOLE[I] := ErrorCode;
+    end;
+    for I := VarArrayLowBound(ACodeErrorOLE, 1) to VarArrayHighBound(ACodeErrorOLE, 1) do
+    begin
+      if ACodeErrorOLE[I] <> 0 then
+        CanCommit := False;
+    end;
+    if CanCommit then
+    begin
+      EasyRDMADOConn.CommitTrans;
+      AddExecLog('CommitTrans');
+    end
+    else
+    begin
+      EasyRDMADOConn.RollbackTrans;
+      AddExecLog('RollbackTrans');
+    end;
+  except on e:Exception do
+    begin
+      EasyRDMADOConn.RollbackTrans;
+      AddExecLog('RollbackTrans:' + e.Message);
+    end;
   end;
-end;
-
-function TRDMEasyPlateServer.EasySaveRDMDataByFields(
-  const ATableName: WideString; ADelta: OleVariant;
-  const AKeyField: WideString; AMaxErrors: SYSINT;
-  AUpdateFields: OleVariant): OleVariant;
-begin
 end;
 
 procedure TRDMEasyPlateServer.EasyRDMDspUpdateError(Sender: TObject;
@@ -357,6 +389,7 @@ begin
     mmErrorLog.Lines.Add(GetLocalTime + ' ' + E.Message);
 end;
 
+//执行之前检查要更新的字段是否存在
 procedure TRDMEasyPlateServer.EasyRDMDspBeforeUpdateRecord(Sender: TObject;
   SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
   UpdateKind: TUpdateKind; var Applied: Boolean);
@@ -373,17 +406,59 @@ procedure TRDMEasyPlateServer.EasyRDMDspBeforeUpdateRecord(Sender: TObject;
         Break;
       end;  
     end;  
-  end;  
+  end;
 var
   I: Integer;
+  TmpString: string;
 begin
+  TmpString := '';
   for I := 0 to DeltaDS.FieldCount - 1 do
   begin
     if not FindField(EasyRDMQry, DeltaDS.Fields[I].FieldName) then
     begin
       DeltaDS.FieldByName(DeltaDS.Fields[I].FieldName).ProviderFlags := [];
     end;
+    TmpString := DeltaDS.Fields[I].AsString + ';';
   end;
+  case UpdateKind of
+    ukInsert:
+      begin
+        AddExecLog('Insert' + FTableName + TmpString);
+      end;
+    ukModify:
+      begin
+        AddExecLog('Modify' + FTableName + TmpString);
+      end;
+    ukDelete:
+      begin
+        AddExecLog('Delete' + FTableName + TmpString);
+      end;  
+  end;
+end;
+
+function TRDMEasyPlateServer.GetOperTime: string;
+begin
+  Result := FormatDateTime('YYYY-MM-DD HH:NN:SS', Now);
+end;
+
+procedure TRDMEasyPlateServer.AddExecLog(ALogStr: string; AType: Integer = 0);
+begin
+  if AType = 0 then
+    frmEasyPlateServerMain.mmExecLog.Lines.Add(GetOperTime + ' ' + ALogStr)
+  else
+    frmEasyPlateServerMain.mmErrorLog.Lines.Add(GetOperTime + ' ' + ALogStr);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspGetTableName(Sender: TObject;
+  DataSet: TDataSet; var TableName: String);
+begin
+  FTableName := TableName;
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMDspBeforeGetRecords(Sender: TObject;
+  var OwnerData: OleVariant);
+begin
+  AddExecLog('GetRecords：' + FTableName);
 end;
 
 initialization

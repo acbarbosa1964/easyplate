@@ -734,6 +734,24 @@ var
 begin
   for i := 0 to PortList.Items.Count - 1 do
     PortList.Items.Objects[i].Free;
+
+  if not DirectoryExists(ExecLogPath + GetLocalDate) then
+  try
+    CreateDir(ExecLogPath + GetLocalDate);
+  except on e:Exception do
+    ShowMessage(e.Message);
+  end;
+  while not FileExists(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
+    mmExecLog.Lines.SaveToFile(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
+
+  if not DirectoryExists(ErrorLogPath + GetLocalDate) then
+  try
+    CreateDir(ErrorLogPath + GetLocalDate);
+  except on e:Exception do
+    ShowMessage(e.Message);
+  end;
+  while not FileExists(ErrorLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
+    mmErrorLog.Lines.SaveToFile(ErrorLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
 end;
 
 procedure TfrmEasyPlateServerMain.FormCloseQuery(Sender: TObject;
@@ -825,7 +843,7 @@ end;
 
 function TfrmEasyPlateServerMain.GetLocalTime: string;
 begin
-  Result := FormatDateTime('YYYY-MM-DD HH:NN:SS', Now());
+  Result := FormatDateTime('YYYY-MM-DD HHNNSS', Now());
 end;
 
 procedure TfrmEasyPlateServerMain.mmErrorLogChange(Sender: TObject);
@@ -854,7 +872,7 @@ begin
       ShowMessage(e.Message);
     end;
     while not FileExists(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
-      mmErrorLog.Lines.SaveToFile(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
+      mmExecLog.Lines.SaveToFile(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
   end;
 end;
 
