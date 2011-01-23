@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=260
+Build=267
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=EasyPlate Base Forms
-FileVersion=1.0.0.260
+FileVersion=1.0.0.267
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,7 +134,7 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2011-1-22 23:06:49
+LastCompiledTime=2011-1-23 16:28:48
 [Excluded Packages]
 c:\program files\borland\delphi7\Projects\Bpl\pkGraph.bpl=(untitled)
 C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
@@ -152,9 +152,8 @@ Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 Count=1
 Item0=$(EPP)\Src\dcu
 [HistoryLists\hlBPLOutput]
-Count=2
-Item0=$(EPP)\bin
-Item1=$(EPP)\bin\plugins
+Count=1
+Item0=$(EPP)\bin\plugins
 [HistoryLists\hlDCPOutput]
 Count=1
 Item0=$(EPP)\Src\dcp

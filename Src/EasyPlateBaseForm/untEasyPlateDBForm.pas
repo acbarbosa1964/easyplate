@@ -203,7 +203,7 @@ implementation
 
 uses
    untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo,
-   untEasyIODFM, untEasyStdCmpsReg;
+   untEasyIODFM, untEasyStdCmpsReg, untEasyPlateBaseForm;
 
 { TfrmEasyPlateDBForm }
 
@@ -501,57 +501,13 @@ begin
   //在保存之前检查是否还NOT NULL字段未填，是否指定数据集
   if not CheckNotNullFields and Assigned(MainClientDataSet) then
   begin
-  {  if DMEasyDBConnection.EasyNetType = 'CS' then
+    if DMEasyDBConnection.EasyAppType = 'CS' then
     begin
-      Screen.Cursor := crHourGlass;
-      try
-        //如果数据连接处于事务中则回滚，再开始新的事务处理
-        if DMEasyDBConnection.EasyADOConn.InTransaction then
-          DMEasyDBConnection.EasyADOConn.RollbackTrans;
-        DMEasyDBConnection.EasyADOConn.BeginTrans;
-        //如果ClientDataSet存在异常则回滚退出
-        if not BeforeSave(MainClientDataSet) then
-        begin
-          DMEasyDBConnection.EasyADOConn.RollbackTrans;
-          Screen.Cursor := crDefault;
-          Exit;
-        end;
-        try
-          //根据ClientDataState状态执行相应操作
-//          if Assigned(FHhfRelateUpdates.Provider) then
-//          begin
-//            if HhfDataState = dsInsert then
-//              FHhfRelateUpdates.RunUpdate(ukInsert, FClientDataSet)
-//            else
-//              FHhfRelateUpdates.RunUpdate(ukModify, FClientDataSet);
-//          end
-//          else
-//          begin
-//            FClientDataSet.ApplyUpdates(-1);
-//          end;
-          DMEasyDBConnection.EasyADOConn.CommitTrans;
-          //是否提示Hint信息
-          if ISSaveSuccessMsg then
-            EasyHint(EasySaveHint_Success);
-        except
-            on E:Exception do
-            begin
-              DMEasyDBConnection.EasyADOConn.RollbackTrans;
-              ShowMessage(EasySaveHint_Error + E.Message);
-            end;
-        end;
-      finally
-        Screen.Cursor := crDefault;
-      end;
     end
     else
-    if DMEasyDBConnection.EasyNetType = 'CAS' then
+    if DMEasyDBConnection.EasyAppType = 'CAS' then
     begin
-      try
-//      EasyRDMDisp.EasySaveRDMDatas();
-      finally
-      end;
-    end;   }
+    end;
   end;
 end;
 
@@ -588,6 +544,7 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnSave.Enabled := True;
     btnCopy.Enabled := False;
     btnFind.Enabled := False;
+    btnRefresh.Enabled := False;
     btnPrint.Enabled := False;
 
 //    SetDBTableViewState(True);
@@ -604,6 +561,7 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnSave.Enabled := False;
     btnCopy.Enabled := True;
     btnFind.Enabled := True;
+    btnRefresh.Enabled := True;
     btnPrint.Enabled := True;
 
 //    SetDBTableViewState(False);
@@ -619,6 +577,7 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnSave.Enabled := False;
     btnCopy.Enabled := False;
     btnFind.Enabled := True;
+    btnRefresh.Enabled := False;
     btnPrint.Enabled := False;
 
 //    SetDBTableViewState(False);
@@ -633,7 +592,8 @@ procedure TfrmEasyPlateDBForm.SetAllControlStatus;
     btnCancel.Enabled := False;
     btnSave.Enabled := False;
     btnCopy.Enabled := False;
-    btnFind.Enabled := True;
+    btnFind.Enabled := False;
+    btnRefresh.Enabled := False;
     btnPrint.Enabled := False;
 
 //    SetDBTableViewState(False);
@@ -738,11 +698,6 @@ end;
 procedure TfrmEasyPlateDBForm.btnExitClick(Sender: TObject);
 begin
   inherited;
-  if MainClientDataSet.ChangeCount > 0 then
-  begin
-//    if 
-  end;
-//
   Close;
 end;
 
@@ -750,7 +705,22 @@ procedure TfrmEasyPlateDBForm.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   inherited;
-  Action := caFree;
+  if MainClientDataSet.ChangeCount > 0 then
+  begin
+    case EasySelectHint('') of
+      ID_YES:
+        begin
+          DoSave(Sender);
+          Action := caFree;
+        end;
+      ID_NO:
+          Action := caFree;
+      ID_CANCEL:
+        begin
+          Action := caNone;
+        end;
+    end;
+  end;
 end;
 
 procedure TfrmEasyPlateDBForm.FormCreate(Sender: TObject);
@@ -952,27 +922,63 @@ end;
 function TfrmEasyPlateDBForm.CheckNotNullFields: Boolean;
 var
   I, J: Integer;
-  TmpComponent: TControl;
-  ACaption: string;
+  TmpComponent: TComponent;
+  TmpFieldName,
+  ACaption    : string;
 begin
   Result := False;
-  for I := 0 to FNotNullFieldList.Count - 1 do
+  if FDFMList.Count = 0 then Exit;
+  if FDFMList.Count <= 1 then
   begin
-    for J := 0 to pnlContainer.ControlCount - 1 do
+    //1 为EasyPageControl 2 为后附加的窗体
+    if pnlContainer.ControlCount = 2 then
     begin
-      TmpComponent := pnlContainer.Controls[J];
-      if GetDBDataBinding(TmpComponent, ACaption) = FNotNullFieldList[I] then
+      for I := 0 to TForm(pnlContainer.Controls[1]).ComponentCount - 1 do
       begin
-        if VarToStrDef(GetDBDataBindingDataSet(TmpComponent).FieldByName(FNotNullFieldList[I]).Value,
-                        '') = '' then
+        TmpComponent := TForm(pnlContainer.Controls[1]).Components[I];
+        //如果是非空字段或Tag = 100的非空字段标识
+        if (FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1)
+            or (TmpComponent.Tag = 100)  then
+          //获取字段名字
+          TmpFieldName := GetDBDataBinding(TmpComponent, ACaption);
+        if VarToStrDef(MainClientDataSet.FieldByName(TmpFieldName).Value, '') = '' then
         begin
           Result := True;
           EasyHint('【' + ACaption +'】' + EasyNotNullField_Hint);
           Break;
-        end;  
-      end;  
+        end;
+      end;
+    end;
+  end
+  else
+  begin
+    if pgcContainer.PageCount > 0 then
+      pgcContainer.ActivePageIndex := 0;
+    for I := 0 to pgcContainer.PageCount - 1 do
+    begin
+      if pgcContainer.ActivePage.ControlCount = 1 then
+      begin
+        for J := 0 to TForm(pgcContainer.Pages[I].Controls[0]).ComponentCount - 1 do
+        begin
+          TmpComponent := TForm(pgcContainer.Pages[I].Controls[0]).Components[J];
+          //如果是非空字段或Tag = 100的非空字段标识
+          if (FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1)
+              or (TmpComponent.Tag = 100)  then
+            //获取字段名字
+            TmpFieldName := GetDBDataBinding(TmpComponent, ACaption);
+          if VarToStrDef(MainClientDataSet.FieldByName(TmpFieldName).Value, '') = '' then
+          begin
+            Result := True;
+            EasyHint('【' + ACaption +'】' + EasyNotNullField_Hint);
+            Break;
+          end;
+        end;
+      end;
+      pgcContainer.ActivePageIndex := pgcContainer.ActivePageIndex + 1;
     end;  
-  end;  
+    if pgcContainer.PageCount > 0 then
+      pgcContainer.ActivePageIndex := 0;
+  end;    
 end;
 
 procedure TfrmEasyPlateDBForm.SetSQL(AValue: string);
@@ -999,7 +1005,8 @@ begin
         if MainDataSource <> nil then
           SetEditDataSource(TmpComponent, MainDataSource);
         //设置非空字段颜色
-        if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
+        if (FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1)
+            or (TmpComponent.Tag = 100)  then
           SetEditLabelColor(TmpComponent, NotNullFieldColor);
       end;
     end;
@@ -1019,7 +1026,8 @@ begin
           if MainDataSource <> nil then
             SetEditDataSource(TmpComponent, MainDataSource);
           //设置非空字段颜色
-          if FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1 then
+          if (FNotNullFieldList.IndexOf(GetDBDataBinding(TmpComponent, ACaption)) <> -1)
+            or (TmpComponent.Tag = 100) then
             SetEditLabelColor(TmpComponent, NotNullFieldColor);
         end;
       end;
@@ -1058,6 +1066,7 @@ begin
       with TForm(Form) do
       begin
         Parent := pnlContainer;
+        pnlContainer.Height := TForm(Form).Height;
         BorderStyle := bsNone;
         Align := alClient;
         Show;
@@ -1072,6 +1081,8 @@ begin
       Page.Caption := TForm(Form).Caption;
       Page.PageControl := pgcContainer;
 
+      if pgcContainer.Height > TForm(Form).Height then
+        pgcContainer.Height := TForm(Form).Height;
       with TForm(Form) do
       begin
         Parent := Page;

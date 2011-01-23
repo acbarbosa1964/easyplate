@@ -4,28 +4,24 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, untEasyPlateDBForm, ImgList, untEasyToolBar,
+  Dialogs, untEasyPlateDBForm, ImgList, untEasyToolBar, untEasyPlateSingleForm,
   untEasyToolBarStylers, ExtCtrls, untEasyGroupBox, cxStyles, cxCustomData,
   cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   cxGridLevel, cxClasses, cxControls, cxGridCustomView, untEasyUtilMethod,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
   cxContainer, cxTextEdit, cxDBEdit, untEasyDBDevExt, DBClient, StdCtrls,
-  untEasyPageControl;
+  untEasyPageControl, untEasyDBConnection;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
 type
-  TfrmEasyUnitMain = class(TfrmEasyPlateDBForm)
-    Splitter1: TSplitter;
-    pnlClient: TEasyPanel;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
-    cxGrid1: TcxGrid;
-    cxGrid1DBTableView1Column1: TcxGridDBColumn;
-    cxGrid1DBTableView1Column2: TcxGridDBColumn;
-    cxGrid1DBTableView1Column3: TcxGridDBColumn;
+  TfrmEasyUnitMain = class(TEasyPlateSingleForm)
+    grdSingleMainDBTableView1Column1: TcxGridDBColumn;
+    grdSingleMainDBTableView1Column2: TcxGridDBColumn;
+    grdSingleMainDBTableView1Column3: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure btnNewClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -54,17 +50,29 @@ procedure TfrmEasyUnitMain.FormCreate(Sender: TObject);
 begin
   inherited;
   AddNotNullField('GUID');
-  AddDFMFile('Unit1.dfm');
-  AddDFMFile('Unit2.dfm');
-  MainSQL := 'SELECT * FROM hrHumanResource';
+  AddDFMFile('puUnit.dfm');
+  MainSQL := 'SELECT * FROM puUnit';
 //  MainClientDataSet := cdsMain;
 //  MainDataSource := dsMain;
 end;
 
 procedure TfrmEasyUnitMain.btnSaveClick(Sender: TObject);
+var
+  AErrorCode: Integer;
 begin
   inherited;
-//  EasyRDMDisp.EasySaveRDMData('', cdsUnit.Delta, 'GUID', 0);
+  EasyRDMDisp.EasySaveRDMData('puUnit', cdsMain.Delta, 'GUID', AErrorCode);
+  if AErrorCode > 0 then
+    ShowMessage('Error');
+end;
+
+procedure TfrmEasyUnitMain.btnNewClick(Sender: TObject);
+begin
+  inherited;
+  cdsMain.FieldByName('GUID').AsString := GenerateGUID;
+  cdsMain.FieldByName('tInputDate').AsDateTime := Now;
+  cdsMain.FieldByName('sUserID').AsString := '1111111';
+//  grdSingleMainDBTableView1.OptionsData.Editing := False;
 end;
 
 end.
