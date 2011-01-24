@@ -1,0 +1,575 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://www.delphibbs.com/keylife/iblog_show.asp?xid=3893 -->
+<HTML 
+xmlns:tools><HEAD><TITLE>大富翁论坛-富翁笔记-关于ExpressQuantumGrid4的cxGrid的一些使用方法</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content=大富翁,论坛,技术,积分,排行榜,Delphi,Kylix,Java,XML,XSLT,forum,Blog 
+name=keywords>
+<META 
+content="大富翁论坛(delphibbs.com)关于 Delphi, Kylix, Java, DotNet 的技术论坛。采用积分游戏形式，靠您的智慧上大富翁排行榜！" 
+name=description>
+<STYLE type=text/css>
+@media All    
+{
+tools\:ubb {
+	BEHAVIOR: url("ubb.htc")
+}
+
+}
+</STYLE>
+<LINK href="大富翁论坛-富翁笔记-关于ExpressQuantumGrid4的cxGrid的一些使用方法_files/web_font.css" 
+type=text/css rel=stylesheet>
+<SCRIPT 
+src="大富翁论坛-富翁笔记-关于ExpressQuantumGrid4的cxGrid的一些使用方法_files/loadxmln.js"></SCRIPT>
+
+<META content="MSHTML 6.00.3790.259" name=GENERATOR></HEAD>
+<BODY topMargin=2 onload=showMsg();googlead(); rightMargin=6>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <DIV style="RIGHT: 10px; POSITION: absolute; TOP: 0px"><A 
+      href="javascript:SaveAs();">保存</A> <A 
+      href="http://www.delphibbs.com/delphibbs/URLComment.asp?url=/keylife/iblog_show.asp">评价</A> 
+      </DIV><A href="http://www.delphibbs.com/delphibbs/rules.asp">游戏规则</A> <A 
+      href="http://www.delphibbs.com/delphibbs/register.asp">免费注册</A> <IMG 
+      height=60 
+      src="大富翁论坛-富翁笔记-关于ExpressQuantumGrid4的cxGrid的一些使用方法_files/dfwlogo.gif" 
+      width=240 align=middle> <A style="COLOR: red" 
+      href="http://www.delphibbs.com/delphibbs/download.asp">资料下载</A> <A 
+      href="http://www.delphibbs.com/delphibbs/index.asp">关于本站</A> </TD></TR>
+  <TR>
+    <TD align=middle colSpan=2><A 
+      href="http://www.delphibbs.com/delphibbs/listroom.asp">问题分类</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp">问题列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp?room=1">非技术题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listu.asp">富翁列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/dispu.asp">我的信息</A> <A 
+      href="http://www.delphibbs.com/delphibbs/askqn.asp">提出问题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/uonline.asp">在线富翁</A> <A 
+      href="http://www.delphibbs.com/delphibbs/calendar.asp">富翁日历</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_list.asp">笔记列表</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog.asp">我的笔记</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_man.asp" 
+      target=_blank>写作笔记</A> <A href="http://www.richsearch.com/" 
+      target=_blank>全文检索</A> 
+    <!--<a href="../keylife/almindex.asp">ALM大赛</a>--></TD></TR></TBODY></TABLE><xml id=menuxml><?xml version="1.0" encoding="gb2312" ?><DFWML type="注册信息"><URL>/keylife/iblog_show.asp</URL><QUERY_STRING>xid=3893</QUERY_STRING><USER Name="Metelese"><points>441</points><expoints>0</expoints><earnings>100</earnings><gettimes>85</gettimes><usertype>1</usertype><lasttime>2005-4-21</lasttime></USER></DFWML></xml>
+<TABLE id=stage width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=125 bgColor=#eeeeee height=340>
+      <DIV id=menupanel></DIV></TD>
+    <TD vAlign=top>
+      <DIV id=mainpanel width="680"></DIV>
+      <STYLE></STYLE>
+
+      <SCRIPT>
+window.name="bc3893";
+
+function  ModifyComment(cid){
+	window.open(
+	'iblog_addtion_modify.asp?cid='+cid,
+	'_blank',
+	'left=190,top=100,height=360,width=600,status=no,toolbar=no,menubar=no,location=no'
+	);
+}
+</SCRIPT>
+
+      <TABLE cellSpacing=0 cellPadding=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD class=inputcontent>
+            <TABLE class=TBborder cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR class=TBtitle 
+              style="PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px; HEIGHT: 19px">
+                <TD style="FONT-SIZE: 12px" align=left>KeyLife富翁笔记 </TD></TR>
+              <TR class=inputcaption>
+                <TD 
+                style="PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px"><B>作者:</B> 
+                  <A 
+                  href="http://www.delphibbs.com/keylife/iblog.asp?author=wangxian11">wangxian11</A><BR><B>标题:</B> 
+                  关于ExpressQuantumGrid4的cxGrid的一些使用方法 <BR><B>关键字:</B> 
+                  ExpressQuantumGrid4, cxGrid <BR><B>分类:</B> <A 
+                  href="http://www.delphibbs.com/keylife/iblog.asp?author=wangxian11&amp;rid=9999">个人专区</A> 
+                  <BR><B>密级:</B> 公开 
+                  <DIV align=right>(评分:<FONT color=red>★★★★★</FONT> , 回复: 28, 
+                  阅读: 2837)&nbsp;<A 
+                  href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=3893&amp;pageno=9999">&raquo;&raquo;</A></DIV></TD></TR>
+              <TR class=inputcontent>
+                <TD><PRE id=prestr>使用cxGrid有一些时间了，在这里总结一下使用cxGrid的一些方法，希望给刚开始接触cxGrid的人一些帮助。
+
+1.简单介绍：cxGrid右下方的cxGrid1Level1是表示Grid表的层，cxGrid可以有多层，这相当于集合了PageControl的
+
+功能,而cxGrid1Level1右边的cxGrid1DBTableView1相当于DBGrid一样。右击cxGrid1可以添加cxGrid1Level2，右击
+
+cxGrid1Level2，可以选择Create View , Add level 或者Delete Level。Add level可以增加子Level，Create View
+
+里面可以选择很多不同总类的View。其中
+   1)DB Table可以和数据库连接的View，更一般的DBGrid类似，它比DBGrid多了比如鼠标中键可以用，可以统计，
+
+查询，等等功能；
+   2)DB Banded Table 则可以实现比如：
+                     ---------------------------------
+                     |     说明1     |     说明2     |
+                     ---------------------------------
+                     | 字段1 | 字段2 | 字段3 | 字段4 |
+等类似的功能；
+   3)DB Card View 则提供了卡片方式的显示数据的功能，这个用在比如人事档案管理比较不错；
+   4)其它不一一赘述。
+ 
+2.一些使用方法：
+   1)有图片和MEMO的例子：
+     拖入一个cxGrid1，Table1，DataSource1。 Table1的DatabaseName设为DBDEMOS，TableName设为biolife.db， 
+
+    Active设为True;DataSource1的DataSet设为Table1；cxGrid1DBTableView1的DataController中的DataSource   
+
+    设为DataSource1;右击cxGrid1DBTableView1选择Create All Columns；双击cxGrid1，在弹出的窗口中找到     
+
+   cxGrid1DBTableView1Notes和cxGrid1DBTableView1Graphic，将它们的Properties属性设为BlobEdit；运行看看  
+
+   结果。再将cxGrid1DBTableView1Graphic的Properties属性设为Image，再将Properties下的Stretch设为True，  
+
+   将cxGrid1DBTableView1-&gt;optionsview-&gt;CellAutoHeight 设为True，看看结果。
+
+
+   2)如何让“Drag a column here to group by that column”不显示
+     解决：点击cxGrid1上的cxGrid1DBTableView1
+     在cxGrid1DBTableView1-&gt;optionsview-&gt;groupbybox:=false即可  
+     注：OptionsView里面有很多属性可能经常要用，比如：ColumnAutoWith,Navigator等等，慢慢琢磨吧:)
+     
+   3)GroupPanel上面的英文[Drag a column header to group by that column]怎么可以改成中文？
+     解决：最简单的方法是 TcxGridTableView.OnCustomDrawPartBackground ，也可用 OnCustomDrawGroupCell：
+
+     procedure TForm1.cxGrid1DBTableView1CustomDrawPartBackground(
+                Sender: TcxGridTableView; ACanvas: TcxCanvas;
+               AViewInfo: TcxCustomGridCellViewInfo; var ADone: Boolean);
+     begin
+       AViewInfo.Text:='动态设置 GroupBox 的显示内容';
+       ACanvas.FillRect(AViewInfo.Bounds);
+     end;
+
+   4)如何实现如下功能：
+            +财务部
+            +原材料仓库
+            +成品库
+            +冲压车间
+            +软件开发部
+     这个是部门的名称,点击加号就可以将本部门的人员情况显示出来。
+     解决：其实这是一个主从表关系，1：填好主表的keyfieldnames
+                                   2：填好从表的keyfieldnames
+                                   3：填好从表的　detaikeyfieldNames与masterkeyfieldnames
+                                   4: 从表的数据源一定要按与主表关联的字段排序
+    注：其它地方设置了主从表结构那样就显示不出来，比如设置了从表的Table或者Query的mastersource和
+    asterfield就会不能显示数据！如果是两个cxGrid的主从关系，这样设置就很OK了。
+
+   
+  5)统计功能
+    解决：cxGrid1DBTableView1-&gt;optionsview-&gt;Footer 设为True
+          cxGrid1DBTableView1-&gt;DataController-&gt;Summary设置FooterSummaryItems即可  
+
+  6)类似PageControl显示
+    解决：增加一个Level,将cxGrid1-&gt;RootLevelOptions-&gt;DetailTabsPosition设为dtpTop，然后相应的设置cxGrid1Level1,和cxGrid1Level2的Caption值。
+
+   未完待续。。。。。。。。。 
+
+</PRE><BR>
+                  <DIV style="BORDER-BOTTOM: #8ca6de 1px solid" 
+                  align=right>2003-10-29 20:46:00&nbsp; &nbsp; </DIV>
+                  <DIV class=inputcaption 
+                  style="BORDER-BOTTOM: #8ca6de 1px solid">
+                  <TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD></TD>
+                      <TD align=right><A 
+                        href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=3893">发表评语&raquo;&raquo;&raquo;</A>&nbsp; 
+                        &nbsp; </TD></TR></TBODY></TABLE></DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-10-30 
+                  20:55:11&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题7，8，9</SPAN><PRE id=prestr>  7)如何设定左边几列，不能滚动?
+    解决：使用DB Banded Table才可以实现，
+          在cxGrid1DBBandedTableView里建立Band0,Band1
+          Band0的Fixed=tfLeft
+          Band1的Fixed=tfnone
+          设置要锁定的字段的BandIndex=0,其它为1，就OK了。   
+  
+  8)怎样实现如EXCEL一样的，当前格=G14+G15+G16 这样的功能
+    解决：举一个简单的例子：label1.Caption := cxGrid1DBTableView1.DataController.Values[2, 
+
+3]+cxGrid1DBTableView2.DataController.Values[1, 1]+cxGrid1DBTableView3.DataController.Values[1, 1];
+所以不同cxGrid1DBTableView中的数据都可以给当前格，这样就做到了EXCEL中的当前格=G14+G15+G16 类似的功能。
+  
+  9)鼠标右击cxGrid1DBBandedTableView1菜单里的Edit Layout什么用，怎么使用？
+    解决：可以拖动字段，并列的可以拖成有层次感（一层层）， 拖动时会显示箭头的，就是说可以拖一个字段放
+
+到最上面，就可以使记录按此字段进行分组。点击其中一个字段，上面还会出现一个上升或者下降的小三角形，这个
+
+小三角形的作用是在运行阶段，数据就会按照这个字段上升或者下降排序。
+     还有一个Set as Default的作用是保持当前TableView的参数，下此产生新的TableView的时候就会可以和上次保持的参数一样。这个还没有做过试验。
+ 
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-2 
+                  21:45:37&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题10</SPAN><PRE id=prestr>10）怎样将cxGrid里的数据导入到EXCEL，HTML，XML和TEXT
+   解决：这个问题在用了cxGrid以后变得异常简单，
+uses
+  cxExportGrid4Link;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  ExportGrid4ToEXCEL('d:\wang.xsl',cxGrid1,True,True);
+  ExportGrid4ToTEXT('d:\wang.txt',cxGrid1,True,True);
+  ExportGrid4ToXML('d:\wang.xml',cxGrid1,True,True);
+  ExportGrid4ToHTML('d:\wang.html',cxGrid1,True,True);
+end;
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-2 
+                  21:54:10&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题11</SPAN><PRE id=prestr>11)如何使满足条件的数据显示不同的颜色？
+解决：
+var
+ AYellowStyle: TcxStyle;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  //行颜色
+ AYellowStyle := TcxStyle.Create(Self);
+ AYellowStyle.Color := $0080FFFF;
+ AYellowStyle.TextColor := clMaroon;
+end;
+
+procedure TForm1.cxGrid1DBBandedTableView1StylesGetContentStyle(
+ Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+ AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+begin
+ if ARecord.Values[cxGrid1DBBandedTableView1Lengthcm.Index] &lt; 81 then
+   AStyle := AYellowStyle;
+end;
+
+这里cxGrid1DBBandedTableView1Lengthcm.Index小于81时就显示黄色
+ 
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-2 
+                  21:59:39&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题12</SPAN><PRE id=prestr>12）如何从外边的TXT文件导入到cxGrid？
+ 解决：    procedure CustomizeColumns;
+           procedure LoadData;
+
+procedure TForm1.CustomizeColumns;
+const
+  cDistance = 1;
+  cRadius = 5;
+  cPeriod = 4;
+  cPstring = 0;
+var
+  I: Integer;
+begin
+  DecimalSeparator := '.';
+  with cxGrid1TableView2 do
+  for I := 0 to ColumnCount - 1 do
+    if I in [cDistance, cRadius] then
+      Columns[I].DataBinding.ValueTypeClass := TcxIntegerValueType//1，5列为Integer
+    else
+      if I in [cPstring,cPeriod] then
+      Columns[I].DataBinding.ValueTypeClass := TcxStringValueType//0，4列为String
+      else
+       Columns[I].DataBinding.ValueTypeClass := TcxFloatValueType;//其他为Float
+end;
+
+procedure TForm1.LoadData;
+const
+  AFileName = '资产负债表.txt';
+  AHeaderLineCount = 2;
+
+var
+  ARecords, AValues: TStringList;
+  I: Integer;
+
+  procedure InitRecord(const Str: string);
+  var
+    J: Integer;
+    V: Variant;
+  begin
+    AValues.CommaText := Str;
+    for J := 0 to AValues.Count - 1 do
+     if AValues.Strings[J] &lt;&gt; '-' then
+     begin
+      V := AValues.Strings[J];
+      if not VarIsNull(V) then
+        cxGrid1TableView2.DataController.Values[I, J] := V;
+     end;
+  end;
+
+begin
+  if not FileExists(AFileName) then
+    raise Exception.Create('Data file not found');
+
+  ARecords := TStringList.Create;
+  AValues := TStringList.Create;
+
+  with ARecords do
+  try
+    LoadFromFile(AFileName);
+    cxGrid1TableView2.BeginUpdate;
+    cxGrid1TableView2.DataController.RecordCount := Count - AHeaderLineCount;
+    for I := 0 to Count - (AHeaderLineCount + 1) do
+      InitRecord(Strings[I + AHeaderLineCount]);
+  finally
+    cxGrid1TableView2.EndUpdate;
+    ARecords.Free;
+    AValues.Free;
+  end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  CustomizeColumns;
+  LoadData_Zcfz;
+end;
+
+
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-3 
+                  13:18:58&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">附件</SPAN><PRE id=prestr>其中“资产负债表.txt”中的数据如下：
+
+资        产	行次	年  初  数	期  末  数	负债及所有者权益	行次	年  初  数	期  末  数
+---------       ----    -----           --------        ----------             ----     --------        ---------
+流动资产：	1	0.00 	        0.00 	        流动负债：	        2	0.00 	        0.00 
+
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-3 
+                  20:09:25&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题13</SPAN><PRE id=prestr>13）如何改变列的颜色？
+var
+  AFirstColumnStyle: TcxStyle;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  //列颜色
+  AFirstColumnStyle := TcxStyle.Create(Self);
+  AFirstColumnStyle.Color := clAqua;
+  AFirstColumnStyle.TextColor := clBlue;
+  cxGrid1TableView1.Columns[1].Styles.Content := AFirstColumnStyle;
+end;
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-3 
+                  20:46:42&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题14</SPAN><PRE id=prestr>14）Set as default的用法？
+  解决：Set as default的用法是为了解决设置参数的方便而做的，比如：
+        连好数据库以后，更改cxGrid1DBBandedTableView1-&gt;OptionsCustomize-&gt;ColumnFiltering 设为False。（这个设置可以将字段名的下拉单给去掉）更改cxGrid1DBBandedTableView1-&gt;OptionsView-&gt;Navigator 设置为True。然后右击cxGrid1DBBandedTableView1，在弹出的菜单栏里面点击Set as default。 
+   OK，下次你再产生一个新的cxGrid1DBBandedTableView1时这些设置和刚才的一样了。如果需要设置的参数很多的时候，这个Set as default很有用！
+
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-3 
+                  20:58:27&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题15</SPAN><PRE id=prestr>15）怎样使鼠标移动时，相应的单元里的文字变色？
+   解决：
+var
+  FTrackItem: TcxCustomGridTableItem;
+  FTrackRec: TcxCustomGridRecord;
+
+procedure TForm1.cxGrid1DBTableView1CustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  if (AViewInfo.GridRecord = FTrackRec) and (AViewInfo.Item = FTrackItem) then
+  begin
+    ACanvas.Font.Color := clred;   //红色字体
+    ACanvas.Font.Style := [fsUnderline];//带下划线
+  end;
+end;
+
+procedure TForm1.cxGrid1DBTableView1MouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+var
+  AHitTest: TcxCustomGridHitTest;
+  ATrackItem: TcxCustomGridTableItem;
+  ATrackRec: TcxCustomGridRecord;
+begin
+  ATrackItem := FTrackItem;
+  ATrackRec := FTrackRec;
+
+  AHitTest := (Sender as TcxGridSite).GridView.ViewInfo.GetHitTest(X, Y);
+  if AHitTest is TcxGridRecordCellHitTest then
+  begin
+    FTrackItem := TcxGridRecordCellHitTest(AHitTest).Item;
+    FTrackRec := TcxGridRecordCellHitTest(AHitTest).GridRecord;
+  end
+  else
+  begin
+    FTrackItem := nil;
+    FTrackRec := nil;
+  end;
+
+  if (ATrackItem &lt;&gt; FTrackItem) or (ATrackRec &lt;&gt; FTrackRec) then
+  begin
+    // Invalidate old cell
+    if ATrackRec &lt;&gt; nil then
+      ATrackRec.Invalidate(ATrackItem);
+    // Invalidate new cell
+    if FTrackRec &lt;&gt; nil then
+      FTrackRec.Invalidate(FTrackItem);
+  end;
+end;
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-5 
+                  11:26:19&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题16</SPAN><PRE id=prestr>16)ExpressQuantumGrid 3.2.2中的dxdbgrid和4.2版本中的cxgrid有什么区别?
+有很大的区别，基本上相当于是两个控件一样。
+cxgrid是在dxdbgrid基础上完全重写的，所以cxgrid不支持dxdbgrid
+所以cxgrid里面特意提供了一个将dxdbgrid导入到cxgrid的功能。
+ 
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-5 
+                  16:31:07&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题17</SPAN><PRE id=prestr>17）怎样设计多表头的cxGrid？
+   解决：cxGrid可以解决如下的表头：
+                    ---------------------------------
+                    |     说明1     |     说明2     |
+                    ---------------------------------
+                    | 字段1 | 字段2 | 字段3 | 字段4 |
+                    |      字段5    |     字段6     |
+                    |      字段7    | 字段8 | 字段9 |
+实现这个很简单，你可以直接在上面拖动字段名，拖动时会显示箭头的，放入你想显示的位置就OK了。或者在鼠标右击cxGrid1DBBandedTableView1菜单里的Edit Layout里也可以拖放。
+
+但是cxGrid不能实现如下的多表头形式：
+                    ---------------------------------
+                    |     说明1     |     说明2     |
+                    ---------------------------------
+                    | 说明3 | 说明4 | 说明5 | 说明6 |
+                    |      字段1    |     字段2     |
+                    |      字段3    | 字段4 | 字段5 |
+不知道有谁能实现这样的多表头？
+
+
+
+
+
+
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-5 
+                  21:51:02&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题18</SPAN><PRE id=prestr>18）在主从表结构时，当点开“+”时怎样将焦点聚在相应主表的记录上？
+解决：
+var 
+  HitTest: TcxCustomGridHitTest; 
+
+procedure TColumnsShareDemoMainForm.tvProjectsMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  // Note that the Sender parameter is a Site
+  HitTest := (Sender as TcxGridSite).GridView.ViewInfo.GetHitTest(X, Y);
+  // The point belongs to the [+]/[-] button area
+  if HitTest is TcxGridExpandButtonHitTest then
+    // Move focus to the record
+    TcxGridExpandButtonHitTest(HitTest).GridRecord.Focused := True;
+end;
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-11-17 
+                  14:16:25&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题19</SPAN><PRE id=prestr>19)CXGrid4如何展开全部节点
+  解决：GridDBTableView1.DataController.Groups.FullExpand;</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2003-12-12 
+                  17:07:30&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题20</SPAN><PRE id=prestr>20）cxGrid如何动态创建Items的Editor的项?
+    cxGrid的列有一个属性,它的编辑框可以指定combobox,spinedit等.在设计时,可以为
+    combobox的items添加项目.请问是否可以动态创建?(run-time时由程序加入) 
+
+解决： 
+var
+   A:TDataSource:
+   B:TcxlookupcomboboxProperties;
+       begin
+   A:=TDataSource.create(self);
+   B:=tcxlookupcomboboxproperties.create(self);
+   A.Dataset:=Dic_ry_xb;//此处指定数据源。
+   b.listdource:=a;//此处指明字段的listsource属性。
+   b.keyfieldnames:='a';    //此处指明字段的关键字段
+   b.listfieldnames:='b';   //此处指明字段的返回值。
+   b.listcolumns.items[0].caption:='x;  //此处默认是会建立一个字段，但是显示的表头是name，所以此处让它显示为自己想要的中午显示。
+         cxGrid1DBTableView1c1_sex_code.Properties:=b;  //此处指明是那个字段。
+ end;  //这个是初始化的代码，
+</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-1-7 
+                  14:05:14&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">问题21</SPAN><PRE id=prestr>21）ExpressQuantumGrid4.5的汉化包
+在这里可以下载ExpressQuantumGrid4.5的汉化包，将文件直接覆盖到源文件就可以了。
+</PRE><A 
+                  href="http://www.delphibbs.com/keylife/images/u134917/cxGrid4chs.rar">问题21</A>
+                  <DIV class=bline align=right>&nbsp;</DIV>
+                  <DIV class=inputcaption 
+                  style="BORDER-BOTTOM: #8ca6de 1px solid">
+                  <TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD></TD>
+                      <TD align=right><A 
+                        href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=3893">发表评语&raquo;&raquo;&raquo;</A>&nbsp; 
+                        &nbsp; 
+        </TD></TR></TBODY></TABLE></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <SCRIPT>
+function show() {
+	load_xmln(menupanel, menuxml, "../delphibbs/login.xsl");
+}
+</SCRIPT>
+
+      <SCRIPT>prestr();</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+  showMsg();show();
+</SCRIPT>
+
+<TABLE width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD height=10></TD></TR>
+  <TR>
+    <TD width=125 height=4></TD>
+    <TD>
+      <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-5905650100597136";
+google_alternate_ad_url = "http://www.delphibbs.com/delphibbs/googlead.htm";
+google_ad_width = 730;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="";
+google_color_border = "B4D0DC";
+google_color_bg = "ECF8FF";
+google_color_link = "0000CC";
+google_color_url = "008000";
+google_color_text = "6F6F6F";
+//--></SCRIPT>
+
+      <SCRIPT 
+      src="大富翁论坛-富翁笔记-关于ExpressQuantumGrid4的cxGrid的一些使用方法_files/show_ads.js" 
+      type=text/javascript>
+</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+function googlead(){
+  //document.getElementsByTagName('iframe').item(0).id="googlead0";
+  //googlead0.name="_blank";
+  //window.status=googlead0.name;
+  //window.status= document.getElementsByTagName('iframe').item(0). .getElementsByTagName('table').item(0).outerHTML;
+}
+</SCRIPT>
+
+<P align=center>(C) 版权所有，大富翁论坛 1998-2004<BR>感谢您的惠顾，如有任何建议和意见，请 <A 
+onclick="alert(' 由于公开信箱，垃圾邮件过多，请最好在邮件标题开头写上delphibbs。谢谢合作。  ');" 
+href="mailto:webmaster@timeboat.com">联系版主</A>。<FONT face=Arial><SMALL 
+title=593.75>2004.3.20</SMALL></FONT></P></BODY></HTML>

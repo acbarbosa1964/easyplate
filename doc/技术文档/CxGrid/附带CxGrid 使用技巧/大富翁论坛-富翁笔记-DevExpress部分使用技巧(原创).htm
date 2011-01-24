@@ -1,0 +1,835 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://www.delphibbs.com/keylife/iblog_show.asp?xid=5366 -->
+<HTML xmlns:tools><HEAD><TITLE>大富翁论坛-富翁笔记-DevExpress部分使用技巧(原创)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content=大富翁,论坛,技术,积分,排行榜,Delphi,Kylix,Java,XML,XSLT,forum,Blog 
+name=keywords>
+<META 
+content="大富翁论坛(delphibbs.com)关于 Delphi, Kylix, Java, DotNet 的技术论坛。采用积分游戏形式，靠您的智慧上大富翁排行榜！" 
+name=description>
+<STYLE type=text/css>
+@media All    
+{
+tools\:ubb {
+	BEHAVIOR: url("ubb.htc")
+}
+
+}
+</STYLE>
+<LINK href="大富翁论坛-富翁笔记-DevExpress部分使用技巧(原创)_files/web_font.css" type=text/css 
+rel=stylesheet>
+<SCRIPT src="大富翁论坛-富翁笔记-DevExpress部分使用技巧(原创)_files/loadxmln.js"></SCRIPT>
+
+<META content="MSHTML 6.00.3790.259" name=GENERATOR></HEAD>
+<BODY topMargin=2 onload=showMsg();googlead(); rightMargin=6>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <DIV style="RIGHT: 10px; POSITION: absolute; TOP: 0px"><A 
+      href="javascript:SaveAs();">保存</A> <A 
+      href="http://www.delphibbs.com/delphibbs/URLComment.asp?url=/keylife/iblog_show.asp">评价</A> 
+      </DIV><A href="http://www.delphibbs.com/delphibbs/rules.asp">游戏规则</A> <A 
+      href="http://www.delphibbs.com/delphibbs/register.asp">免费注册</A> <IMG 
+      height=60 src="大富翁论坛-富翁笔记-DevExpress部分使用技巧(原创)_files/dfwlogo.gif" 
+      width=240 align=middle> <A style="COLOR: red" 
+      href="http://www.delphibbs.com/delphibbs/download.asp">资料下载</A> <A 
+      href="http://www.delphibbs.com/delphibbs/index.asp">关于本站</A> </TD></TR>
+  <TR>
+    <TD align=middle colSpan=2><A 
+      href="http://www.delphibbs.com/delphibbs/listroom.asp">问题分类</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp">问题列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp?room=1">非技术题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listu.asp">富翁列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/dispu.asp">我的信息</A> <A 
+      href="http://www.delphibbs.com/delphibbs/askqn.asp">提出问题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/uonline.asp">在线富翁</A> <A 
+      href="http://www.delphibbs.com/delphibbs/calendar.asp">富翁日历</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_list.asp">笔记列表</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog.asp">我的笔记</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_man.asp" 
+      target=_blank>写作笔记</A> <A href="http://www.richsearch.com/" 
+      target=_blank>全文检索</A> 
+    <!--<a href="../keylife/almindex.asp">ALM大赛</a>--></TD></TR></TBODY></TABLE><xml id=menuxml><?xml version="1.0" encoding="gb2312" ?><DFWML type="注册信息"><URL>/keylife/iblog_show.asp</URL><QUERY_STRING>xid=5366</QUERY_STRING><USER Name="Metelese"><points>441</points><expoints>0</expoints><earnings>100</earnings><gettimes>85</gettimes><usertype>1</usertype><lasttime>2005-4-21</lasttime></USER></DFWML></xml>
+<TABLE id=stage width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=125 bgColor=#eeeeee height=340>
+      <DIV id=menupanel></DIV></TD>
+    <TD vAlign=top>
+      <DIV id=mainpanel width="680"></DIV>
+      <STYLE></STYLE>
+
+      <SCRIPT>
+window.name="bc5366";
+
+function  ModifyComment(cid){
+	window.open(
+	'iblog_addtion_modify.asp?cid='+cid,
+	'_blank',
+	'left=190,top=100,height=360,width=600,status=no,toolbar=no,menubar=no,location=no'
+	);
+}
+</SCRIPT>
+
+      <TABLE cellSpacing=0 cellPadding=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD class=inputcontent>
+            <TABLE class=TBborder cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR class=TBtitle 
+              style="PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px; HEIGHT: 19px">
+                <TD style="FONT-SIZE: 12px" align=left>KeyLife富翁笔记 </TD></TR>
+              <TR class=inputcaption>
+                <TD 
+                style="PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px"><B>作者:</B> 
+                  <A 
+                  href="http://www.delphibbs.com/keylife/iblog.asp?author=轻舞肥羊">轻舞肥羊</A><BR><B>标题:</B> 
+                  DevExpress部分使用技巧(原创) <BR><B>关键字:</B> DevExpress,cxGrid 
+                  <BR><B>分类:</B> <A 
+                  href="http://www.delphibbs.com/keylife/iblog.asp?author=轻舞肥羊&amp;rid=3">开发技巧</A> 
+                  <BR><B>密级:</B> 公开 
+                  <DIV align=right>(评分:<FONT color=red>★★★★</FONT> , 回复: 5, 阅读: 
+                  1423)&nbsp;<A 
+                  href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=5366&amp;pageno=9999">&raquo;&raquo;</A></DIV></TD></TR>
+              <TR class=inputcontent>
+                <TD><PRE id=prestr>本文由 轻舞肥羊 发表于 大富翁论坛
+转载请标明出处,谢谢
+
+声明:以下代码请看懂再使用,本人水平有限,发现bug希望提出,让我们共同改进</PRE><BR>
+                  <DIV style="BORDER-BOTTOM: #8ca6de 1px solid" 
+                  align=right>2004-1-10 17:06:00&nbsp; &nbsp; </DIV>
+                  <DIV class=inputcaption 
+                  style="BORDER-BOTTOM: #8ca6de 1px solid">
+                  <TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD></TD>
+                      <TD align=right><A 
+                        href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=5366">发表评语&raquo;&raquo;&raquo;</A>&nbsp; 
+                        &nbsp; </TD></TR></TBODY></TABLE></DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-1-10 
+                  17:08:06&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">1.扩展cxLookupComboBox,使其支持多列查询的cxLookupComboBoxEx</SPAN><PRE id=prestr>//==============================================================================
+// Unit Name: cxLookupComboBoxEx
+// Author   : ysai
+// Date     : 2003
+// Purpose  : 扩展cxLookupComboBox,cxDBLookupComboBox,使其支持多列过滤
+// History  :
+//    2003-05-28大数据量改进
+//    2003-07-07可操作性改进
+//    2003-08-20效率改进
+//    2003-08-29加入过滤延时
+// 注意:
+//     限制1,不能再使用Properties.OnChange事件
+//     限制2,不能再使用Properties.ListSource.DataSet.OnFilterRecord事件
+//     限制3,不能再使用Properties.ListSource.DataSet.Filtered属性
+//     其它,最好在设计期设好一切属性,运行期再设置属性可能引发求知错误
+//==============================================================================
+
+unit cxLookupComboBoxEx;
+
+interface
+
+uses
+  SysUtils, Classes, Controls, Windows, Messages,DB,StrUtils,
+  cxControls, cxContainer, cxEdit, cxTextEdit,
+  cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox;
+
+type
+  TcxLookupComboBoxEx = class(TcxLookupComboBox)
+  private
+    //保存要过滤的字段列表
+    FFieldList  : TList;
+    FFindText   : String;
+    
+    //过滤事件
+    procedure _OnFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+    //编辑框文字改变事件
+    procedure _OnChange(Sender : TObject);
+    procedure GetFieldList;
+    //延时过滤消息
+    procedure WMTimer (var Message: TMessage); message WM_TIMER;
+  protected
+    //下拉表格收回时
+    procedure CloseUp(AAccept: Boolean); override;
+    //过滤过程
+    procedure _FilterListSource;
+    //初始化下拉表格事件
+    procedure DoInitPopup; override;
+  public
+    constructor Create(AOwner : TComponent); override;
+    destructor Destroy; override;
+    //更新要过滤的字段列表
+    procedure UpdateFilterFields;
+  published
+  end;
+
+  TcxDBLookupComboBoxEx = class(TcxDBLookupComboBox)
+  private
+    //保存要过滤的字段列表
+    FFieldList  : TList;
+    FFindText   : String;
+
+    //过滤事件
+    procedure _OnFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+    //编辑框文字改变事件
+    procedure _OnChange(Sender : TObject);
+    //取得要过滤的字段列表
+    procedure GetFieldList;
+    //延时过滤消息
+    procedure WMTimer (var Message: TMessage); message WM_TIMER;
+  protected
+    //下拉表格收回时
+    procedure CloseUp(AAccept: Boolean); override;
+    //过滤过程
+    procedure _FilterListSource;
+    //初始化下拉表格事件
+    procedure DoInitPopup; override;
+  public
+    constructor Create(AOwner : TComponent); override;
+    destructor Destroy; override;
+    //更新要过滤的字段列表
+    procedure UpdateFilterFields;
+  published
+  end;
+
+procedure Register;
+
+implementation
+
+const
+  UM_TIMER_FILTER = WM_USER + $101;             //自定义延时消息ID
+  FILTERTIMER     = 500;                        //延时时间
+  DROPDOWN_ROWS   = 12;
+
+procedure Register;
+begin
+  RegisterComponents('Dev Express', [TcxLookupComboBoxEx,TcxDBLookupComboBoxEx]);
+end;
+
+{ TcxLookupComboBoxEx }
+
+procedure TcxLookupComboBoxEx.CloseUp(AAccept: Boolean);
+begin
+  inherited;
+  //收起下拉后取消过滤
+  if  Assigned(Properties.ListSource) then
+    if Assigned(Properties.ListSource.DataSet) then
+      Properties.ListSource.DataSet.Filtered := False;
+end;
+
+constructor TcxLookupComboBoxEx.Create(AOwner: TComponent);
+begin
+  inherited;
+  //默认值
+  Properties.AutoSelect                 :=  False;
+  Properties.DropDownAutoSize           :=  True;
+  Properties.DropDownListStyle          :=  lsEditList;
+  Properties.DropDownRows               :=  DROPDOWN_ROWS;
+  Properties.DropDownSizeable           :=  True;
+  Properties.IncrementalFiltering       :=  False;
+  Properties.Revertable                 :=  True;
+  Properties.OnChange                   :=  _OnChange;
+  Properties.UseLeftAlignmentOnEditing  :=  False;
+end;
+
+destructor TcxLookupComboBoxEx.Destroy;
+begin
+  //释放过滤字段列表
+  if Assigned(FFieldList) then FFieldList.Free;
+  inherited;
+end;
+
+procedure TcxLookupComboBoxEx.DoInitPopup;
+begin
+  //取得过滤字段
+  if  Assigned(Properties.ListSource) then
+    if Assigned(Properties.ListSource.DataSet) then
+    begin
+      GetFieldList;
+      Properties.ListSource.DataSet.Filtered := False;
+    end;
+  inherited DoInitPopup;
+end;
+
+procedure TcxLookupComboBoxEx._FilterListSource;
+//过滤字段
+begin
+  if Assigned(Properties.ListSource)
+      and Assigned(Properties.ListSource.DataSet) then
+  try
+    Properties.ListSource.DataSet.DisableControls;
+    Properties.ListSource.DataSet.Filtered        :=  False;
+    Properties.ListSource.DataSet.OnFilterRecord  :=  _OnFilterRecord;
+    if Text &lt;&gt;  '' then
+    begin
+      FFindText :=  Text;
+      if SelLength &gt; 0 then
+        FFindText :=  LeftStr(Text,SelStart);
+      Properties.ListSource.DataSet.Filtered  :=  FFindText &lt;&gt; '';
+    end;
+    Changed;
+  finally
+    Properties.ListSource.DataSet.EnableControls;
+  end;
+end;
+
+procedure TcxLookupComboBoxEx.GetFieldList;
+//取得过滤字段列表
+var
+  i           : Integer;
+  sFieldName  : String;
+  fdTemp      : TField;
+begin
+  if not Assigned(FFieldList) then
+  begin
+    FFieldList  :=  TList.Create;
+    for i:=0 to Properties.ListColumns.Count -1 do
+    begin
+      sFieldName := Properties.ListColumns.Items[i].FieldName;
+      if sFieldName = '' then Continue;
+      fdTemp  :=  Properties.ListSource.DataSet.FindField(sFieldName);
+      if Assigned(fdTemp) then
+        FFieldList.Add(Pointer(fdTemp));
+    end;
+  end;
+end;
+
+procedure TcxLookupComboBoxEx._OnChange(Sender: TObject);
+//设置延时
+begin
+  if Focused and DroppedDown then
+  begin
+    KillTimer(Handle,UM_TIMER_FILTER);
+    SetTimer(Handle,UM_TIMER_FILTER,FILTERTIMER,nil);
+  end;
+end;
+
+procedure TcxLookupComboBoxEx._OnFilterRecord(DataSet: TDataSet;
+  var Accept: Boolean);
+//过滤事件
+var
+  s : String;
+  i : Integer;
+begin
+  s :=  LowerCase(FFindText);
+  if (s &lt;&gt; '') and (Properties.ListColumns.Count &gt; 0) then
+  begin
+    Accept  :=  False;
+    for i := 0 to FFieldList.Count -1 do
+    begin
+      Accept  :=  Pos(s,LowerCase(TField(FFieldList[i]).AsString))&gt;0;
+      if Accept then Exit;
+    end;
+  end
+  else
+    Accept  :=  True;
+end;
+
+procedure TcxLookupComboBoxEx.WMTimer(var Message: TMessage);
+//延时更新消息
+begin
+  KillTimer(Handle,UM_TIMER_FILTER);
+  if Focused and DroppedDown then _FilterListSource;
+end;
+
+procedure TcxLookupComboBoxEx.UpdateFilterFields;
+//更新要过滤的字段列表
+begin
+  if Assigned(FFieldList) then
+  begin
+    FFieldList.Free;
+    FFieldList  :=  nil;
+  end;
+  GetFieldList;
+end;
+
+{ TcxDBLookupComboBoxEx }
+
+procedure TcxDBLookupComboBoxEx.CloseUp(AAccept: Boolean);
+begin
+  inherited;
+  //收起下拉后取消过滤
+  if  Assigned(Properties.ListSource) then
+    if Assigned(Properties.ListSource.DataSet) then
+      Properties.ListSource.DataSet.Filtered := False;
+end;
+
+constructor TcxDBLookupComboBoxEx.Create(AOwner: TComponent);
+begin
+  inherited;
+  //默认值
+  Properties.AutoSelect                 :=  False;
+  Properties.DropDownListStyle          :=  lsEditList;
+  Properties.DropDownRows               :=  DROPDOWN_ROWS;
+  Properties.DropDownSizeable           :=  True;
+  Properties.IncrementalFiltering       :=  False;
+  Properties.Revertable                 :=  True;
+  Properties.OnChange                   :=  _OnChange;
+  Properties.UseLeftAlignmentOnEditing  :=  False;
+end;
+
+destructor TcxDBLookupComboBoxEx.Destroy;
+begin
+  //释放过滤字段列表
+  if Assigned(FFieldList) then FFieldList.Free;
+  inherited;
+end;
+
+procedure TcxDBLookupComboBoxEx.DoInitPopup;
+begin
+  //取得过滤字段
+  if  Assigned(Properties.ListSource) then
+    if Assigned(Properties.ListSource.DataSet) then
+    begin
+      GetFieldList;
+      Properties.ListSource.DataSet.Filtered := False;
+    end;
+  inherited DoInitPopup;
+end;
+
+procedure TcxDBLookupComboBoxEx._FilterListSource;
+//过滤字段
+begin
+  if Assigned(Properties.ListSource)
+      and Assigned(Properties.ListSource.DataSet) then
+  try
+    Properties.ListSource.DataSet.DisableControls;
+    Properties.ListSource.DataSet.Filtered        :=  False;
+    Properties.ListSource.DataSet.OnFilterRecord  :=  _OnFilterRecord;
+    if Text &lt;&gt;  '' then
+    begin
+      FFindText :=  Text;
+      if SelLength &gt; 0 then
+        FFindText :=  LeftStr(Text,SelStart);
+      Properties.ListSource.DataSet.Filtered  :=  FFindText &lt;&gt; '';
+    end;
+    Changed;
+  finally
+    Properties.ListSource.DataSet.EnableControls;
+  end;
+end;
+
+procedure TcxDBLookupComboBoxEx.GetFieldList;
+//取得过滤字段列表
+var
+  i           : Integer;
+  sFieldName  : String;
+  fdTemp      : TField;
+begin
+  if not Assigned(FFieldList) then
+  begin
+    FFieldList  :=  TList.Create;
+    for i:=0 to Properties.ListColumns.Count -1 do
+    begin
+      sFieldName := Properties.ListColumns.Items[i].FieldName;
+      if sFieldName = '' then Continue;
+      fdTemp  :=  Properties.ListSource.DataSet.FindField(sFieldName);
+      if Assigned(fdTemp) then
+        FFieldList.Add(Pointer(fdTemp));
+    end;
+  end;
+end;
+
+procedure TcxDBLookupComboBoxEx._OnChange(Sender: TObject);
+//设置延时
+begin
+  if Focused and DroppedDown then
+  begin
+    KillTimer(Handle,UM_TIMER_FILTER);
+    SetTimer(Handle,UM_TIMER_FILTER,FILTERTIMER,nil);
+  end;
+end;
+
+procedure TcxDBLookupComboBoxEx._OnFilterRecord(DataSet: TDataSet;
+  var Accept: Boolean);
+//过滤事件
+var
+  s : String;
+  i : Integer;
+begin
+  s :=  LowerCase(FFindText);
+  if (s &lt;&gt; '') and (Properties.ListColumns.Count &gt; 0) then
+  begin
+    Accept  :=  False;
+    for i := 0 to FFieldList.Count -1 do
+    begin
+      Accept  :=  Pos(s,LowerCase(TField(FFieldList[i]).AsString))&gt;0;
+      if Accept then Exit;
+    end;
+  end
+  else
+    Accept  :=  True;
+end;
+
+procedure TcxDBLookupComboBoxEx.WMTimer(var Message: TMessage);
+//延时更新消息
+begin
+  KillTimer(Handle,UM_TIMER_FILTER);
+  if Focused and DroppedDown then _FilterListSource;
+end;
+
+procedure TcxDBLookupComboBoxEx.UpdateFilterFields;
+//更新要过滤的字段列表
+begin
+  if Assigned(FFieldList) then
+  begin
+    FFieldList.Free;
+    FFieldList  :=  nil;
+  end;
+  GetFieldList;
+end;
+
+end.</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-1-10 
+                  17:14:06&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">2.动态生成TcxGridDBTableView的列及页脚的合计栏</SPAN><PRE id=prestr>var
+  i   : Integer;
+  cl  : TcxGridDBColumn;
+begin
+  Screen.Cursor :=  crHourGlass;
+  cxtvMaster.BeginUpdate;
+  try
+    cxtvMaster.ClearItems;
+    cxtvMaster.DataController.Summary.FooterSummaryItems.Clear;
+    for i := 0 to cxtvMaster.DataController.DataSet.FieldCount - 1 do
+    begin
+      cl  :=  cxtvMaster.CreateColumn;
+      cl.DataBinding.FieldName :=
+          cxtvMaster.DataController.DataSet.Fields[i].FieldName;
+      if cxtvMaster.DataController.DataSet.Fields[i] is TNumericField then
+      begin
+        TNumericField(cxtvMaster.DataController.DataSet.Fields[i])
+            .DisplayFormat  :=  '#,##0.00';
+        cl.Width := 80;
+        with TcxGridDBTableSummaryItem(
+            cxtvMaster.DataController.Summary.FooterSummaryItems.Add) do
+        begin
+          Column  :=  cl;
+          FieldName :=  cl.DataBinding.FieldName;
+          Format  :=  '#,##0.00';
+          Kind  :=  skSum;
+        end;
+      end
+      else if cxtvMaster.DataController.DataSet.Fields[i] is TStringField then
+        cl.Width := 100
+      else
+        cl.Width := 80;
+      cl.HeaderAlignmentHorz :=  taCenter;
+    end;  //if
+  finally
+    cxtvMaster.EndUpdate;
+    Screen.Cursor := crDefault;
+  end;
+end;</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-1-10 
+                  17:24:32&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">3.动态生成TcxGridDBBandedTableView的列及页脚的合计栏</SPAN><PRE id=prestr>如果存储过程或SQL返回如下结果集
+
+员工     1月$  1月￥ 2月$ 2月￥ 合计$ 合计￥
+-------------------------------------------
+测试员A  200   1658  300  2487  500   4145
+
+将生成如下样式的Grid(页脚没有画出,麻烦,另外设置了显示格式,金额将以#,##0.00的方式显示)
+_________________________________________________
+|  员工  |    1月     |    2月     |    合计    |
+|-----------------------------------------------|
+|  员工  |  ＄ |  ￥  |  ＄ |  ￥  |  ＄ |  ￥  |
+|-----------------------------------------------|
+|测试员A | 200 | 1658 | 300 | 2487 | 500 | 4145 |
+-------------------------------------------------
+
+var
+  i     : Integer;
+  cl    : TcxGridDBBandedColumn;
+begin
+  Screen.Cursor :=  crHourGlass;
+  cxbtvMaster.BeginUpdate;
+  try
+    cxbtvMaster.ClearItems;
+    cxbtvMaster.Bands.Clear;
+    cxbtvMaster.DataController.Summary.FooterSummaryItems.Clear;
+    for i := 0 to cxbtvMaster.DataController.DataSet.FieldCount - 1 do
+    begin
+      if i = 0 then
+        with cxbtvMaster.Bands.Add do
+        begin
+          Options.HoldOwnColumnsOnly  :=  True;
+          Caption  := cxbtvMaster.DataController.DataSet.Fields[i].FieldName;
+        end;
+      if RightStr(
+          cxbtvMaster.DataController.DataSet.Fields[i].FieldName,
+          1) = '$' then
+        with cxbtvMaster.Bands.Add do
+        begin
+          Options.HoldOwnColumnsOnly  :=  True;
+          Caption  := Copy(
+              cxbtvMaster.DataController.DataSet.Fields[i].FieldName, 1,
+              Length(cxbtvMaster.DataController.DataSet.Fields[i].FieldName)
+              - 1);
+          cxbtvMaster.DataController.DataSet.Fields[i].DisplayLabel :=  '＄';
+        end;
+      if RightStr(
+          cxbtvMaster.DataController.DataSet.Fields[i].FieldName,
+          1) = '￥' then
+        cxbtvMaster.DataController.DataSet.Fields[i].DisplayLabel :=  '￥';
+
+      cl  :=  cxbtvMaster.CreateColumn;
+      cl.HeaderAlignmentHorz :=  taCenter;
+      cl.Position.BandIndex :=  cxbtvMaster.Bands.Count - 1;
+      cl.DataBinding.FieldName :=
+          cxbtvMaster.DataController.DataSet.Fields[i].FieldName;
+      if cxbtvMaster.DataController.DataSet.Fields[i] is TNumericField then
+      begin
+        TNumericField(cxbtvMaster.DataController.DataSet.Fields[i])
+            .DisplayFormat  :=  '#,##0.00';
+        cl.Width := 80;
+        with TcxGridDBBandedTableSummaryItem(
+            cxbtvMaster.DataController.Summary.FooterSummaryItems.Add) do
+        begin
+          Column  :=  cl;
+          FieldName :=  cl.DataBinding.FieldName;
+          Format  :=  '#,##0.00';
+          Kind  :=  skSum;
+        end;
+      end
+      else if cxbtvMaster.DataController.DataSet.Fields[i] is TStringField then
+        cl.Width := 100
+      else
+        cl.Width := 80;
+    end;  //if
+  finally
+    cxbtvMaster.EndUpdate;
+    Screen.Cursor := crDefault;
+  end;
+end;</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-1-31 
+                  22:36:25&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">4.自动调整列宽的方法要注意的地方</SPAN><PRE id=prestr>可以用ApplyBestFit实现自动列宽;
+不能在BeginUpdate和EndUpdate之间调用这个方法,否则会产生下标越界错误;
+在BeginUpdate和EndUpdate中清除/建立列不会产生屏幕闪烁,其它需要长时间更新cxGrid数据的操作最好放在BeginUpdate和EndUpdate执行,并用try包起来.</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2004-2-8 
+                  15:32:30&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">DevExpress Bar的动态菜单</SPAN><PRE id=prestr>没有什么说明,细心点应该知道表结构及数据的内容形式
+对比了一下代码,用dxBar比用ToolBar+PopupMenu生成动态菜单要简单,只用了一个递归过程
+
+type
+  //菜单项
+  PMenuItemInfo = ^TMenuItemInfo;
+  TMenuItemInfo = record
+    ID            : string;
+    ParentID      : string;
+    Caption       : string;
+    Hint          : string;
+    LibraryName   : string;
+    ProcedureName : string;
+    wParam        : Integer;
+    lParam        : Integer;
+  end;
+
+procedure TmgMainForm.BuildMenu;
+//生成菜单
+
+  procedure SetMenuItemInfo(
+      const ADataSet  : TDataSet;
+      const AItem     : PMenuItemInfo
+      );
+  begin
+    AItem.ID            :=  ADataSet.FieldByName('ID').AsString;
+    AItem.ParentID      :=  ADataSet.FieldByName('ParentID').AsString;
+    AItem.Caption       :=  ADataSet.FieldByName('Caption').AsString;
+    AItem.Hint          :=  ADataSet.FieldByName('Hint').AsString;
+    AItem.LibraryName   :=  ADataSet.FieldByName('LibraryName').AsString;
+    AItem.ProcedureName :=  ADataSet.FieldByName('ProcedureName').AsString;
+    AItem.wParam        :=  ADataSet.FieldByName('wParam').AsInteger;
+    AItem.lParam        :=  ADataSet.FieldByName('lParam').AsInteger;
+  end;
+
+  procedure CreateItemList(
+      const ADataSet  : TDataSet;
+      const AList     : TList;
+      const AText     : string
+      );
+  //根据父节点建立子项目列表
+  var
+    m : PMenuItemInfo;
+    i : Integer;
+  begin
+    ADataSet.First;
+    for i := 0 to ADataSet.RecordCount - 1 do
+    begin
+      if ADataSet.FieldByName('ParentID').AsString = AText then
+      begin
+        New(m);
+        SetMenuItemInfo(ADataSet,m);
+        AList.Add(m);
+        ADataSet.Delete;
+      end else
+        ADataSet.Next;
+    end;  //for
+  end;
+
+  procedure CreateMenuItems(
+      const ADataSet    : TDataSet;
+      const AKeyValue   : string;
+      const AItemLinks  : TdxBarItemLinks;
+      const AIndex      : Integer
+      );
+  //建立菜单项
+  var
+    db  : TdxBarButton;
+    dbs : TdxBarSubItem;
+    l   : TList;
+    i   : Integer;
+    j   : Integer;
+    bg  : Boolean;
+  begin
+    bg  :=  False;
+    j :=  AIndex;
+    l :=  TList.Create;
+    try
+      CreateItemList(ADataSet, l, AKeyValue);
+      for i := 0 to l.Count - 1 do
+      begin
+        if ADataSet.Locate('ParentID', PMenuItemInfo(l[i]).ID, []) then
+        begin
+          //有子项
+          dbs         :=  TdxBarSubItem.Create(dxBar);
+          dbs.Caption :=  PMenuItemInfo(l[i]).Caption;
+          dbs.Hint    :=  PMenuItemInfo(l[i]).Hint;
+          dbs.Tag     :=  Integer(l[i]);
+          if AIndex &gt; 0 then
+            dbs.ImageIndex  :=  0;
+          with AItemLinks.Add do
+          begin
+            Item        :=  dbs;
+            Index       :=  j;
+            BeginGroup  :=  bg;
+          end;  //with
+          bg          :=  False;
+          CreateMenuItems(ADataSet, PMenuItemInfo(l[i]).ID, dbs.ItemLinks, 0);
+          if dbs.ItemLinks.Count = 0 then
+            dbs.Free
+          else
+            Inc(j);
+        end
+        else begin
+          //无子项
+          if not (PMenuItemInfo(l[i]).Caption = '-') then
+          begin
+            db          :=  TdxBarButton.Create(dxBar);
+            db.Caption  :=  PMenuItemInfo(l[i]).Caption;
+            db.Hint     :=  PMenuItemInfo(l[i]).Hint;
+            db.Tag      :=  Integer(l[i]);
+            db.OnClick  :=  MenuItemClick;
+            if AIndex &gt; 0 then
+              db.ImageIndex :=  0;
+            with AItemLinks.Add do
+            begin
+              Item        :=  db;
+              Index       :=  j;
+              BeginGroup  :=  bg;
+            end;
+            bg          :=  False;
+            Inc(j);
+          end
+          else begin
+            bg  :=  True;
+          end;  //if bg
+        end;  //if  Locate
+      end;  //for
+    finally
+      l.Free;
+    end;
+  end;
+
+var
+  rsMenus : TDataSet;
+begin
+  rsMenus :=  mgDMMain.GetMenus;  //取得数据集
+  if Assigned(rsMenus) then
+  try
+    CreateMenuItems(rsMenus, '', dxBar.Bars[0].ItemLinks, 1);
+    //一定要刷新一下,否则不更改样式会出错
+    dxBar.Bars[0].ItemLinks[0].Visible  :=  False;
+    dxBar.Bars[0].ItemLinks[0].Visible  :=  True;
+  finally
+    rsMenus.Free;
+  end;
+end;</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV><SPAN 
+                  class=inputcaption style="HEIGHT: 20px">&nbsp;2005-1-4 
+                  16:34:35&nbsp; </SPAN>&nbsp; <SPAN 
+                  style="HEIGHT: 20px">取得TcxLookupComboBox下拉列表中各项的内容</SPAN><PRE id=prestr>Properties.DataController.Values包含了所有内容,如果要取得当前选择行的内容,用以下代码
+//cmb:TcxLookupComboBox;
+  with cmb.Properties.DataController do
+    ShowMessage(Values[FindRecordIndexByKey(cmb.EditValue),0]);
+//0代表显示的第一列,以Properties.ListColumns为准,可以从这个集合中查找对应的字段名</PRE>
+                  <DIV class=bline align=right>&nbsp;</DIV>
+                  <DIV class=inputcaption 
+                  style="BORDER-BOTTOM: #8ca6de 1px solid">
+                  <TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD></TD>
+                      <TD align=right><A 
+                        href="http://www.delphibbs.com/keylife/iblog_comment.asp?xid=5366">发表评语&raquo;&raquo;&raquo;</A>&nbsp; 
+                        &nbsp; 
+        </TD></TR></TBODY></TABLE></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <SCRIPT>
+function show() {
+	load_xmln(menupanel, menuxml, "../delphibbs/login.xsl");
+}
+</SCRIPT>
+
+      <SCRIPT>prestr();</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+  showMsg();show();
+</SCRIPT>
+
+<TABLE width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD height=10></TD></TR>
+  <TR>
+    <TD width=125 height=4></TD>
+    <TD>
+      <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-5905650100597136";
+google_alternate_ad_url = "http://www.delphibbs.com/delphibbs/googlead.htm";
+google_ad_width = 730;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="";
+google_color_border = "B4D0DC";
+google_color_bg = "ECF8FF";
+google_color_link = "0000CC";
+google_color_url = "008000";
+google_color_text = "6F6F6F";
+//--></SCRIPT>
+
+      <SCRIPT src="大富翁论坛-富翁笔记-DevExpress部分使用技巧(原创)_files/show_ads.js" 
+      type=text/javascript>
+</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+function googlead(){
+  //document.getElementsByTagName('iframe').item(0).id="googlead0";
+  //googlead0.name="_blank";
+  //window.status=googlead0.name;
+  //window.status= document.getElementsByTagName('iframe').item(0). .getElementsByTagName('table').item(0).outerHTML;
+}
+</SCRIPT>
+
+<P align=center>(C) 版权所有，大富翁论坛 1998-2004<BR>感谢您的惠顾，如有任何建议和意见，请 <A 
+onclick="alert(' 由于公开信箱，垃圾邮件过多，请最好在邮件标题开头写上delphibbs。谢谢合作。  ');" 
+href="mailto:webmaster@timeboat.com">联系版主</A>。<FONT face=Arial><SMALL 
+title=531.25>2004.3.20</SMALL></FONT></P></BODY></HTML>

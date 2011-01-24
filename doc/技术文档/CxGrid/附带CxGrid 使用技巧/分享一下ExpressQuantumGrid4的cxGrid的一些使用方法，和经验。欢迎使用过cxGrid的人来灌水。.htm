@@ -1,0 +1,578 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://www.delphibbs.com/delphibbs/dispq.asp?lid=2260672 -->
+<HTML xmlns:tools><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content=大富翁,论坛,技术,积分,排行榜,Delphi,Kylix,Java,XML,XSLT,forum,Blog 
+name=keywords>
+<META 
+content="大富翁论坛(delphibbs.com)关于 Delphi, Kylix, Java, DotNet 的技术论坛。采用积分游戏形式，靠您的智慧上大富翁排行榜！" 
+name=description>
+<STYLE type=text/css>
+@media All    
+{
+tools\:ubb {
+	BEHAVIOR: url("ubb.htc")
+}
+
+}
+</STYLE>
+<LINK 
+href="分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。_files/web_font.css" 
+type=text/css rel=stylesheet>
+<SCRIPT 
+src="分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。_files/loadxmln.js"></SCRIPT>
+
+<META content="MSHTML 6.00.3790.259" name=GENERATOR></HEAD>
+<BODY topMargin=2 onload=showMsg();googlead(); rightMargin=6>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <DIV style="RIGHT: 10px; POSITION: absolute; TOP: 0px"><A 
+      href="javascript:SaveAs();">保存</A> <A 
+      href="http://www.delphibbs.com/delphibbs/URLComment.asp?url=/delphibbs/dispq.asp">评价</A> 
+      </DIV><A href="http://www.delphibbs.com/delphibbs/rules.asp">游戏规则</A> <A 
+      href="http://www.delphibbs.com/delphibbs/register.asp">免费注册</A> <IMG 
+      height=60 
+      src="分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。_files/dfwlogo.gif" 
+      width=240 align=middle> <A style="COLOR: red" 
+      href="http://www.delphibbs.com/delphibbs/download.asp">资料下载</A> <A 
+      href="http://www.delphibbs.com/delphibbs/index.asp">关于本站</A> </TD></TR>
+  <TR>
+    <TD align=middle colSpan=2><A 
+      href="http://www.delphibbs.com/delphibbs/listroom.asp">问题分类</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp">问题列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listq.asp?room=1">非技术题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/listu.asp">富翁列表</A> <A 
+      href="http://www.delphibbs.com/delphibbs/dispu.asp">我的信息</A> <A 
+      href="http://www.delphibbs.com/delphibbs/askqn.asp">提出问题</A> <A 
+      href="http://www.delphibbs.com/delphibbs/uonline.asp">在线富翁</A> <A 
+      href="http://www.delphibbs.com/delphibbs/calendar.asp">富翁日历</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_list.asp">笔记列表</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog.asp">我的笔记</A> <A 
+      href="http://www.delphibbs.com/keylife/iblog_man.asp" 
+      target=_blank>写作笔记</A> <A href="http://www.richsearch.com/" 
+      target=_blank>全文检索</A> 
+    <!--<a href="../keylife/almindex.asp">ALM大赛</a>--></TD></TR></TBODY></TABLE><xml id=menuxml><?xml version="1.0" encoding="gb2312" ?><DFWML type="注册信息"><URL>/delphibbs/dispq.asp</URL><QUERY_STRING>lid=2260672</QUERY_STRING><USER Name="Metelese"><points>436</points><expoints>0</expoints><earnings>100</earnings><gettimes>84</gettimes><usertype>1</usertype><lasttime>2005-4-21</lasttime></USER></DFWML></xml>
+<TABLE id=stage width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=125 bgColor=#eeeeee height=340>
+      <DIV id=menupanel></DIV></TD>
+    <TD vAlign=top>
+      <DIV id=mainpanel width="680"></DIV>
+      <SCRIPT>//xls=load_xls("dispq_1.xsl");</SCRIPT>
+<xml id=mainxml><?xml version="1.0" encoding="gb2312" ?><DFWML type="问题显示" title="分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。 "><Q ID="2260672" status="2"><subject><![CDATA[分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。 ]]></subject><from>wangxian11</from><content><![CDATA[使用cxGrid有一些时间了，在这里总结一下使用cxGrid的一些方法，希望给刚开始接触cxGrid的人一些帮助。
+
+1.简单介绍：cxGrid右下方的cxGrid1Level1是表示Grid表的层，cxGrid可以有多层，这相当于集合了PageControl的
+
+功能,而cxGrid1Level1右边的cxGrid1DBTableView1相当于DBGrid一样。右击cxGrid1可以添加cxGrid1Level2，右击
+
+cxGrid1Level2，可以选择Create View , Add level 或者Delete Level。Add level可以增加子Level，Create View
+
+里面可以选择很多不同总类的View。其中
+   1)DB Table可以和数据库连接的View，更一般的DBGrid类似，它比DBGrid多了比如鼠标中键可以用，可以统计，
+
+查询，等等功能；
+   2)DB Banded Table 则可以实现比如：
+                     ---------------------------------
+                     |     说明1     |     说明2     |
+                     ---------------------------------
+                     | 字段1 | 字段2 | 字段3 | 字段4 |
+等类似的功能；
+   3)DB Card View 则提供了卡片方式的显示数据的功能，这个用在比如人事档案管理比较不错；
+   4)其它不一一赘述。
+ 
+2.一些使用方法：
+   1)有图片和MEMO的例子：
+     拖入一个cxGrid1，Table1，DataSource1。 Table1的DatabaseName设为DBDEMOS，TableName设为biolife.db， 
+
+    Active设为True;DataSource1的DataSet设为Table1；cxGrid1DBTableView1的DataController中的DataSource   
+
+    设为DataSource1;右击cxGrid1DBTableView1选择Create All Columns；双击cxGrid1，在弹出的窗口中找到     
+
+   cxGrid1DBTableView1Notes和cxGrid1DBTableView1Graphic，将它们的Properties属性设为BlobEdit；运行看看  
+
+   结果。再将cxGrid1DBTableView1Graphic的Properties属性设为Image，再将Properties下的Stretch设为True，  
+
+   将cxGrid1DBTableView1-&gt;optionsview-&gt;CellAutoHeight 设为True，看看结果。
+
+
+   2)如何让“Drag a column here to group by that column”不显示
+     解决：点击cxGrid1上的cxGrid1DBTableView1
+     在cxGrid1DBTableView1-&gt;optionsview-&gt;groupbybox:=false即可  
+     注：OptionsView里面有很多属性可能经常要用，比如：ColumnAutoWith,Navigator等等，慢慢琢磨吧:)
+     
+   3)GroupPanel上面的英文[Drag a column header to group by that column]怎么可以改成中文？
+     解决：最简单的方法是 TcxGridTableView.OnCustomDrawPartBackground ，也可用 OnCustomDrawGroupCell：
+
+     procedure TForm1.cxGrid1DBTableView1CustomDrawPartBackground(
+                Sender: TcxGridTableView; ACanvas: TcxCanvas;
+               AViewInfo: TcxCustomGridCellViewInfo; var ADone: Boolean);
+     begin
+       AViewInfo.Text:='动态设置 GroupBox 的显示内容';
+       ACanvas.FillRect(AViewInfo.Bounds);
+     end;
+
+   4)如何实现如下功能：
+            +财务部
+            +原材料仓库
+            +成品库
+            +冲压车间
+            +软件开发部
+     这个是部门的名称,点击加号就可以将本部门的人员情况显示出来。
+     解决：其实这是一个主从表关系，1：填好主表的keyfieldnames
+                                   2：填好从表的keyfieldnames
+                                   3：填好从表的　detaikeyfieldNames与masterkeyfieldnames
+                                   4: 从表的数据源一定要按与主表关联的字段排序
+    注：其它地方设置了主从表结构那样就显示不出来，比如设置了从表的Table或者Query的mastersource和
+    asterfield就会不能显示数据！如果是两个cxGrid的主从关系，这样设置就很OK了。
+
+   
+  5)统计功能
+    解决：cxGrid1DBTableView1-&gt;optionsview-&gt;Footer 设为True
+          cxGrid1DBTableView1-&gt;DataController-&gt;Summary设置FooterSummaryItems即可  
+
+  6)类似PageControl显示
+    解决：增加一个Level,将cxGrid1-&gt;RootLevelOptions-&gt;DetailTabsPosition设为dtpTop，然后相应的设置cxGrid1Level1,和cxGrid1Level2的Caption值。
+
+   未完待续。。。。。。。。。 
+
+   以上是在用cxGrid时候碰到的一些问题，我总结了一部分，还有很多问题等待解决。在这里我希望用过cxGrid的人帮着一起总结一下，让后学者可以少走点弯路！ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+]]></content><points>1</points><read_n>848</read_n><reply_n>52</reply_n><regdatetime>2003-10-29 20:49:00</regdatetime><datetime>2005-4-10 17:05:06</datetime><room>控件 - 使用</room><roomid>5</roomid><master>amo</master><master2>cAkk</master2><expert>cocoboy79</expert></Q><REPLY><Q ID="2263299"><from>wangxian11</from><datetime>2003-10-30 20:58:00</datetime><content><![CDATA[  7)如何设定左边几列，不能滚动?
+    解决：使用DB Banded Table才可以实现，
+          在cxGrid1DBBandedTableView里建立Band0,Band1
+          Band0的Fixed=tfLeft
+          Band1的Fixed=tfnone
+          设置要锁定的字段的BandIndex=0,其它为1，就OK了。   
+  
+  8)怎样实现如EXCEL一样的，当前格=G14+G15+G16 这样的功能
+    解决：举一个简单的例子：label1.Caption := cxGrid1DBTableView1.DataController.Values[2, 
+
+3]+cxGrid1DBTableView2.DataController.Values[1, 1]+cxGrid1DBTableView3.DataController.Values[1, 1];
+所以不同cxGrid1DBTableView中的数据都可以给当前格，这样就做到了EXCEL中的当前格=G14+G15+G16 类似的功能。
+  
+  9)鼠标右击cxGrid1DBBandedTableView1菜单里的Edit Layout什么用，怎么使用？
+    解决：可以拖动字段，并列的可以拖成有层次感（一层层）， 拖动时会显示箭头的，就是说可以拖一个字段放
+
+到最上面，就可以使记录按此字段进行分组。点击其中一个字段，上面还会出现一个上升或者下降的小三角形，这个
+
+小三角形的作用是在运行阶段，数据就会按照这个字段上升或者下降排序。
+     还有一个Set as Default的作用是保持当前TableView的参数，下此产生新的TableView的时候就会可以和上次保持的参数一样。
+ ]]></content></Q><Q ID="2268493"><from>wangxian11</from><datetime>2003-11-2 21:47:00</datetime><content><![CDATA[10）怎样将cxGrid里的数据导入到EXCEL，HTML，XML和TEXT
+  解决：这个问题在用了cxGrid以后变得异常简单，
+uses
+ cxExportGrid4Link;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+ ExportGrid4ToEXCEL('d:\wang.xsl',cxGrid1,True,True);
+ ExportGrid4ToTEXT('d:\wang.txt',cxGrid1,True,True);
+ ExportGrid4ToXML('d:\wang.xml',cxGrid1,True,True);
+ ExportGrid4ToHTML('d:\wang.html',cxGrid1,True,True);
+end; 
+]]></content></Q><Q ID="2268500"><from>wangxian11</from><datetime>2003-11-2 21:53:00</datetime><content><![CDATA[11)如何使满足条件的数据显示不同的颜色？
+ 解决：
+var
+  AYellowStyle: TcxStyle;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+   //行颜色
+  AYellowStyle := TcxStyle.Create(Self);
+  AYellowStyle.Color := $0080FFFF;
+  AYellowStyle.TextColor := clMaroon;
+end;
+
+procedure TForm1.cxGrid1DBBandedTableView1StylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+begin
+  if ARecord.Values[cxGrid1DBBandedTableView1Lengthcm.Index] &lt; 81 then
+    AStyle := AYellowStyle;
+end;
+
+这里cxGrid1DBBandedTableView1Lengthcm.Index小于81时就显示黄色
+]]></content></Q><Q ID="2268522"><from>zhusongdong</from><datetime>2003-11-2 22:16:00</datetime><content><![CDATA[非常感谢！希望继续！关注]]></content></Q><Q ID="2268689"><from>edak</from><datetime>2003-11-3 7:56:00</datetime><content><![CDATA[to wangxian11 
+  怎样实现cxgrid的双击事件？
+]]></content></Q><Q ID="2268949"><from>woyaoying</from><datetime>2003-11-3 9:58:00</datetime><content><![CDATA[很好！
+收藏先！]]></content></Q><Q ID="2269251"><from>archonwang</from><datetime>2003-11-3 11:49:00</datetime><content><![CDATA[谢谢了，东西 不错，支持]]></content></Q><Q ID="2269460"><from>wangxian11</from><datetime>2003-11-3 13:20:00</datetime><content><![CDATA[问题12）如何从外边的TXT文件导入到cxGrid？
+解决：    procedure CustomizeColumns;
+          procedure LoadData;
+
+procedure TForm1.CustomizeColumns;
+const
+ cDistance = 1;
+ cRadius = 5;
+ cPeriod = 4;
+ cPstring = 0;
+var
+ I: Integer;
+begin
+ DecimalSeparator := '.';
+ with cxGrid1TableView2 do
+ for I := 0 to ColumnCount - 1 do
+   if I in [cDistance, cRadius] then
+     Columns[I].DataBinding.ValueTypeClass := TcxIntegerValueType//1，5列为Integer
+   else
+     if I in [cPstring,cPeriod] then
+     Columns[I].DataBinding.ValueTypeClass := TcxStringValueType//0，4列为String
+     else
+      Columns[I].DataBinding.ValueTypeClass := TcxFloatValueType;//其他为Float
+end;
+
+procedure TForm1.LoadData;
+const
+ AFileName = '资产负债表.txt';
+ AHeaderLineCount = 2;
+
+var
+ ARecords, AValues: TStringList;
+ I: Integer;
+
+ procedure InitRecord(const Str: string);
+ var
+   J: Integer;
+   V: Variant;
+ begin
+   AValues.CommaText := Str;
+   for J := 0 to AValues.Count - 1 do
+    if AValues.Strings[J] &lt;&gt; '-' then
+    begin
+     V := AValues.Strings[J];
+     if not VarIsNull(V) then
+       cxGrid1TableView2.DataController.Values[I, J] := V;
+    end;
+ end;
+
+begin
+ if not FileExists(AFileName) then
+   raise Exception.Create('Data file not found');
+
+ ARecords := TStringList.Create;
+ AValues := TStringList.Create;
+
+ with ARecords do
+ try
+   LoadFromFile(AFileName);
+   cxGrid1TableView2.BeginUpdate;
+   cxGrid1TableView2.DataController.RecordCount := Count - AHeaderLineCount;
+   for I := 0 to Count - (AHeaderLineCount + 1) do
+     InitRecord(Strings[I + AHeaderLineCount]);
+ finally
+   cxGrid1TableView2.EndUpdate;
+   ARecords.Free;
+   AValues.Free;
+ end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+ CustomizeColumns;
+ LoadData_Zcfz;
+end; 
+
+其中“资产负债表.txt”中的数据如下：
+
+资        产  行次  年  初  数  期  末  数  负债及所有者权益  行次  年  初  数  期  末  数
+---------       ----    -----           --------        ----------             ----     --------        ---------
+流动资产：  1  0.00          0.00          流动负债：          2  0.00          0.00  
+
+ 
+
+]]></content></Q><Q ID="2269477"><from>wangxian11</from><datetime>2003-11-3 13:25:00</datetime><content><![CDATA[希望大家把自己在使用cxGrid时碰到的问题以及解决方法写到这里来，谢谢！
+格式：
+    问题：
+    解决：]]></content></Q><Q ID="2269928"><from>libra163</from><datetime>2003-11-3 15:53:00</datetime><content><![CDATA[不错，太好了。]]></content></Q><Q ID="2270156"><from>cocoboy79</from><datetime>2003-11-3 16:53:00</datetime><content><![CDATA[我也一直在使用这个控件，我发现它的点击事件有些混乱。
+过几天我也总结一下，咱们交流一下，我这里碰到的问题
+也不少哦。
+qq:364941]]></content></Q><Q ID="2270166"><from>wangxian11</from><datetime>2003-11-3 16:55:00</datetime><content><![CDATA[哈哈，太好了，终于有人可以交流了。]]></content></Q><Q ID="2270349"><from>xzzcq</from><datetime>2003-11-3 17:44:00</datetime><content><![CDATA[不错，俺要向楼上各位好好学习，因为俺以前主要用ehlib，对于cxgrid不会用]]></content></Q><Q ID="2270603"><from>wangxian11</from><datetime>2003-11-3 20:15:00</datetime><content><![CDATA[&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; 怎样实现cxgrid的双击事件？
+TO edak, :
+   你能把问题讲的再清楚点吗？在双击事件里写代码不就行了吗？]]></content></Q><Q ID="2270605"><from>wangxian11</from><datetime>2003-11-3 20:16:00</datetime><content><![CDATA[13）如何改变列的颜色？
+var
+ AFirstColumnStyle: TcxStyle;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+ //列颜色
+ AFirstColumnStyle := TcxStyle.Create(Self);
+ AFirstColumnStyle.Color := clAqua;
+ AFirstColumnStyle.TextColor := clBlue;
+ cxGrid1TableView1.Columns[1].Styles.Content := AFirstColumnStyle;
+end; 
+
+ ]]></content></Q><Q ID="2270659"><from>wangxian11</from><datetime>2003-11-3 20:47:00</datetime><content><![CDATA[14）Set as default的用法？
+ 解决：Set as default的用法是为了解决设置参数的方便而做的，比如：
+       连好数据库以后，更改cxGrid1DBBandedTableView1-&gt;OptionsCustomize-&gt;ColumnFiltering 设为False。（这个设置可以将字段名的下拉单给去掉）更改cxGrid1DBBandedTableView1-&gt;OptionsView-&gt;Navigator 设置为True。然后右击cxGrid1DBBandedTableView1，在弹出的菜单栏里面点击Set as default。 
+  OK，下次你再产生一个新的cxGrid1DBBandedTableView1时这些设置和刚才的一样了。如果需要设置的参数很多的时候，这个Set as default很有用！ 
+
+ ]]></content></Q><Q ID="2273958"><from>cocoboy79</from><datetime>2003-11-5 12:12:00</datetime><content><![CDATA[to TO edak,
+你说的是怎么样的双击？我好像看到cxGrid的那个View里就有dbclick事件。]]></content></Q><Q ID="2274235"><from>wangxian11</from><datetime>2003-11-5 13:43:00</datetime><content><![CDATA[TO cocoboy79, 
+你能帮我解决这些问题吗？
+  1.怎样将EXCEL表导入到cxGrid1TableView1中去，
+  2.两个cxGrid1DBTableView之间转化的时候应该在那个事件中写语句。
+  3.使用cxGrid1DBCardView1时，如果字段数太多，多余屏幕可显示的时候，这时不会出现下拉框，也就是下面的数据将看不到，怎么解决这个问题。
+  4.怎样实现EXCEL表一样的，中间是TABLE表，上面是说明部分，下面也是说明部分，
+   上面、下面都有四栏的说明文字？？
+  5.如果cxGrid里面有四个cxGrid1DBTableView，如何在运行后让cxGrid1DBTableView3显示在最前面 
+
+这些问题都是我碰到还没解决的。。。。
+
+]]></content></Q><Q ID="2274331"><from>qufo</from><datetime>2003-11-5 14:25:00</datetime><content><![CDATA[Mark
+这个东西好用呀，我这边有TT8的中文教程，忘记了在哪下的，要我up一下。
+
+其实它的帮助文件讲了很多的。那个教程就是帮助文件的中文翻译。]]></content></Q><Q ID="2274353"><from>wangxian11</from><datetime>2003-11-5 14:31:00</datetime><content><![CDATA[是啊，看了帮助文件如果能解决这些问题我就不会到这里来问了。
+
+我看的是它的自带的英文帮助，TT8的中文教程只是将它的一部分翻译了一下，没有很深入
+
+下去。]]></content></Q><Q ID="2274514"><from>RaulWhite</from><datetime>2003-11-5 15:29:00</datetime><content><![CDATA[好，向楼主致敬!!!!!!!!!!!!!!
+]]></content></Q><Q ID="2274519"><from>wangxian11</from><datetime>2003-11-5 15:31:00</datetime><content><![CDATA[:) 谢谢鼓励]]></content></Q><Q ID="2274595"><from>RaulWhite</from><datetime>2003-11-5 15:52:00</datetime><content><![CDATA[不知道怎么给你分啊，]]></content></Q><Q ID="2274601"><from>wangxian11</from><datetime>2003-11-5 15:56:00</datetime><content><![CDATA[这还不简单，开一张新的帖子，我进去说句话，就可以给我分数啦，哈哈
+
+干吗给我分啊？我这里帮你解决问题了吗？]]></content></Q><Q ID="2274658"><from>wangxian11</from><datetime>2003-11-5 16:14:00</datetime><content><![CDATA[15）怎样使鼠标移动时，相应的单元格里的文字变色？
+  解决：
+var
+ FTrackItem: TcxCustomGridTableItem;
+ FTrackRec: TcxCustomGridRecord;
+
+procedure TForm1.cxGrid1DBTableView1CustomDrawCell(
+ Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+ AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+ if (AViewInfo.GridRecord = FTrackRec) and (AViewInfo.Item = FTrackItem) then
+ begin
+   ACanvas.Font.Color := clred;   //红色字体
+   ACanvas.Font.Style := [fsUnderline];//带下划线
+ end;
+end;
+
+procedure TForm1.cxGrid1DBTableView1MouseMove(Sender: TObject;
+ Shift: TShiftState; X, Y: Integer);
+var
+ AHitTest: TcxCustomGridHitTest;
+ ATrackItem: TcxCustomGridTableItem;
+ ATrackRec: TcxCustomGridRecord;
+begin
+ ATrackItem := FTrackItem;
+ ATrackRec := FTrackRec;
+
+ AHitTest := (Sender as TcxGridSite).GridView.ViewInfo.GetHitTest(X, Y);
+ if AHitTest is TcxGridRecordCellHitTest then
+ begin
+   FTrackItem := TcxGridRecordCellHitTest(AHitTest).Item;
+   FTrackRec := TcxGridRecordCellHitTest(AHitTest).GridRecord;
+ end
+ else
+ begin
+   FTrackItem := nil;
+   FTrackRec := nil;
+ end;
+
+ if (ATrackItem &lt;&gt; FTrackItem) or (ATrackRec &lt;&gt; FTrackRec) then
+ begin
+   // Invalidate old cell
+   if ATrackRec &lt;&gt; nil then
+     ATrackRec.Invalidate(ATrackItem);
+   // Invalidate new cell
+   if FTrackRec &lt;&gt; nil then
+     FTrackRec.Invalidate(FTrackItem);
+ end;
+end; 
+
+ ]]></content></Q><Q ID="2274711"><from>wangxian11</from><datetime>2003-11-5 16:32:00</datetime><content><![CDATA[16）怎样设计多表头的cxGrid？
+  解决：cxGrid可以解决如下的表头：
+                   ---------------------------------
+                   |     说明1     |     说明2     |
+                   ---------------------------------
+                   | 字段1 | 字段2 | 字段3 | 字段4 |
+                   |      字段5    |     字段6     |
+                   |      字段7    | 字段8 | 字段9 |
+实现这个很简单，你可以直接在上面拖动字段名，拖动时会显示箭头的，放入你想显示的位置就OK了。或者在鼠标右击cxGrid1DBBandedTableView1菜单里的Edit Layout里也可以拖放。
+
+但是cxGrid不能实现如下的多表头形式：
+                   ---------------------------------
+                   |     说明1     |     说明2     |
+                   ---------------------------------
+                   | 说明3 | 说明4 | 说明5 | 说明6 |
+                   |      字段1    |     字段2     |
+                   |      字段3    | 字段4 | 字段5 |
+不知道有谁能实现这样的多表头？ ]]></content></Q><Q ID="2274715"><from>small pig</from><datetime>2003-11-5 16:33:00</datetime><content><![CDATA[哪位大虾知道：满格显示怎么弄？]]></content></Q><Q ID="2274739"><from>wangxian11</from><datetime>2003-11-5 16:40:00</datetime><content><![CDATA[问题说清楚点，
+什么满格显示？]]></content></Q><Q ID="2274794"><from>RaulWhite</from><datetime>2003-11-5 16:52:00</datetime><content><![CDATA[热心人就是要给分嘛，我是刚来的，不知道这里的制度，不要怪我占你的地方啊]]></content></Q><Q ID="2274802"><from>archonwang</from><datetime>2003-11-5 16:55:00</datetime><content><![CDATA[好东西，希望楼主将来整理成册，为人民服务]]></content></Q><Q ID="2275398"><from>wangxian11</from><datetime>2003-11-5 21:51:00</datetime><content><![CDATA[17）在主从表结构时，当点开“+”时怎样将焦点聚在相应主表的记录上？
+解决：
+var 
+ HitTest: TcxCustomGridHitTest; 
+
+procedure TColumnsShareDemoMainForm.tvProjectsMouseDown(Sender: TObject;
+ Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+ // Note that the Sender parameter is a Site
+ HitTest := (Sender as TcxGridSite).GridView.ViewInfo.GetHitTest(X, Y);
+ // The point belongs to the [+]/[-] button area
+ if HitTest is TcxGridExpandButtonHitTest then
+   // Move focus to the record
+   TcxGridExpandButtonHitTest(HitTest).GridRecord.Focused := True;
+end; ]]></content></Q><Q ID="2278811"><from>xzzcq</from><datetime>2003-11-7 11:25:00</datetime><content><![CDATA[小弟有一个cxgrid方面的难题，至今没解决：
+明细嵌套结构，level的排列顺序如何改变？
+请楼上的各位大侠帮俺一下，我试了好长时间]]></content></Q><Q ID="2278840"><from>wangxian11</from><datetime>2003-11-7 11:34:00</datetime><content><![CDATA[这个问题我也碰到，似乎在建立以后，确定好你的顺序以后就不可以随便更改了]]></content></Q><Q ID="2285278"><from>arlierever</from><datetime>2003-11-10 21:57:00</datetime><content><![CDATA[我也实现不了双击事件，在Grid和TableView的doubleClick中写的代码，当鼠标双击时都不执行，好像没有一样]]></content></Q><Q ID="2285603"><from>wangxian11</from><datetime>2003-11-11 8:49:00</datetime><content><![CDATA[我知道原因，你把TableView1-&gt;OptionData-&gt;Editing设为False时doubleClick事件就出来了，原因在于你点击的时候就直接进入编辑状态，所以不响应你的doubleClick事件]]></content></Q><Q ID="2289881"><from>wangxian11</from><datetime>2003-11-12 18:49:00</datetime><content><![CDATA[接受答案了.]]></content></Q><Q ID="2294975"><from>arlierever</from><datetime>2003-11-14 16:46:00</datetime><content><![CDATA[我知道原因，你把TableView1-&gt;OptionData-&gt;Editing设为False时doubleClick事件就出来了，原因在于你点击的时候就直接进入编辑状态，所以不响应你的doubleClick事件  
+
+确实如此，不过如果我把TableView1-&gt;OptionData-&gt;Editing设为False了，双击是可以了，可是就不能编辑了，有什么办法可以两全其美？]]></content></Q><Q ID="2295064"><from>wangxian11</from><datetime>2003-11-14 17:08:00</datetime><content><![CDATA[我的方法是：
+TableView1-&gt;OptionData-&gt;Editing设为True
+将字段里面不需要Edit的字段的Editing设为FALSE，这样也可以相应doubleClick事件]]></content></Q><Q ID="2295905"><from>arlierever</from><datetime>2003-11-15 10:38:00</datetime><content><![CDATA[我把immediateEditor属性置为false，也可以，不过要进入编辑状态，需要鼠标点两下．]]></content></Q><Q ID="2317196"><from>xzzcq</from><datetime>2003-11-26 8:10:00</datetime><content><![CDATA[大家有没有碰到过这样的问题：主从表格，点击“＋”展开里面的记录，双击调用里面的内容只能显示第一条记录：
+在从表里面的表格双击事件中showmessage(adoqry2.fieldbyname('code').asstring);
+adoqry2的值只能返回第一条，
+在主表里面的表格双击事件中showmessage(adoqry1.fieldbyname('code').asstring);
+则可以返回当前的记录
+这是为什么？
+]]></content></Q><Q ID="2317218"><from>wangxian11</from><datetime>2003-11-26 8:23:00</datetime><content><![CDATA[碰到过，在仔细点：1：填好主表的keyfieldnames
+                  2：填好从表的keyfieldnames
+                  3：填好从表的　detaikeyfieldNames与masterkeyfieldnames
+                                 
+]]></content></Q><Q ID="2327086"><from>xzzcq</from><datetime>2003-12-1 17:49:00</datetime><content><![CDATA[多谢，多谢，我试试！
+关于cxgrid的讨论应该是很好的，为什么参于的人这么少？
+而另一个关于dbgrid的讨论话题却如此的多！
+大家多提！]]></content></Q><Q ID="2328298"><from>Jidda</from><datetime>2003-12-2 11:33:00</datetime><content><![CDATA[问题：对于grid中数据的修改，是如何更新到数据库中的呢？
+我只是想在它更新之前进行一下记录，希望能为我解答一下。]]></content></Q><Q ID="2329405"><from>wangxian11</from><datetime>2003-12-2 18:31:00</datetime><content><![CDATA[TO Jidda,
+   对于grid中数据的修改,POST一下就更新到数据库中去啦
+
+《〈〈〈我只是想在它更新之前进行一下记录， 
+   你的意思是在更新之前进行记录吗，可以在BeforePost事件里做]]></content></Q><Q ID="2330420"><from>edak</from><datetime>2003-12-3 10:49:00</datetime><content><![CDATA[to wangxiang11,arlierever
+  两位的方法确实能解决问题可是使用起来总感觉憋扭,有没有正常的方法去实现.
+  另外还想问一下CXGIRD在点击某条记录时,那条被点击的字段值就处于选择状态,能不能不让它处于被选择状态否则很容易误删除这个字段的内容.
+   ]]></content></Q><Q ID="2991231"><from>treemon2004</from><datetime>2005-2-19 9:15:02</datetime><content><![CDATA[cxGrid 内容要打印用什么好？
+想实现打印拖拽后的顺序打印出来
+按任意列排序后打印出来
+按任意列分组后打印出来]]></content></Q><Q ID="3032500"><from>dark4force</from><datetime>2005-4-6 9:58:03</datetime><content><![CDATA[    打印的话，最好是用DevExpress的配套控件PrintSystem，我以前用过，对于cxGrid可以实现“所见即所得”的打印。但是后来重装系统后安装的PrintSystem始终有问题，一打印就死机，还没有解决……]]></content></Q><Q ID="3032504"><from>dark4force</from><datetime>2005-4-6 9:57:41</datetime><content><![CDATA[　　请教一下如何才能给cxGrid的某列的下拉列表（已将该列的Properties设置为ComboBox）动态赋值？似乎只能在设计时赋值，运行时赋值的方法我试了很久也没有找到，在网上找了很多关于cxGrid的资料也没有提及]]></content></Q><Q ID="3034523"><from>还是朋友</from><datetime>2005-4-7 11:35:07</datetime><content><![CDATA[dark4force:方法如下：
+C1，为列名。Properties设置为ComboBox。
+ 
+ with cxGrid1TableView1.DataController do
+  begin
+    RecordCount := 10;
+  end;
+  TcxComboBoxProperties(C1.Properties).Items.Add('Test1');
+  TcxComboBoxProperties(C1.Properties).Items.Add('Test2');
+  TcxComboBoxProperties(C1.Properties).Items.Add('Test3');]]></content></Q><Q ID="3034779"><from>dark4force</from><datetime>2005-4-7 13:51:35</datetime><content><![CDATA[谢谢“还是朋友”，可是编译时提示出错“Undeclared identifier: 'TcxComboBoxProperties'”。我在QuantumGrid的帮助中也没有找到这个“TcxComboBoxProperties”的说明？
+
+补充一下：我用的是QuantumGrid5]]></content></Q><Q ID="3034847"><from>dark4force</from><datetime>2005-4-7 14:07:09</datetime><content><![CDATA[此外小弟还有一个问题，使用dbGridEh时，使用鼠标滚轮或者拉动滚动条的时候可以看到对应的DataSet的数据指针也跟着移动；但是在cxGrid中拖动滚动条或者用滚轮滚动的时候，对应的DataSet的数据指针并没有跟着移动（或者说光标还是停留在上一次选择的位置，没有跟着滚动条移动）。我找了很久没有找到哪里可以设置让数据指针跟着滚动条一起移动，请问各位有谁知道？]]></content></Q><Q ID="3038584"><from>penguin_9</from><datetime>2005-4-10 16:53:46</datetime><content><![CDATA[大家有没有碰到过这样的问题：主从表格，点击“＋”展开里面的记录，双击调用里面的内容只能显示第一条记录：
+在从表里面的表格双击事件中showmessage(adoqry2.fieldbyname('code').asstring);
+adoqry2的值只能返回第一条，
+在主表里面的表格双击事件中showmessage(adoqry1.fieldbyname('code').asstring);
+则可以返回当前的记录
+这是为什么？要怎么解决啊！？
+  
+]]></content></Q></REPLY><USER Name="Metelese" isNeedEmail="0"><FVID>0</FVID><FID>1</FID></USER></DFWML></xml>
+      <SCRIPT>
+function show() {
+	//load_xml(menupanel, menuxml, menuxsl);
+	load_xmln(menupanel, menuxml, "../delphibbs/login.xsl");
+	//load_xmlx(mainpanel, mainxml, xls);
+	//load_xml(mainpanel, mainxml, mainxsl);	
+	load_xmln(mainpanel, mainxml, "dispq_1.xsl");	
+prestr();
+}
+
+function changeFontSize(size) {
+	obj = document.getElementById('mainpanel');	
+	if (!obj) alert('not found');
+	for (var ii=0; ii < obj.all.tags('TD').length; ii++) {
+		var td = obj.all.tags("TD").item(ii);
+		td.style.fontFamily = "宋体";
+		td.style.fontSize = size;
+		td.style.lineHeight = "150%";
+	}		
+}
+function validateForm() {
+  var s1,r,ra;
+  s1=DelBadChar(document.getElementById("S1").value);
+  if(s1.length<12){
+    ra=/gz|up|关注|支持|继续|\?+/i;
+    r = s1.search(ra);
+    if(r>=0){
+      alert("请不要灌水");
+      return false;
+     }
+   }
+	document.getElementById("S1").value=s1;
+}
+</SCRIPT>
+
+      <SCRIPT language=javascript id=clientEventHandlersJS>
+function document_onkeydown() {
+var i,t;
+   if((window.event.keyCode==84||window.event.keyCode==83) && window.event.ctrlKey )   // ctrl-T
+    { 
+      t=0;
+      if (reply.ups.length){ 
+        for (i=0;i<reply.ups.length;i++)
+         {
+          if ((reply.ups[i].value+"")!="")
+            t=t+reply.ups[i].value*1;
+          }
+        }
+      else
+        if (reply.ups.value!="")
+            t=reply.ups.value*1;
+      window.event.keyCode=0;
+      window.status=t;
+      }
+}
+</SCRIPT>
+
+      <SCRIPT language=javascript event=onkeydown for=document>
+ document_onkeydown()
+</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+  showMsg();show();
+</SCRIPT>
+
+<TABLE width="100%" align=center border=0>
+  <TBODY>
+  <TR>
+    <TD height=10></TD></TR>
+  <TR>
+    <TD width=125 height=4></TD>
+    <TD>
+      <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-5905650100597136";
+google_alternate_ad_url = "http://www.delphibbs.com/delphibbs/googlead.htm";
+google_ad_width = 730;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="";
+google_color_border = "B4D0DC";
+google_color_bg = "ECF8FF";
+google_color_link = "0000CC";
+google_color_url = "008000";
+google_color_text = "6F6F6F";
+//--></SCRIPT>
+
+      <SCRIPT 
+      src="分享一下ExpressQuantumGrid4的cxGrid的一些使用方法，和经验。欢迎使用过cxGrid的人来灌水。_files/show_ads.js" 
+      type=text/javascript>
+</SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<SCRIPT>
+function googlead(){
+  //document.getElementsByTagName('iframe').item(0).id="googlead0";
+  //googlead0.name="_blank";
+  //window.status=googlead0.name;
+  //window.status= document.getElementsByTagName('iframe').item(0). .getElementsByTagName('table').item(0).outerHTML;
+}
+</SCRIPT>
+
+<P align=center>(C) 版权所有，大富翁论坛 1998-2004<BR>感谢您的惠顾，如有任何建议和意见，请 <A 
+onclick="alert(' 由于公开信箱，垃圾邮件过多，请最好在邮件标题开头写上delphibbs。谢谢合作。  ');" 
+href="mailto:webmaster@timeboat.com">联系版主</A>。<FONT face=Arial><SMALL 
+title=750>2004.3.20</SMALL></FONT></P></BODY></HTML>

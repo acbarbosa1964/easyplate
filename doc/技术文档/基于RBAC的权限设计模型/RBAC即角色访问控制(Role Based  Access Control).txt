@@ -1,0 +1,10 @@
+RBAC即角色访问控制(Role Based  Access Control)
+
+RBAC认为权限授权实际上是Who、What、How的问题。在RBAC模型中，who、what、how构成了访问权限三元组,也就是“Who对What(Which)进行How的操作”。
+Who：权限的拥用者或主体（如Principal、User、Group、Role、Actor等等）
+What：权限针对的对象或资源（Resource、Class）。
+How：具体的权限（Privilege,正向授权与负向授权）。
+
+基于角色的访问控制方法（RBAC）的显著的两大特征是：1.由于角色/权限之间的变化比角色/用户关系之间的变化相对要慢得多，减小了授权管理的复杂性，降低管理开销。2.灵活地支持企业的安全策略，并对企业的变化有很大的伸缩性。
+
+本文来自CSDN博客，转载请标明出处：http://blog.csdn.net/huanghanzzz2006/archive/2006/12/04/1429678.aspx

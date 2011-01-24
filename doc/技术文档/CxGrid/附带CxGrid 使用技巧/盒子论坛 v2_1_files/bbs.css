@@ -1,0 +1,57 @@
+A:link {
+	FONT-SIZE: 9pt; COLOR: #000000; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:visited {
+	FONT-SIZE: 9pt; COLOR: #333333; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-SIZE: 9pt; COLOR: #ff0000; FONT-FAMILY: "宋体"
+}
+BODY {
+	TABLE-LAYOUT: fixed; FONT-SIZE: 9pt; WORD-BREAK: break-all; FONT-FAMILY: "宋体"
+}
+TD {
+	TABLE-LAYOUT: fixed; FONT-SIZE: 9pt; WORD-BREAK: break-all; FONT-FAMILY: "宋体"
+}
+.text {
+	BORDER-RIGHT: #eeeeee 1px solid; BORDER-TOP: #333333 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #333333 1px solid; COLOR: #000000; BORDER-BOTTOM: #eeeeee 1px solid; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #ffffdd
+}
+.text2 {
+	BORDER-RIGHT: #333333 1px solid; BORDER-TOP: #333333 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #333333 1px solid; BORDER-BOTTOM: #333333 1px solid; BACKGROUND-COLOR: #f9f3f5
+}
+.textarea {
+	BORDER-RIGHT: #eeeeee 1px solid; BORDER-TOP: #333333 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #333333 1px solid; COLOR: #000000; BORDER-BOTTOM: #eeeeee 1px solid; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #ffffdd
+}
+.textarea2 {
+	BORDER-RIGHT: #eeeeee 1px solid; BORDER-TOP: #333333 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #333333 1px solid; COLOR: #000000; BORDER-BOTTOM: #eeeeee 1px solid; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #f9f3f5
+}
+.button {
+	BORDER-RIGHT: #333333 1px solid; BORDER-TOP: #eeeeee 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #eeeeee 1px solid; CURSOR: hand; COLOR: #000000; BORDER-BOTTOM: #333333 1px solid; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.button2 {
+	BORDER-RIGHT: #333333 1px solid; BORDER-TOP: #eeeeee 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: #eeeeee 1px solid; CURSOR: hand; COLOR: #ff0000; BORDER-BOTTOM: #333333 1px solid; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.line {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; FONT-SIZE: 9pt; BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-WIDTH: 1px; MARGIN-BOTTOM: auto; BORDER-BOTTOM-COLOR: #000000; COLOR: #9999cc; BORDER-TOP-COLOR: #000000; FONT-FAMILY: "宋体"; BORDER-RIGHT-WIDTH: 0px; BORDER-RIGHT-COLOR: #000000
+}
+.select {
+	FONT-SIZE: 9pt; COLOR: #ffffff; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #000000
+}
+.select2 {
+	BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 9pt; BORDER-LEFT-COLOR: #000000; BORDER-BOTTOM-WIDTH: 1px; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-COLOR: #000000; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #efefef; BORDER-RIGHT-WIDTH: 1px; BORDER-RIGHT-COLOR: #000000
+}
+.file {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: 9pt; BORDER-LEFT: black 1px solid; WIDTH: 30px; COLOR: #0000ff; BORDER-BOTTOM: #000000 1px solid; HEIGHT: 20px
+}
+.shadow1 {
+	FONT-SIZE: 9pt; FILTER: dropshadow(color=#000000, offx=1, offy=1); LINE-HEIGHT: 140%
+}
+.shadow2 {
+	FONT-SIZE: 9pt; FILTER: dropshadow(color=#ffffff, offx=1, offy=1); LINE-HEIGHT: 140%
+}
+.shadow3 {
+	FONT-SIZE: 9pt; FILTER: dropshadow(color=#e7e7e7, offx=1, offy=1); LINE-HEIGHT: 140%
+}
+.bigfont {
+	FONT-SIZE: 10.5pt; LINE-HEIGHT: 140%
+}

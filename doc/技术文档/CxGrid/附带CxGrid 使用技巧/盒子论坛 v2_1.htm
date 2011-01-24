@@ -1,0 +1,581 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://bbs.2ccc.com/topic.asp?topicid=151568 -->
+<HTML><HEAD><TITLE>盒子论坛 v2.1</TITLE>
+<SCRIPT language=JavaScript type=text/JavaScript>
+<!--
+function OpenInfoWin(url)
+{
+	window.open (url, "", "width=480,height=280,toolbar=no,status=no,menubar=no,resizable=no,scrollbars=yes");
+}
+
+function OpenWin(url)
+{
+	window.open (url);
+}
+
+function HideWin(url)
+{
+	window.open (url, "", "width=1,height=1");
+}
+-->
+</SCRIPT>
+
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content="" name=keywords><LINK href="盒子论坛 v2_1_files/bbs.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.3790.259" name=GENERATOR></HEAD>
+<BODY 
+onkeydown="if(event.keyCode==13 &amp;&amp; event.ctrlKey) if(check())document.form1.submit()" 
+bgColor=#0066b2 leftMargin=0 topMargin=0><LINK href="盒子论坛 v2_1_files/bbs.css" 
+type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript type=text/JavaScript>
+<!--
+function ShowSearchHelp()
+{
+	alert('支持多个关键字，空格 分隔，AND连接，不支持通配符。\n由于数据量大，实时搜索速度较慢，建议使用全文检索。');
+}
+//-->
+</SCRIPT>
+
+<TABLE cellSpacing=0 cellPadding=0 width=770 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle width=150 height=21><A href="http://www.2ccc.com/" 
+      target=_blank>盒子首页</A></TD>
+    <TD>
+      <TABLE width="100%">
+        <FORM name=frmSearch action=default.asp method=get><INPUT type=hidden 
+        name=roomid> 
+        <TBODY>
+        <TR>
+          <TD width=330><A title=搜索帮助 
+            href="javascript:ShowSearchHelp();">!</A>实时搜索: <INPUT class=line 
+            id=keyword size=25 name=keyword> <SELECT class=select2 id=keyrange 
+            name=keyrange> <OPTION value=0>全部</OPTION> <OPTION value=1 
+              selected>标题</OPTION> <OPTION value=2>内容</OPTION> <OPTION 
+              value=3>作者</OPTION></SELECT> <INPUT class=button type=submit value=" GO " name=Submit></TD>
+          <TD width=73><A href="http://search.2ccc.com/?site=bbs" 
+            target=_blank>全文检索</A></TD>
+          <TD align=right width=201><A href="http://bbs.2ccc.com/">论坛主页</A> <A 
+            href="http://www.2ccc.com/register.asp" target=_blank>注册</A>/<A 
+            href="http://www.2ccc.com/register_active.asp" target=_blank>激活</A> 
+            <A href="http://www.2ccc.com/register.asp?act=edit" 
+            target=_blank>修改信息</A> <A 
+            href="http://bbs.2ccc.com/logout.asp">退出</A></TD></TR></FORM></TBODY></TABLE></TD></TR>
+  <TBODY></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=770 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD background="盒子论坛 v2_1_files/bg_blue_top.jpg" 
+height=10></TD></TR></TBODY></TABLE>
+<SCRIPT language=JavaScript>
+<!--
+function check()
+{
+
+  if(document.form1.topic_title.value=="")
+  {
+    alert("贴子标题不能为空！")
+    document.form1.topic_title.focus()
+    return false
+  }
+
+  if(document.form1.topic_content.value=="")
+  {
+    alert("请输入贴子内容！")
+    document.form1.topic_content.focus()
+    return false
+  }
+  document.form1.Ok.disabled = true;
+//  document.form1.Preview.disabled = true;
+  return true;
+}
+
+function PreviewUBB() { //v6.0
+  var obj = form1;
+  eval("obj."+"enctype='text/plain'");
+
+    eval("obj."+"action='topic.asp?topicid=151568'");
+
+}
+//-->
+</SCRIPT>
+
+<TABLE cellSpacing=0 cellPadding=0 width=770 align=center border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD width=151 bgColor=#ffffff><LINK href="盒子论坛 v2_1_files/bbs.css" 
+      type=text/css rel=stylesheet>
+      <SCRIPT language=JavaScript>
+function CheckLogin()
+{
+  if(document.formLogin.membername.value=="")
+  {
+    alert("请输入您的用户名!");
+    document.formLogin.membername.focus();
+    return false;
+  }
+  if(document.formLogin.memberpass.value=="")
+  {
+    alert("请输入您的密码!");
+    document.formLogin.memberpass.focus();
+    return false;
+  }
+  document.formLogin.Submit.disabled = true;
+  return true;  
+}
+// Example:
+// alert( readCookie("myCookie") );
+function readCookie(name)
+{
+  var cookieValue = "";
+  var search = name + "=";
+  if(document.cookie.length > 0)
+  { 
+    offset = document.cookie.indexOf(search);
+    if (offset != -1)
+    { 
+      offset += search.length;
+      end = document.cookie.indexOf(";", offset);
+      if (end == -1) end = document.cookie.length;
+      cookieValue = unescape(document.cookie.substring(offset, end))
+    }
+  }
+  return cookieValue;
+}
+// Example:
+// writeCookie("myCookie", "my name", 24);
+// Stores the string "my name" in the cookie "myCookie" which expires after 24 hours.
+function writeCookie(name, value, hours)
+{
+  var expire = "";
+  if(hours != null)
+  {
+    expire = new Date((new Date()).getTime() + hours * 3600000);
+    expire = "; expires=" + expire.toGMTString();
+  }
+  document.cookie = name + "=" + escape(value) + expire;
+}
+
+</SCRIPT>
+
+      <TABLE cellSpacing=1 cellPadding=2 width=151 bgColor=#b1d3ec border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle bgColor=#cccccc>技术论坛</TD></TR>
+        <TR>
+          <TD bgColor=#ffffff>
+            <TABLE width="100%">
+              <FORM name=formLogin onsubmit="return CheckLogin()" 
+              action=login.asp method=post>
+              <TBODY>
+              <TR>
+                <TD bgColor=#ffffff>&nbsp;用户名 <INPUT class=text maxLength=20 
+                  size=12 name=membername> </TD></TR>
+              <TR>
+                <TD bgColor=#ffffff>&nbsp;密&nbsp;&nbsp;码 <INPUT class=text 
+                  type=password maxLength=20 size=12 name=memberpass> </TD></TR>
+              <TR>
+                <TD align=middle bgColor=#ffffff><INPUT id=membercookie 
+                  type=checkbox value=1 name=membercookie>记忆登录两个星期</TD></TR>
+              <TR>
+                <TD align=middle bgColor=#ffffff><INPUT type=hidden value=1 
+                  name=act> <INPUT class=button type=submit value="提 交" name=Submit> <INPUT class=button onclick="Javascript:OpenWin('http://www.2ccc.com/register.asp');" type=button value="注 册" name=Register> 
+                </TD></TR>
+              <TR>
+                <TD align=right bgColor=#ffffff><A 
+                  href="javascript:OpenWin('http://www.2ccc.com/getpass.asp')">忘了密码</A></TD></TR></FORM></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width=151 bgColor=#b1d3ec border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle bgColor=#cccccc><FONT color=#ff0000>≡技术区≡</FONT> 
+            <FONT color=#0000ff>①</FONT></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=1">DELPHI技术</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=2">点NET技术</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=21">数据库专区</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=31">网络相关</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=41">开源项目</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=99">论坛精华贴</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#cccccc><FONT color=#ff0000>≡发布区≡</FONT> 
+            <FONT color=#0000ff>②</FONT></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=101">代码发布</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=111">控件发布</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=131">文档资料</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=141">工具或其他</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#cccccc><FONT color=#ff0000>≡事务区≡</FONT> 
+            <FONT color=#0000ff>③</FONT></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=301">随便说说</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=201">网站意见</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=220">招聘应聘</A></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff><A 
+            href="http://bbs.2ccc.com/default.asp?roomid=310">交易信息</A></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width=151 bgColor=#b1d3ec border=0>
+        <TBODY>
+        <TR>
+          <TD width=141 bgColor=#cccccc>
+            <DIV align=center>论坛信息</DIV></TD></TR>
+        <TR>
+          <TD align=middle bgColor=#ffffff>
+            <TABLE width="100%">
+              <TBODY>
+              <TR>
+                <TD bgColor=#ffffff>最新加入： <A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=wzycwq')"><FONT 
+                  color=#999999>wzycwq </FONT></A></TD></TR>
+              <TR>
+                <TD bgColor=#ffffff>今日帖子： <FONT color=#999999>126 
+</FONT></TD></TR>
+              <TR>
+                <TD bgColor=#ffffff>帖子总数： <FONT color=#999999>131361 
+              </FONT></TD></TR>
+              <TR>
+                <TD bgColor=#ffffff>用户总数： <FONT color=#999999>162585 
+              </FONT></TD></TR>
+              <TR>
+                <TD bgColor=#ffffff>在线用户： <A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member_online.asp')"><FONT 
+                  color=#999999>131</FONT></A> 
+      </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+    <TD width=3></TD>
+    <TD vAlign=top width=616>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right>导航：</TD>
+          <TD><A href="http://bbs.2ccc.com/">论坛</A> -&gt; <A 
+            href="http://bbs.2ccc.com/default.asp?roomid=1">DELPHI技术</A> 
+            斑竹:zizii,sephil,liumazi</TD>
+          <TD align=middle>&nbsp;</TD></TR>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="67%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=treemon')">treemon</A> 
+                  <FONT color=#666666>(treemoN)</FONT><FONT color=#cccccc> 
+                  ▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD width="14%">浏览:<FONT color=#666666>224</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-19 15:26:03</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right>标题：</TD>
+          <TD colSpan=2><FONT color=#0000ff>cxGrid&nbsp;使用讨论</FONT></TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>楼主：</FONT></TD>
+          <TD 
+            colSpan=2>从ini文件中读出并设置<BR>cxGrid1DBTableView1.RestoreFromIniFile('***.ini',&nbsp;false);<BR>将设置保存到ini文件<BR>cxGrid1DBTableView1.StoreToIniFile('***.ini',&nbsp;false);<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>Your&nbsp;Think&nbsp;Delphi&nbsp;Can </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=treemon')">treemon</A> 
+                  <FONT color=#666666>(treemoN) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-19 15:26:42</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>1楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>怎样将cxGrid里的数据导入到EXCEL，HTML，XML和TEXT<BR>&nbsp;&nbsp;解决：这个问题在用了cxGrid以后变得异常简单，<BR>uses<BR>&nbsp;cxExportGrid4Link;<BR><BR>procedure&nbsp;TForm1.Button1Click(Sender:&nbsp;TObject);<BR>begin<BR>&nbsp;ExportGrid4ToEXCEL('d:\wang.xsl',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToTEXT('d:\wang.txt',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToXML('d:\wang.xml',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToHTML('d:\wang.html',cxGrid1,True,True);<BR>end;<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>Your&nbsp;Think&nbsp;Delphi&nbsp;Can </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=treemon')">treemon</A> 
+                  <FONT color=#666666>(treemoN) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-19 15:27:57</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>2楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>刚开始用cxGrid感觉比DBGrid强大百倍，<BR>请大家多指点<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>Your&nbsp;Think&nbsp;Delphi&nbsp;Can </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=treemon')">treemon</A> 
+                  <FONT color=#666666>(treemoN) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-19 16:05:38</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>3楼：</FONT></TD>
+          <TD bgColor=#ffffff colSpan=2><IMG src="盒子论坛 v2_1_files/url.gif" 
+            align=absMiddle><A 
+            href="http://www.delphibbs.com/delphibbs/dispq.asp?lid=2260672" 
+            target=_blank>http://www.delphibbs.com/delphibbs/dispq.asp?lid=2260672</A><BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>Your&nbsp;Think&nbsp;Delphi&nbsp;Can </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=hebiziyu')">hebiziyu</A> 
+                  <FONT color=#666666>(hebiziyu) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-19 17:47:11</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>4楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>以下内容转自DFW<BR><BR>==========<BR><BR><BR><BR>wangxian11&nbsp;(2003-10-29&nbsp;20:49:00)&nbsp;&nbsp;<BR>使用cxGrid有一些时间了，在这里总结一下使用cxGrid的一些方法，希望给刚开始接触cxGrid的人一些帮助。<BR><BR>1.简单介绍：cxGrid右下方的cxGrid1Level1是表示Grid表的层，cxGrid可以有多层，这相当于集合了PageControl的<BR><BR>功能,而cxGrid1Level1右边的cxGrid1DBTableView1相当于DBGrid一样。右击cxGrid1可以添加cxGrid1Level2，右击<BR><BR>cxGrid1Level2，可以选择Create&nbsp;View&nbsp;,&nbsp;Add&nbsp;level&nbsp;或者Delete&nbsp;Level。Add&nbsp;level可以增加子Level，Create&nbsp;View<BR><BR>里面可以选择很多不同总类的View。其中<BR>&nbsp;&nbsp;&nbsp;1)DB&nbsp;Table可以和数据库连接的View，更一般的DBGrid类似，它比DBGrid多了比如鼠标中键可以用，可以统计，<BR><BR>查询，等等功能；<BR>&nbsp;&nbsp;&nbsp;2)DB&nbsp;Banded&nbsp;Table&nbsp;则可以实现比如：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;字段1&nbsp;|&nbsp;字段2&nbsp;|&nbsp;字段3&nbsp;|&nbsp;字段4&nbsp;|<BR>等类似的功能；<BR>&nbsp;&nbsp;&nbsp;3)DB&nbsp;Card&nbsp;View&nbsp;则提供了卡片方式的显示数据的功能，这个用在比如人事档案管理比较不错；<BR>&nbsp;&nbsp;&nbsp;4)其它不一一赘述。<BR>&nbsp;<BR>2.一些使用方法：<BR>&nbsp;&nbsp;&nbsp;1)有图片和MEMO的例子：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拖入一个cxGrid1，Table1，DataSource1。&nbsp;Table1的DatabaseName设为DBDEMOS，TableName设为biolife.db，&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;Active设为True;DataSource1的DataSet设为Table1；cxGrid1DBTableView1的DataController中的DataSource&nbsp;&nbsp;&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;设为DataSource1;右击cxGrid1DBTableView1选择Create&nbsp;All&nbsp;Columns；双击cxGrid1，在弹出的窗口中找到&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;cxGrid1DBTableView1Notes和cxGrid1DBTableView1Graphic，将它们的Properties属性设为BlobEdit；运行看看&nbsp;&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;结果。再将cxGrid1DBTableView1Graphic的Properties属性设为Image，再将Properties下的Stretch设为True，&nbsp;&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;将cxGrid1DBTableView1-&gt;optionsview-&gt;CellAutoHeight&nbsp;设为True，看看结果。<BR><BR><BR>&nbsp;&nbsp;&nbsp;2)如何让“Drag&nbsp;a&nbsp;column&nbsp;here&nbsp;to&nbsp;group&nbsp;by&nbsp;that&nbsp;column”不显示<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决：点击cxGrid1上的cxGrid1DBTableView1<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在cxGrid1DBTableView1-&gt;optionsview-&gt;groupbybox:=false即可&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：OptionsView里面有很多属性可能经常要用，比如：ColumnAutoWith,Navigator等等，慢慢琢磨吧:)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;3)GroupPanel上面的英文[Drag&nbsp;a&nbsp;column&nbsp;header&nbsp;to&nbsp;group&nbsp;by&nbsp;that&nbsp;column]怎么可以改成中文？<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决：最简单的方法是&nbsp;TcxGridTableView.OnCustomDrawPartBackground&nbsp;，也可用&nbsp;OnCustomDrawGroupCell：<BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procedure&nbsp;TForm1.cxGrid1DBTableView1CustomDrawPartBackground(<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sender:&nbsp;TcxGridTableView;&nbsp;ACanvas:&nbsp;TcxCanvas;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AViewInfo:&nbsp;TcxCustomGridCellViewInfo;&nbsp;var&nbsp;ADone:&nbsp;Boolean);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AViewInfo.Text:='动态设置&nbsp;GroupBox&nbsp;的显示内容';<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACanvas.FillRect(AViewInfo.Bounds);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end;<BR><BR>&nbsp;&nbsp;&nbsp;4)如何实现如下功能：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+财务部<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+原材料仓库<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+成品库<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+冲压车间<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+软件开发部<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个是部门的名称,点击加号就可以将本部门的人员情况显示出来。<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决：其实这是一个主从表关系，1：填好主表的keyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：填好从表的keyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3：填好从表的　detaikeyfieldNames与masterkeyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;从表的数据源一定要按与主表关联的字段排序<BR>&nbsp;&nbsp;&nbsp;&nbsp;注：其它地方设置了主从表结构那样就显示不出来，比如设置了从表的Table或者Query的mastersource和<BR>&nbsp;&nbsp;&nbsp;&nbsp;asterfield就会不能显示数据！如果是两个cxGrid的主从关系，这样设置就很OK了。<BR><BR>&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;5)统计功能<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：cxGrid1DBTableView1-&gt;optionsview-&gt;Footer&nbsp;设为True<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cxGrid1DBTableView1-&gt;DataController-&gt;Summary设置FooterSummaryItems即可&nbsp;&nbsp;<BR><BR>&nbsp;&nbsp;6)类似PageControl显示<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：增加一个Level,将cxGrid1-&gt;RootLevelOptions-&gt;DetailTabsPosition设为dtpTop，然后相应的设置cxGrid1Level1,和cxGrid1Level2的Caption值。<BR><BR>&nbsp;&nbsp;&nbsp;未完待续。。。。。。。。。&nbsp;<BR><BR>&nbsp;&nbsp;&nbsp;以上是在用cxGrid时候碰到的一些问题，我总结了一部分，还有很多问题等待解决。在这里我希望用过cxGrid的人帮着一起总结一下，让后学者可以少走点弯路！&nbsp;<BR><BR><BR>&nbsp;<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>&nbsp;<BR>wangxian11&nbsp;(2003-10-30&nbsp;20:58:00)&nbsp;&nbsp;<BR>&nbsp;7)如何设定左边几列，不能滚动?<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：使用DB&nbsp;Banded&nbsp;Table才可以实现，<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在cxGrid1DBBandedTableView里建立Band0,Band1<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Band0的Fixed=tfLeft<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Band1的Fixed=tfnone<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置要锁定的字段的BandIndex=0,其它为1，就OK了。&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;<BR>&nbsp;&nbsp;8)怎样实现如EXCEL一样的，当前格=G14+G15+G16&nbsp;这样的功能<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：举一个简单的例子：label1.Caption&nbsp;:=&nbsp;cxGrid1DBTableView1.DataController.Values[2,&nbsp;<BR><BR>3]+cxGrid1DBTableView2.DataController.Values[1,&nbsp;1]+cxGrid1DBTableView3.DataController.Values[1,&nbsp;1];<BR>所以不同cxGrid1DBTableView中的数据都可以给当前格，这样就做到了EXCEL中的当前格=G14+G15+G16&nbsp;类似的功能。<BR>&nbsp;&nbsp;<BR>&nbsp;&nbsp;9)鼠标右击cxGrid1DBBandedTableView1菜单里的Edit&nbsp;Layout什么用，怎么使用？<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：可以拖动字段，并列的可以拖成有层次感（一层层），&nbsp;拖动时会显示箭头的，就是说可以拖一个字段放<BR><BR>到最上面，就可以使记录按此字段进行分组。点击其中一个字段，上面还会出现一个上升或者下降的小三角形，这个<BR><BR>小三角形的作用是在运行阶段，数据就会按照这个字段上升或者下降排序。<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还有一个Set&nbsp;as&nbsp;Default的作用是保持当前TableView的参数，下此产生新的TableView的时候就会可以和上次保持的参数一样。<BR>&nbsp;&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-02&nbsp;21:47:00)&nbsp;&nbsp;<BR>10）怎样将cxGrid里的数据导入到EXCEL，HTML，XML和TEXT<BR>&nbsp;&nbsp;解决：这个问题在用了cxGrid以后变得异常简单，<BR>uses<BR>&nbsp;cxExportGrid4Link;<BR><BR>procedure&nbsp;TForm1.Button1Click(Sender:&nbsp;TObject);<BR>begin<BR>&nbsp;ExportGrid4ToEXCEL('d:\wang.xsl',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToTEXT('d:\wang.txt',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToXML('d:\wang.xml',cxGrid1,True,True);<BR>&nbsp;ExportGrid4ToHTML('d:\wang.html',cxGrid1,True,True);<BR>end;&nbsp;<BR><BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-02&nbsp;21:53:00)&nbsp;&nbsp;<BR>11)如何使满足条件的数据显示不同的颜色？<BR>&nbsp;解决：<BR>var<BR>&nbsp;&nbsp;AYellowStyle:&nbsp;TcxStyle;<BR><BR>procedure&nbsp;TForm1.FormCreate(Sender:&nbsp;TObject);<BR>begin<BR>&nbsp;&nbsp;&nbsp;//行颜色<BR>&nbsp;&nbsp;AYellowStyle&nbsp;:=&nbsp;TcxStyle.Create(Self);<BR>&nbsp;&nbsp;AYellowStyle.Color&nbsp;:=&nbsp;$0080FFFF;<BR>&nbsp;&nbsp;AYellowStyle.TextColor&nbsp;:=&nbsp;clMaroon;<BR>end;<BR><BR>procedure&nbsp;TForm1.cxGrid1DBBandedTableView1StylesGetContentStyle(<BR>&nbsp;&nbsp;Sender:&nbsp;TcxCustomGridTableView;&nbsp;ARecord:&nbsp;TcxCustomGridRecord;<BR>&nbsp;&nbsp;AItem:&nbsp;TcxCustomGridTableItem;&nbsp;out&nbsp;AStyle:&nbsp;TcxStyle);<BR>begin<BR>&nbsp;&nbsp;if&nbsp;ARecord.Values[cxGrid1DBBandedTableView1Lengthcm.Index]&nbsp;&lt;&nbsp;81&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;AStyle&nbsp;:=&nbsp;AYellowStyle;<BR>end;<BR><BR>这里cxGrid1DBBandedTableView1Lengthcm.Index小于81时就显示黄色<BR><BR>&nbsp;<BR>zhusongdong&nbsp;(2003-11-02&nbsp;22:16:00)&nbsp;&nbsp;<BR>非常感谢！希望继续！关注&nbsp;<BR>&nbsp;<BR>edak&nbsp;(2003-11-03&nbsp;7:56:00)&nbsp;&nbsp;<BR>to&nbsp;wangxian11&nbsp;<BR>&nbsp;&nbsp;怎样实现cxgrid的双击事件？<BR><BR>&nbsp;<BR>woyaoying&nbsp;(2003-11-03&nbsp;9:58:00)&nbsp;&nbsp;<BR>很好！<BR>收藏先！&nbsp;<BR>&nbsp;<BR>archonwang&nbsp;(2003-11-03&nbsp;11:49:00)&nbsp;&nbsp;<BR>谢谢了，东西&nbsp;不错，支持&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;13:20:00)&nbsp;&nbsp;<BR>问题12）如何从外边的TXT文件导入到cxGrid？<BR>解决：&nbsp;&nbsp;&nbsp;&nbsp;procedure&nbsp;CustomizeColumns;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;procedure&nbsp;LoadData;<BR><BR>procedure&nbsp;TForm1.CustomizeColumns;<BR>const<BR>&nbsp;cDistance&nbsp;=&nbsp;1;<BR>&nbsp;cRadius&nbsp;=&nbsp;5;<BR>&nbsp;cPeriod&nbsp;=&nbsp;4;<BR>&nbsp;cPstring&nbsp;=&nbsp;0;<BR>var<BR>&nbsp;I:&nbsp;Integer;<BR>begin<BR>&nbsp;DecimalSeparator&nbsp;:=&nbsp;'.';<BR>&nbsp;with&nbsp;cxGrid1TableView2&nbsp;do<BR>&nbsp;for&nbsp;I&nbsp;:=&nbsp;0&nbsp;to&nbsp;ColumnCount&nbsp;-&nbsp;1&nbsp;do<BR>&nbsp;&nbsp;&nbsp;if&nbsp;I&nbsp;in&nbsp;[cDistance,&nbsp;cRadius]&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Columns[I].DataBinding.ValueTypeClass&nbsp;:=&nbsp;TcxIntegerValueType//1，5列为Integer<BR>&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;I&nbsp;in&nbsp;[cPstring,cPeriod]&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Columns[I].DataBinding.ValueTypeClass&nbsp;:=&nbsp;TcxStringValueType//0，4列为String<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Columns[I].DataBinding.ValueTypeClass&nbsp;:=&nbsp;TcxFloatValueType;//其他为Float<BR>end;<BR><BR>procedure&nbsp;TForm1.LoadData;<BR>const<BR>&nbsp;AFileName&nbsp;=&nbsp;'资产负债表.txt';<BR>&nbsp;AHeaderLineCount&nbsp;=&nbsp;2;<BR><BR>var<BR>&nbsp;ARecords,&nbsp;AValues:&nbsp;TStringList;<BR>&nbsp;I:&nbsp;Integer;<BR><BR>&nbsp;procedure&nbsp;InitRecord(const&nbsp;Str:&nbsp;string);<BR>&nbsp;var<BR>&nbsp;&nbsp;&nbsp;J:&nbsp;Integer;<BR>&nbsp;&nbsp;&nbsp;V:&nbsp;Variant;<BR>&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;AValues.CommaText&nbsp;:=&nbsp;Str;<BR>&nbsp;&nbsp;&nbsp;for&nbsp;J&nbsp;:=&nbsp;0&nbsp;to&nbsp;AValues.Count&nbsp;-&nbsp;1&nbsp;do<BR>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;AValues.Strings[J]&nbsp;&lt;&gt;&nbsp;'-'&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V&nbsp;:=&nbsp;AValues.Strings[J];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;not&nbsp;VarIsNull(V)&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cxGrid1TableView2.DataController.Values[I,&nbsp;J]&nbsp;:=&nbsp;V;<BR>&nbsp;&nbsp;&nbsp;&nbsp;end;<BR>&nbsp;end;<BR><BR>begin<BR>&nbsp;if&nbsp;not&nbsp;FileExists(AFileName)&nbsp;then<BR>&nbsp;&nbsp;&nbsp;raise&nbsp;Exception.Create('Data&nbsp;file&nbsp;not&nbsp;found');<BR><BR>&nbsp;ARecords&nbsp;:=&nbsp;TStringList.Create;<BR>&nbsp;AValues&nbsp;:=&nbsp;TStringList.Create;<BR><BR>&nbsp;with&nbsp;ARecords&nbsp;do<BR>&nbsp;try<BR>&nbsp;&nbsp;&nbsp;LoadFromFile(AFileName);<BR>&nbsp;&nbsp;&nbsp;cxGrid1TableView2.BeginUpdate;<BR>&nbsp;&nbsp;&nbsp;cxGrid1TableView2.DataController.RecordCount&nbsp;:=&nbsp;Count&nbsp;-&nbsp;AHeaderLineCount;<BR>&nbsp;&nbsp;&nbsp;for&nbsp;I&nbsp;:=&nbsp;0&nbsp;to&nbsp;Count&nbsp;-&nbsp;(AHeaderLineCount&nbsp;+&nbsp;1)&nbsp;do<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitRecord(Strings[I&nbsp;+&nbsp;AHeaderLineCount]);<BR>&nbsp;finally<BR>&nbsp;&nbsp;&nbsp;cxGrid1TableView2.EndUpdate;<BR>&nbsp;&nbsp;&nbsp;ARecords.Free;<BR>&nbsp;&nbsp;&nbsp;AValues.Free;<BR>&nbsp;end;<BR>end;<BR><BR>procedure&nbsp;TForm1.FormCreate(Sender:&nbsp;TObject);<BR>begin<BR>&nbsp;CustomizeColumns;<BR>&nbsp;LoadData_Zcfz;<BR>end;&nbsp;<BR><BR>其中“资产负债表.txt”中的数据如下：<BR><BR>资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产&nbsp;&nbsp;行次&nbsp;&nbsp;年&nbsp;&nbsp;初&nbsp;&nbsp;数&nbsp;&nbsp;期&nbsp;&nbsp;末&nbsp;&nbsp;数&nbsp;&nbsp;负债及所有者权益&nbsp;&nbsp;行次&nbsp;&nbsp;年&nbsp;&nbsp;初&nbsp;&nbsp;数&nbsp;&nbsp;期&nbsp;&nbsp;末&nbsp;&nbsp;数<BR>---------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----&nbsp;&nbsp;&nbsp;&nbsp;-----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------<BR>流动资产：&nbsp;&nbsp;1&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流动负债：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;0.00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.00&nbsp;&nbsp;<BR><BR>&nbsp;<BR><BR><BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;13:25:00)&nbsp;&nbsp;<BR>希望大家把自己在使用cxGrid时碰到的问题以及解决方法写到这里来，谢谢！<BR>格式：<BR>&nbsp;&nbsp;&nbsp;&nbsp;问题：<BR>&nbsp;&nbsp;&nbsp;&nbsp;解决：&nbsp;<BR>&nbsp;<BR>libra163&nbsp;(2003-11-03&nbsp;15:53:00)&nbsp;&nbsp;<BR>不错，太好了。&nbsp;<BR>&nbsp;<BR>cocoboy79&nbsp;(2003-11-03&nbsp;16:53:00)&nbsp;&nbsp;<BR>我也一直在使用这个控件，我发现它的点击事件有些混乱。<BR>过几天我也总结一下，咱们交流一下，我这里碰到的问题<BR>也不少哦。<BR>qq:364941&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;16:55:00)&nbsp;&nbsp;<BR>哈哈，太好了，终于有人可以交流了。&nbsp;<BR>&nbsp;<BR>xzzcq&nbsp;(2003-11-03&nbsp;17:44:00)&nbsp;&nbsp;<BR>不错，俺要向楼上各位好好学习，因为俺以前主要用ehlib，对于cxgrid不会用&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;20:15:00)&nbsp;&nbsp;<BR>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&nbsp;怎样实现cxgrid的双击事件？<BR>TO&nbsp;edak,&nbsp;:<BR>&nbsp;&nbsp;&nbsp;你能把问题讲的再清楚点吗？在双击事件里写代码不就行了吗？&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;20:16:00)&nbsp;&nbsp;<BR>13）如何改变列的颜色？<BR>var<BR>&nbsp;AFirstColumnStyle:&nbsp;TcxStyle;<BR><BR>procedure&nbsp;TForm1.FormCreate(Sender:&nbsp;TObject);<BR>begin<BR>&nbsp;//列颜色<BR>&nbsp;AFirstColumnStyle&nbsp;:=&nbsp;TcxStyle.Create(Self);<BR>&nbsp;AFirstColumnStyle.Color&nbsp;:=&nbsp;clAqua;<BR>&nbsp;AFirstColumnStyle.TextColor&nbsp;:=&nbsp;clBlue;<BR>&nbsp;cxGrid1TableView1.Columns[1].Styles.Content&nbsp;:=&nbsp;AFirstColumnStyle;<BR>end;&nbsp;<BR><BR>&nbsp;&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-03&nbsp;20:47:00)&nbsp;&nbsp;<BR>14）Set&nbsp;as&nbsp;default的用法？<BR>&nbsp;解决：Set&nbsp;as&nbsp;default的用法是为了解决设置参数的方便而做的，比如：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连好数据库以后，更改cxGrid1DBBandedTableView1-&gt;OptionsCustomize-&gt;ColumnFiltering&nbsp;设为False。（这个设置可以将字段名的下拉单给去掉）更改cxGrid1DBBandedTableView1-&gt;OptionsView-&gt;Navigator&nbsp;设置为True。然后右击cxGrid1DBBandedTableView1，在弹出的菜单栏里面点击Set&nbsp;as&nbsp;default。&nbsp;<BR>&nbsp;&nbsp;OK，下次你再产生一个新的cxGrid1DBBandedTableView1时这些设置和刚才的一样了。如果需要设置的参数很多的时候，这个Set&nbsp;as&nbsp;default很有用！&nbsp;<BR><BR>&nbsp;&nbsp;<BR>&nbsp;<BR>cocoboy79&nbsp;(2003-11-05&nbsp;12:12:00)&nbsp;&nbsp;<BR>to&nbsp;TO&nbsp;edak,<BR>你说的是怎么样的双击？我好像看到cxGrid的那个View里就有dbclick事件。&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;13:43:00)&nbsp;&nbsp;<BR>TO&nbsp;cocoboy79,&nbsp;<BR>你能帮我解决这些问题吗？<BR>&nbsp;&nbsp;1.怎样将EXCEL表导入到cxGrid1TableView1中去，<BR>&nbsp;&nbsp;2.两个cxGrid1DBTableView之间转化的时候应该在那个事件中写语句。<BR>&nbsp;&nbsp;3.使用cxGrid1DBCardView1时，如果字段数太多，多余屏幕可显示的时候，这时不会出现下拉框，也就是下面的数据将看不到，怎么解决这个问题。<BR>&nbsp;&nbsp;4.怎样实现EXCEL表一样的，中间是TABLE表，上面是说明部分，下面也是说明部分，<BR>&nbsp;&nbsp;&nbsp;上面、下面都有四栏的说明文字？？<BR>&nbsp;&nbsp;5.如果cxGrid里面有四个cxGrid1DBTableView，如何在运行后让cxGrid1DBTableView3显示在最前面&nbsp;<BR><BR>这些问题都是我碰到还没解决的。。。。<BR><BR><BR>&nbsp;<BR>qufo&nbsp;(2003-11-05&nbsp;14:25:00)&nbsp;&nbsp;<BR>Mark<BR>这个东西好用呀，我这边有TT8的中文教程，忘记了在哪下的，要我up一下。<BR><BR>其实它的帮助文件讲了很多的。那个教程就是帮助文件的中文翻译。&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;14:31:00)&nbsp;&nbsp;<BR>是啊，看了帮助文件如果能解决这些问题我就不会到这里来问了。<BR><BR>我看的是它的自带的英文帮助，TT8的中文教程只是将它的一部分翻译了一下，没有很深入<BR><BR>下去。&nbsp;<BR>&nbsp;<BR>RaulWhite&nbsp;(2003-11-05&nbsp;15:29:00)&nbsp;&nbsp;<BR>好，向楼主致敬!!!!!!!!!!<BR><BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;15:31:00)&nbsp;&nbsp;<BR>:)&nbsp;谢谢鼓励&nbsp;<BR>&nbsp;<BR>RaulWhite&nbsp;(2003-11-05&nbsp;15:52:00)&nbsp;&nbsp;<BR>不知道怎么给你分啊，&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;15:56:00)&nbsp;&nbsp;<BR>这还不简单，开一张新的帖子，我进去说句话，就可以给我分数啦，哈哈<BR><BR>干吗给我分啊？我这里帮你解决问题了吗？&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;16:14:00)&nbsp;&nbsp;<BR>15）怎样使鼠标移动时，相应的单元格里的文字变色？<BR>&nbsp;&nbsp;解决：<BR>var<BR>&nbsp;FTrackItem:&nbsp;TcxCustomGridTableItem;<BR>&nbsp;FTrackRec:&nbsp;TcxCustomGridRecord;<BR><BR>procedure&nbsp;TForm1.cxGrid1DBTableView1CustomDrawCell(<BR>&nbsp;Sender:&nbsp;TcxCustomGridTableView;&nbsp;ACanvas:&nbsp;TcxCanvas;<BR>&nbsp;AViewInfo:&nbsp;TcxGridTableDataCellViewInfo;&nbsp;var&nbsp;ADone:&nbsp;Boolean);<BR>begin<BR>&nbsp;if&nbsp;(AViewInfo.GridRecord&nbsp;=&nbsp;FTrackRec)&nbsp;and&nbsp;(AViewInfo.Item&nbsp;=&nbsp;FTrackItem)&nbsp;then<BR>&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;ACanvas.Font.Color&nbsp;:=&nbsp;clred;&nbsp;&nbsp;&nbsp;//红色字体<BR>&nbsp;&nbsp;&nbsp;ACanvas.Font.Style&nbsp;:=&nbsp;[fsUnderline];//带下划线<BR>&nbsp;end;<BR>end;<BR><BR>procedure&nbsp;TForm1.cxGrid1DBTableView1MouseMove(Sender:&nbsp;TObject;<BR>&nbsp;Shift:&nbsp;TShiftState;&nbsp;X,&nbsp;Y:&nbsp;Integer);<BR>var<BR>&nbsp;AHitTest:&nbsp;TcxCustomGridHitTest;<BR>&nbsp;ATrackItem:&nbsp;TcxCustomGridTableItem;<BR>&nbsp;ATrackRec:&nbsp;TcxCustomGridRecord;<BR>begin<BR>&nbsp;ATrackItem&nbsp;:=&nbsp;FTrackItem;<BR>&nbsp;ATrackRec&nbsp;:=&nbsp;FTrackRec;<BR><BR>&nbsp;AHitTest&nbsp;:=&nbsp;(Sender&nbsp;as&nbsp;TcxGridSite).GridView.ViewInfo.GetHitTest(X,&nbsp;Y);<BR>&nbsp;if&nbsp;AHitTest&nbsp;is&nbsp;TcxGridRecordCellHitTest&nbsp;then<BR>&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;FTrackItem&nbsp;:=&nbsp;TcxGridRecordCellHitTest(AHitTest).Item;<BR>&nbsp;&nbsp;&nbsp;FTrackRec&nbsp;:=&nbsp;TcxGridRecordCellHitTest(AHitTest).GridRecord;<BR>&nbsp;end<BR>&nbsp;else<BR>&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;FTrackItem&nbsp;:=&nbsp;nil;<BR>&nbsp;&nbsp;&nbsp;FTrackRec&nbsp;:=&nbsp;nil;<BR>&nbsp;end;<BR><BR>&nbsp;if&nbsp;(ATrackItem&nbsp;&lt;&gt;&nbsp;FTrackItem)&nbsp;or&nbsp;(ATrackRec&nbsp;&lt;&gt;&nbsp;FTrackRec)&nbsp;then<BR>&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;//&nbsp;Invalidate&nbsp;old&nbsp;cell<BR>&nbsp;&nbsp;&nbsp;if&nbsp;ATrackRec&nbsp;&lt;&gt;&nbsp;nil&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ATrackRec.Invalidate(ATrackItem);<BR>&nbsp;&nbsp;&nbsp;//&nbsp;Invalidate&nbsp;new&nbsp;cell<BR>&nbsp;&nbsp;&nbsp;if&nbsp;FTrackRec&nbsp;&lt;&gt;&nbsp;nil&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FTrackRec.Invalidate(FTrackItem);<BR>&nbsp;end;<BR>end;&nbsp;<BR><BR>&nbsp;&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;16:32:00)&nbsp;&nbsp;<BR>16）怎样设计多表头的cxGrid？<BR>&nbsp;&nbsp;解决：cxGrid可以解决如下的表头：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;字段1&nbsp;|&nbsp;字段2&nbsp;|&nbsp;字段3&nbsp;|&nbsp;字段4&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段5&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段7&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;字段8&nbsp;|&nbsp;字段9&nbsp;|<BR>实现这个很简单，你可以直接在上面拖动字段名，拖动时会显示箭头的，放入你想显示的位置就OK了。或者在鼠标右击cxGrid1DBBandedTableView1菜单里的Edit&nbsp;Layout里也可以拖放。<BR><BR>但是cxGrid不能实现如下的多表头形式：<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说明2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;说明3&nbsp;|&nbsp;说明4&nbsp;|&nbsp;说明5&nbsp;|&nbsp;说明6&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段1&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字段3&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;字段4&nbsp;|&nbsp;字段5&nbsp;|<BR>不知道有谁能实现这样的多表头？&nbsp;<BR>&nbsp;<BR>small&nbsp;pig&nbsp;(2003-11-05&nbsp;16:33:00)&nbsp;&nbsp;<BR>哪位大虾知道：满格显示怎么弄？&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;16:40:00)&nbsp;&nbsp;<BR>问题说清楚点，<BR>什么满格显示？&nbsp;<BR>&nbsp;<BR>RaulWhite&nbsp;(2003-11-05&nbsp;16:52:00)&nbsp;&nbsp;<BR>热心人就是要给分嘛，我是刚来的，不知道这里的制度，不要怪我占你的地方啊&nbsp;<BR>&nbsp;<BR>archonwang&nbsp;(2003-11-05&nbsp;16:55:00)&nbsp;&nbsp;<BR>好东西，希望楼主将来整理成册，为人民服务&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-05&nbsp;21:51:00)&nbsp;&nbsp;<BR>17）在主从表结构时，当点开“+”时怎样将焦点聚在相应主表的记录上？<BR>解决：<BR>var&nbsp;<BR>&nbsp;HitTest:&nbsp;TcxCustomGridHitTest;&nbsp;<BR><BR>procedure&nbsp;TColumnsShareDemoMainForm.tvProjectsMouseDown(Sender:&nbsp;TObject;<BR>&nbsp;Button:&nbsp;TMouseButton;&nbsp;Shift:&nbsp;TShiftState;&nbsp;X,&nbsp;Y:&nbsp;Integer);<BR>begin<BR>&nbsp;//&nbsp;Note&nbsp;that&nbsp;the&nbsp;Sender&nbsp;parameter&nbsp;is&nbsp;a&nbsp;Site<BR>&nbsp;HitTest&nbsp;:=&nbsp;(Sender&nbsp;as&nbsp;TcxGridSite).GridView.ViewInfo.GetHitTest(X,&nbsp;Y);<BR>&nbsp;//&nbsp;The&nbsp;point&nbsp;belongs&nbsp;to&nbsp;the&nbsp;[+]/[-]&nbsp;button&nbsp;area<BR>&nbsp;if&nbsp;HitTest&nbsp;is&nbsp;TcxGridExpandButtonHitTest&nbsp;then<BR>&nbsp;&nbsp;&nbsp;//&nbsp;Move&nbsp;focus&nbsp;to&nbsp;the&nbsp;record<BR>&nbsp;&nbsp;&nbsp;TcxGridExpandButtonHitTest(HitTest).GridRecord.Focused&nbsp;:=&nbsp;True;<BR>end;&nbsp;<BR>&nbsp;<BR>xzzcq&nbsp;(2003-11-07&nbsp;11:25:00)&nbsp;&nbsp;<BR>小弟有一个cxgrid方面的难题，至今没解决：<BR>明细嵌套结构，level的排列顺序如何改变？<BR>请楼上的各位大侠帮俺一下，我试了好长时间&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-07&nbsp;11:34:00)&nbsp;&nbsp;<BR>这个问题我也碰到，似乎在建立以后，确定好你的顺序以后就不可以随便更改了&nbsp;<BR>&nbsp;<BR>arlierever&nbsp;(2003-11-10&nbsp;21:57:00)&nbsp;&nbsp;<BR>我也实现不了双击事件，在Grid和TableView的doubleClick中写的代码，当鼠标双击时都不执行，好像没有一样&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-11&nbsp;8:49:00)&nbsp;&nbsp;<BR>我知道原因，你把TableView1-&gt;OptionData-&gt;Editing设为False时doubleClick事件就出来了，原因在于你点击的时候就直接进入编辑状态，所以不响应你的doubleClick事件&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-12&nbsp;18:49:00)&nbsp;&nbsp;<BR>接受答案了.&nbsp;<BR>&nbsp;<BR>arlierever&nbsp;(2003-11-14&nbsp;16:46:00)&nbsp;&nbsp;<BR>我知道原因，你把TableView1-&gt;OptionData-&gt;Editing设为False时doubleClick事件就出来了，原因在于你点击的时候就直接进入编辑状态，所以不响应你的doubleClick事件&nbsp;&nbsp;<BR><BR>确实如此，不过如果我把TableView1-&gt;OptionData-&gt;Editing设为False了，双击是可以了，可是就不能编辑了，有什么办法可以两全其美？&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-14&nbsp;17:08:00)&nbsp;&nbsp;<BR>我的方法是：<BR>TableView1-&gt;OptionData-&gt;Editing设为True<BR>将字段里面不需要Edit的字段的Editing设为FALSE，这样也可以相应doubleClick事件&nbsp;<BR>&nbsp;<BR>arlierever&nbsp;(2003-11-15&nbsp;10:38:00)&nbsp;&nbsp;<BR>我把immediateEditor属性置为false，也可以，不过要进入编辑状态，需要鼠标点两下．&nbsp;<BR>&nbsp;<BR>xzzcq&nbsp;(2003-11-26&nbsp;8:10:00)&nbsp;&nbsp;<BR>大家有没有碰到过这样的问题：主从表格，点击“＋”展开里面的记录，双击调用里面的内容只能显示第一条记录：<BR>在从表里面的表格双击事件中showmessage(adoqry2.fieldbyname('code').asstring);<BR>adoqry2的值只能返回第一条，<BR>在主表里面的表格双击事件中showmessage(adoqry1.fieldbyname('code').asstring);<BR>则可以返回当前的记录<BR>这是为什么？<BR><BR>&nbsp;<BR>wangxian11&nbsp;(2003-11-26&nbsp;8:23:00)&nbsp;&nbsp;<BR>碰到过，在仔细点：1：填好主表的keyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：填好从表的keyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3：填好从表的　detaikeyfieldNames与masterkeyfieldnames<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR><BR>&nbsp;<BR>xzzcq&nbsp;(2003-12-01&nbsp;17:49:00)&nbsp;&nbsp;<BR>多谢，多谢，我试试！<BR>关于cxgrid的讨论应该是很好的，为什么参于的人这么少？<BR>而另一个关于dbgrid的讨论话题却如此的多！<BR>大家多提！&nbsp;<BR>&nbsp;<BR>Jidda&nbsp;(2003-12-02&nbsp;11:33:00)&nbsp;&nbsp;<BR>问题：对于grid中数据的修改，是如何更新到数据库中的呢？<BR>我只是想在它更新之前进行一下记录，希望能为我解答一下。&nbsp;<BR>&nbsp;<BR>wangxian11&nbsp;(2003-12-02&nbsp;18:31:00)&nbsp;&nbsp;<BR>TO&nbsp;Jidda,<BR>&nbsp;&nbsp;&nbsp;对于grid中数据的修改,POST一下就更新到数据库中去啦<BR><BR>《〈〈〈我只是想在它更新之前进行一下记录，&nbsp;<BR>&nbsp;&nbsp;&nbsp;你的意思是在更新之前进行记录吗，可以在BeforePost事件里做&nbsp;<BR>&nbsp;<BR>edak&nbsp;(2003-12-03&nbsp;10:49:00)&nbsp;&nbsp;<BR>to&nbsp;wangxiang11,arlierever<BR>&nbsp;&nbsp;两位的方法确实能解决问题可是使用起来总感觉憋扭,有没有正常的方法去实现.<BR>&nbsp;&nbsp;另外还想问一下CXGIRD在点击某条记录时,那条被点击的字段值就处于选择状态,能不能不让它处于被选择状态否则很容易误删除这个字段的内容.<BR>&nbsp;&nbsp;&nbsp;&nbsp;<BR><BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>- </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=treemon')">treemon</A> 
+                  <FONT color=#666666>(treemoN) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-21 10:20:41</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>5楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>想把cxGrid的内容打印出来，请教如何实现？<BR><BR>下面是我收集的一些方法，可是我还没能实现，请帮忙！！！<BR><BR>1、<BR>直接把他放到FORM上在把FORM的COLOR设置成white,<BR>打印FORM就行了！<BR><BR>我的结果：&nbsp;数据内容没有打印出来<BR><BR>2、<BR>拉一个&nbsp;TdxComponentPrinter&nbsp;dxComponentPrinter1放到form中，<BR>在其中添一个ReportLink&nbsp;dxComponentPrinter1Link1,再是<BR>&nbsp;dxComponentPrinter1Link1-&gt;Component&nbsp;=&nbsp;dxDBGrid1;<BR>&nbsp;dxComponentPrinter1Link1-&gt;RebuildReport();<BR>&nbsp;dxComponentPrinter1-&gt;Preview(1,dxComponentPrinter1Link1);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dxComponentPrinter1Link1-&gt;Component&nbsp;=&nbsp;NULL<BR><BR>我的结果：&nbsp;好多属性没有找到<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在代码中写，运行时出错<BR><BR>3、<BR>给一段代码，加入系统中，直接调用就可以了。<BR>procedure&nbsp;GotoNode(GotoBtn:&nbsp;TGotoBtn;&nbsp;Grid:&nbsp;TdxDBGrid);<BR>&nbsp;&nbsp;//&nbsp;retrieves&nbsp;the&nbsp;first&nbsp;node&nbsp;on&nbsp;the&nbsp;bottommost&nbsp;level<BR>&nbsp;&nbsp;//&nbsp;for&nbsp;the&nbsp;given&nbsp;grouped&nbsp;node&nbsp;<BR>&nbsp;&nbsp;function&nbsp;GetChildNode(N:&nbsp;TdxTreeListNode):&nbsp;TdxTreeListNode;&nbsp;<BR>&nbsp;&nbsp;begin&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;N&nbsp;&lt;&gt;&nbsp;nil&nbsp;then&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;N.Count&nbsp;&gt;&nbsp;0&nbsp;do&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;:=&nbsp;N[0];<BR>&nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;:=&nbsp;N;<BR>&nbsp;&nbsp;end;<BR>var<BR>&nbsp;&nbsp;ANode:&nbsp;TdxTreeListNode;<BR>begin<BR>&nbsp;&nbsp;ANode&nbsp;:=&nbsp;nil;<BR>&nbsp;&nbsp;try<BR>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;Grid.IsLoadAllRecords&nbsp;then&nbsp;&nbsp;//&nbsp;LoadAllRecords&nbsp;mode<BR>&nbsp;&nbsp;&nbsp;&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;GotoBtn&nbsp;of<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbFirst:&nbsp;ANode&nbsp;:=&nbsp;GetChildNode(Grid.TopNode);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbPrior:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;Grid.FocusedNode&nbsp;&lt;&gt;&nbsp;nil&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode&nbsp;:=&nbsp;Grid.FocusedNode.GetPrev;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;Anode&nbsp;=&nbsp;nil&nbsp;then&nbsp;exit;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(ANode&nbsp;&lt;&gt;&nbsp;nil)&nbsp;and&nbsp;ANode.HasChildren&nbsp;do<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode&nbsp;:=&nbsp;ANode.GetPrev;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbNext:<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;Grid.FocusedNode&nbsp;&lt;&gt;&nbsp;nil&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode&nbsp;:=&nbsp;GetChildNode(Grid.FocusedNode.GetNext);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;//&nbsp;gbLast<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode&nbsp;:=&nbsp;Grid.Items[Grid.Count&nbsp;-&nbsp;1];<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;ANode&nbsp;=&nbsp;nil&nbsp;then&nbsp;exit;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;ANode.Count&nbsp;&gt;&nbsp;0&nbsp;do<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode&nbsp;:=&nbsp;ANode.Items[ANode.Count&nbsp;-&nbsp;1];&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;ANode&nbsp;&lt;&gt;&nbsp;nil&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANode.Focused&nbsp;:=&nbsp;True;<BR>&nbsp;&nbsp;&nbsp;&nbsp;end<BR>&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;&nbsp;//&nbsp;Grid&nbsp;or&nbsp;PartialLoad&nbsp;modes<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with&nbsp;Grid.DataSource.DataSet&nbsp;do&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;Active&nbsp;then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;GotoBtn&nbsp;of<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbFirst:&nbsp;First;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbPrior:&nbsp;Prior;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbNext:&nbsp;Next;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgbLast:&nbsp;Last;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end;<BR>&nbsp;&nbsp;except<BR>&nbsp;&nbsp;end;<BR>end;&nbsp;<BR><BR>4、<BR>我使用Dev&nbsp;Express的dxComponentPrinter打印一個dxDBGrid<BR>&nbsp;&nbsp;dxComponentPrinter.Preview(True,dxPrn1Link1);<BR>&nbsp;&nbsp;或<BR>&nbsp;&nbsp;dxComponentPrinter.Preview(True,Nil);<BR>&nbsp;&nbsp;都不能看到數據，并且表格中原有的數據也看不到了。<BR>&nbsp;&nbsp;怎么回事?<BR><BR>真羨慕你的好運氣.分全給你.還告訴你怎麼做:只要設置dxDBGrid的keyField即可.<BR><BR>？？keyField&nbsp;在cxGrid中如何设置<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>Your&nbsp;Think&nbsp;Delphi&nbsp;Can </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=ljhok')">ljhok</A> 
+                  <FONT color=#666666>(有点心动) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-21 10:38:27</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>6楼：</FONT></TD>
+          <TD bgColor=#ffffff colSpan=2>不错的东西,如果能整理一下就好了,就是有点乱<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>- </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=quicksand')">quicksand</A> 
+                  <FONT color=#666666>(流沙) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-22 14:22:14</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>7楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>请教，cxGrid无数据时的提示"&lt;No&nbsp;data&nbsp;to&nbsp;display&gt;"如何不让它显示？<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>- </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=sephil')">sephil</A> 
+                  <FONT color=#666666>(NAILY Soft) </FONT><FONT 
+                  color=#cccccc>★☆☆☆☆</FONT> <FONT 
+color=#ff6633>盒子中级会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-2-22 14:52:44</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>8楼：</FONT></TD>
+          <TD bgColor=#ffffff colSpan=2>导出中文有问题<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>
+            <TABLE style="FILTER: glow(color=green, strength=1)" 
+              width=255>Copyright&nbsp;?&nbsp;1998-2005&nbsp;<FONT 
+              color=blue>NAILY&nbsp;Soft&nbsp;of&nbsp;Sephil</FONT>
+              <TBODY></TBODY></TABLE><BR><A href="盒子论坛 v2_1_files/email.png" 
+            target=_blank><IMG alt=按此在新窗口浏览图片 src="盒子论坛 v2_1_files/email.png" 
+            onload="javascript:if(this.width>500)this.width=500" border=0></A> 
+          </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=seagulll')">seagulll</A> 
+                  <FONT color=#666666>(seagulll) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-4-1 13:22:57</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>9楼：</FONT></TD>
+          <TD bgColor=#ffffff colSpan=2>请教如何自动列宽?<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>- </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR bgColor=#f0f0f0>
+          <TD align=right width=47>作者：</TD>
+          <TD width=433>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="81%"><A 
+                  href="javascript:OpenInfoWin('http://www.2ccc.com/member.asp?membername=darkforce')">darkforce</A> 
+                  <FONT color=#666666>(DarkForce) </FONT><FONT 
+                  color=#cccccc>▲△△△△</FONT> <FONT color=#ff6633>普通会员</FONT></TD>
+                <TD align=middle width="19%"><FONT color=#999999>-</FONT> 
+              </TD></TR></TBODY></TABLE></TD>
+          <TD align=middle width=118>2005-4-6 9:53:33</TD></TR>
+        <TR bgColor=#ffffff>
+          <TD align=right><FONT color=#999999>10楼：</FONT></TD>
+          <TD bgColor=#ffffff 
+            colSpan=2>请教如何动态设置cxGrid的某列的下拉列表的内容？（把Properties设置为ComboBox之后可以在设计时赋值，但不知道怎么在运行时赋值）<BR><FONT 
+            color=#d5d5d5>----------------------------------------------</FONT> 
+            <BR>- </TD></TR></TBODY></TABLE>
+      <TABLE height=60 cellSpacing=1 cellPadding=2 width="100%" bgColor=#666666 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle bgColor=#ffffff>
+            <DIV id=googlead height="60" width="468"></DIV>
+            <DIV id=googleadcode style="DISPLAY: none">
+            <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-6960109784473484";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_channel ="";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></SCRIPT>
+
+            <SCRIPT src="盒子论坛 v2_1_files/show_ads.js" type=text/javascript>
+</SCRIPT>
+            </DIV>
+            <SCRIPT language=javascript>
+if(document.all.item("googlead") != null)
+{
+  googlead.innerHTML = googleadcode.innerHTML;
+}
+</SCRIPT>
+          </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=1 cellPadding=2 width="100%" align=center 
+      bgColor=#666666 border=0>
+        <TBODY>
+        <TR align=middle bgColor=#cccccc>
+          <TD>信息</TD></TR>
+        <TR align=middle bgColor=#cccccc>
+          <TD bgColor=#f7f7f7 height=60>登陆以后才能回复 
+  </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><LINK 
+href="盒子论坛 v2_1_files/bbs.css" type=text/css rel=stylesheet>
+<TABLE cellSpacing=0 cellPadding=0 width=770 align=center 
+background="盒子论坛 v2_1_files/bg_blue.jpg" border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle height=30><FONT 
+      face="Courier New, Courier, mono">Copyright &copy; 2<FONT color=#ff0000>C<FONT 
+      color=#000000>C</FONT></FONT><FONT color=#0000ff>C</FONT>.Com All rights 
+      reserved</FONT> <A title=很高级吧^0^ 
+      href="http://bbs.2ccc.com/topic.asp?topicid=151568#">盒子论坛</A> v2.1 版权所有 
+      页面执行343.75毫秒</TD>
+    <TD align=middle><A href="http://bbs.2ccc.com/rss.asp" target=_blank><IMG 
+      height=14 alt=RSS src="盒子论坛 v2_1_files/rss.gif" width=36 
+  border=0></A></TD></TR></TBODY></TABLE></BODY></HTML>
