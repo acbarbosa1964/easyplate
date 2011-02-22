@@ -1,0 +1,41 @@
+procedure TForm1.GenerateTmpDataSet(ASrcClientDataSet, ADestClientDataSet: TClientDataSet);
+var
+  I, J        : Integer;
+  ATmpName    : string;
+  ATmpFieldDef: TFieldDef;
+  AFieldNameList: TStrings;
+begin
+  AFieldNameList := TStringList.Create;
+  ADestClientDataSet.Close;
+  ADestClientDataSet.FieldDefs.Clear;
+  ATmpFieldDef := ADestClientDataSet.FieldDefs.AddFieldDef;
+  with ATmpFieldDef do
+  begin
+    Name := 'myselected';
+    DataType := ftBoolean;
+  end;
+  for I := 0 to ASrcClientDataSet.FieldDefs.Count - 1 do
+  begin
+    ATmpName := ASrcClientDataSet.FieldDefs[I].Name;
+    AFieldNameList.Add(ATmpName);
+    ATmpFieldDef := ASrcClientDataSet.FieldDefs[I];
+    ADestClientDataSet.FieldDefs.AddFieldDef;
+    ADestClientDataSet.FieldDefs[I + 1].Assign(ATmpFieldDef);
+  end;
+  ADestClientDataSet.CreateDataSet;
+  ASrcClientDataSet.First;
+  for I := 0 to  ASrcClientDataSet.RecordCount - 1 do
+  begin
+    ADestClientDataSet.Append;
+    ADestClientDataSet.Fields[0].Value := False;
+    for J := 0 to AFieldNameList.Count - 1 do
+      ADestClientDataSet.Fields[J + 1].Value := ASrcClientDataSet.Fields[J].Value;
+    ASrcClientDataSet.Next;
+  end;
+  ADestClientDataSet.First;
+end;
+
+if grdSelectMainDBTableView1.Controller.FocusedColumnIndex <> 0 then
+      AAllow   :=   False
+    else
+      AAllow   :=   True;
