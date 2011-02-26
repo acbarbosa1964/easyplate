@@ -193,6 +193,7 @@ type
     procedure actRightPageControlUpdate(Sender: TObject);
     procedure actLeftPageControlExecute(Sender: TObject);
     procedure actLeftPageControlUpdate(Sender: TObject);
+    procedure pgcCenterChange(Sender: TObject);
   private
     { Private declarations }
     FIgnoreAll: Boolean;
@@ -243,6 +244,7 @@ begin
     Result := TFrmDsnEdit.Create(nil);
     Result.Align := alClient;
     Result.Parent := Page;
+    Result.AForm := TForm(Form);
     Result.FormDesigner.Target := Form;
     Result.FormDesigner.Active := True;
     pgcCenter.ActivePage := Page;
@@ -461,6 +463,17 @@ end;
 procedure TfrmEasyFormDesigner.actLeftPageControlUpdate(Sender: TObject);
 begin
   actLeftPageControl.Checked := pgcLeft.Visible;
+end;
+
+procedure TfrmEasyFormDesigner.pgcCenterChange(Sender: TObject);
+begin
+  if pgcCenter.ActivePage <> nil then
+  begin
+    TFrmDsnEdit(pgcCenter.ActivePage.Controls[0]).FormDesigner.Active := False;
+    TFrmDsnEdit(pgcCenter.ActivePage.Controls[0]).FormDesigner.Target :=
+      TFrmDsnEdit(pgcCenter.ActivePage.Controls[0]).AForm;
+    TFrmDsnEdit(pgcCenter.ActivePage.Controls[0]).FormDesigner.Active := True;
+  end;
 end;
 
 end.

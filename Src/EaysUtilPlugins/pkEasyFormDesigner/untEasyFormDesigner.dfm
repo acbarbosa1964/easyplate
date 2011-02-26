@@ -728,7 +728,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         Left = 0
         Top = 0
         Width = 221
-        Height = 372
+        Height = 401
         Align = alClient
         TabOrder = 0
         TabStop = True
@@ -816,8 +816,8 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         PropertyList.PopupMenu = ObjectInspectorFrame1.PopupMenu1
         EventsList.Left = 0
         EventsList.Top = 0
-        EventsList.Width = 157
-        EventsList.Height = 315
+        EventsList.Width = 202
+        EventsList.Height = 332
         EventsList.TabStop = True
         EventsList.TabOrder = 0
         EventsList.TypeKinds = [tkMethod]
@@ -890,6 +890,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
     Height = 424
     Align = alClient
     TabOrder = 4
+    OnChange = pgcCenterChange
     OnDblClick = pgcCenterDblClick
     FixedDimension = 0
   end
