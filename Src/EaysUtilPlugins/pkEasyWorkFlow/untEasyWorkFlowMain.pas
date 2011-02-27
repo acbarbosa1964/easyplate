@@ -17,7 +17,6 @@ type
     EasyToolBar1: TEasyToolBar;
     EasyToolBarOfficeStyler1: TEasyToolBarOfficeStyler;
     EasyPanel1: TEasyPanel;
-    EasyStatusBar1: TEasyStatusBar;
     EasyStatusBarOfficeStyler1: TEasyStatusBarOfficeStyler;
     Splitter1: TSplitter;
     EasyPanel2: TEasyPanel;
@@ -209,6 +208,7 @@ type
     procedure actWFShadowUpdate(Sender: TObject);
     procedure actWFRedoExecute(Sender: TObject);
     procedure actWFRedoUpdate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     //连接线箭头的
@@ -242,10 +242,6 @@ uses untEasyWorkFlowDiagramPreview;
 procedure TfrmEasyWorkFlowMain.SetModified(value: Boolean);
 begin
   bModified := value;
-  if bModified then
-    EasyStatusBar1.Panels[0].Text := '已修改'
-  else
-    EasyStatusBar1.Panels[0].Text := '';
 end;
 
 procedure TfrmEasyWorkFlowMain.actWFNewExecute(Sender: TObject);
@@ -255,6 +251,7 @@ begin
   begin
     WorkflowDiagramMain.Clear;
     SetModified(False);
+    Caption := '未命名';
   end;
 end;
 
@@ -305,7 +302,9 @@ end;
 
 procedure TfrmEasyWorkFlowMain.actWFSaveExecute(Sender: TObject);
 begin
-  if SaveDialog1.Execute then
+  if FileExists(Caption) then
+    WorkflowDiagramMain.SaveToFile(Caption)
+  else if SaveDialog1.Execute then
   begin
     WorkflowDiagramMain.SaveToFile(SaveDialog1.FileName);
     SetModified(false);
@@ -321,6 +320,7 @@ begin
     begin
       WorkflowDiagramMain.LoadFromFile(OpenDialog1.FileName);
       SetModified(False);
+      Caption := OpenDialog1.FileName;
     end;
   end;
 end;
@@ -988,6 +988,16 @@ end;
 procedure TfrmEasyWorkFlowMain.actWFRedoUpdate(Sender: TObject);
 begin
   actWFRedo.Enabled := (FDiagram <> nil) and (FDiagram.NextRedoAction <> '');
+end;
+
+procedure TfrmEasyWorkFlowMain.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  if Application.MessageBox('是否保存对当前流程图所做的更改?', '提示', 
+    MB_OKCANCEL + MB_ICONQUESTION) = IDOK then
+  begin
+    actWFSaveExecute(Sender);
+  end;
 end;
 
 end.

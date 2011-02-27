@@ -11,13 +11,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 185
     Top = 119
-    Height = 335
+    Height = 354
   end
   object EasyDockPanel1: TEasyDockPanel
     Left = 0
@@ -722,7 +723,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     object EasyToolBar4: TEasyToolBar
       Left = 6
       Top = 30
-      Width = 603
+      Width = 621
       Height = 28
       AllowFloating = True
       AutoDockOnClose = True
@@ -941,7 +942,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       object EasyToolBarButton15: TEasyToolBarButton
         Left = 419
         Top = 2
-        Width = 15
+        Width = 24
         Height = 24
         Action = actWFGroup
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
@@ -959,9 +960,9 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton16: TEasyToolBarButton
-        Left = 434
+        Left = 443
         Top = 2
-        Width = 15
+        Width = 24
         Height = 24
         Action = actWFUnGroup
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
@@ -1066,7 +1067,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton21: TEasyToolBarButton
-        Left = 459
+        Left = 477
         Top = 2
         Width = 24
         Height = 24
@@ -1086,14 +1087,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator7: TEasyToolBarSeparator
-        Left = 449
+        Left = 467
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton22: TEasyToolBarButton
-        Left = 483
+        Left = 501
         Top = 2
         Width = 24
         Height = 24
@@ -1113,7 +1114,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton23: TEasyToolBarButton
-        Left = 507
+        Left = 525
         Top = 2
         Width = 24
         Height = 24
@@ -1133,14 +1134,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator8: TEasyToolBarSeparator
-        Left = 531
+        Left = 549
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton24: TEasyToolBarButton
-        Left = 541
+        Left = 559
         Top = 2
         Width = 24
         Height = 24
@@ -1160,7 +1161,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton25: TEasyToolBarButton
-        Left = 565
+        Left = 583
         Top = 2
         Width = 24
         Height = 24
@@ -1232,139 +1233,31 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     Left = 0
     Top = 119
     Width = 185
-    Height = 335
+    Height = 354
     Align = alLeft
     TabOrder = 3
     object WorkDefListView1: TWorkDefListView
       Left = 2
       Top = 2
       Width = 181
-      Height = 331
+      Height = 350
       Align = alClient
       Columns = <>
       TabOrder = 0
     end
   end
-  object EasyStatusBar1: TEasyStatusBar
-    Left = 0
-    Top = 454
-    Width = 862
-    Height = 19
-    AnchorHint = False
-    Panels = <
-      item
-        AppearanceStyle = psLight
-        DateFormat = 'yyyy-M-d'
-        Progress.BackGround = clNone
-        Progress.Indication = piPercentage
-        Progress.Min = 0
-        Progress.Max = 100
-        Progress.Position = 0
-        Progress.Level0Color = clLime
-        Progress.Level0ColorTo = 14811105
-        Progress.Level1Color = clYellow
-        Progress.Level1ColorTo = 13303807
-        Progress.Level2Color = 5483007
-        Progress.Level2ColorTo = 11064319
-        Progress.Level3Color = clRed
-        Progress.Level3ColorTo = 13290239
-        Progress.Level1Perc = 70
-        Progress.Level2Perc = 90
-        Progress.BorderColor = clBlack
-        Progress.ShowBorder = False
-        Progress.Stacked = False
-        TimeFormat = 'h:mm:ss'
-        Width = 80
-      end
-      item
-        AppearanceStyle = psLight
-        DateFormat = 'yyyy-M-d'
-        Progress.BackGround = clNone
-        Progress.Indication = piPercentage
-        Progress.Min = 0
-        Progress.Max = 100
-        Progress.Position = 0
-        Progress.Level0Color = clLime
-        Progress.Level0ColorTo = 14811105
-        Progress.Level1Color = clYellow
-        Progress.Level1ColorTo = 13303807
-        Progress.Level2Color = 5483007
-        Progress.Level2ColorTo = 11064319
-        Progress.Level3Color = clRed
-        Progress.Level3ColorTo = 13290239
-        Progress.Level1Perc = 70
-        Progress.Level2Perc = 90
-        Progress.BorderColor = clBlack
-        Progress.ShowBorder = False
-        Progress.Stacked = False
-        TimeFormat = 'h:mm:ss'
-        Width = 100
-      end
-      item
-        AppearanceStyle = psLight
-        DateFormat = 'yyyy-M-d'
-        Progress.BackGround = clNone
-        Progress.Indication = piPercentage
-        Progress.Min = 0
-        Progress.Max = 100
-        Progress.Position = 0
-        Progress.Level0Color = clLime
-        Progress.Level0ColorTo = 14811105
-        Progress.Level1Color = clYellow
-        Progress.Level1ColorTo = 13303807
-        Progress.Level2Color = 5483007
-        Progress.Level2ColorTo = 11064319
-        Progress.Level3Color = clRed
-        Progress.Level3ColorTo = 13290239
-        Progress.Level1Perc = 70
-        Progress.Level2Perc = 90
-        Progress.BorderColor = clBlack
-        Progress.ShowBorder = False
-        Progress.Stacked = False
-        TimeFormat = 'h:mm:ss'
-        Width = 130
-      end
-      item
-        AppearanceStyle = psLight
-        DateFormat = 'yyyy-M-d'
-        Progress.BackGround = clNone
-        Progress.Indication = piPercentage
-        Progress.Min = 0
-        Progress.Max = 100
-        Progress.Position = 0
-        Progress.Level0Color = clLime
-        Progress.Level0ColorTo = 14811105
-        Progress.Level1Color = clYellow
-        Progress.Level1ColorTo = 13303807
-        Progress.Level2Color = 5483007
-        Progress.Level2ColorTo = 11064319
-        Progress.Level3Color = clRed
-        Progress.Level3ColorTo = 13290239
-        Progress.Level1Perc = 70
-        Progress.Level2Perc = 90
-        Progress.BorderColor = clBlack
-        Progress.ShowBorder = False
-        Progress.Stacked = False
-        TimeFormat = 'h:mm:ss'
-        Width = 50
-      end>
-    SimplePanel = False
-    URLColor = clBlue
-    Styler = EasyStatusBarOfficeStyler1
-    Version = '0.0.0.0'
-  end
   object EasyPanel2: TEasyPanel
     Left = 188
     Top = 119
     Width = 674
-    Height = 335
+    Height = 354
     Align = alClient
     TabOrder = 4
     object WorkflowDiagramMain: TWorkflowDiagram
       Left = 2
       Top = 2
       Width = 670
-      Height = 331
+      Height = 350
       NettoExportOffset = 3
       AutomaticNodes = False
       AutoScroll = True

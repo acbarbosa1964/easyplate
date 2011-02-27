@@ -4,7 +4,8 @@ uses
   Forms,
   untEasyWorkFlowMain in 'untEasyWorkFlowMain.pas' {frmEasyWorkFlowMain},
   untEasyWorkFlowDiagramShadow in 'untEasyWorkFlowDiagramShadow.pas' {frmEasyWorkFlowDiagramShadow},
-  untEasyWorkFlowDiagramGradient in 'untEasyWorkFlowDiagramGradient.pas' {frmEasyWorkFlowDiagramGradient};
+  untEasyWorkFlowDiagramGradient in 'untEasyWorkFlowDiagramGradient.pas' {frmEasyWorkFlowDiagramGradient},
+  untEasyWorkFlowDiagramPreview in 'untEasyWorkFlowDiagramPreview.pas' {frmEasyWorkFlowDiagramPreview};
 
 {$R *.res}
 
