@@ -1,8 +1,8 @@
 object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
-  Left = 276
-  Top = 186
-  Width = 870
-  Height = 500
+  Left = 196
+  Top = 114
+  Width = 1275
+  Height = 616
   Caption = 'frmEasyWorkFlowMain'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,12 +18,12 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   object Splitter1: TSplitter
     Left = 185
     Top = 119
-    Height = 354
+    Height = 470
   end
   object EasyDockPanel1: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 862
+    Width = 1267
     Height = 119
     MinimumSize = 3
     LockHeight = False
@@ -32,7 +32,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     ToolBarStyler = EasyToolBarOfficeStyler1
     UseRunTimeHeight = True
     object EasyToolBar1: TEasyToolBar
-      Left = 159
+      Left = 158
       Top = 1
       Width = 548
       Height = 26
@@ -556,7 +556,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     object EasyToolBar2: TEasyToolBar
       Left = 3
       Top = 59
-      Width = 856
+      Width = 1261
       Height = 59
       AllowFloating = True
       AutoDockOnClose = True
@@ -575,7 +575,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       object TabControl1: TTabControl
         Left = 0
         Top = 0
-        Width = 856
+        Width = 1261
         Height = 59
         Align = alClient
         TabOrder = 0
@@ -585,8 +585,9 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         object DiagramToolBar1: TDiagramToolBar
           Left = 4
           Top = 24
-          Width = 848
+          Width = 1253
           Height = 29
+          Category = 'Workflow'
           Diagram = WorkflowDiagramMain
           KeepInsertingMode = kmNever
           Mode = tmObjects
@@ -721,7 +722,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       end
     end
     object EasyToolBar4: TEasyToolBar
-      Left = 6
+      Left = 3
       Top = 30
       Width = 621
       Height = 28
@@ -1228,36 +1229,370 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         LineColor = clBtnShadow
       end
     end
+    object EasyToolBar5: TEasyToolBar
+      Left = 626
+      Top = 30
+      Width = 403
+      Height = 28
+      AllowFloating = True
+      AutoDockOnClose = True
+      CaptionFont.Charset = DEFAULT_CHARSET
+      CaptionFont.Color = clWindowText
+      CaptionFont.Height = -11
+      CaptionFont.Name = 'MS Sans Serif'
+      CaptionFont.Style = []
+      CompactImageIndex = -1
+      TextAutoOptionMenu = 'Add or Remove Buttons'
+      TextOptionMenu = 'Options'
+      ToolBarStyler = EasyToolBarOfficeStyler1
+      ParentOptionPicture = True
+      ToolBarIndex = -1
+      object EasyToolBarButton28: TEasyToolBarButton
+        Left = 9
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign16
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 7
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton29: TEasyToolBarButton
+        Left = 33
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign17
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 6
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton30: TEasyToolBarButton
+        Left = 57
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign18
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 8
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarSeparator10: TEasyToolBarSeparator
+        Left = 81
+        Top = 2
+        Width = 10
+        Height = 23
+        LineColor = clBtnShadow
+      end
+      object EasyToolBarButton31: TEasyToolBarButton
+        Left = 91
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign4
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 0
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton32: TEasyToolBarButton
+        Left = 115
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign5
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 1
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton33: TEasyToolBarButton
+        Left = 139
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign6
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 2
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton34: TEasyToolBarButton
+        Left = 163
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign7
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 5
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton35: TEasyToolBarButton
+        Left = 187
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign8
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 3
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton36: TEasyToolBarButton
+        Left = 211
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign9
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 4
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarSeparator11: TEasyToolBarSeparator
+        Left = 235
+        Top = 2
+        Width = 10
+        Height = 23
+        LineColor = clBtnShadow
+      end
+      object EasyToolBarButton37: TEasyToolBarButton
+        Left = 245
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign10
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 11
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton38: TEasyToolBarButton
+        Left = 269
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign11
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 15
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton39: TEasyToolBarButton
+        Left = 293
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign12
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 10
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton40: TEasyToolBarButton
+        Left = 317
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign13
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 14
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton41: TEasyToolBarButton
+        Left = 341
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign14
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 9
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton42: TEasyToolBarButton
+        Left = 365
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = EasyWorkFlowDiagramAlign15
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 13
+        ParentFont = False
+        Position = daTop
+      end
+    end
   end
   object EasyPanel1: TEasyPanel
     Left = 0
     Top = 119
     Width = 185
-    Height = 354
+    Height = 470
     Align = alLeft
     TabOrder = 3
-    object WorkDefListView1: TWorkDefListView
+    object tvWorkFlow: TEasyTreeView
       Left = 2
       Top = 2
       Width = 181
-      Height = 350
+      Height = 466
+      SelectionPen.Color = clBtnShadow
       Align = alClient
-      Columns = <>
+      Indent = 19
       TabOrder = 0
     end
   end
   object EasyPanel2: TEasyPanel
     Left = 188
     Top = 119
-    Width = 674
-    Height = 354
+    Width = 1079
+    Height = 470
     Align = alClient
     TabOrder = 4
     object WorkflowDiagramMain: TWorkflowDiagram
       Left = 2
       Top = 2
-      Width = 670
-      Height = 350
+      Width = 1075
+      Height = 466
       NettoExportOffset = 3
       AutomaticNodes = False
       AutoScroll = True
@@ -1325,6 +1660,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       TextRenderingMode = tmAntiAlias
       SelectionMode = slmMultiple
       CanMoveOutOfBounds = True
+      OnDControlDblClick = WorkflowDiagramMainDControlDblClick
       Align = alClient
       Anchors = [akLeft, akTop, akRight, akBottom]
       BiDiMode = bdLeftToRight
@@ -1592,7 +1928,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     TabAppearance.BackGround.Color = 14986888
     TabAppearance.BackGround.ColorTo = 16440004
     TabAppearance.BackGround.Direction = gdHorizontal
-    Left = 424
+    Left = 384
     Top = 240
   end
   object EasyStatusBarOfficeStyler1: TEasyStatusBarOfficeStyler
@@ -1635,12 +1971,12 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     PanelAppearanceDark.TextColorHot = clWhite
     PanelAppearanceDark.TextColorDown = clWhite
     PanelAppearanceDark.TextStyle = []
-    Left = 640
-    Top = 256
+    Left = 512
+    Top = 208
   end
   object WorkflowADODB1: TWorkflowADODB
-    Left = 308
-    Top = 116
+    Left = 384
+    Top = 304
   end
   object WorkflowDB1: TWorkflowDB
     WorkInsBindary.TableName = 'wsworkflowinstance'
@@ -1678,12 +2014,12 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     AttachmentBindary.CreatedOnField = 'createdon'
     AttachmentBindary.ObjectTypeField = 'objecttype'
     DestroyQueries = False
-    Left = 348
-    Top = 116
+    Left = 416
+    Top = 304
   end
   object ImageList1: TImageList
-    Left = 304
-    Top = 192
+    Left = 480
+    Top = 240
     Bitmap = {
       494C010115001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
@@ -2486,8 +2822,8 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   end
   object ActionList1: TActionList
     Images = ImageList1
-    Left = 340
-    Top = 191
+    Left = 416
+    Top = 208
     object actWFNew: TAction
       Caption = #26032#24314
       Hint = #26032#24314
@@ -2580,6 +2916,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       Category = 'popmenu'
       Caption = #32534#36753#25991#26412
       Hint = #32534#36753#25991#26412
+      ShortCut = 113
       OnExecute = actWFEditTextExecute
       OnUpdate = actWFEditTextUpdate
     end
@@ -2693,29 +3030,113 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       OnExecute = actWFShadowExecute
       OnUpdate = actWFShadowUpdate
     end
+    object actWFSourceArrow: TAction
+      Category = 'arrow'
+      Caption = #28304#31661#22836
+      OnExecute = actWFSourceArrowExecute
+      OnUpdate = actWFSourceArrowUpdate
+    end
+    object actWFTargetArrow: TAction
+      Category = 'arrow'
+      Caption = #30446#26631#31661#22836
+      OnExecute = actWFTargetArrowExecute
+      OnUpdate = actWFTargetArrowUpdate
+    end
+    object actSrcArrowNone: TAction
+      Category = 'arrow'
+      Caption = #26080
+      OnExecute = actSrcArrowNoneExecute
+      OnUpdate = actSrcArrowNoneUpdate
+    end
+    object actSrcArrowSolid: TAction
+      Category = 'arrow'
+      Caption = #19977#35282#24418
+      OnExecute = actSrcArrowSolidExecute
+      OnUpdate = actSrcArrowSolidUpdate
+    end
+    object actSrcArrowLine: TAction
+      Category = 'arrow'
+      Caption = #32447#24418
+      OnExecute = actSrcArrowLineExecute
+      OnUpdate = actSrcArrowLineUpdate
+    end
+    object actSrcArrowEcilipse: TAction
+      Category = 'arrow'
+      Caption = #22278#24418
+      OnExecute = actSrcArrowEcilipseExecute
+      OnUpdate = actSrcArrowEcilipseUpdate
+    end
+    object actSrcArrowRetangle: TAction
+      Category = 'arrow'
+      Caption = #26041#24418
+      OnExecute = actSrcArrowRetangleExecute
+      OnUpdate = actSrcArrowRetangleUpdate
+    end
+    object actSrcArrowDiamond: TAction
+      Category = 'arrow'
+      Caption = #23574#24418
+      OnExecute = actSrcArrowDiamondExecute
+      OnUpdate = actSrcArrowDiamondUpdate
+    end
+    object actTarArrowNone: TAction
+      Category = 'arrow'
+      Caption = #26080
+      OnExecute = actTarArrowNoneExecute
+      OnUpdate = actTarArrowNoneUpdate
+    end
+    object actTarArrowSolid: TAction
+      Category = 'arrow'
+      Caption = #19977#35282#24418
+      OnExecute = actTarArrowSolidExecute
+      OnUpdate = actTarArrowSolidUpdate
+    end
+    object actTarArrowLine: TAction
+      Category = 'arrow'
+      Caption = #32447#24418
+      OnExecute = actTarArrowLineExecute
+      OnUpdate = actTarArrowLineUpdate
+    end
+    object actTarArrowEcilipse: TAction
+      Category = 'arrow'
+      Caption = #22278#24418
+      OnExecute = actTarArrowEcilipseExecute
+      OnUpdate = actTarArrowEcilipseUpdate
+    end
+    object actTarArrowRetangle: TAction
+      Category = 'arrow'
+      Caption = #26041#24418
+      OnExecute = actTarArrowRetangleExecute
+      OnUpdate = actTarArrowRetangleUpdate
+    end
+    object actTarArrowDiamond: TAction
+      Category = 'arrow'
+      Caption = #23574#24418
+      OnExecute = actTarArrowDiamondExecute
+      OnUpdate = actTarArrowDiamondUpdate
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.dgr'
     Filter = 'Diagram files (*.dgr)|*.dgr|All files (*.*)|*.*'
     Title = 'Select diagram file'
-    Left = 328
-    Top = 296
+    Left = 384
+    Top = 272
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = '.dgr'
     Filter = 'Diagram files (*.dgr)|*.dgr|All files (*.*)|*.*'
     Title = 'Select diagram file'
-    Left = 376
-    Top = 296
+    Left = 512
+    Top = 272
   end
   object PrintDialog1: TPrintDialog
-    Left = 488
-    Top = 296
+    Left = 480
+    Top = 272
   end
   object ActionList3: TActionList
     Images = ImageList3
-    Left = 376
-    Top = 192
+    Left = 384
+    Top = 208
     object acBold: TAction
       Category = 'Font'
       Caption = #21152#31895
@@ -2790,8 +3211,8 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     end
   end
   object ImageList3: TImageList
-    Left = 448
-    Top = 200
+    Left = 512
+    Top = 240
     Bitmap = {
       494C010109000E00040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
@@ -3330,10 +3751,13 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual
-    Left = 492
-    Top = 199
+    Left = 448
+    Top = 272
     object N1: TMenuItem
       Action = actWFSelectAll
+    end
+    object N17: TMenuItem
+      Action = actWFEditText
     end
     object N2: TMenuItem
       Caption = '-'
@@ -3380,10 +3804,59 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     object N16: TMenuItem
       Action = actWFViewLeftRuler
     end
+    object N18: TMenuItem
+      Caption = '-'
+    end
+    object N19: TMenuItem
+      Action = actWFSourceArrow
+      object N21: TMenuItem
+        Action = actSrcArrowNone
+        RadioItem = True
+      end
+      object N22: TMenuItem
+        Action = actSrcArrowSolid
+        RadioItem = True
+      end
+      object N23: TMenuItem
+        Action = actSrcArrowLine
+        RadioItem = True
+      end
+      object N24: TMenuItem
+        Action = actTarArrowEcilipse
+        RadioItem = True
+      end
+      object N25: TMenuItem
+        Action = actTarArrowDiamond
+        RadioItem = True
+      end
+    end
+    object N20: TMenuItem
+      Action = actWFTargetArrow
+      object N26: TMenuItem
+        Action = actTarArrowNone
+        RadioItem = True
+      end
+      object N27: TMenuItem
+        Action = actTarArrowSolid
+        RadioItem = True
+      end
+      object N28: TMenuItem
+        Action = actTarArrowLine
+        RadioItem = True
+      end
+      object N29: TMenuItem
+        Action = actTarArrowEcilipse
+        RadioItem = True
+      end
+      object N30: TMenuItem
+        Action = actTarArrowDiamond
+        RadioItem = True
+      end
+    end
   end
   object OpenPictureDialog1: TOpenPictureDialog
-    Left = 556
-    Top = 191
+    Left = 416
+    Top = 272
   end
   object FontDialog1: TFontDialog
     Font.Charset = DEFAULT_CHARSET
@@ -3391,11 +3864,822 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Left = 604
-    Top = 191
+    Left = 416
+    Top = 240
   end
   object ColorDialog1: TColorDialog
-    Left = 644
-    Top = 191
+    Left = 480
+    Top = 208
+  end
+  object EasyWorkFlowDiagramAlign1: TEasyWorkFlowDiagramAlign
+    Caption = #27700#24179#20013#24515#23545#40784
+    Hint = #27700#24179#20013#24515#23545#40784
+    BlockAlignment = baHorzCenter
+  end
+  object EasyWorkFlowDiagramAlign2: TEasyWorkFlowDiagramAlign
+    Caption = #27700#24179#20013#24515#23545#40784
+    Hint = #27700#24179#20013#24515#23545#40784
+    BlockAlignment = baHorzCenter
+  end
+  object EasyWorkFlowDiagramAlign3: TEasyWorkFlowDiagramAlign
+    Caption = #27700#24179#20013#24515#23545#40784
+    Hint = #27700#24179#20013#24515#23545#40784
+    BlockAlignment = baHorzCenter
+  end
+  object ImageList2: TImageList
+    Left = 448
+    Top = 240
+    Bitmap = {
+      494C010111001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000005000000001002000000000000050
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000404000004040
+      0000404000004040000040400000404000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000404040004040
+      4000404040004040400040404000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000000000000000000000000000404040004040
+      4000404040004040400040404000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000040400000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      4000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000404040000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000404040004040
+      4000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000000000000000000000000000004040
+      4000404040004040400000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000404040004040
+      4000404040004040400040404000000000000000000040404000404040004040
+      400040404000404040000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000404040004040
+      4000404040004040400040404000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000404000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000404040004040
+      400000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000000000000000000000404040004040
+      4000404040004040400040404000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      400000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000040404000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000004040000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000004040
+      4000404040004040400040404000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      00000000000000000000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000040400000C0A04000C0A0400040400000404000004040
+      0000404000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      00000000000000000000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000C0A04000C0A0400040400000C0A04000C0A0
+      4000404000000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000004040
+      4000404040004040400040404000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000004040000040400000404000004040
+      0000404000004040000040400000404000004040000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000C0A04000C0A0400040400000C0A04000C0A0
+      400040400000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000040404000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000C0A04000C0A0400040400000C0A04000C0A0
+      400040400000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000000000000404040004040
+      4000404040004040400040404000000000000000000000000000000000004040
+      0000C0A04000C0A0400040400000C0A04000C0A0400040400000C0A04000C0A0
+      400040400000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000F0CA
+      A600806000000000000000000000000000000000000000000000404040004040
+      400040404000404040004040400000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      0000404000004040000040400000C0A04000C0A0400040400000404000004040
+      0000404000000000000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000000000000000000004040
+      400040404000404040000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000008060000080600000806000008060
+      000080600000FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00806000008060
+      0000806000008060000080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      4000000000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      40000000000000000000000000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00404040004040400040404000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000000000000000000000000000000000
+      0000000000000000000040404000404040004040400040404000000000000000
+      0000000000000000000000000000000000000000000000000000404040004040
+      4000000000000000000000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000404040004040
+      40000000000000000000000000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040404000404040004040
+      4000404040004040400040404000000000000000000040404000404040004040
+      4000404040004040400040404000000000000000000040404000404040004040
+      4000404040004040400040404000000000000000000040404000404040004040
+      40004040400040404000404040000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000000000000000000000000000000000
+      0000000000000000000040404000404040004040400040404000000000000000
+      0000000000000000000000000000000000000000000000000000404040004040
+      4000000000000000000000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000000000000000
+      0000404040004040400000000000000000000000000000000000404040004040
+      40000000000000000000000000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      4000000000000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000004040
+      400000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF004040000040400000404000004040000040400000FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      000000000000000000000000000000000000FFFFFF0040404000FFFFFF00FFFF
+      FF00FFFFFF0040400000C0A04000C0A04000C0A0400040400000FFFFFF00FFFF
+      FF00FFFFFF0040404000FFFFFF00000000004040000040400000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000000000000000000000000000004040000040400000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000000000000000000000000000004040400040404000404040004040
+      4000FFFFFF0040400000C0A04000C0A04000C0A0400040400000FFFFFF004040
+      400040404000404040004040400000000000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      000000000000404000004040000040400000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000004040000040400000404000000000000040400000C0A04000C0A0
+      4000404000000000000040400000C0A04000C0A0400040400000000000004040
+      000040400000404000004040000000000000FFFFFF0040404000FFFFFF00FFFF
+      FF00FFFFFF0040400000C0A04000C0A04000C0A0400040400000FFFFFF00FFFF
+      FF00FFFFFF0040404000FFFFFF0000000000C0A04000C0A0400040400000F0CA
+      A600F0CAA600F0CAA60040400000C0A04000C0A0400040400000F0CAA600F0CA
+      A600F0CAA60040400000C0A04000C0A04000C0A04000C0A0400040400000F0CA
+      A600F0CAA600F0CAA60040400000C0A04000C0A0400040400000F0CAA600F0CA
+      A600F0CAA60040400000C0A04000C0A040000000000040400000C0A04000C0A0
+      400040400000F0CAA60040400000C0A04000C0A0400040400000F0CAA6004040
+      0000C0A04000C0A040004040000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF004040000040400000404000004040000040400000FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0000000000C0A04000C0A04000404000008060
+      0000806000008060000040400000C0A04000C0A0400040400000806000008060
+      00008060000040400000C0A04000C0A04000C0A04000C0A04000404000008060
+      0000806000008060000040400000C0A04000C0A0400040400000806000008060
+      00008060000040400000C0A04000C0A040000000000040400000C0A04000C0A0
+      4000404000008060000040400000C0A04000C0A0400040400000806000004040
+      0000C0A04000C0A04000404000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF008060000000000000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      00000000000040400000C0A04000C0A04000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      00000000000040400000C0A04000C0A040000000000040400000C0A04000C0A0
+      4000404000000000000040400000C0A04000C0A0400040400000000000004040
+      0000C0A04000C0A04000404000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF008060000000000000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      000000000000404000004040000040400000C0A04000C0A04000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000004040000040400000404000000000000040400000C0A04000C0A0
+      4000404000000000000040400000C0A04000C0A0400040400000000000004040
+      00004040000040400000404000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000004040000040400000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000000000000000000000000000004040000040400000404000000000
+      0000000000000000000040400000C0A04000C0A0400040400000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000000000000040400000C0A04000C0A0400040400000000000000000
+      00000000000000000000000000000000000080600000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00404040004040400040404000FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF0080600000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000008060000080600000806000008060
+      000080600000FFFFFF00FFFFFF0040404000FFFFFF00FFFFFF00806000008060
+      0000806000008060000080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000000000000000000000000000000000000000000004040
+      0000C0A040004040000000000000000000000000000000000000000000000000
+      0000000000004040000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000000000000404040000000000040404000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A040004040000000000000404000004040000040400000000000004040
+      0000C0A040004040000000000000000000000000000040404000000000000000
+      00000000000040400000C0A04000C0A04000C0A0400040400000000000000000
+      0000000000004040400000000000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A040004040000000000000000000004040400040404000404040004040
+      40000000000040400000C0A04000C0A04000C0A0400040400000000000004040
+      4000404040004040400040404000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000040400000404000004040
+      0000404000004040000040400000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A040004040000000000000000000000000000040404000000000000000
+      00000000000040400000C0A04000C0A04000C0A0400040400000000000000000
+      0000000000004040400000000000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      00004040400000000000000000000000000000000000F0CAA600F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CA
+      A600F0CAA6000000000000000000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A040004040000000000000000000000000000000000000000000000000
+      0000000000004040000040400000404000004040000040400000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600000000004040400000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040404000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000008060000080600000806000000000000080600000404000004040
+      0000404000004040000040400000404000004040000040400000404000004040
+      0000404000004040000040400000806000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000404000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600000000004040400000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040404000000000000000000040400000C0A04000C0A0
+      4000C0A04000404000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A040004040
+      0000000000004040000040400000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A040004040000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000404000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A040004040
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A040004040000000000000000000004040000040400000404000004040
+      0000404000004040000040400000404000004040000040400000404000004040
+      0000404000004040000040400000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000404000004040
+      0000404000004040000040400000000000000000000040400000404000004040
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000C0A04000404000000000000040400000C0A0400040400000000000004040
+      0000C0A0400040400000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000C0A040004040000000000000404000004040000040400000000000004040
+      0000C0A0400040400000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000404000004040000000000000000000000000000000000000000000004040
+      0000C0A0400040400000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000C0A0
+      4000C0A04000C0A0400040400000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000000000000000000004040000040400000404000004040
+      0000404000004040000040400000404000004040000040400000404000004040
+      0000404000004040000040400000000000000000000040400000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000404000004040000000000000404040000000000040404000000000000000
+      0000404040000000000000000000000000000000000000000000000000000000
+      0000000000000000000080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000008060000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000000000008060000080600000806000008060000080600000806000008060
+      0000806000000000000000000000000000000000000000000000806000008060
+      0000806000008060000080600000806000008060000080600000000000004040
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000F0CAA60040400000F0CAA60000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000000000000000000080600000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000008060000000000000000000004040
+      0000000000000000000000000000000000004040000040400000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      0000404000004040000040400000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000F0CAA6004040
+      00000000000000000000000000000000000040400000C0A04000C0A04000C0A0
+      4000C0A04000C0A04000F0CAA60040400000F0CAA600C0A04000C0A04000C0A0
+      4000C0A04000C0A0400040400000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000040400000404000004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000040400000404000004040
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000004040000040400000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      0000404000004040000040400000000000000000000040400000404000004040
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA600C0A04000C0A04000C0A04000C0A04000C0A04000C0A040004040
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000C0A04000C0A04000C0A04000C0A04000C0A04000C0A04000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000F0CAA60040400000F0CAA60000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000040400000404000004040
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000404000004040000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      0000404000000000000000000000000000000000000040400000C0A040004040
+      0000000000004040000040400000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000F0CAA6004040
+      000000000000000000000000000000000000000000000000000040400000C0A0
+      4000C0A04000C0A04000F0CAA60040400000F0CAA600C0A04000C0A04000C0A0
+      4000404000000000000000000000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      0000404000000000000000000000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000008060000080600000806000000000000000000000000000004040
+      0000F0CAA600C0A04000C0A04000C0A040004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000C0A04000C0A04000C0A04000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000F0CAA60040400000F0CAA60000000000000000000000
+      0000000000000000000000000000000000000000000040400000C0A040004040
+      00000000000040400000C0A04000404000000000000040400000C0A040004040
+      0000000000000000000080600000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000000000000040400000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      00004040000040400000000000000000000000000000F0CAA600F0CAA600F0CA
+      A600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CAA600F0CA
+      A600F0CAA6000000000000000000000000000000000000000000000000004040
+      0000F0CAA6000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000F0CAA6004040
+      0000000000000000000000000000000000000000000040400000C0A04000C0A0
+      4000C0A04000C0A04000F0CAA60040400000F0CAA600C0A04000C0A04000C0A0
+      4000C0A040004040000000000000000000000000000040400000404000004040
+      0000404000004040000040400000404000004040000040400000404000004040
+      0000404000004040000040400000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000040400000404000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000404000004040000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000000000000040400000404000004040
+      00004040000040400000F0CAA60040400000F0CAA60040400000404000004040
+      0000404000004040000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000F0CAA600C0A04000C0A04000C0A04000C0A04000C0A04000404000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000040400000C0A04000C0A04000C0A04000C0A04000C0A04000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000F0CAA60040400000F0CAA60000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000004040
+      0000F0CAA6004040000040400000404000004040000040400000404000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000404000004040000040400000404000004040000040400000F0CAA6004040
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000404000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000500000000100010000000000800200000000000000000000
+      000000000000000000000000FFFFFF00FFFF000000000000FFFF000000000000
+      FFF7000000000000C0F7000000000000C0C1000000000000C0E3000000000000
+      8077000000000000807F000000000000807F0000000000008077000000000000
+      E1E3000000000000E1C1000000000000E1F7000000000000FFF7000000000000
+      FFFF000000000000FFFF000000000000FFFF80FF80FFFFFFF7EF80FF80F780F7
+      F3CF80FF80E380F7C183E7FFE7C180F7F3CFE7FFE7F780C1F7EFE7FFE7F7E7E3
+      FFFF807F80770077FC3F8061807F007FE007807F807F007FE007806180770077
+      E007E7FFE7F7E7E3E007E7FFE7F7C1C1E007E7FFE7C1C1F7E007C1FFC1E3C1F7
+      FC3FC1FFC1F7C1F7FFFFC1FFC1FFFFFFFFFFFFFFFFFFFFFF0001FFFFEFF7F7EF
+      0001FC3FCFF3F3CF0001FFFF818181810001FC3FCFF3F3CF0001FFFFEFF7F7EF
+      0001FC3FFC3FFC3F00011C3F1C3F843F00011C381C3884210001000000008001
+      000100000000800100011C381C38842100011C381C38842100011C3F1C3F843F
+      0001FC3FFC3FFC3F0001FFFFFFFFFFFFFFFFFFE3FFFFFFFFFFFFE3E3F83F82B7
+      FFFFE223B83B83E3FFFFE223082183F78001E223B83B83F78007E223F83F83FF
+      888DC0017FFD83C188888000FFFF83C1888DC0017FFD83C1888DE223FFFF83C1
+      8F8DE223000183C18F8DE223000183FFFF8DE223000183F7FFFDE3E3000183F7
+      FFFFFFE3000183E3FFFFFFFFFFFF82B7FDFFFF7FFEFFFFFFE807C02FFC7FFFFF
+      EDFFFF6F0001FFFDE7FFFFCF0001FF8DE00FE00F00018F8DE00FE00FFC7F8F8D
+      E00FE00FC007888DE7FFFFCFC007888DE07FFC0FC0078888E07FFC0FFC7F888D
+      E07FFC0F80038007E7FFFFCF80038001E01FF00F8003FFFFE01FF00FFC7FFFFF
+      E01FF00FFEFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
+  end
+  object ActionList2: TActionList
+    Images = ImageList2
+    Left = 448
+    Top = 208
+    object EasyWorkFlowDiagramAlign4: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #24038#23545#40784
+      Hint = #24038#23545#40784
+      ImageIndex = 0
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baLeft
+    end
+    object EasyWorkFlowDiagramAlign5: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #21491#23545#40784
+      Hint = #21491#23545#40784
+      ImageIndex = 1
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baRight
+    end
+    object EasyWorkFlowDiagramAlign6: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #22402#30452#20013#24515#23545#40784
+      Hint = #22402#30452#20013#24515#23545#40784
+      ImageIndex = 2
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baVertCenter
+    end
+    object EasyWorkFlowDiagramAlign7: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #27700#24179#20013#24515#23545#40784
+      Hint = #27700#24179#20013#24515#23545#40784
+      ImageIndex = 5
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baHorzCenter
+    end
+    object EasyWorkFlowDiagramAlign8: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #19978#23545#40784
+      Hint = #19978#23545#40784
+      ImageIndex = 3
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baTop
+    end
+    object EasyWorkFlowDiagramAlign9: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #19979#23545#40784
+      Hint = #19979#23545#40784
+      ImageIndex = 4
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baBottom
+    end
+    object EasyWorkFlowDiagramAlign10: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #20943#23567#27700#24179#38388#36317
+      Hint = #20943#23567#27700#24179#38388#36317
+      ImageIndex = 11
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baDecHorzSpace
+    end
+    object EasyWorkFlowDiagramAlign11: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #20943#23567#22402#30452#38388#36317
+      Hint = #20943#23567#22402#30452#38388#36317
+      ImageIndex = 15
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baDecVertSpace
+    end
+    object EasyWorkFlowDiagramAlign12: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #22686#21152#27700#24179#38388#36317
+      Hint = #22686#21152#27700#24179#38388#36317
+      ImageIndex = 10
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baIncHorzSpace
+    end
+    object EasyWorkFlowDiagramAlign13: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #22686#21152#22402#30452#38388#36317
+      Hint = #22686#21152#22402#30452#38388#36317
+      ImageIndex = 14
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baIncrVertSpace
+    end
+    object EasyWorkFlowDiagramAlign14: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #27700#24179#31561#20998
+      Hint = #27700#24179#31561#20998
+      ImageIndex = 9
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baSameSpaceHorz
+    end
+    object EasyWorkFlowDiagramAlign15: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #22402#30452#31561#20998
+      Hint = #22402#30452#31561#20998
+      ImageIndex = 13
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baSameSpaceVert
+    end
+    object EasyWorkFlowDiagramAlign16: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #31561#39640
+      Hint = #31561#39640
+      ImageIndex = 7
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baSameHeight
+    end
+    object EasyWorkFlowDiagramAlign17: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #31561#23485
+      Hint = #31561#23485
+      ImageIndex = 6
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baSameWidth
+    end
+    object EasyWorkFlowDiagramAlign18: TEasyWorkFlowDiagramAlign
+      Category = 'EasyWorkFlowAlign'
+      Caption = #31561#23610#23544
+      Hint = #31561#23610#23544
+      ImageIndex = 8
+      Diagram = WorkflowDiagramMain
+      BlockAlignment = baSameSize
+    end
   end
 end

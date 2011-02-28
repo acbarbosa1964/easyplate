@@ -7,9 +7,9 @@ uses
   Dialogs, atDiagram, ExtCtrls, DiagramExtra, ImgList, StdCtrls, Menus,
   wsDB, wsADO, ComCtrls, wsControls, LiveDiagram, wsClasses, 
   untEasyStatusBar, untEasyStatusBarStylers, untEasyGroupBox,
-  untEasyToolBar, untEasyToolBarStylers,
+  untEasyToolBar, untEasyToolBarStylers, wsBlocks, fTransitionEditor,
   DgrSelectors, EasyDgrCombo, ActnList, ExtDlgs, untEasyWorkFlowDiagramShadow,
-  untEasyWorkFlowDiagramGradient;
+  untEasyWorkFlowDiagramGradient, untEasyTreeView, untEasyWorkFlowAlign;
 
 type
   TfrmEasyWorkFlowMain = class(TForm)
@@ -21,7 +21,6 @@ type
     Splitter1: TSplitter;
     EasyPanel2: TEasyPanel;
     WorkflowDiagramMain: TWorkflowDiagram;
-    WorkDefListView1: TWorkDefListView;
     WorkflowADODB1: TWorkflowADODB;
     WorkflowDB1: TWorkflowDB;
     EasyToolBar2: TEasyToolBar;
@@ -140,6 +139,70 @@ type
     EasyToolBarSeparator9: TEasyToolBarSeparator;
     N15: TMenuItem;
     N16: TMenuItem;
+    tvWorkFlow: TEasyTreeView;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
+    N23: TMenuItem;
+    N24: TMenuItem;
+    N25: TMenuItem;
+    N26: TMenuItem;
+    N27: TMenuItem;
+    N28: TMenuItem;
+    N29: TMenuItem;
+    N30: TMenuItem;
+    actWFSourceArrow: TAction;
+    actWFTargetArrow: TAction;
+    actSrcArrowNone: TAction;
+    actSrcArrowSolid: TAction;
+    actSrcArrowLine: TAction;
+    actSrcArrowEcilipse: TAction;
+    actSrcArrowRetangle: TAction;
+    actSrcArrowDiamond: TAction;
+    actTarArrowNone: TAction;
+    actTarArrowSolid: TAction;
+    actTarArrowLine: TAction;
+    actTarArrowEcilipse: TAction;
+    actTarArrowRetangle: TAction;
+    actTarArrowDiamond: TAction;
+    EasyToolBar5: TEasyToolBar;
+    EasyToolBarButton28: TEasyToolBarButton;
+    ImageList2: TImageList;
+    ActionList2: TActionList;
+    EasyWorkFlowDiagramAlign4: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign5: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign6: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign7: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign8: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign9: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign10: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign11: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign12: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign13: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign14: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign15: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign16: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign17: TEasyWorkFlowDiagramAlign;
+    EasyWorkFlowDiagramAlign18: TEasyWorkFlowDiagramAlign;
+    EasyToolBarButton29: TEasyToolBarButton;
+    EasyToolBarButton30: TEasyToolBarButton;
+    EasyToolBarSeparator10: TEasyToolBarSeparator;
+    EasyToolBarButton31: TEasyToolBarButton;
+    EasyToolBarButton32: TEasyToolBarButton;
+    EasyToolBarButton33: TEasyToolBarButton;
+    EasyToolBarButton34: TEasyToolBarButton;
+    EasyToolBarButton35: TEasyToolBarButton;
+    EasyToolBarButton36: TEasyToolBarButton;
+    EasyToolBarSeparator11: TEasyToolBarSeparator;
+    EasyToolBarButton37: TEasyToolBarButton;
+    EasyToolBarButton38: TEasyToolBarButton;
+    EasyToolBarButton39: TEasyToolBarButton;
+    EasyToolBarButton40: TEasyToolBarButton;
+    EasyToolBarButton41: TEasyToolBarButton;
+    EasyToolBarButton42: TEasyToolBarButton;
     procedure actWFNewExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actWFSaveExecute(Sender: TObject);
@@ -209,6 +272,36 @@ type
     procedure actWFRedoExecute(Sender: TObject);
     procedure actWFRedoUpdate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure actWFSourceArrowExecute(Sender: TObject);
+    procedure actWFTargetArrowExecute(Sender: TObject);
+    procedure actWFSourceArrowUpdate(Sender: TObject);
+    procedure actWFTargetArrowUpdate(Sender: TObject);
+    procedure actSrcArrowNoneExecute(Sender: TObject);
+    procedure actSrcArrowSolidExecute(Sender: TObject);
+    procedure actSrcArrowLineExecute(Sender: TObject);
+    procedure actSrcArrowEcilipseExecute(Sender: TObject);
+    procedure actSrcArrowRetangleExecute(Sender: TObject);
+    procedure actSrcArrowDiamondExecute(Sender: TObject);
+    procedure actTarArrowNoneExecute(Sender: TObject);
+    procedure actTarArrowSolidExecute(Sender: TObject);
+    procedure actTarArrowLineExecute(Sender: TObject);
+    procedure actTarArrowEcilipseExecute(Sender: TObject);
+    procedure actTarArrowRetangleExecute(Sender: TObject);
+    procedure actTarArrowDiamondExecute(Sender: TObject);
+    procedure actSrcArrowNoneUpdate(Sender: TObject);
+    procedure actSrcArrowSolidUpdate(Sender: TObject);
+    procedure actSrcArrowLineUpdate(Sender: TObject);
+    procedure actSrcArrowEcilipseUpdate(Sender: TObject);
+    procedure actSrcArrowRetangleUpdate(Sender: TObject);
+    procedure actSrcArrowDiamondUpdate(Sender: TObject);
+    procedure actTarArrowNoneUpdate(Sender: TObject);
+    procedure actTarArrowSolidUpdate(Sender: TObject);
+    procedure actTarArrowLineUpdate(Sender: TObject);
+    procedure actTarArrowEcilipseUpdate(Sender: TObject);
+    procedure actTarArrowRetangleUpdate(Sender: TObject);
+    procedure actTarArrowDiamondUpdate(Sender: TObject);
+    procedure WorkflowDiagramMainDControlDblClick(Sender: TObject;
+      ADControl: TDiagramControl);
   private
     { Private declarations }
     //连接线箭头的
@@ -226,6 +319,7 @@ type
     procedure SetSelectedAlignment(AAlign: TAlignment);
     procedure SetSelectedVertAlign(AAlign: TVertAlign);
     function FirstCellSelected: TTextCell;
+    function CommonProperty(var Prop: TArrowShape): boolean;
   public
     { Public declarations }
   end;
@@ -238,6 +332,50 @@ implementation
 uses untEasyWorkFlowDiagramPreview;
 
 {$R *.dfm}
+
+procedure EditTransition(ALine: TCustomDiagramLine);
+var
+  TransitionForm: TfmTransitionEditor;
+begin
+  {pass the owner of the block as the owner of the editor. The owner of the block
+   is the workflow editor. Since Position is poOwnerFormCenter, the
+   Editor form will be centered according to the workflow editor form}
+  TransitionForm := TfmTransitionEditor.Create(ALine.Owner);
+  try
+    if TransitionForm.EditTransition(ALine) then
+      if Assigned(ALine.Diagram) then
+        ALine.Diagram.Modified;
+  finally
+    TransitionForm.Free;
+  end;
+end;
+
+function TfrmEasyWorkFlowMain.CommonProperty(var Prop: TArrowShape): boolean;
+var
+  c: integer;
+  first: boolean;
+begin
+  first := true;
+  result := true;
+  for c := 0 to FDiagram.LinkCount - 1 do
+    if FDiagram.Links[c].Selected then
+    begin
+      if first then
+      begin
+        if FSource then
+          Prop := FDiagram.Links[c].SourceArrow.Shape
+        else
+          Prop := FDiagram.Links[c].TargetArrow.Shape;
+        first := false;
+      end
+      else
+        if FSource then
+          result := Prop = FDiagram.Links[c].SourceArrow.Shape
+        else
+          result := Prop = FDiagram.Links[c].TargetArrow.Shape;
+        if not result then break;
+    end;
+end;
 
 procedure TfrmEasyWorkFlowMain.SetModified(value: Boolean);
 begin
@@ -258,22 +396,23 @@ end;
 procedure TfrmEasyWorkFlowMain.PrepareCategoryTab(ATabControl: TTabControl;
   AToolbar: TDiagramToolbar);
 var
-  c: integer;
+//  c: integer;
   SL: TStringList;
-  ATab: string;
+//  ATab: string;
 begin
   FTabControl := ATabControl;
   if FTabControl <> nil then
   begin
     SL := TStringList.Create;
-    SL.Add('All objects');
+//    SL.Add('All objects');
+    SL.Add('Workflow');
     try
-      for c := 0 to RegDControlList.Count - 1 do
-      begin
-        ATab := RegDControlList[c].Category;
-        if (ATab <> '') and (SL.IndexOf(ATab) = -1) then
-          SL.Add(RegDControlList[c].Category);
-      end;
+//      for c := 0 to RegDControlList.Count - 1 do
+//      begin
+//        ATab := RegDControlList[c].Category;
+//        if (ATab <> '') and (SL.IndexOf(ATab) = -1) then
+//          SL.Add(RegDControlList[c].Category);
+//      end;
       FTabControl.Tabs := SL;
     finally
       SL.Free;
@@ -793,33 +932,6 @@ begin
 end;
 
 procedure TfrmEasyWorkFlowMain.actWFArrowShapeUpdate(Sender: TObject);
-  function CommonProperty(var Prop: TArrowShape): boolean;
-  var
-    c: integer;
-    first: boolean;
-  begin
-    first := true;
-    result := true;
-    for c := 0 to FDiagram.LinkCount - 1 do
-      if FDiagram.Links[c].Selected then
-      begin
-        if first then
-        begin
-          if FSource then
-            Prop := FDiagram.Links[c].SourceArrow.Shape
-          else
-            Prop := FDiagram.Links[c].TargetArrow.Shape;
-          first := false;
-        end
-        else
-          if FSource then
-            result := Prop = FDiagram.Links[c].SourceArrow.Shape
-          else
-            result := Prop = FDiagram.Links[c].TargetArrow.Shape;
-          if not result then break;
-      end;      
-  end;
-
 var
   AProp: TArrowShape;
 begin
@@ -998,6 +1110,215 @@ begin
   begin
     actWFSaveExecute(Sender);
   end;
+end;
+
+procedure TfrmEasyWorkFlowMain.actWFSourceArrowExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmEasyWorkFlowMain.actWFTargetArrowExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmEasyWorkFlowMain.actWFSourceArrowUpdate(Sender: TObject);
+begin
+  actWFSourceArrow.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+end;
+
+procedure TfrmEasyWorkFlowMain.actWFTargetArrowUpdate(Sender: TObject);
+begin
+  actWFTargetArrow.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowNoneExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asNone;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowSolidExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asSolidArrow;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowLineExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asLineArrow;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowEcilipseExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asEllipse;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowRetangleExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asRectangle;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowDiamondExecute(Sender: TObject);
+begin
+  FSource := True;
+  FShape := asDiamond;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowNoneExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asNone;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowSolidExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asSolidArrow;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowLineExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asLineArrow;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowEcilipseExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asEllipse;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowRetangleExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asRectangle;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowDiamondExecute(Sender: TObject);
+begin
+  FSource := False;
+  FShape := asDiamond;
+  actWFArrowShapeExecute(Sender);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowNoneUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowNone.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowNone.Checked := actSrcArrowNone.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowSolidUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowSolid.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowSolid.Checked := actSrcArrowSolid.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowLineUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowLine.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowLine.Checked := actSrcArrowLine.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowEcilipseUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowEcilipse.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowEcilipse.Checked := actSrcArrowEcilipse.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowRetangleUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowRetangle.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowRetangle.Checked := actSrcArrowRetangle.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actSrcArrowDiamondUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actSrcArrowDiamond.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actSrcArrowDiamond.Checked := actSrcArrowDiamond.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowNoneUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowNone.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowNone.Checked := actTarArrowNone.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowSolidUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowSolid.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowSolid.Checked := actTarArrowSolid.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowLineUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowLine.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowLine.Checked := actTarArrowLine.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowEcilipseUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowEcilipse.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowEcilipse.Checked := actTarArrowEcilipse.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowRetangleUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowRetangle.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowRetangle.Checked := actTarArrowRetangle.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.actTarArrowDiamondUpdate(Sender: TObject);
+var
+  AProp: TArrowShape;
+begin
+  actTarArrowDiamond.Enabled := (FDiagram <> nil) and (FDiagram.SelectedLinkCount > 0);
+//  actTarArrowDiamond.Checked := actTarArrowDiamond.Enabled and CommonProperty(AProp) and (AProp = FShape);
+end;
+
+procedure TfrmEasyWorkFlowMain.WorkflowDiagramMainDControlDblClick(
+  Sender: TObject; ADControl: TDiagramControl);
+begin
+  if (ADControl is TCustomWorkflowBlock) and (TCustomWorkflowBlock(ADControl).EditorClass <> nil) then
+    TCustomWorkflowBlock(ADControl).EditorClass.Create.EditBlock(TCustomWorkflowBlock(ADControl));
+  if (ADControl is TCustomDiagramLine) then
+    EditTransition(TCustomDiagramLine(ADControl));
 end;
 
 end.
