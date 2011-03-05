@@ -31,7 +31,7 @@ uses
   untEasyToolBarStylers, untEasyTabSet, untEasyOfficeTabSetStylers,
   untEasyPageControl, ExtCtrls, untEasyTrayIcon, ImgList, ComCtrls,
   untEasyTreeView, untEasyWaterImage, jpeg, StdCtrls, ActnList, Provider,
-  DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc;
+  DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc, untEasyPlateDBBaseForm;
 
 type
 
@@ -49,7 +49,7 @@ type
     sPluginFileName: string;  
   end;
 
-  TfrmEasyPlateMain = class(TfrmEasyPlateBaseForm)
+  TfrmEasyPlateMain = class(TfrmEasyPlateDBBaseForm)
     mmMain: TEasyMainMenu;
     pmMain: TEasyPopupMenu;
     mmstyleMain: TEasyMenuOfficeStyler;
@@ -198,9 +198,10 @@ begin
   end;  
   with cdsMain do
   begin
-    Close;
-    CommandText := 'SELECT * FROM vw_inituser  WHERE sLoginName = ' + QuotedStr(UserID);
-    Open;
+    cdsMain.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vw_inituser  WHERE sLoginName = ' + QuotedStr(UserID));
+//    Close;
+//    CommandText := 'SELECT * FROM vw_inituser  WHERE sLoginName = ' + QuotedStr(UserID);
+//    Open;
     if cdsMain.RecordCount = 1 then
     begin
       stbMain.Panels[0].Text := '<a color="clblue">' + EASY_DISPLAYUSERINFO_WELCOME
@@ -316,9 +317,10 @@ begin
   tvNav.Items.Clear;
   with cdsMainTV do
   begin
-    Close;
-    CommandText := 'SELECT * FROM sysPluginsDirectory ORDER BY bDir, iOrder';
-    Open;
+    cdsMainTV.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM sysPluginsDirectory ORDER BY bDir, iOrder');
+//    Close;
+//    CommandText := 'SELECT * FROM sysPluginsDirectory ORDER BY bDir, iOrder';
+//    Open;
     First;
     for I := 0 to RecordCount - 1 do
     begin

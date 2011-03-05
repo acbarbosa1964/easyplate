@@ -28,13 +28,14 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateBaseForm, ExtCtrls, jpeg, StdCtrls, untEasyLabel,
   untEasyEdit, untEasyButtons, DB, ADODB, untEasyDBConnection,
-  untEasyBallonControl, untEasyProgressBar, DBClient, Provider;
+  untEasyBallonControl, untEasyProgressBar, DBClient, Provider,
+  untEasyPlateDBBaseForm;
 
 
 type
   TLoadEasyDBPkg = function(AHandle: THandle): Integer; stdcall;
 
-  TfrmEasyLoginMain = class(TfrmEasyPlateBaseForm)
+  TfrmEasyLoginMain = class(TfrmEasyPlateDBBaseForm)
     imgLoginBC: TImage;
     EasyLabel1: TEasyLabel;
     edtUserName: TEasyLabelEdit;
@@ -98,17 +99,18 @@ begin
     begin
       if UpperCase(DMEasyDBConnection.EasyAppType) = 'CAS' then
       begin
-        cdsLogin.RemoteServer := DMEasyDBConnection.EasyScktConn;
-        cdsLogin.ProviderName := 'EasyRDMDsp';
-      end 
+        cdsLogin.Data := EasyRDMDisp.EasyGetRDMData('SELECT sSQL FROM sysSQL WHERE iFlag = 1 AND sSQLEName = ''UserLoginCheck''');
+//        cdsLogin.RemoteServer := DMEasyDBConnection.EasyScktConn;
+//        cdsLogin.ProviderName := 'EasyRDMDsp';
+      end
       else
       begin
         cdsLogin.ProviderName := 'DspLogin';
+        if Active then Close;
+        CommandText := 'SELECT sSQL FROM sysSQL WHERE iFlag = 1 AND sSQLEName = ''UserLoginCheck''';
+        Open;
       end;
 
-      if Active then Close;
-      CommandText := 'SELECT sSQL FROM sysSQL WHERE iFlag = 1 AND sSQLEName = ''UserLoginCheck''';
-      Open;
       if cdsLogin.RecordCount > 0 then
         TmpSQL := cdsLogin.fieldbyname('sSQL').AsString;
       close;
@@ -118,17 +120,26 @@ begin
       TmpSQL := Format(TmpSQL, [QuotedStr(edtUserName.Text)]);
       with cdsLogin do
       begin
-        Close;
-        CommandText := TmpSQL;
-        try
-          Open;
-        except on e:Exception do
+        if UpperCase(DMEasyDBConnection.EasyAppType) = 'CAS' then
         begin
-          cdsLogin.Close;
-          Application.MessageBox(PChar('系统出错,原因：' + e.Message), '错误', MB_OK +
-            MB_ICONSTOP);
+          cdsLogin.Data := EasyRDMDisp.EasyGetRDMData(TmpSQL);
+        end
+        else
+        begin
+          Close;
+          CommandText := TmpSQL;
+          cdsLogin.Data := EasyRDMDisp.EasyGetRDMData(TmpSQL);
+          try
+            Open;
+          except on e:Exception do
+          begin
+            cdsLogin.Close;
+            Application.MessageBox(PChar('系统出错,原因：' + e.Message), '错误', MB_OK +
+              MB_ICONSTOP);
+          end;
+          end;
         end;
-        end;
+
         if cdsLogin.RecordCount > 0 then
         begin
           if transfer(edtPassWord.Text) = LowerCase(FieldByName('sLoginPassWord').AsString) then
