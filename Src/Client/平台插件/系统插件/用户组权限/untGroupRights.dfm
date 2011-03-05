@@ -1,12 +1,14 @@
 inherited frmGroupRights: TfrmGroupRights
   Caption = 'frmGroupRights'
+  OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object EasyPanel1: TEasyPanel
     Left = 0
     Top = 0
     Width = 862
-    Height = 466
+    Height = 473
     Align = alClient
     BorderOuter = fsNone
     TabOrder = 1
@@ -14,30 +16,34 @@ inherited frmGroupRights: TfrmGroupRights
       Left = 0
       Top = 0
       Width = 862
-      Height = 466
+      Height = 473
       Align = alClient
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 187
         Top = 30
-        Height = 434
+        Height = 441
       end
       object EasyPanel4: TEasyPanel
         Left = 2
         Top = 30
         Width = 185
-        Height = 434
+        Height = 441
         Align = alLeft
         TabOrder = 1
         object tvUserGroups: TEasyTreeView
           Left = 2
           Top = 2
           Width = 181
-          Height = 430
+          Height = 437
           SelectionPen.Color = clBtnShadow
           Align = alClient
+          Images = imgUserGroup
           Indent = 19
+          ReadOnly = True
+          ShowLines = False
           TabOrder = 0
+          OnClick = tvUserGroupsClick
         end
       end
       object EasyDockPanel1: TEasyDockPanel
@@ -182,7 +188,7 @@ inherited frmGroupRights: TfrmGroupRights
         Left = 190
         Top = 30
         Width = 670
-        Height = 434
+        Height = 441
         Align = alClient
         TabOrder = 2
         object Splitter2: TSplitter
@@ -201,7 +207,7 @@ inherited frmGroupRights: TfrmGroupRights
           Align = alTop
           BorderOuter = fsNone
           TabOrder = 0
-          object tvUsers: TEasyTreeView
+          object tvUserRoles: TEasyTreeView
             Left = 0
             Top = 0
             Width = 666
@@ -216,15 +222,15 @@ inherited frmGroupRights: TfrmGroupRights
           Left = 2
           Top = 148
           Width = 666
-          Height = 284
+          Height = 291
           Align = alClient
           BorderOuter = fsNone
           TabOrder = 1
-          object tvModules: TEasyTreeView
+          object tvUsers: TEasyTreeView
             Left = 0
             Top = 0
             Width = 666
-            Height = 284
+            Height = 291
             SelectionPen.Color = clBtnShadow
             Align = alClient
             Indent = 19
@@ -1159,5 +1165,23 @@ inherited frmGroupRights: TfrmGroupRights
       C007C003E3CF0081C007C003C7E70043C007C0038FFB007FE00FC0031FFF00FF
       E00FE0073FFF00FFF81FF11FFFFF89FF00000000000000000000000000000000
       000000000000}
+  end
+  object cdsGroups: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 274
+    Top = 94
+  end
+  object cdsUsers: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 304
+    Top = 88
+  end
+  object cdsModules: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 336
+    Top = 90
   end
 end
