@@ -4,99 +4,13 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, untEasyPlateDBBaseForm, ExtCtrls, untEasyGroupBox,
+  Dialogs, untEasyPlateDBBaseForm, ExtCtrls, untEasyGroupBox, untGroupRightsObjects,
   untEasyToolBar, untEasyToolBarStylers, ComCtrls, untEasyTreeView, ImgList,
   DB, DBClient, StdCtrls;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
 type
-  //用户组权限--公司信息
-  TGroupCompany = class
-  private
-    FGUID,
-    FCompanyCName,
-    FCompanyEName,
-    FCompanyID,
-    FParentCompanyGUID: string;
-    function GetCompanyCName: string;
-    function GetCompanyEName: string;
-    function GetCompanyID: string;
-    function GetGUID: string;
-    procedure SetCompanyCName(const Value: string);
-    procedure SetCompanyEName(const Value: string);
-    procedure SetCompanyID(const Value: string);
-    procedure SetGUID(const Value: string);
-    function GetParentCompanyGUID: string;
-    procedure SetParentCompanyGUID(const Value: string);
-  public
-    property GUID: string read GetGUID write SetGUID;
-    property CompanyCName: string read GetCompanyCName write SetCompanyCName;
-    property CompanyEName: string read GetCompanyEName write SetCompanyEName;
-    property CompanyID: string read GetCompanyID write SetCompanyID;
-    property ParentCompanyGUID: string read GetParentCompanyGUID write SetParentCompanyGUID;
-  end;
-
-  //用户组权限--部门信息
-  TGroupDept = class
-  private
-    FDeptGUID,
-    FDeptCName,
-    FDeptEName,
-    FParentDeptGUID,
-    FCompanyGUID: string;
-    FiOrder: Integer;
-    function GetDeptCName: string;
-    function GetDeptEName: string;
-    function GetDeptGUID: string;
-    function GetiOrder: Integer;
-    function GetParentDeptGUID: string;
-    procedure SetDeptCName(const Value: string);
-    procedure SetDeptEName(const Value: string);
-    procedure SetDeptGUID(const Value: string);
-    procedure SetiOrder(const Value: Integer);
-    procedure SetParentDeptGUID(const Value: string);
-    function GetCompanyGUID: string;
-    procedure SetCompanyGUID(const Value: string);
-  public
-    property DeptGUID: string read GetDeptGUID write SetDeptGUID;
-    property DeptCName: string read GetDeptCName write SetDeptCName;
-    property DeptEName: string read GetDeptEName write SetDeptEName;
-    property ParentDeptGUID: string read GetParentDeptGUID write SetParentDeptGUID;
-    property iOrder: Integer read GetiOrder write SetiOrder;
-    property CompanyGUID: string read GetCompanyGUID write SetCompanyGUID;
-  end;
-
-  //用户组权限--角色信息
-  TGroupRole = class
-  private
-    FRoleGUID,
-    FRoleName,
-    FParentRoleGUID,
-    FDescription,
-    FDeptGUID : string;
-    FiOrder      : Integer;
-    function GetDescription: string;
-    function GetiOrder: Integer;
-    function GetParentRoleGUID: string;
-    function GetRoleGUID: string;
-    function GetRoleName: string;
-    procedure SetDescription(const Value: string);
-    procedure SetiOrder(const Value: Integer);
-    procedure SetParentRoleGUID(const Value: string);
-    procedure SetRoleGUID(const Value: string);
-    procedure SetRoleName(const Value: string);
-    function GetDeptGUID: string;
-    procedure SetDeptGUID(const Value: string);
-  public
-    property RoleGUID: string read GetRoleGUID write SetRoleGUID;
-    property RoleName: string read GetRoleName write SetRoleName;
-    property ParentRoleGUID: string read GetParentRoleGUID write SetParentRoleGUID;
-    property Description: string read GetDescription write SetDescription;
-    property iOrder: Integer read GetiOrder write SetiOrder;
-    property DeptGUID: string read GetDeptGUID write SetDeptGUID;
-  end;
-
   TfrmGroupRights = class(TfrmEasyPlateDBBaseForm)
     EasyPanel1: TEasyPanel;
     EasyPanel3: TEasyPanel;
@@ -105,13 +19,7 @@ type
     EasyToolBar1: TEasyToolBar;
     EasyToolBarOfficeStyler1: TEasyToolBarOfficeStyler;
     Splitter1: TSplitter;
-    EasyPanel2: TEasyPanel;
-    EasyPanel5: TEasyPanel;
-    Splitter2: TSplitter;
-    EasyPanel6: TEasyPanel;
     tvUserGroups: TEasyTreeView;
-    tvUserRoles: TEasyTreeView;
-    tvUsers: TEasyTreeView;
     EasyToolBarButton1: TEasyToolBarButton;
     imgUserGroup: TImageList;
     EasyToolBarButton2: TEasyToolBarButton;
@@ -120,16 +28,30 @@ type
     EasyToolBarButton5: TEasyToolBarButton;
     cdsGroups: TClientDataSet;
     cdsUsers: TClientDataSet;
-    cdsModules: TClientDataSet;
+    cdsResources: TClientDataSet;
+    EasyPanel2: TEasyPanel;
+    EasyPanel5: TEasyPanel;
+    EasyPanel6: TEasyPanel;
+    Splitter2: TSplitter;
+    EasyPanel7: TEasyPanel;
+    Splitter3: TSplitter;
+    EasyPanel8: TEasyPanel;
+    tvUserRoles: TEasyTreeView;
+    EasyPanel9: TEasyPanel;
+    tvUsers: TEasyTreeView;
+    tvCheckRights: TEasyCheckTree;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure tvUserGroupsClick(Sender: TObject);
+    procedure tvUserRolesClick(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
     FGroupDeptList,
-    FGroupRoleList: TList;
+    FGroupRoleList,
+    FGroupUserList,
+    FGroupRightList: TList;
 //    procedure GenerateTree(ATree: TEasyTreeView; AClientDataSet: TClientDataSet;
 //                            ARoot)
     //用户组--公司
@@ -147,6 +69,17 @@ type
     //显示部门下的角色信息
     function GetDeptGUID(APointer: Pointer): string;
     procedure DisplayRoles(ADeptGUID: string);
+    procedure DisposeGroupRoleList;
+
+    //显示角色下对应的员工
+    function GetRoleGUID(APointer: Pointer): string;
+    procedure DisplayUsers(ARoleGUID: string);
+    procedure InitUserTree(AClientDataSet: TClientDataSet; ARoleGUID: string);
+    procedure DisposeGroupUserList;
+
+    //系统权限树
+    procedure InitRightsTree(AClientDataSet: TClientDataSet);
+    function FindRigthParentNode(AParentRightGUID: string): TTreeNode;
   public
     { Public declarations }
   end;
@@ -187,7 +120,9 @@ end;
 
 procedure TfrmGroupRights.FormCreate(Sender: TObject);
 var
-  sGroupsSQL: string;
+  sGroupsSQL,
+  sUsersSQL,
+  sResourceSQL: string;
 begin
   inherited;
   if not Assigned(FGroupCompanyList) then
@@ -198,10 +133,25 @@ begin
 
   if not Assigned(FGroupRoleList) then
     FGroupRoleList := TList.Create;
+
+  if not Assigned(FGroupUserList) then
+    FGroupUserList := TList.Create;
+
+  if not Assigned(FGroupRightList) then
+    FGroupRightList := TList.Create;
     
-  sGroupsSQL := 'SELECT * FROM vw_Groups ORDER BY sCompanyID, iDeptOrder, iRoleOrder';
   FormId := '{3477B007-80AE-414E-BF67-9709FEEB3DD8}';
+
+  sGroupsSQL := 'SELECT * FROM vw_Groups ORDER BY sCompanyID, iDeptOrder, iRoleOrder';
   cdsGroups.Data := EasyRDMDisp.EasyGetRDMData(sGroupsSQL);
+
+  sUsersSQL := 'SELECT  LoginGUID, sLoginName, sRoleGUID, sEmployeeGUID, sEmployeeCName,'
+               +' sEmployeeEName, sSexGUID FROM vw_InitUser '
+               +' WHERE bEnable = 1 ORDER BY iOrderNo';
+  cdsUsers.Data := EasyRDMDisp.EasyGetRDMData(sUsersSQL);
+
+  sResourceSQL := 'SELECT * FROM sysResource ORDER BY iOrder';
+  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sResourceSQL);
 end;
 
 procedure TfrmGroupRights.InitGroupsTree(AClientDataSet: TClientDataSet);
@@ -256,8 +206,8 @@ begin
         FGroupCompanyList.Add(AGroupCompany);
         ARootNode := tvUserGroups.Items.AddChild(AGroupRootNode, AGroupCompany.CompanyCName);
 
-        ARootNode.ImageIndex := 4;
-        ARootNode.SelectedIndex := 4;
+        ARootNode.ImageIndex := 16;
+        ARootNode.SelectedIndex := ARootNode.ImageIndex + 1;
 
         ARootNode.Data := AGroupCompany;
       end;
@@ -284,8 +234,8 @@ begin
         FGroupCompanyList.Add(AGroupCompany);
         ARootNode := tvUserGroups.Items.AddChild(nil, AGroupCompany.CompanyCName);
 
-        ARootNode.ImageIndex := 4;
-        ARootNode.SelectedIndex := 4;
+        ARootNode.ImageIndex := 16;
+        ARootNode.SelectedIndex := ARootNode.ImageIndex + 1;
 
         ARootNode.Data := AGroupCompany;
       end;
@@ -306,53 +256,9 @@ begin
   inherited;
 
   InitGroupsTree(cdsGroups);
-end;
 
-{ TGroupCompany }
-
-function TGroupCompany.GetCompanyCName: string;
-begin
-  Result := FCompanyCName;
-end;
-
-function TGroupCompany.GetCompanyEName: string;
-begin
-  Result := FCompanyEName;
-end;
-
-function TGroupCompany.GetCompanyID: string;
-begin
-  Result := FCompanyID;
-end;
-
-function TGroupCompany.GetGUID: string;
-begin
-  Result := FGUID;
-end;
-
-function TGroupCompany.GetParentCompanyGUID: string;
-begin
-  Result := FParentCompanyGUID;
-end;
-
-procedure TGroupCompany.SetCompanyCName(const Value: string);
-begin
-  FCompanyCName := Value;
-end;
-
-procedure TGroupCompany.SetCompanyEName(const Value: string);
-begin
-  FCompanyEName := Value;
-end;
-
-procedure TGroupCompany.SetCompanyID(const Value: string);
-begin
-  FCompanyID := Value;
-end;
-
-procedure TGroupCompany.SetGUID(const Value: string);
-begin
-  FGUID := Value;
+  //初始化权限
+  InitRightsTree(cdsResources);
 end;
 
 procedure TfrmGroupRights.FormDestroy(Sender: TObject);
@@ -366,14 +272,13 @@ begin
   for I := FGroupDeptList.Count - 1 downto 0 do
     TObject(FGroupDeptList.Items[I]).Free;
 
-  for I := FGroupRoleList.Count - 1 downto 0 do
-    TObject(FGroupRoleList.Items[I]).Free;
+  for I := FGroupUserList.Count - 1 downto 0 do
+    TObject(FGroupUserList.Items[I]).Free;
 
-end;
+  DisposeGroupRoleList;
 
-procedure TGroupCompany.SetParentCompanyGUID(const Value: string);
-begin
-  FParentCompanyGUID := Value;
+  for I := FGroupRightList.Count - 1 downto 0 do
+    TObject(FGroupRightList.Items[I]).Free; 
 end;
 
 function TfrmGroupRights.InitRootGroupTree(
@@ -400,74 +305,12 @@ begin
     FGroupCompanyList.Add(AGroupCompany);
     Result := tvUserGroups.Items.AddChild(nil, AGroupCompany.CompanyCName);
 
-    Result.ImageIndex := 4;
-    Result.SelectedIndex := 4;
+    Result.ImageIndex := 12;
+    Result.SelectedIndex := Result.ImageIndex + 1;
 
     Result.Data := AGroupCompany;
   end;
   AClientDataSet.Filtered := False;
-end;
-
-{ TGroupDept }
-
-function TGroupDept.GetCompanyGUID: string;
-begin
-  Result := FCompanyGUID;
-end;
-
-function TGroupDept.GetDeptCName: string;
-begin
-  Result := FDeptCName;
-end;
-
-function TGroupDept.GetDeptEName: string;
-begin
-  Result := FDeptEName;
-end;
-
-function TGroupDept.GetDeptGUID: string;
-begin
-  Result := FDeptGUID;
-end;
-
-function TGroupDept.GetiOrder: Integer;
-begin
-  Result := FiOrder;
-end;
-
-function TGroupDept.GetParentDeptGUID: string;
-begin
-  Result := FDeptGUID;
-end;
-
-procedure TGroupDept.SetCompanyGUID(const Value: string);
-begin
-  FCompanyGUID := Value;
-end;
-
-procedure TGroupDept.SetDeptCName(const Value: string);
-begin
-  FDeptCName := Value;
-end;
-
-procedure TGroupDept.SetDeptEName(const Value: string);
-begin
-  FDeptEName := Value;
-end;
-
-procedure TGroupDept.SetDeptGUID(const Value: string);
-begin
-  FDeptGUID := Value;
-end;
-
-procedure TGroupDept.SetiOrder(const Value: Integer);
-begin
-  FiOrder := Value;
-end;
-
-procedure TGroupDept.SetParentDeptGUID(const Value: string);
-begin
-  FParentDeptGUID := Value;
 end;
 
 function TfrmGroupRights.InitRootDeptTree(
@@ -500,6 +343,10 @@ begin
       Result := tvUserGroups.Items.AddChild(FindGroupCompany(AGroupDept.CompanyGUID),
                                             AGroupDept.DeptCName);
       Result.Data := AGroupDept;
+
+      Result.ImageIndex := 17;
+      Result.SelectedIndex := Result.ImageIndex + 1;
+      
       AClientDataSet.Next;
     end;
   end;
@@ -515,7 +362,6 @@ begin
   ATmpPointer := nil;
   for I := 0 to FGroupCompanyList.Count - 1 do
   begin
-//    ShowMessage(TGroupCompany(FGroupCompanyList.Items[I]).GUID);
     if TGroupCompany(FGroupCompanyList.Items[I]).GUID = ACompanyGUID then
     begin
       ATmpPointer := FGroupCompanyList.Items[I];
@@ -580,6 +426,10 @@ begin
         end;
         Result.Data := AGroupDept;
       end;
+
+      Result.ImageIndex := 17;
+      Result.SelectedIndex := Result.ImageIndex + 1;
+
       AClientDataSet.Next;
     end;
   end;
@@ -614,77 +464,15 @@ begin
   end;
 end;
 
-{ TGroupRole }
-
-function TGroupRole.GetDeptGUID: string;
-begin
-  Result := FDeptGUID;
-end;
-
-function TGroupRole.GetDescription: string;
-begin
-  Result := FDescription;
-end;
-
-function TGroupRole.GetiOrder: Integer;
-begin
-  Result := iOrder;
-end;
-
-function TGroupRole.GetParentRoleGUID: string;
-begin
-  Result := FParentRoleGUID;
-end;
-
-function TGroupRole.GetRoleGUID: string;
-begin
-  Result := RoleGUID;
-end;
-
-function TGroupRole.GetRoleName: string;
-begin
-  Result := RoleName;
-end;
-
-procedure TGroupRole.SetDeptGUID(const Value: string);
-begin
-  FDeptGUID := Value;
-end;
-
-procedure TGroupRole.SetDescription(const Value: string);
-begin
-  FDescription := Value;
-end;
-
-procedure TGroupRole.SetiOrder(const Value: Integer);
-begin
-  FiOrder := Value;
-end;
-
-procedure TGroupRole.SetParentRoleGUID(const Value: string);
-begin
-  FParentRoleGUID := Value;
-end;
-
-procedure TGroupRole.SetRoleGUID(const Value: string);
-begin
-  FRoleGUID := Value;
-end;
-
-procedure TGroupRole.SetRoleName(const Value: string);
-begin
-  FRoleName := Value;
-end;
-
 procedure TfrmGroupRights.InitRoleTree(AClientDataSet: TClientDataSet; ADeptGUID: string);
 var
   I         : Integer;
   AGroupRole: TGroupRole;
+  ATmpRoleNode: TTreeNode;
 begin
   AClientDataSet.Filtered := False;
   AClientDataSet.Filter := ' DeptGUID = ' + QuotedStr(ADeptGUID) + ' AND RoleGUID <> ' + QuotedStr('');
   AClientDataSet.Filtered := True;
-
   for I := 0 to AClientDataSet.RecordCount - 1 do
   begin
     AGroupRole := TGroupRole.Create;
@@ -699,9 +487,12 @@ begin
     end;
     FGroupRoleList.Add(AGroupRole);
     //将角色节点挂靠到对应的部门节点下面
-    tvUserRoles.Items.AddChild(nil, AGroupRole.RoleName);
-//    tvUserGroups.Items.AddChild(FindGroupDept(AGroupRole.DeptGUID),
-//                                          AGroupRole.RoleName);
+    ATmpRoleNode := tvUserRoles.Items.AddChild(nil, AGroupRole.RoleName);
+    ATmpRoleNode.Data := AGroupRole;
+
+    ATmpRoleNode.ImageIndex := 3;
+    ATmpRoleNode.SelectedIndex := ATmpRoleNode.ImageIndex + 1;
+
     AClientDataSet.Next;
   end;
   AClientDataSet.Filtered := False;
@@ -715,7 +506,14 @@ end;
 
 procedure TfrmGroupRights.DisplayRoles(ADeptGUID: string);
 begin
+  tvUserRoles.Items.BeginUpdate;
+  tvUserRoles.Items.Clear;
+
+  //先释放之前的角色对象
+  DisposeGroupRoleList;
   InitRoleTree(cdsGroups, ADeptGUID);
+  
+  tvUserRoles.Items.EndUpdate;
 end;
 
 function TfrmGroupRights.GetDeptGUID(APointer: Pointer): string;
@@ -727,6 +525,184 @@ begin
   begin
     if APointer = FGroupDeptList.Items[I] then
       Result := TGroupDept(FGroupDeptList.Items[I]).DeptGUID;
+  end;
+end;
+
+procedure TfrmGroupRights.tvUserRolesClick(Sender: TObject);
+begin
+  inherited;
+  DisplayUsers(GetRoleGUID(tvUserRoles.Selected.Data));
+end;
+
+procedure TfrmGroupRights.DisplayUsers(ARoleGUID: string);
+begin
+  tvUsers.Items.BeginUpdate;
+  tvUsers.Items.Clear;
+
+  DisposeGroupUserList;
+  InitUserTree(cdsUsers, ARoleGUID);
+  tvUsers.Items.EndUpdate;
+end;
+
+procedure TfrmGroupRights.InitUserTree(AClientDataSet: TClientDataSet;
+  ARoleGUID: string);
+var
+  I           : Integer;
+  AGroupUser  : TGroupUser;
+  ATmpUserNode: TTreeNode;
+begin
+  AClientDataSet.Filtered := False;
+  AClientDataSet.Filter := ' sRoleGUID = ' + QuotedStr(ARoleGUID);
+  AClientDataSet.Filtered := True;
+
+  for I := 0 to AClientDataSet.RecordCount - 1 do
+  begin
+    AGroupUser := TGroupUser.Create;
+    with AGroupUser do
+    begin
+      LoginGUID := AClientDataSet.fieldbyname('LoginGUID').AsString;
+      LoginName := AClientDataSet.fieldbyname('sLoginName').AsString;
+      RoleGUID := AClientDataSet.fieldbyname('sRoleGUID').AsString;
+      EmployeeGUID := AClientDataSet.fieldbyname('sEmployeeGUID').AsString;
+      EmployeeCName := AClientDataSet.fieldbyname('sEmployeeCName').AsString;
+      EmployeeEName := AClientDataSet.fieldbyname('sEmployeeEName').AsString;
+      SexGUID := AClientDataSet.fieldbyname('sSexGUID').AsString;
+    end;
+    FGroupUserList.Add(AGroupUser);
+    //将角色节点挂靠到对应的部门节点下面
+    ATmpUserNode := tvUsers.Items.AddChild(nil, AGroupUser.EmployeeCName);
+    ATmpUserNode.Data := AGroupUser;
+
+    if AGroupUser.SexGUID = '{CEE37D8D-A822-459A-8352-A723C12C5294}' then
+    begin
+      ATmpUserNode.ImageIndex := 1;
+      ATmpUserNode.SelectedIndex := ATmpUserNode.ImageIndex + 1;
+    end
+    else
+    begin
+      ATmpUserNode.ImageIndex := 0;
+      ATmpUserNode.SelectedIndex := ATmpUserNode.ImageIndex + 1;
+    end;
+
+    AClientDataSet.Next;
+  end;
+  AClientDataSet.Filtered := False;
+end;
+
+function TfrmGroupRights.GetRoleGUID(APointer: Pointer): string;
+var
+  I: Integer;
+begin
+  Result := '';
+  for I := 0 to FGroupRoleList.Count - 1 do
+  begin
+    if APointer = FGroupRoleList.Items[I] then
+    begin
+      Result := TGroupRole(FGroupRoleList.Items[I]).RoleGUID;
+    end;
+  end;
+end;
+
+procedure TfrmGroupRights.DisposeGroupRoleList;
+var
+  I: Integer;
+begin
+  for I := FGroupRoleList.Count - 1 downto 0 do
+    TGroupRole(FGroupRoleList.Items[I]).Free;
+  FGroupRoleList.Clear;
+end;
+
+procedure TfrmGroupRights.DisposeGroupUserList;
+var
+  I: Integer;
+begin
+  for I := FGroupUserList.Count - 1 downto 0 do
+    TGroupUser(FGroupUserList.Items[I]).Free;
+  FGroupUserList.Clear;
+end;
+
+procedure TfrmGroupRights.InitRightsTree(AClientDataSet: TClientDataSet);
+var
+  I: Integer;
+  ATmpRightNode: TTreeNode;
+  AGroupRight  : TGroupRight;
+begin
+  //先初始化模块
+  AClientDataSet.Filtered := False;
+  AClientDataSet.Filter := 'sParentResourceGUID = ' + QuotedStr('{00000000-0000-0000-0000-000000000003}');
+  AClientDataSet.Filtered := True;
+
+  for I := 0 to AClientDataSet.RecordCount - 1 do
+  begin
+    AGroupRight := TGroupRight.Create;
+
+    with AGroupRight do
+    begin
+      GUID := AClientDataSet.fieldbyname('GUID').AsString;
+      ResourceGUID := AClientDataSet.fieldbyname('ResourceGUID').AsString;
+      ResourceName := AClientDataSet.fieldbyname('sResourceName').AsString;
+      ParentResourceGUID := AClientDataSet.fieldbyname('sParentResourceGUID').AsString;
+      iOrder := AClientDataSet.fieldbyname('iOrder').AsInteger;
+      Checked := False;
+    end;  
+
+    ATmpRightNode := tvCheckRights.Items.AddChild(nil, AGroupRight.ResourceName);
+    ATmpRightNode.Data := AGroupRight;
+    FGroupRightList.Add(AGroupRight);
+
+    ATmpRightNode.ImageIndex := 15;
+    ATmpRightNode.SelectedIndex := ATmpRightNode.ImageIndex + 1;
+
+    AClientDataSet.Next;
+  end;
+  AClientDataSet.Filtered := False;
+
+  //挂靠可操作资源
+  AClientDataSet.Filtered := False;
+  AClientDataSet.Filter := 'sParentResourceGUID <> ' + QuotedStr('{00000000-0000-0000-0000-000000000003}');
+  AClientDataSet.Filtered := True;
+
+  for I := 0 to AClientDataSet.RecordCount - 1 do
+  begin
+    AGroupRight := TGroupRight.Create;
+
+    with AGroupRight do
+    begin
+      GUID := AClientDataSet.fieldbyname('GUID').AsString;
+      ResourceGUID := AClientDataSet.fieldbyname('ResourceGUID').AsString;
+      ResourceName := AClientDataSet.fieldbyname('sResourceName').AsString;
+      ParentResourceGUID := AClientDataSet.fieldbyname('sParentResourceGUID').AsString;
+      iOrder := AClientDataSet.fieldbyname('iOrder').AsInteger;
+      Checked := False;
+    end;  
+
+    ATmpRightNode := tvCheckRights.Items.AddChild(FindRigthParentNode(AGroupRight.ParentResourceGUID),
+                                                  AGroupRight.ResourceName);
+    ATmpRightNode.Data := AGroupRight;
+    FGroupRightList.Add(AGroupRight);
+
+    ATmpRightNode.ImageIndex := 15;
+    ATmpRightNode.SelectedIndex := ATmpRightNode.ImageIndex + 1;
+
+    AClientDataSet.Next;
+  end;
+  AClientDataSet.Filtered := False;
+end;
+
+function TfrmGroupRights.FindRigthParentNode(
+  AParentRightGUID: string): TTreeNode;
+var
+  I: Integer;
+begin
+  Result := nil;
+  for I := 0 to tvCheckRights.Items.Count - 1 do
+  begin
+//    ShowMessage(TGroupRight(tvCheckRights.Items.Item[I]).GUID + '=' + AParentRightGUID);
+    if TGroupRight(tvCheckRights.Items.Item[I].Data).GUID = AParentRightGUID then
+    begin
+      Result := tvCheckRights.Items.Item[I];
+      Break;
+    end;
   end;
 end;
 

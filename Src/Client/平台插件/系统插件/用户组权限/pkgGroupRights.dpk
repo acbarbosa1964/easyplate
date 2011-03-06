@@ -39,6 +39,7 @@ requires
   pkEasyPlateBaseForm;
 
 contains
-  untGroupRights in 'untGroupRights.pas' {frmGroupRights};
+  untGroupRights in 'untGroupRights.pas' {frmGroupRights},
+  untGroupRightsObjects in 'untGroupRightsObjects.pas';
 
 end.
