@@ -1,0 +1,804 @@
+FastReport问题整理
+部分来自网上，部分来自网友，部分来自Demo
+如果有新的内容，会不断更新..
+
+更新历史：
+
+2009-02-27 加入套打方案全攻略（原：jinzhili博客）
+
+2009-03-03 FastReport打印CxGrid数据
+
+========================================================================
+  新版本
+
+1.FastReport中如果访问报表中的对象？
+  可以使用FindObject方法。
+  TfrxMemoView(frxReport1.FindObject('memo1')).Text:='FastReport';
+
+2.FastReport中如何使用上下标？
+  设置frxmemoview.AllowHTMLTags := True;在Text输入如下
+  上标：mm<sup>2</sup>
+  下表：k<sub>6</sub>
+  举一反三，你还可以使用其他HTML标记。
+
+3.FastReport中如何打印总页数？
+  设置两次报表后加入引号内内容 "第[Page#]页 共[TotalPages#]页"
+
+4.FastReport中如何动态加入变量及变量组？
+  建立变量组名
+  frxreport1.Variables.Add.Name:=' '+变量组名;
+  建立变量名
+  frxreport1.Variables.AddVariable('组名，如果为不存的组或空，则为默认组，这里不需要
+
+空格',变量名,变量初始值);
+  例如要建立变量组Yuan,二个变量Yuan1,Yuan2，则为
+  frxreport1.Variables.Add.Name:=' Yuan'注意前面是空格
+  frxreport1.Variables.AddVariable('Yuan',Yuan1,初始值)
+  frxreport1.Variables.AddVariable('Yuan',Yuan2,初始值)
+
+5.FastReport中如何加入自定义函数？
+  Fastreport可以自己加入需要的函数，来实现特定的功能。过程就是：
+1)添加函数到报表中。
+frxreport1.AddFunction('完整的函数声明');
+如有一个自定义函数，为GetName(Old:String):String;这个函数通过数据集的一个字段，得到另
+
+一个返回值。
+则语句为：frxreport1.AddFunction('Function GetName(Old:String):String;');
+2)脚本中使用函数。
+在脚本中或报表中使用自定义函数，就像使用其它Fastreport内置函数一样。
+3)程序中处理函数。
+使用函数是通过frxreport1的OnUserFunction函数来实现的。
+OnUserFunction的声明如下：Function(const MethodName: String;var Params: Variant): 
+
+Variant;
+比如上面的函数，首先要有一个函数，这个函数是GetName的实现部分。如有一个在程序中实现的
+
+函数。
+function RealGetName(Old:String):String;这个函数名是无所谓的，也可以是GetName。
+在OnUserFunction的事件处理中有如下代码即可完成自定义函数在报表中的使用。
+if CompareText(MethodName,'GetName')=0 then Result:=RealGetName(VarToStr(Params[0]));
+我一般都是使用CompareText来比较函数名，因为我发现二个版本的Fastreport，一个是
+
+MethodName全部自动变成了小写，一个是全部自动变成了大写，所以干脆用CompareText来比较，
+
+肯定不会出错。
+
+如果有多个参数，则依次传递Params[0],Params[1]即可，要保持顺序一致。
+这里要注意一点，如果参数为指针，则不能直接使用Pointer(Integer(Params[0]))。因为实际传
+
+递过来的是指针的整数值，可以使用Pointer(StrToInt(VarToStr(Params[0])))。
+
+6.FastReport中如何共用TFrxreport及TfrxDBDataSet？
+一个程序中，不管多么大的程序，只要打印或预览时是模式的，则完全可以共用一个TFrxreport
+
+变量及几个TfrxDBDataSet。只不过，要注意完成一个报表程序的步骤，主要是下面几步
+1)清除报表，得到一个全新的报表内容。
+Frxreport1.clear。
+2)设置要使用的TfrxDBDataSet的别名，如果不需要可以省略这一步，但一般最好不同的报表用不
+
+同的别名。
+注意这一步要在加载报表文件之前，因为一般设计报表文件时已经包含了别名信息。
+frxDBDataSet1.UserName:=别名;
+3)加载报表或动态建立一个TfrxReportPage。
+Frxreport1.LoadFromFile(报表文件的完整文件名);
+4)关联TfrxDBDataSet与TDataset，并设置要使用哪些TfrxDBDataSet。
+Frxreport1.DataSets.Clear;//先清除原来的数据集
+frxDBDataSet1.DataSet:=dataset1;//关联Fastreport的组件与TDataset数据集。
+Frxreport1.DataSets.Add(frxDBDataSet1);//加载关联好的TfrxDBDataSet到报表中。
+经过这几步后，就可以像单独使用一个Tfrxreport一样使用共用的报表组件了
+
+
+7.FastReport中如何使用脚本，脚本中使用变量？
+很多时候，我们希望把对报表的控制放到报表的脚本中，通常我这样做有二个原因：
+1)能够根据字段内容的变化而使用不同的设置，因为如果想在程序中实现这样功能，就不得不用
+
+自定义函数，函数的实现要放到程序中，函数可能需要传递很多参数，效率低下。
+2)把不同报表的控制放到脚本中，可以实现报表的模块化，程序只是简单的设置数据集的关系，
+
+并加载硬盘上的报表文件，不同报表的不同实现方式，显示方式，均放到报表文件中，程序简洁
+
+，易维护，易升级。
+当然，这样的缺点就是程序中加载报表时的数据集别名必须与设计报表时的别名一致。
+脚本的使用与通常程序的使用并没有太多的区别，就是像正常的程序那样引用控件的名称即可。
+但注意对变量的使用，需要把变量名或表达式用<>括起来。
+
+实现打印分组的页数。基本的原理就是：
+１）必须使用二遍报表，因为FS算总页数就是需要二遍报表的。
+２）在第一遍报表中，在GroupBand打印前，动态的建立整数型数组变量，用以保存上一个分组的
+
+总页数。
+３）在最后一遍报表时，需要显示分组页数的Tfrxmemoview取得数组中的数据，但最后一个分组
+
+不会有总数，可以通过总页数减去GroupBand事件中保存的页数来取得。
+４）代码中处理了一页多组，及一组多页打印分组头的情况。可以看到这些特殊处理的代码说明
+
+。
+５）我特意在分组尾及页脚都用了Tfrxmemoview来显示这些数据，说明在不同情况下的显示。
+
+8.FastReport中如何在脚本中根据字段名改变Tfrxmemoview的内容？
+假设有数据表“用户”，字段ID为用户标识，Name为用户名，打印时要求，如果用户名为空，则
+
+打印“无用户名”，否则打印出“用户名：实际的用户”，则可以在ID的Tfrxmemoview控件的
+
+OnAfterData事件中写如下脚本。
+if <frxDBDataSet1."Name">='' then
+Memo2.Text:='无用户名'
+else
+Memo2.Text:='用户名：[frxDBDataSet1."Name"]'
+Memo2是放置用户名称数据的Tfrxmemoview控件。
+这里注意，要在脚本中访问变量需要把变量用<>包括起来。
+
+9.FastReport中如何动态调整高度？
+我经常使用下面的几个函数来实现Band及Tfrxmemoview高度的动态调整，需要注意的是：下面的
+
+函数只能调整一个Band中多行的最后一行，如果只有一行（多数情况下应该是这样）就无所谓了
+
+，而且这是在宽度已经固定的前提下。在想要调整高度的Band的OnBeforePrint事件中写 
+
+SetMemo(Sender);，代码如下，粘贴到代码页中就可以使用。
+
+下面的代码也可以演变一些，实现动态宽度等。我多处都判断了Tag是否为7635,因为我经常需要
+
+单独调用其中的某个函数。
+
+//7635为保留数字，表示不作任何调整，通常用在多行的最上方
+function Biger(Old:Extended):Integer;
+begin
+Result:=Trunc(Old);
+if Frac(Old)>0 then
+Result:=Result+1;
+end;
+
+procedure JustHeight(Sender:TfrxComponent);
+var
+RealHeight:Integer;
+begin
+RealHeight:=Biger(TFrxMemoView(Sender).CalcHeight+TFrxMemoView(Sender).Top);
+if Biger(TfrxBand(Sender.Parent).Height)<RealHeight then
+begin
+//若MEMO的高度小于BAND但计算高度大于BAND，则在调整BAND的函数中就会被调整
+TfrxBand(Sender.Parent).Height:=Biger(RealHeight);
+JustBandHeight(Sender.Parent);
+end
+else
+TfrxMemoView(Sender).Height:=TfrxBand(Sender.Parent).Height
+-TfrxMemoView(Sender).Top;
+end;
+
+procedure JustBandHeight(Sender:TfrxComponent);
+var
+I:Integer;
+begin
+for I:=0 to Sender.Objects.Count-1 do
+if TObject(Sender.Objects.Items[I]) is TFrxMemoView then
+if TFrxMemoView(Sender.Objects.Items[I]).Tag=7635 then Continue
+else
+//如果小才改变，如果大则不能改变
+if Biger(TfrxMemoView(Sender.Objects.Items[I]).Height+
+TfrxMemoView(Sender.Objects.Items[I]).Top)<>Biger(TfrxBand(Sender).Height) then
+TfrxMemoView(Sender.Objects.Items[I]).Height:=
+Biger(TfrxBand(Sender).Height-TfrxMemoView(Sender.Objects.Items[I]).Top);
+end;
+
+procedure JustMemo(Sender:TfrxComponent);
+begin
+if not Engine.FinalPass then Exit;
+if Sender.Tag<>7635 then
+JustHeight(Sender);
+end;
+
+procedure SetMemo(Sender:TfrxComponent);
+var
+I:Integer;
+begin
+for I:=0 to Sender.Objects.Count-1 do
+if TObject(Sender.Objects.Items[I]) is TFrxMemoView then
+if TfrxMemoView(Sender.Objects.Items[I]).Tag<>7635 then
+TfrxMemoView(Sender.Objects.Items[I]).OnAfterData:='JustMemo';
+end;
+
+10.FastReport中如何实现套打？
+纸张是连续的带锯齿的已经印刷好的，类似于通信公司发票这里设计的是客户销售记录。
+客户有两个要求：
+1、因为打印纸张是印刷的，明细记录只有8行，所以，如果明细记录如果不到8行，就将公司名称
+
+、销售记录打印在上面，下一个公司的信息打印在下一页，而不能接在该页上（呵呵，是啊，如
+
+果接在一起，那印刷单就失去意义了）
+2、如果销售记录超过8行，则从第9行开始的销售记录打印在下一页（所谓下一页，其实就是锯齿
+
+分割的下一*，称呼“下一份”比较妥切？），并且抬头（也就是公司名称）也要打上（如果不打
+
+印抬头，撕下了后，可能弄混淆了，不知道这一页是哪个公司的）
+问题描述标准说法是不是应该叫“打印固定行”、“强制换页”？
+
+回答：每页打印抬头的问题，就是把包含公司名称的Band每页重复打印即可。属性中有一个的。
+
+勾选就行了。
+至于固定行，实际上设计套打时，页面大小都是固定的，每一行的高度也都是固定的，页眉与页
+
+脚也是固定的，这样设计出来的报表可打印的行数自然就是你要求的 8行了。根本不需要什么强
+
+制换页。因为根据纸张会自动换页的。你要做的就是设计好纸张尽寸、页面布局，就得了，套打
+
+是一种最简单的打印，不用想的太复杂。
+
+11.FastReport中如何实现连续打印？
+很多人认为Fr不能实现连续打印，以为只能通过自己写函数调用打印函数来实现连续打印，实际
+
+上，Fr可以轻易的实现连续打印，同时，实现时又是非常简单，你甚至可以在你的程序的打印设
+
+置中简单的让客户选择是否连续打印，其它都可以保持不变。
+
+function PelsTomm(Pels:Extended):Extended;
+begin
+Result:=Pels/Screen.PixelsPerInch*25.4;
+end;
+
+procedure PrintSerial(Frx:TFrxReport;SequencePage:Byte=0);
+var
+P:TfrxReportPage;
+R,R1:Extended;
+begin
+{必须是二遍报表，否则无法计算总页数。
+下面的方法只适用于没有页脚的情况，因为如果有页脚的话
+FreeSpace就始终为0了。可以用报表脚来代替。
+因为是连续打印，也可以看作只有一页，报表脚也就相当于页脚了}
+if not Frx.Engine.DoublePass then Exit;
+//SequencePage指要连续打印的页面，普通报表就是0
+P:=TfrxReportPage(Frx.Pages[SequencePage]);
+R1:=P.TopMargin+P.BottomMargin;
+while Frx.PrepareReport do
+begin
+if (Frx.Engine.TotalPages<=1) then Break;
+R:=Pelstomm(Frx.Engine.TotalPages*Frx.Engine.PageHeight-
+Frx.Engine.FreeSpace)+R1;
+P:=TfrxReportPage(Frx.Pages[SequencePage]);
+P.PaperHeight:=R;
+end;
+{必须用上面的循环代码来得到准确的空白区域
+不能用通过计算总页数减去各页的页边距的方法来获得空白区域
+因为如果碰到一条记录过宽的情况导致换页，就不准确了。}
+R:=Pelstomm(Frx.Engine.TotalPages*Frx.Engine.PageHeight-
+Frx.Engine.FreeSpace)+R1;
+P:=TfrxReportPage(Frx.Pages[SequencePage]);
+P.PaperHeight:=R;
+end;
+
+在预览或打印前先调用PrintSerial即可。
+
+12.如何在程序中指定打印机名称?
+frxReport1.Report.PrintOptions.Printer := '打印机名称';
+
+
+13.如何使用打印机直接打印?
+implementation
+uses Printers;
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  Printer.PrinterIndex := 0;{网络打印机也是要安装在你本地的操作系统中的，直接使用顺序
+
+试试吧}
+  Printers.Printer.SetPrinter('HP1020','HP1020','LPT1',0);{打印机名字，驱动，端口等，
+
+自查，我是用虚拟打印机测试的}
+
+  Printers.Printer.BeginDoc;
+  Printers.Printer.Canvas.TextOut(10,10,'打印这一行字');
+  Printers.Printer.EndDoc;
+end; 
+
+14.如何打印空白处？
+在打印报表的Band处的OnBeforePrint事件中添加代码：
+  while FreeSpace > 20 do
+    ShowBand(Child1)
+
+
+15.如何打印指定行数后换页？
+在master band中OnBeforePrint事件中写代码：
+  var
+    vLineCount: integer;
+  begin
+    vLineCount := vLineCount + 1;  
+    if vLineCount = 10 then  
+    begin  
+      vLineCount := 0;  
+      NewPage;    
+    end;
+  end;
+
+16.fastreport中如何把数据显示为百分比
+DisplayFormat属性，其中的Kind你设置成fkNumeric,FormatStr
+[<frxDBDataset1."sjl">*100 #n%2.2f]%”。
+
+17.FastReport如何打印表格式的空行？ 
+var  
+  PageLine: integer;       //在現在頁列印到第幾行  
+  PageMaxRow: integer=15;  //設定每頁列數
+procedure MasterData1OnBeforePrint(Sender: TfrxComponent);
+begin  
+  PageLine := <Line> mod PageMaxRow;  
+  if (PageLine = 1) and (<line> > 1) then    
+    Engine.newpage;
+  child1.visible := False;
+end;
+
+
+
+//Footer1高度設為0
+procedure Footer1OnBeforePrint(Sender: TfrxComponent);
+
+var  
+  i: integer;
+begin  
+  i := iif(PageLine=0, PageMaxRow, PageLine);  
+  child1.visible := True;
+  while i < PageMaxRow do 
+  begin    
+    i := i + 1; 
+   Engine.ShowBand(Child1);  //印空白表格
+  end;
+  child1.visible := False;
+end;
+begin
+end. 
+
+========================================================================
+  早期版本
+
+---------------- 使用自定义函数 ----------------------------------------
+
+Q: 我怎样添加我的自定义函数?
+A: 使用 TfrReport.OnUserFunction 事件. 这里有一个简单的例子:
+
+procedure TForm1.frReport1UserFunction(const Name: String;
+p1, p2, p3: Variant; var val: Variant);
+begin
+if AnsiCompareText('SUMTOSTR', Name) = 0 then
+val := My_Convertion_Routine(frParser.Calc(p1));
+end;
+
+然后，你就可以在报表（任何表达式或脚本）的任何地方使用 SumToStr 函数了。
+
+
+Q: 但是它仅仅能工作在一个TfrReport组件中。可我想在任何地方（在所有的TfrReport组件中）
+
+使用的我的自定义函数？
+A: 使 OnUserFunction event 句柄作为所有组件的公用句柄。如果你不能做到这一点，你需要创
+
+建函数库：
+
+type
+TMyFunctionLibrary = class(TfrFunctionLibrary)
+public
+constructor Create; override;
+procedure DoFunction(Fno: Integer; p1, p2, p3: Variant;
+var val: Variant); override;
+end;
+
+constructor TMyFunctionLibrary.Create;
+begin
+inherited Create;
+with List do
+begin
+Add('DATETOSTR');
+Add('SUMTOSTR');
+end;
+end;
+
+procedure TMyFunctionLibrary.DoFunction(Fno: Integer; p1, p2, p3: Variant;
+var val: Variant);
+begin
+val := 0;
+case Fno of
+0: val := My_DateConvertion_Routine(frParser.Calc(p1));
+1: val := My_SumConvertion_Routine(frParser.Calc(p1));
+end;
+end;
+
+要注册函数库，调用
+frRegisterFunctionLibrary(TMyFunctionLibrary);
+要卸载函数库，调用
+frUnRegisterFunctionLibrary(TMyFunctionLibrary);
+
+
+Q: 我怎样将我的函数添加到函数列表中 (用表达式生成器)?
+A: 使用 frAddFunctionDesc 过程 (在FR_Class 单元中):
+
+frAddFunctionDesc(FuncLib, 'SUMTOSTR', 'My functions',
+ 'SUMTOSTR(<Number>)/Converts number to its verbal presentation.');
+
+注意: "/" 符号是必须的! 它从它的描述中分隔函数语法。
+FuncLib 被声明为你自己的函数库 (如果你不使用函数库可以将其设置为nil). 当函数库未注册
+
+时，所有它的函数将自动从函数列表中删除。
+
+
+---------------- 使用变量 -------------------------------------
+
+Q: 我怎样编程实现填充变量列表（在数据词典中）?
+
+A: 数据词典中的所有变量及分类都被存储在 TfrReport.Dictionary.Variables 中.
+
+with frReport1.Dictionary do
+begin
+// 创建分类(名称用空白)
+Variables[' New category'] := ' ';
+// 创建变量
+Variables['New Variable'] := 'CustomerData.Customers."CustNo"';
+Variables['Another Variable'] := 'Page#';
+end;
+
+Q: 我定义了字符串变量:
+
+with frReport1.Dictionary do
+Variables['Month'] := 'March';
+
+但是当我运行报表是，出现了错误，为什么?
+
+A: 因为 FastReport 假定数据词典中的字符串变量值是一个表达式，它需要分析、计算它。
+可以使用其它的方法:
+
+with frReport1.Dictionary do
+Variables['Month'] := '''' +'March' + '''';
+
+或者, 使用 frVariables 来传输固定数据到报表。
+
+
+Q: 我不想在数据词典中显示某些数据集？
+
+A: 使用 TfrReport.Dictionary.DisabledDatasets:
+
+with frReport1.Dictionary do
+begin
+// 关闭该数据集
+DisabledDatasets.Add('CustomerData.Bio');
+// 或者, 关闭整个数据模块/窗体
+DisabledDatasets.Add('CustomerData*');
+end;
+
+
+Q: 我怎样将数据传送到报表?
+
+A: 有几个方法可以实现它. 第一是使用全局对象 frVariables (在 FR_Class 单元中被定义):
+
+frVariables['My variable'] := 10;
+
+这段代码创建了一个名称为“My variable”，值为 10 的变量。这是最好的传输固定数据的报表
+
+的方法。
+
+第二种方法是使用 TfrReport.OnGetValue 事件. 这可以使用这个方法来传送动态数据、记录等
+
+。
+
+procedure TForm1.frReport1GetValue(ParName: String; var ParValue: Variant);
+begin
+if ParName = 'MyField' then
+ParValue := Table1MyField.Value;
+end;
+
+最后, 第三种方法是通过编程在数据词典中定义变量（可以参考以前的问题）:
+
+with frReport1.Dictionary do
+begin
+Variables['MyVariable'] := 'CustomerData.Customers."CustNo"';
+Variables['Another Variable'] := ’10’;
+end;
+
+
+Q: 我能在报表和程序间传送数据吗?
+A: 使用 frVariables 对象. 如果你在报表的任何对象的脚本中写入以下代码：
+
+MyVariable := 10
+
+那么，在你的程序中，你可以使用以下代码来获取 MyVariable 的值:
+v := frVariables['MyVariable'];
+
+
+---------------- 脚本 (FastReport Pascal) ---------------------------------
+
+Q: Band 中是否可以使用脚本?
+
+A: 当然. 选择 band ，然后按 Ctrl+Enter 或在对象浏览器中选择 "OnBeforePrint" 属性。
+
+Q: 报表页中是否可以使用脚本?
+
+A: 当然. 选择页 (在空白处单击) ，然后在对象浏览器中选择 "OnBeforePrint" 属性。如果该
+
+页是一个对话框窗体，那么这个属性就是 "OnActivate".
+
+
+Q: 我有两个对象: Memo1 和 Memo2. 我能否在 Memo1 的脚本中调用 Memo2 的属性和方法？
+
+A: 当然， 例如，你可以这样做： 对象名.属性名.
+
+
+Q: 在脚本中，我可以使用对象的哪些属性?
+
+A: 几乎所有你能在对象浏览器中看到的属性。例如，可以使用 Font.Name, Font.Size等来存取
+
+字体属性。
+
+
+---------------- 其它问题 --------------------------------------------
+
+Q: 怎样改变多页报表中某一页的顺序?
+
+A: 拖动页标签到目的位置。
+
+
+Q: 我想查看所有的字段及变量，我想在报表中使用列表来实现它？
+
+A: 设置 TfrReport.MixVariablesAndDBFields := True.现在，所有的数据字段及变量可在“插
+
+入数据字段”对话框中可存取了。
+
+
+Q: 我不想显示导入选项对话框？
+
+A: 在导入组件（比如，TfrTextExport)中设置所有必需的选项，然后通过设置ShowDialog属性为
+
+False来关闭此对话框。
+
+
+Q: 为什么 TotalPages 变量不起作用? 它总是返回 0.
+
+A: 在你的报表中设置 Two-pass 选项. 要设置它，你需要在报表设计器的“文件”菜单中，打开
+
+“报表选项”对话框。
+
+
+Q: 我用BLOB字段来存储我的报表。当我运行报表设计器时，它显示我的报表未命名？
+
+A: 在运行报表设计器前，这样做:
+
+frReport1.FileName := 'Name of my report';
+
+
+Q: 我想在重新定义报表设计器中的“打开”及“保存”按钮的功能？
+
+
+A: 查看 TfrDesigner 组件. 它有几个必需的事件: OnLoadReport 和
+OnSaveReport. 这里有一小段代码例子:
+
+procedure TForm1.frDesigner1LoadReport(Report: TfrReport;
+var ReportName: String; var Opened: Boolean);
+begin
+with MyOpenDialog do
+begin
+Opened := ShowModal = mrOk;
+if Opened then
+begin
+Report.LoadFromBlobField(…);
+ReportName := …;
+end;
+end;
+end;
+
+procedure TForm1.frDesigner1SaveReport(Report: TfrReport;
+var ReportName: String; SaveAs: Boolean; var Saved: Boolean);
+begin
+if SaveAs then
+with MySaveDialog do
+begin
+Saved := ShowModal = mrOk;
+if Saved then
+begin
+Report.SaveToBlobField(…);
+ReportName := …;
+end;
+end
+else
+Report.SaveToBlobField(…);
+end;
+
+
+Q: 在 QR 中, 我可以写这样的代码： QRLabel1.Caption := ’Some text’. 我可以用FR这样做
+
+吗？
+
+A: FR 对象并不是一个组件 (这并不像 QR, RB). 但使用 TfrReport.FindObject 方法可以通过
+
+对象名称找到该对象。
+
+var
+t: TfrMemoView;
+begin
+t := TfrMemoView(frReport1.FindObject(’Memo1’));
+if t <> nil then
+t.Memo.Text := ’FastReport’;
+end;
+
+
+Q: 我想在用户预览（TfrPreview组件）中自定义热键？
+
+A: 这个组件有个窗口: Tform 属性. 将自定义句柄指定到 Window.OnKeyDown 属性.
+
+
+Q: Fast Report 2.4 不能装载 FreeReport 2.21 文件？
+
+A: 这仅需要使用16进制数改变报表文件的第一字节，然后在源代码中修改下面的部分。在这些修
+
+改之后， 装载报表并保存它. 最后，返回到源代码处.
+
+FR_Class:
+
+function ReadString(Stream: Tstream): String;
+begin
+{ if frVersion >= 23 then}
+Result := frReadString(Stream) {else
+Result := frReadString22(Stream);}
+end;
+
+procedure ReadMemo(Stream: Tstream; Memo: Tstrings);
+begin
+{ if frVersion >= 23 then}
+frReadMemo(Stream, Memo){ else
+frReadMemo22(Stream, Memo);}
+end;
+
+
+FR_Utils:
+
+procedure frReadMemo(Stream: Tstream; l: Tstrings);
+var
+s: String;
+b: Byte;
+n: Word;
+begin
+l.Clear;
+l.Text := frReadString(Stream); exit;
+Stream.Read(n, 2);
+if n > 0 then
+repeat
+Stream.Read(n, 2);
+SetLength(s, n);
+Stream.Read(s[1], n);
+l.Add(s);
+Stream.Read(b, 1);
+until b = 0
+else
+Stream.Read(b, 1);
+end;
+
+function frReadString(Stream: Tstream): String;
+var
+s: String;
+n: Integer;
+b: Byte;
+begin
+Stream.Read(n, 4);
+SetLength(s, n);
+Stream.Read(s[1], n);
+if (n > 0) and (s[n] = #$0A) then
+SetLength(s, n - 2);
+// Stream.Read(b, 1);
+Result := s;
+end;
+
+
+Q: 怎样不在打印预览中打印报表？
+A: 这里有一段代码:
+
+frReport1.PrepareReport;
+frReport1.PrintPreparedReport('', 1, True, frAll);
+或
+frReport1.PrintPreparedReportDlg;
+
+
+Q: 我想在报表中旋转图片。问题是这张图片是由我的应用程序生成的。是否有方法可以在打印前
+
+将这幅图片装载到报表中？
+
+A: 使用 TfrReport.OnBeforePrint 事件:
+
+if View.Name = 'Picture1' then
+TfrPictureView(View).Picture.LoadFromFile(…) 或
+.Assign 或
+.你所想要做的任何事情
+
+FastReport 套打全攻略
+//以设计套打行为6行为例进行说明
+一、定义变量
+ TaoDa   0 是套打 1 不套打
+ cPage   系统变量  页#
+ caPage  系统变量  总页数
+ 
+二、TfrPage.OnBeforePrint事件中写
+{
+ if TaoDa = '0' then
+  begin
+   title.visible:=false;   //不用打印的设置Visible为False;
+   danweiv.frametyp := 0;  //只打印数据的不需要打印边框的设置 frametyp 为 0;
+   ...   
+  end;
+ i := 0 ;   //定义一个变量并进行初始化。
+}
+二、主项数据.OnBeforePrint事件中写
+{
+ if TaoDa = '0' then
+  begin
+   i := i + 1;
+   bm.memo := i;
+   if (i > 5 ) then
+    if ((i-1) mod 6 ) = 0 then newpage; 
+  end;  
+}
+
+三、主项脚.OnBeforePrint事件中写
+{
+ j := i mod 6;
+ if j <> 0 then 
+  begin
+   for k := j to 5 do 
+    begin
+     ShowBand(Child1);   //Child1是子的名称 显示空白行    
+    end;
+  end;
+}
+四、栏目脚.OnBeforePrint事件中写
+{
+ if cpage <> capage then 
+  begin
+   shi.memo := '';  //十
+   bai.memo := '';  //百
+   qian.memo := ''; //千
+   wan.memeo := ''; //万    
+  end
+  else begin
+   shi.memo := v1;
+   bai.memo := v2;
+   qian.memo := v3;
+   wan.memo := v4;
+  end;
+}
+
+这段代码是用来控制在有多页情况下，在最后一页上显示总金额。
+其中：v1,v2,v3,v4 是自定义变量。
+
+报表结构组成：
+栏目头           //画报表的标头     
+主项数据         //显示的数据，会与数据源进行绑定 
+主项脚      //什么也不用放，只用来控制  visible := false;  
+子               //画出空白行显示的组件  
+栏目脚           //显示总的金额、数量   
+页脚             //显示页数
+
+调用方法：
+
+
+frReportA.LoadFromFile(s);   s 是文件
+frReportA.Dictionary.Variables['taoda']:='1';
+进行查询
+
+打印：
+frReportA.PrepareReport;
+frreportA.PrintPreparedReport('',1,true,frall);
+
+预览：
+frReportA.ShowReport;
+
+FastReport打印CxGrid数据
+用惯了FastReport，就不愿意再使用其他的Print Component。用FastReport打印CxGrid Filter后的数据，网上一直没有很好的办法和例程。看到有将CxGrid的Fileter Text取出后再赋给DataSet的说明，没有具体去试验，太麻烦。如此著名的Component肯定有解决此问题的方法。于是今天到Dev Express英文站点去浏览了一番，在该站上搜索了一下，居然出来N多此问题的提问者，看了几个这类的问题后，终于解决了。
+解决此问题可以使用以下方法：
+1、将View的datacontroller.filter.autodatasetfilter属性设为True。
+此方法需要DataSet支持才能设置。
+2、是在FastReport的frDBDataSet的CheckEof Event里写如下代码：
+EOF := frUserDataset1.RecNo >= Grid.ViewData.RecordCount;
+在frReport的GetValue Event里写代码：
+if ParName='Field1' then
+ParValue := Grid.ViewData.Records[frDataset1.RecNo].Values[2]);
+此代码也可这样写：
+ParValue :=Grid.ViewData.Records[frDataset1.RecNo].Values[View.GetColumnByFieldName(ParName).Index]);
+
+ReportMachine
+1.如何使用代码指定打印机？
+  RMReport1.LoadFromFile('Untitled.rmf');
+  rmreport1.PrinterName:='\\192.168.10.1\HP LaserJet 1022';
+
+
+
+本文来自CSDN博客，转载请标明出处：http://blog.csdn.net/SmallHand/archive/2009/01/07/3727669.aspx
