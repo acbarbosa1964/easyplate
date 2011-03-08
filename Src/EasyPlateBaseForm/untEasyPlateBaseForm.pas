@@ -45,12 +45,13 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ShlObj, IniFiles, DB, DBClient,
+  Dialogs, StdCtrls, ComCtrls, ShlObj, IniFiles, DB, DBClient, TypInfo,
   Provider, ExtCtrls, untEasyGroupBox, untEasyWaterImage;
 
 type
   TfrmEasyPlateBaseForm = class(TForm)
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FFormId      : String;
@@ -77,7 +78,7 @@ type
     function GetLangID: string;
     procedure SetLangID(const Value: string);
     //设置控件的显示属性
-    procedure SetControlCaption(AControl: TControl; ACaption: string);
+    procedure SetControlCaption(ALangINIFile: TStrings);
   protected
     procedure DoShow; override;
     procedure DoClose(var Action: TCloseAction); override;
@@ -273,19 +274,34 @@ end;
 procedure TfrmEasyPlateBaseForm.ChangeLang(LanguageId: string);
 var
   TmpCaptionList: TStrings;
-  TmpIniFile    : TIniFile;
+  LangINIPath   : string;
 begin
+  LangINIPath := EasyApplicationPath + 'lang\' + LanguageId + '\' + FormId + '.ini';
   TmpCaptionList := TStringList.Create;
-  TmpIniFile := TIniFile.Create(ExtractFilePath(Application.ExeName) + '\lang\' +
-                                LanguageId + '\' + Self.Name + '.ini');
-  TmpIniFile.ReadSectionValues('lang', TmpCaptionList);
-  TmpIniFile.Free;
-//  SetControlCaption();
+  if FileExists(LangINIPath) then
+  begin
+    TmpCaptionList.LoadFromFile(LangINIPath);
+    SetControlCaption(TmpCaptionList);
+  end;  
+  TmpCaptionList.Free;
 end;
 
 function TfrmEasyPlateBaseForm.GetLangID: string;
+var
+  ATmpList: TStrings;
 begin
-  Result := FLangID;
+  ATmpList := TStringList.Create;
+  if FileExists(EasyApplicationPath + 'lang\lang.ini') then
+  begin
+    ATmpList.LoadFromFile(EasyApplicationPath + 'lang\lang.ini');
+    if ATmpList.IndexOfName('lang') <> -1 then
+      Result := ATmpList.Values['lang']
+    else
+      Result := 'Chinese';
+  end
+  else
+    Result := 'Chinese';
+  ATmpList.Free;
 end;
 
 procedure TfrmEasyPlateBaseForm.SetLangID(const Value: string);
@@ -293,9 +309,26 @@ begin
   FLangID := Value;
 end;
 
-procedure TfrmEasyPlateBaseForm.SetControlCaption(AControl: TControl;
-  ACaption: string);
+procedure TfrmEasyPlateBaseForm.SetControlCaption(ALangINIFile: TStrings);
+var
+  I: Integer;
 begin
+  if ALangINIFile.IndexOfName(Self.Name) <> -1 then
+    Self.Caption := ALangINIFile.Values[Self.Name];
+  for I := 0 to ComponentCount - 1 do
+  begin
+    if GetPropInfo(Components[I], 'Caption') <> nil then
+    begin
+      if ALangINIFile.IndexOfName(Components[I].Name) <> -1 then
+        SetPropValue(Components[I], 'Caption', ALangINIFile.Values[Components[I].Name]);
+    end
+    else
+    if GetPropInfo(Components[I], 'Text') <> nil then
+    begin
+      if ALangINIFile.IndexOfName(Components[I].Name) <> -1 then
+        SetPropValue(Components[I], 'Text', ALangINIFile.Values[Components[I].Name]);
+    end;
+  end;
 end;
 
 function TfrmEasyPlateBaseForm.EasyConfirmHint(AHint: string): Integer;
@@ -331,6 +364,12 @@ end;
 function TfrmEasyPlateBaseForm.GetUserRight: Boolean;
 begin
   Result := True;
+end;
+
+procedure TfrmEasyPlateBaseForm.FormShow(Sender: TObject);
+begin
+  //改变语言设置
+  ChangeLang(LangID);
 end;
 
 end.

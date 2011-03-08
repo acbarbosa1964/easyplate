@@ -3,7 +3,6 @@ inherited frmGroupRights: TfrmGroupRights
   Top = 144
   Caption = 'frmGroupRights'
   OnDestroy = FormDestroy
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object EasyPanel1: TEasyPanel

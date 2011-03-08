@@ -156,6 +156,24 @@ type
     property Checked: Boolean read GetChecked write SetChecked;
   end;
 
+  //角色对应的资源信息
+  TGroupRoleResource = class
+  private
+    FGUID,
+    FRoleGUID,
+    FResourceGUID: string;
+    function GetGUID: string;
+    function GetResourceGUID: string;
+    function GetRoleGUID: string;
+    procedure setGUID(const Value: string);
+    procedure setResourceGUID(const Value: string);
+    procedure setRoleGUID(const Value: string);
+  public
+    property GUID: string read GetGUID write setGUID;
+    property RoleGUID: string read GetRoleGUID write setRoleGUID;
+    property ResourceGUID: string read GetResourceGUID write setResourceGUID;
+  end;
+  
 implementation
 
 { TGroupCompany }
@@ -467,6 +485,38 @@ end;
 procedure TGroupRight.setResourceName(const Value: string);
 begin
   FResourceName := Value;
+end;
+
+{ TGroupRoleResource }
+
+function TGroupRoleResource.GetGUID: string;
+begin
+  Result := FGUID;
+end;
+
+function TGroupRoleResource.GetResourceGUID: string;
+begin
+  Result := FResourceGUID;
+end;
+
+function TGroupRoleResource.GetRoleGUID: string;
+begin
+  Result := FRoleGUID;
+end;
+
+procedure TGroupRoleResource.setGUID(const Value: string);
+begin
+  FGUID := Value;
+end;
+
+procedure TGroupRoleResource.setResourceGUID(const Value: string);
+begin
+  FResourceGUID := Value;
+end;
+
+procedure TGroupRoleResource.setRoleGUID(const Value: string);
+begin
+  FRoleGUID := Value;
 end;
 
 end.

@@ -95,7 +95,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Top = 1
       Width = 864
       Height = 589
-      ActivePage = tbsDirectoryManage
+      ActivePage = tbsSystemFileUpdate
       Align = alClient
       UseColoredTabs = True
       Font.Charset = DEFAULT_CHARSET
@@ -104,7 +104,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Font.Name = 'Verdana'
       Font.Style = []
       ParentFont = False
-      TabIndex = 0
+      TabIndex = 2
       TabOrder = 0
       TabStyle = tsDoubleSlant
       OnChange = pgcSystemManagerChange
@@ -1096,7 +1096,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         Caption = #31995#32479#25991#20214#21319#32423'(&S)'
         object EasyPanel3: TEasyPanel
           Left = 0
-          Top = 518
+          Top = 525
           Width = 860
           Height = 41
           Align = alBottom
@@ -1226,14 +1226,14 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 860
-          Height = 518
+          Height = 525
           Align = alClient
           TabOrder = 0
           object EasyStringGrid1: TEasyStringGrid
             Left = 2
             Top = 2
             Width = 856
-            Height = 514
+            Height = 521
             Cursor = crDefault
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
@@ -1305,7 +1305,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         Caption = #25253#34920#25991#20214#21319#32423'(&R)'
         object EasyPanel5: TEasyPanel
           Left = 0
-          Top = 518
+          Top = 525
           Width = 860
           Height = 41
           Align = alBottom
@@ -1395,14 +1395,14 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 860
-          Height = 518
+          Height = 525
           Align = alClient
           TabOrder = 0
           object EasyStringGrid2: TEasyStringGrid
             Left = 2
             Top = 2
             Width = 856
-            Height = 514
+            Height = 521
             Cursor = crDefault
             Align = alClient
             Font.Charset = DEFAULT_CHARSET

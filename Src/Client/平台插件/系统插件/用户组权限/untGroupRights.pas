@@ -77,6 +77,8 @@ type
     procedure InitUserTree(AClientDataSet: TClientDataSet; ARoleGUID: string);
     procedure DisposeGroupUserList;
 
+    //显示角色所对应的权限资源
+    procedure DisplayRole_Resources(ARoleGUID: string);
     //系统权限树
     procedure InitRightsTree(AClientDataSet: TClientDataSet);
     function FindRigthParentNode(AParentRightGUID: string): TTreeNode;
@@ -531,7 +533,10 @@ end;
 procedure TfrmGroupRights.tvUserRolesClick(Sender: TObject);
 begin
   inherited;
+  //显示此角色下的所有用户
   DisplayUsers(GetRoleGUID(tvUserRoles.Selected.Data));
+  //显示此角色所对应的权限资源
+  DisplayRole_Resources(GetRoleGUID(tvUserRoles.Selected.Data));
 end;
 
 procedure TfrmGroupRights.DisplayUsers(ARoleGUID: string);
@@ -704,6 +709,11 @@ begin
       Break;
     end;
   end;
+end;
+
+procedure TfrmGroupRights.DisplayRole_Resources(ARoleGUID: string);
+begin
+
 end;
 
 end.

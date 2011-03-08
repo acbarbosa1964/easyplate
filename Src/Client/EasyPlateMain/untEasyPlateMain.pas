@@ -133,8 +133,8 @@ type
     procedure tvNavDblClick(Sender: TObject);
     procedure About1Click(Sender: TObject);
     procedure N11Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ppTVRefreshClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -546,17 +546,6 @@ begin
   end;
 end;
 
-procedure TfrmEasyPlateMain.FormClose(Sender: TObject;
-  var Action: TCloseAction);
-begin
-  inherited;
-  if Application.MessageBox('确定要退出系统吗?', '提示', MB_OKCANCEL + 
-    MB_ICONQUESTION) = IDOK then
-  begin
-    Application.Terminate;
-  end;
-end;
-
 procedure TfrmEasyPlateMain.LoadChildTreeNodes(ATreeView: TEasyTreeView;
   AData: array of PEasytvNavRecord; ParentNode: TTreeNode);
 var
@@ -596,6 +585,17 @@ begin
   DisposePlugArray;
   SetLength(FPluginsList, 0);
   InitTreeViewNav;
+end;
+
+procedure TfrmEasyPlateMain.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+  if Application.MessageBox('确定要退出系统吗?', '提示', MB_OKCANCEL +
+    MB_ICONQUESTION) = IDOK then
+    Application.Terminate
+  else
+    CanClose := False;
 end;
 
 end.

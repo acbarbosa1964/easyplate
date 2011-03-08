@@ -37,8 +37,6 @@ type
     DgrPenWidthSelector2: TDgrPenWidthSelector;
     DgrTextColorSelector2: TDgrTextColorSelector;
     EasyToolBarSeparator1: TEasyToolBarSeparator;
-    DgrFontSizeSelector1: TDgrFontSizeSelector;
-    DgrFontSelector1: TDgrFontSelector;
     EasyToolBar3: TEasyToolBar;
     EasyToolBarButton1: TEasyToolBarButton;
     EasyToolBarButton2: TEasyToolBarButton;
@@ -59,8 +57,6 @@ type
     EasyToolBarButton13: TEasyToolBarButton;
     EasyToolBarButton14: TEasyToolBarButton;
     EasyToolBarSeparator5: TEasyToolBarSeparator;
-    EasyToolBarButton15: TEasyToolBarButton;
-    EasyToolBarButton16: TEasyToolBarButton;
     ImageList1: TImageList;
     ActionList1: TActionList;
     actWFNew: TAction;
@@ -117,7 +113,6 @@ type
     EasyToolBarButton19: TEasyToolBarButton;
     EasyToolBarButton20: TEasyToolBarButton;
     EasyToolBarButton21: TEasyToolBarButton;
-    EasyToolBarSeparator7: TEasyToolBarSeparator;
     EasyToolBarButton22: TEasyToolBarButton;
     EasyToolBarButton23: TEasyToolBarButton;
     EasyToolBarSeparator8: TEasyToolBarSeparator;
@@ -203,6 +198,10 @@ type
     EasyToolBarButton40: TEasyToolBarButton;
     EasyToolBarButton41: TEasyToolBarButton;
     EasyToolBarButton42: TEasyToolBarButton;
+    DgrFontSizeSelector1: TDgrFontSizeSelector;
+    DgrFontSelector1: TDgrFontSelector;
+    EasyToolBarButton15: TEasyToolBarButton;
+    EasyToolBarButton16: TEasyToolBarButton;
     procedure actWFNewExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actWFSaveExecute(Sender: TObject);

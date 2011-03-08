@@ -4,11 +4,9 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   Caption = 'frmEasyPlateMain'
   FormStyle = fsMDIForm
   Menu = mmMain
-  OldCreateOrder = True
   WindowState = wsMaximized
-  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter

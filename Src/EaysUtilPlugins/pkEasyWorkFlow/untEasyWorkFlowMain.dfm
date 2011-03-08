@@ -1,7 +1,7 @@
 object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
-  Left = 196
-  Top = 114
-  Width = 1275
+  Left = 234
+  Top = 111
+  Width = 1035
   Height = 616
   Caption = 'frmEasyWorkFlowMain'
   Color = clBtnFace
@@ -23,7 +23,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   object EasyDockPanel1: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 1267
+    Width = 1027
     Height = 119
     MinimumSize = 3
     LockHeight = False
@@ -34,8 +34,8 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     object EasyToolBar1: TEasyToolBar
       Left = 158
       Top = 1
-      Width = 548
-      Height = 26
+      Width = 422
+      Height = 28
       AllowFloating = True
       AutoDockOnClose = True
       CaptionFont.Charset = DEFAULT_CHARSET
@@ -55,6 +55,46 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Width = 10
         Height = 23
         LineColor = clBtnShadow
+      end
+      object EasyToolBarButton15: TEasyToolBarButton
+        Left = 360
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = actWFGroup
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 19
+        ParentFont = False
+        Position = daTop
+      end
+      object EasyToolBarButton16: TEasyToolBarButton
+        Left = 384
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = actWFUnGroup
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 20
+        ParentFont = False
+        Position = daTop
       end
       object DgrColorSelector2: TDgrColorSelector
         Left = 9
@@ -474,89 +514,11 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Style = ssButton
         ShowMoreColors = False
       end
-      object DgrFontSizeSelector1: TDgrFontSizeSelector
-        Left = 360
-        Top = 2
-        Width = 47
-        Height = 22
-        Button.Color = 16572875
-        Button.ColorTo = 14722429
-        Button.ColorHot = 14483455
-        Button.ColorHotTo = 6013175
-        Button.ColorDown = 557032
-        Button.ColorDownTo = 8182519
-        Button.Width = 12
-        DisplayRecentSelection = False
-        DropDownCount = 8
-        BorderColor = clNone
-        BorderHotColor = clBlack
-        LookUp = False
-        SelectionColor = 14722429
-        Text = '8'
-        Version = '1.1.0.0'
-        DropDownListColor = clWindow
-        Diagram = WorkflowDiagramMain
-      end
-      object DgrFontSelector1: TDgrFontSelector
-        Left = 407
-        Top = 2
-        Width = 127
-        Height = 22
-        Button.Color = 16572875
-        Button.ColorTo = 14722429
-        Button.ColorHot = 14483455
-        Button.ColorHotTo = 6013175
-        Button.ColorDown = 557032
-        Button.ColorDownTo = 8182519
-        Button.Width = 12
-        DropDownCount = 8
-        BorderColor = clNone
-        BorderHotColor = clBlack
-        SelectionColor = 14722429
-        Text = 'MS Sans Serif'
-        Version = '1.1.0.0'
-        DropDownListColor = clWindow
-        Diagram = WorkflowDiagramMain
-        FontGlyphTT.Data = {
-          D6000000424DD60000000000000076000000280000000D0000000C0000000100
-          0400000000006000000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDD000000D
-          D000DDDDDDD00DDDD000DDDDDDD00DDDD000D77777700DDDD000DDD77DD00DDD
-          D000DDD70DD00DD0D000DDD70DD00DD0D000DDD700D00D00D0007DD700000000
-          D0007DD77DD7DDDDD00077D77D77DDDDD00077777777DDDDD000}
-        FontGlyphPS.Data = {
-          D6000000424DD60000000000000076000000280000000D0000000C0000000100
-          0400000000006000000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-          D000D9997DD997DDD0009999979979DDD000997D7999D79DD000997DD7997DDD
-          D000997DDD799DDDD000799DDDD997DDD000D997DDD799DDD000D799DDDD997D
-          D000DD799DDD799DD000DDD799DD7997D000DDDDD9999779D000}
-        FontGlyphPRN.Data = {
-          D6000000424DD60000000000000076000000280000000D0000000C0000000100
-          0400000000006000000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00D00000000000
-          D00007777777AA7700000888888888870000D00000000000D000DD07FFFFF70D
-          D000DD0F00000F0DD000DD07FFFFF70DD000DD0F00000F0DD000DD07FFFFF70D
-          D000DD0F00000F0DD000DD07FFFFF70DD000DD000000000DD000}
-        FontGlyphBMP.Data = {
-          D6000000424DD60000000000000076000000280000000D0000000C0000000100
-          0400000000006000000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
-          D000DDDDDD99DD99D000DDDDDD99DD99D000D11DD199DD99D000D11DD1999999
-          D000D11DD199DD99D000D1111199DD99D000D11DD199DD99D000D11DD119999D
-          D000D11DD11D99DDD000DD1111DDDDDDD000DDD11DDDDDDDD000}
-        FontHeight = 12
-        TabOrder = 11
-      end
     end
     object EasyToolBar2: TEasyToolBar
       Left = 3
       Top = 59
-      Width = 1261
+      Width = 1021
       Height = 59
       AllowFloating = True
       AutoDockOnClose = True
@@ -575,7 +537,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       object TabControl1: TTabControl
         Left = 0
         Top = 0
-        Width = 1261
+        Width = 1021
         Height = 59
         Align = alClient
         TabOrder = 0
@@ -585,7 +547,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         object DiagramToolBar1: TDiagramToolBar
           Left = 4
           Top = 24
-          Width = 1253
+          Width = 1013
           Height = 29
           Category = 'Workflow'
           Diagram = WorkflowDiagramMain
@@ -724,7 +686,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
     object EasyToolBar4: TEasyToolBar
       Left = 3
       Top = 30
-      Width = 621
+      Width = 737
       Height = 28
       AllowFloating = True
       AutoDockOnClose = True
@@ -740,7 +702,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
       ParentOptionPicture = True
       ToolBarIndex = -1
       object EasyToolBarButton6: TEasyToolBarButton
-        Left = 173
+        Left = 347
         Top = 2
         Width = 24
         Height = 24
@@ -760,7 +722,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton7: TEasyToolBarButton
-        Left = 197
+        Left = 371
         Top = 2
         Width = 24
         Height = 24
@@ -780,7 +742,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton8: TEasyToolBarButton
-        Left = 221
+        Left = 395
         Top = 2
         Width = 24
         Height = 24
@@ -800,14 +762,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator2: TEasyToolBarSeparator
-        Left = 245
+        Left = 419
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton9: TEasyToolBarButton
-        Left = 255
+        Left = 429
         Top = 2
         Width = 24
         Height = 24
@@ -827,7 +789,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton10: TEasyToolBarButton
-        Left = 279
+        Left = 453
         Top = 2
         Width = 24
         Height = 24
@@ -847,7 +809,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton11: TEasyToolBarButton
-        Left = 303
+        Left = 477
         Top = 2
         Width = 24
         Height = 24
@@ -867,14 +829,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator4: TEasyToolBarSeparator
-        Left = 327
+        Left = 501
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton12: TEasyToolBarButton
-        Left = 337
+        Left = 511
         Top = 2
         Width = 24
         Height = 24
@@ -894,7 +856,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton13: TEasyToolBarButton
-        Left = 361
+        Left = 535
         Top = 2
         Width = 24
         Height = 24
@@ -914,7 +876,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton14: TEasyToolBarButton
-        Left = 385
+        Left = 559
         Top = 2
         Width = 24
         Height = 24
@@ -934,51 +896,11 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator5: TEasyToolBarSeparator
-        Left = 409
+        Left = 583
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
-      end
-      object EasyToolBarButton15: TEasyToolBarButton
-        Left = 419
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actWFGroup
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 19
-        ParentFont = False
-        Position = daTop
-      end
-      object EasyToolBarButton16: TEasyToolBarButton
-        Left = 443
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actWFUnGroup
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 20
-        ParentFont = False
-        Position = daTop
       end
       object EasyToolBarSeparator6: TEasyToolBarSeparator
         Left = 105
@@ -1068,7 +990,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton21: TEasyToolBarButton
-        Left = 477
+        Left = 593
         Top = 2
         Width = 24
         Height = 24
@@ -1087,15 +1009,8 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         ParentFont = False
         Position = daTop
       end
-      object EasyToolBarSeparator7: TEasyToolBarSeparator
-        Left = 467
-        Top = 2
-        Width = 10
-        Height = 23
-        LineColor = clBtnShadow
-      end
       object EasyToolBarButton22: TEasyToolBarButton
-        Left = 501
+        Left = 617
         Top = 2
         Width = 24
         Height = 24
@@ -1115,7 +1030,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton23: TEasyToolBarButton
-        Left = 525
+        Left = 641
         Top = 2
         Width = 24
         Height = 24
@@ -1135,14 +1050,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarSeparator8: TEasyToolBarSeparator
-        Left = 549
+        Left = 665
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton24: TEasyToolBarButton
-        Left = 559
+        Left = 675
         Top = 2
         Width = 24
         Height = 24
@@ -1162,7 +1077,7 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Position = daTop
       end
       object EasyToolBarButton25: TEasyToolBarButton
-        Left = 583
+        Left = 699
         Top = 2
         Width = 24
         Height = 24
@@ -1228,10 +1143,88 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
         Height = 23
         LineColor = clBtnShadow
       end
+      object DgrFontSizeSelector1: TDgrFontSizeSelector
+        Left = 173
+        Top = 2
+        Width = 47
+        Height = 22
+        Button.Color = 16572875
+        Button.ColorTo = 14722429
+        Button.ColorHot = 14483455
+        Button.ColorHotTo = 6013175
+        Button.ColorDown = 557032
+        Button.ColorDownTo = 8182519
+        Button.Width = 12
+        DisplayRecentSelection = False
+        DropDownCount = 8
+        BorderColor = clNone
+        BorderHotColor = clBlack
+        LookUp = False
+        SelectionColor = 14722429
+        Text = '8'
+        Version = '1.1.0.0'
+        DropDownListColor = clWindow
+        Diagram = WorkflowDiagramMain
+      end
+      object DgrFontSelector1: TDgrFontSelector
+        Left = 220
+        Top = 2
+        Width = 127
+        Height = 22
+        Button.Color = 16572875
+        Button.ColorTo = 14722429
+        Button.ColorHot = 14483455
+        Button.ColorHotTo = 6013175
+        Button.ColorDown = 557032
+        Button.ColorDownTo = 8182519
+        Button.Width = 12
+        DropDownCount = 8
+        BorderColor = clNone
+        BorderHotColor = clBlack
+        SelectionColor = 14722429
+        Text = 'MS Sans Serif'
+        Version = '1.1.0.0'
+        DropDownListColor = clWindow
+        Diagram = WorkflowDiagramMain
+        FontGlyphTT.Data = {
+          D6000000424DD60000000000000076000000280000000D0000000C0000000100
+          0400000000006000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDD000000D
+          D000DDDDDDD00DDDD000DDDDDDD00DDDD000D77777700DDDD000DDD77DD00DDD
+          D000DDD70DD00DD0D000DDD70DD00DD0D000DDD700D00D00D0007DD700000000
+          D0007DD77DD7DDDDD00077D77D77DDDDD00077777777DDDDD000}
+        FontGlyphPS.Data = {
+          D6000000424DD60000000000000076000000280000000D0000000C0000000100
+          0400000000006000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+          D000D9997DD997DDD0009999979979DDD000997D7999D79DD000997DD7997DDD
+          D000997DDD799DDDD000799DDDD997DDD000D997DDD799DDD000D799DDDD997D
+          D000DD799DDD799DD000DDD799DD7997D000DDDDD9999779D000}
+        FontGlyphPRN.Data = {
+          D6000000424DD60000000000000076000000280000000D0000000C0000000100
+          0400000000006000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00D00000000000
+          D00007777777AA7700000888888888870000D00000000000D000DD07FFFFF70D
+          D000DD0F00000F0DD000DD07FFFFF70DD000DD0F00000F0DD000DD07FFFFF70D
+          D000DD0F00000F0DD000DD07FFFFF70DD000DD000000000DD000}
+        FontGlyphBMP.Data = {
+          D6000000424DD60000000000000076000000280000000D0000000C0000000100
+          0400000000006000000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+          D000DDDDDD99DD99D000DDDDDD99DD99D000D11DD199DD99D000D11DD1999999
+          D000D11DD199DD99D000D1111199DD99D000D11DD199DD99D000D11DD119999D
+          D000D11DD11D99DDD000DD1111DDDDDDD000DDD11DDDDDDDD000}
+        FontHeight = 12
+        TabOrder = 1
+      end
     end
     object EasyToolBar5: TEasyToolBar
-      Left = 626
-      Top = 30
+      Left = 582
+      Top = 1
       Width = 403
       Height = 28
       AllowFloating = True
@@ -1584,14 +1577,14 @@ object frmEasyWorkFlowMain: TfrmEasyWorkFlowMain
   object EasyPanel2: TEasyPanel
     Left = 188
     Top = 119
-    Width = 1079
+    Width = 839
     Height = 470
     Align = alClient
     TabOrder = 4
     object WorkflowDiagramMain: TWorkflowDiagram
       Left = 2
       Top = 2
-      Width = 1075
+      Width = 835
       Height = 466
       NettoExportOffset = 3
       AutomaticNodes = False
