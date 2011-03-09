@@ -2,6 +2,7 @@ inherited frmGroupRights: TfrmGroupRights
   Left = 245
   Top = 144
   Caption = 'frmGroupRights'
+  OnClose = FormClose
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
@@ -206,7 +207,7 @@ inherited frmGroupRights: TfrmGroupRights
           Height = 441
           Align = alRight
           TabOrder = 1
-          object tvCheckRights: TEasyCheckTree
+          object tvCheckResources: TEasyCheckTree
             Left = 2
             Top = 2
             Width = 284
@@ -216,7 +217,7 @@ inherited frmGroupRights: TfrmGroupRights
             Indent = 19
             SelectionPen.Color = clBtnShadow
             ShowLines = False
-            StateImages = tvCheckRights.CheckImages
+            StateImages = tvCheckResources.CheckImages
             TabOrder = 0
           end
         end
@@ -285,6 +286,7 @@ inherited frmGroupRights: TfrmGroupRights
                 ReadOnly = True
                 ShowLines = False
                 TabOrder = 0
+                OnClick = tvUsersClick
               end
             end
           end
@@ -1234,6 +1236,12 @@ inherited frmGroupRights: TfrmGroupRights
     Aggregates = <>
     Params = <>
     Left = 336
+    Top = 98
+  end
+  object cdsUserResource: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 368
     Top = 98
   end
 end

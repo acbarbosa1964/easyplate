@@ -127,9 +127,10 @@ type
   end;
 
   //用户组权限--权限资源信息
-  TGroupRight = class
+  TGroupRoleResource = class
   private
     FGUID,
+    FRoleGUID,
     FResourceGUID,
     FResourceName,
     FParentResourceGUID: string;
@@ -147,8 +148,11 @@ type
     procedure setResourceName(const Value: string);
     function GetChecked: Boolean;
     procedure SetChecked(const Value: Boolean);
+    function GetRoleGUID: string;
+    procedure setRoleGUID(const Value: string);
   public
     property GUID: string read GetGUID write setGUID;
+    property RoleGUID: string read GetRoleGUID write setRoleGUID;
     property ResourceGUID: string read GetResourceGUID write setResourceGUID;
     property ResourceName: string read GetResourceName write setResourceName;
     property ParentResourceGUID: string read GetParentResourceGUID write setParentResourceGUID;
@@ -157,7 +161,7 @@ type
   end;
 
   //角色对应的资源信息
-  TGroupRoleResource = class
+  TGroupUserResource = class
   private
     FGUID,
     FRoleGUID,
@@ -173,7 +177,7 @@ type
     property RoleGUID: string read GetRoleGUID write setRoleGUID;
     property ResourceGUID: string read GetResourceGUID write setResourceGUID;
   end;
-  
+
 implementation
 
 { TGroupCompany }
@@ -425,73 +429,26 @@ begin
   FSexGUID := Value;
 end;
 
-{ TGroupRight }
+{ TGroupRoleResource }
 
-function TGroupRight.GetChecked: Boolean;
+function TGroupRoleResource.GetChecked: Boolean;
 begin
   Result := FChecked;
 end;
 
-function TGroupRight.GetGUID: string;
+function TGroupRoleResource.GetGUID: string;
 begin
   Result := FGUID;
 end;
 
-function TGroupRight.GetiOrder: Integer;
+function TGroupRoleResource.GetiOrder: Integer;
 begin
   Result := FiOrder;
 end;
 
-function TGroupRight.GetParentResourceGUID: string;
+function TGroupRoleResource.GetParentResourceGUID: string;
 begin
   Result := FParentResourceGUID;
-end;
-
-function TGroupRight.GetResourceGUID: string;
-begin
-  Result := FResourceGUID;
-end;
-
-function TGroupRight.GetResourceName: string;
-begin
-  Result := FResourceName;
-end;
-
-procedure TGroupRight.SetChecked(const Value: Boolean);
-begin
-  FChecked := Value;
-end;
-
-procedure TGroupRight.setGUID(const Value: string);
-begin
-  FGUID := Value;
-end;
-
-procedure TGroupRight.setiOrder(const Value: Integer);
-begin
-  FiOrder := Value;
-end;
-
-procedure TGroupRight.setParentResourceGUID(const Value: string);
-begin
-  FParentResourceGUID := Value;
-end;
-
-procedure TGroupRight.setResourceGUID(const Value: string);
-begin
-  FResourceGUID := Value;
-end;
-
-procedure TGroupRight.setResourceName(const Value: string);
-begin
-  FResourceName := Value;
-end;
-
-{ TGroupRoleResource }
-
-function TGroupRoleResource.GetGUID: string;
-begin
-  Result := FGUID;
 end;
 
 function TGroupRoleResource.GetResourceGUID: string;
@@ -499,9 +456,19 @@ begin
   Result := FResourceGUID;
 end;
 
+function TGroupRoleResource.GetResourceName: string;
+begin
+  Result := FResourceName;
+end;
+
 function TGroupRoleResource.GetRoleGUID: string;
 begin
   Result := FRoleGUID;
+end;
+
+procedure TGroupRoleResource.SetChecked(const Value: Boolean);
+begin
+  FChecked := Value;
 end;
 
 procedure TGroupRoleResource.setGUID(const Value: string);
@@ -509,12 +476,59 @@ begin
   FGUID := Value;
 end;
 
+procedure TGroupRoleResource.setiOrder(const Value: Integer);
+begin
+  FiOrder := Value;
+end;
+
+procedure TGroupRoleResource.setParentResourceGUID(const Value: string);
+begin
+  FParentResourceGUID := Value;
+end;
+
 procedure TGroupRoleResource.setResourceGUID(const Value: string);
 begin
   FResourceGUID := Value;
 end;
 
+procedure TGroupRoleResource.setResourceName(const Value: string);
+begin
+  FResourceName := Value;
+end;
+
 procedure TGroupRoleResource.setRoleGUID(const Value: string);
+begin
+  FRoleGUID := Value;
+end;
+
+{ TGroupUserResource }
+
+function TGroupUserResource.GetGUID: string;
+begin
+  Result := FGUID;
+end;
+
+function TGroupUserResource.GetResourceGUID: string;
+begin
+  Result := FResourceGUID;
+end;
+
+function TGroupUserResource.GetRoleGUID: string;
+begin
+  Result := FRoleGUID;
+end;
+
+procedure TGroupUserResource.setGUID(const Value: string);
+begin
+  FGUID := Value;
+end;
+
+procedure TGroupUserResource.setResourceGUID(const Value: string);
+begin
+  FResourceGUID := Value;
+end;
+
+procedure TGroupUserResource.setRoleGUID(const Value: string);
 begin
   FRoleGUID := Value;
 end;

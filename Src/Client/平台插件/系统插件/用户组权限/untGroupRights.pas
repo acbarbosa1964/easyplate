@@ -39,19 +39,22 @@ type
     tvUserRoles: TEasyTreeView;
     EasyPanel9: TEasyPanel;
     tvUsers: TEasyTreeView;
-    tvCheckRights: TEasyCheckTree;
+    tvCheckResources: TEasyCheckTree;
+    cdsUserResource: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure tvUserGroupsClick(Sender: TObject);
     procedure tvUserRolesClick(Sender: TObject);
+    procedure tvUsersClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FGroupCompanyList,
     FGroupDeptList,
     FGroupRoleList,
     FGroupUserList,
-    FGroupRightList: TList;
+    FGroupRoleResourceList: TList;
 //    procedure GenerateTree(ATree: TEasyTreeView; AClientDataSet: TClientDataSet;
 //                            ARoot)
     //用户组--公司
@@ -79,9 +82,11 @@ type
 
     //显示角色所对应的权限资源
     procedure DisplayRole_Resources(ARoleGUID: string);
+    procedure GetUserResources(ALoginName: string);
+    procedure DisplayUser_Resources(AClientDataSet: TClientDataSet; ALoginName: string);
     //系统权限树
-    procedure InitRightsTree(AClientDataSet: TClientDataSet);
-    function FindRigthParentNode(AParentRightGUID: string): TTreeNode;
+    procedure InitResourcesTree(AClientDataSet: TClientDataSet);
+    function FindResourceParentNode(AParentRightGUID: string): TTreeNode;
   public
     { Public declarations }
   end;
@@ -124,7 +129,7 @@ procedure TfrmGroupRights.FormCreate(Sender: TObject);
 var
   sGroupsSQL,
   sUsersSQL,
-  sResourceSQL: string;
+  sRoleResourceSQL: string;
 begin
   inherited;
   if not Assigned(FGroupCompanyList) then
@@ -139,8 +144,8 @@ begin
   if not Assigned(FGroupUserList) then
     FGroupUserList := TList.Create;
 
-  if not Assigned(FGroupRightList) then
-    FGroupRightList := TList.Create;
+  if not Assigned(FGroupRoleResourceList) then
+    FGroupRoleResourceList := TList.Create;
     
   FormId := '{3477B007-80AE-414E-BF67-9709FEEB3DD8}';
 
@@ -152,8 +157,8 @@ begin
                +' WHERE bEnable = 1 ORDER BY iOrderNo';
   cdsUsers.Data := EasyRDMDisp.EasyGetRDMData(sUsersSQL);
 
-  sResourceSQL := 'SELECT * FROM sysResource ORDER BY iOrder';
-  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sResourceSQL);
+  sRoleResourceSQL := 'SELECT * FROM vw_RoleResource';
+  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
 end;
 
 procedure TfrmGroupRights.InitGroupsTree(AClientDataSet: TClientDataSet);
@@ -250,17 +255,15 @@ begin
   //嵌套二级部门
   InitDeptTree(cdsGroups);
 
+  tvUserGroups.FullExpand;
   tvUserGroups.Items.EndUpdate;
 end;
 
 procedure TfrmGroupRights.FormShow(Sender: TObject);
 begin
   inherited;
-
   InitGroupsTree(cdsGroups);
-
-  //初始化权限
-  InitRightsTree(cdsResources);
+  InitResourcesTree(cdsResources);
 end;
 
 procedure TfrmGroupRights.FormDestroy(Sender: TObject);
@@ -279,8 +282,8 @@ begin
 
   DisposeGroupRoleList;
 
-  for I := FGroupRightList.Count - 1 downto 0 do
-    TObject(FGroupRightList.Items[I]).Free; 
+  for I := FGroupRoleResourceList.Count - 1 downto 0 do
+    TObject(FGroupRoleResourceList.Items[I]).Free; 
 end;
 
 function TfrmGroupRights.InitRootGroupTree(
@@ -391,8 +394,6 @@ var
   ATmpTreeNode: TTreeNode;
 begin
   Result := nil;
-  ATmpTreeNode := nil;
-  
   AClientDataSet.Filtered := False;
   AClientDataSet.Filter := 'sParentDeptGUID <> ' + QuotedStr('{00000000-0000-0000-0000-000000000002}')
                             + ' AND DeptGUID <> ' + QuotedStr('');
@@ -626,11 +627,11 @@ begin
   FGroupUserList.Clear;
 end;
 
-procedure TfrmGroupRights.InitRightsTree(AClientDataSet: TClientDataSet);
+procedure TfrmGroupRights.InitResourcesTree(AClientDataSet: TClientDataSet);
 var
   I: Integer;
-  ATmpRightNode: TTreeNode;
-  AGroupRight  : TGroupRight;
+//  ATmpResourceNode: TTreeNode;
+  AGroupResource  : TGroupRoleResource;
 begin
   //先初始化模块
   AClientDataSet.Filtered := False;
@@ -639,11 +640,12 @@ begin
 
   for I := 0 to AClientDataSet.RecordCount - 1 do
   begin
-    AGroupRight := TGroupRight.Create;
+    AGroupResource := TGroupRoleResource.Create;
 
-    with AGroupRight do
+    with AGroupResource do
     begin
       GUID := AClientDataSet.fieldbyname('GUID').AsString;
+      RoleGUID := AClientDataSet.fieldbyname('RoleGUID').AsString;
       ResourceGUID := AClientDataSet.fieldbyname('ResourceGUID').AsString;
       ResourceName := AClientDataSet.fieldbyname('sResourceName').AsString;
       ParentResourceGUID := AClientDataSet.fieldbyname('sParentResourceGUID').AsString;
@@ -651,12 +653,12 @@ begin
       Checked := False;
     end;  
 
-    ATmpRightNode := tvCheckRights.Items.AddChild(nil, AGroupRight.ResourceName);
-    ATmpRightNode.Data := AGroupRight;
-    FGroupRightList.Add(AGroupRight);
+//    ATmpResourceNode := tvCheckResources.Items.AddChild(nil, AGroupResource.ResourceName);
+//    ATmpResourceNode.Data := AGroupResource;
+    FGroupRoleResourceList.Add(AGroupResource);
 
-    ATmpRightNode.ImageIndex := 15;
-    ATmpRightNode.SelectedIndex := ATmpRightNode.ImageIndex + 1;
+//    ATmpResourceNode.ImageIndex := 15;
+//    ATmpResourceNode.SelectedIndex := ATmpResourceNode.ImageIndex + 1;
 
     AClientDataSet.Next;
   end;
@@ -669,11 +671,12 @@ begin
 
   for I := 0 to AClientDataSet.RecordCount - 1 do
   begin
-    AGroupRight := TGroupRight.Create;
+    AGroupResource := TGroupRoleResource.Create;
 
-    with AGroupRight do
+    with AGroupResource do
     begin
       GUID := AClientDataSet.fieldbyname('GUID').AsString;
+      RoleGUID := AClientDataSet.fieldbyname('RoleGUID').AsString;
       ResourceGUID := AClientDataSet.fieldbyname('ResourceGUID').AsString;
       ResourceName := AClientDataSet.fieldbyname('sResourceName').AsString;
       ParentResourceGUID := AClientDataSet.fieldbyname('sParentResourceGUID').AsString;
@@ -681,39 +684,119 @@ begin
       Checked := False;
     end;  
 
-    ATmpRightNode := tvCheckRights.Items.AddChild(FindRigthParentNode(AGroupRight.ParentResourceGUID),
-                                                  AGroupRight.ResourceName);
-    ATmpRightNode.Data := AGroupRight;
-    FGroupRightList.Add(AGroupRight);
+//    ATmpResourceNode := tvCheckResources.Items.AddChild(
+//                      FindResourceParentNode(AGroupResource.ParentResourceGUID),
+//                      AGroupResource.ResourceName);
+//    ATmpResourceNode.Data := AGroupResource;
+    FGroupRoleResourceList.Add(AGroupResource);
 
-    ATmpRightNode.ImageIndex := 15;
-    ATmpRightNode.SelectedIndex := ATmpRightNode.ImageIndex + 1;
+//    ATmpResourceNode.ImageIndex := 15;
+//    ATmpResourceNode.SelectedIndex := ATmpResourceNode.ImageIndex + 1;
 
     AClientDataSet.Next;
   end;
   AClientDataSet.Filtered := False;
 end;
 
-function TfrmGroupRights.FindRigthParentNode(
+function TfrmGroupRights.FindResourceParentNode(
   AParentRightGUID: string): TTreeNode;
 var
   I: Integer;
 begin
   Result := nil;
-  for I := 0 to tvCheckRights.Items.Count - 1 do
+  for I := 0 to tvCheckResources.Items.Count - 1 do
   begin
-//    ShowMessage(TGroupRight(tvCheckRights.Items.Item[I]).GUID + '=' + AParentRightGUID);
-    if TGroupRight(tvCheckRights.Items.Item[I].Data).GUID = AParentRightGUID then
+    if TGroupRoleResource(tvCheckResources.Items.Item[I].Data).ResourceGUID = AParentRightGUID then
     begin
-      Result := tvCheckRights.Items.Item[I];
+      Result := tvCheckResources.Items.Item[I];
       Break;
     end;
   end;
 end;
 
 procedure TfrmGroupRights.DisplayRole_Resources(ARoleGUID: string);
+var
+  I: Integer;
+  ATmpResourceNode: TTreeNode;
+  AGroupResource  : TGroupRoleResource;
 begin
+  tvCheckResources.Items.BeginUpdate;
+  tvCheckResources.Items.Clear;
 
+  for I := 0 to FGroupRoleResourceList.Count - 1 do
+  begin
+    AGroupResource := TGroupRoleResource(FGroupRoleResourceList.Items[I]);
+    if (AGroupResource.RoleGUID = ARoleGUID) and
+        (AGroupResource.ParentResourceGUID = '{00000000-0000-0000-0000-000000000003}') then
+    begin
+      ATmpResourceNode := tvCheckResources.Items.AddChild(nil, AGroupResource.ResourceName);
+      ATmpResourceNode.Data := FGroupRoleResourceList.Items[I];
+
+      ATmpResourceNode.ImageIndex := 15;
+      ATmpResourceNode.SelectedIndex := ATmpResourceNode.ImageIndex + 1;
+    end;
+  end;
+
+  for I := 0 to FGroupRoleResourceList.Count - 1 do
+  begin
+    AGroupResource := TGroupRoleResource(FGroupRoleResourceList.Items[I]);
+    if (AGroupResource.RoleGUID = ARoleGUID) and
+        (AGroupResource.ParentResourceGUID <> '{00000000-0000-0000-0000-000000000003}') then
+    begin
+      ATmpResourceNode := tvCheckResources.Items.AddChild(
+                        FindResourceParentNode(AGroupResource.ParentResourceGUID),
+                        AGroupResource.ResourceName);
+      ATmpResourceNode.Data := FGroupRoleResourceList.Items[I];
+
+      ATmpResourceNode.ImageIndex := 15;
+      ATmpResourceNode.SelectedIndex := ATmpResourceNode.ImageIndex + 1;
+    end;
+  end;
+  tvCheckResources.FullExpand;
+  tvCheckResources.Items.EndUpdate;
+end;
+
+procedure TfrmGroupRights.DisplayUser_Resources(AClientDataSet: TClientDataSet; ALoginName: string);
+var
+  I: Integer;
+begin
+  for I := 0 to tvCheckResources.Items.Count - 1 do
+  begin
+    if AClientDataSet.Locate('ResourceGUID',
+      VarArrayOf([TGroupRoleResource(tvCheckResources.Items.Item[I].Data).ResourceGUID]),
+                             [loCaseInsensitive]) then
+      tvCheckResources.ChangeNodeCheckState(tvCheckResources.Items.Item[I], csChecked)
+    else
+      tvCheckResources.ChangeNodeCheckState(tvCheckResources.Items.Item[I], csChecked);
+  end;
+end;
+
+procedure TfrmGroupRights.GetUserResources(ALoginName: string);
+var
+  sUserResourceSQL: string;
+begin
+  sUserResourceSQL := 'SELECT * FROM sysLoginUser_Resource WHERE LoginName = '
+                      + QuotedStr(ALoginName);
+  cdsUserResource.Data := null;
+
+  cdsUserResource.Data := EasyRDMDisp.EasyGetRDMData(sUserResourceSQL);
+  DisplayUser_Resources(cdsUserResource, ALoginName);
+end;
+
+procedure TfrmGroupRights.tvUsersClick(Sender: TObject);
+begin
+  inherited;
+  GetUserResources(TGroupUser(tvUsers.Selected.Data).LoginName);
+end;
+
+procedure TfrmGroupRights.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  cdsGroups.Data := null;
+  cdsUserResource.Data := null;
+  cdsResources.Data := null;
+  cdsUsers.Data := null;
 end;
 
 end.

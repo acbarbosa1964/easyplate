@@ -27,7 +27,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateBaseForm, Menus, untEasyMenus, untEasyMenuStylers,
-  untEasyStatusBar, untEasyStatusBarStylers, untEasyToolBar,  
+  untEasyStatusBar, untEasyStatusBarStylers, untEasyToolBar, TypInfo,  
   untEasyToolBarStylers, untEasyTabSet, untEasyOfficeTabSetStylers,
   untEasyPageControl, ExtCtrls, untEasyTrayIcon, ImgList, ComCtrls,
   untEasyTreeView, untEasyWaterImage, jpeg, StdCtrls, ActnList, Provider,
@@ -87,7 +87,7 @@ type
     New1: TMenuItem;
     Help1: TMenuItem;
     About1: TMenuItem;
-    HowtoUseHelp1: TMenuItem;
+    EpResourceManage: TMenuItem;
     SearchforHelpOn1: TMenuItem;
     Contents1: TMenuItem;
     Window1: TMenuItem;
@@ -121,6 +121,7 @@ type
     ppMDITab: TEasyPopupMenu;
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
+    Memo1: TMemo;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -135,6 +136,7 @@ type
     procedure N11Click(Sender: TObject);
     procedure ppTVRefreshClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure EpResourceManageClick(Sender: TObject);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -187,7 +189,7 @@ implementation
 uses
   untEasyUtilInit, untEasyDBConnection, untEasyUtilDLL, untEasyUtilMethod,
   untEasyUtilClasses, untEasyPlateLoading, untEasyUtilConst, 
-  untEasyProgressBar, untEasyLoginMain;
+  untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage;
 
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);
 begin
@@ -596,6 +598,29 @@ begin
     Application.Terminate
   else
     CanClose := False;
+end;
+
+procedure TfrmEasyPlateMain.EpResourceManageClick(Sender: TObject);
+begin
+  inherited;
+  frmEasyPlateResourceManage := TfrmEasyPlateResourceManage.Create(Application);
+  frmEasyPlateResourceManage.ShowModal;
+  frmEasyPlateResourceManage.Free;
+//  for I := 0 to Screen.Forms[1].ComponentCount - 1 do
+//  begin
+//    if GetPropInfo(Screen.Forms[1].Components[I], 'Caption') <> nil then
+//      Memo1.Lines.Add(Screen.Forms[1].Components[I].Name +'.Caption='+ GetPropValue(Screen.Forms[1].Components[I], 'Caption'));
+//    if GetPropInfo(Screen.Forms[1].Components[I], 'Text') <> nil then
+//      Memo1.Lines.Add(Screen.Forms[1].Components[I].Name +'.Text='+ GetPropValue(Screen.Forms[1].Components[I], 'Text'));
+//    if GetPropInfo(Screen.Forms[1].Components[I], 'Hint') <> nil then
+//      Memo1.Lines.Add(Screen.Forms[1].Components[I].Name +'.Hint='+ GetPropValue(Screen.Forms[1].Components[I], 'Hint'));
+//  end;
+//  for I := 0 to Screen.FormCount - 1 do
+//  begin
+//    Memo1.Clear;
+//    Memo1.Lines.Add(Screen.Forms[I].Caption + TfrmEasyPlateBaseForm(Screen.Forms[I]).FormId);
+//  end;
+//  ShowMessage(IntToStr(Screen.FormCount));
 end;
 
 end.

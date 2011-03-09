@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=712
+Build=717
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=Easy工作平台主程序
-FileVersion=1.0.0.712
+FileVersion=1.0.0.717
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,7 +134,7 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2011-03-08 22:31:51
+LastCompiledTime=2011-03-09 23:26:26
 [Excluded Packages]
 d:\Program Files\APP2001\Developer Express Inc\ExpressWeb.Framework.v1.7.10\ExpressWeb Framework\D7\dclcxWebPascalScriptD7.bpl=Pascal Script Engine for EWF by Developer Express Inc.
 d:\Program Files\APP2001\Developer Express Inc\ExpressLayoutControl.v1.1.25\D7\dcldxLayoutControlD7.bpl=ExpressLayout Control by Developer Express Inc.
@@ -161,5 +161,6 @@ Item0=$(EPP)\Src\dcu
 Count=1
 Item0=$(EPP)\bin\plugins
 [HistoryLists\hlDCPOutput]
-Count=1
-Item0=$(EPP)\Src\dcp
+Count=2
+Item0=$(EPP)\Src\dcu
+Item1=$(EPP)\Src\dcp

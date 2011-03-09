@@ -13,7 +13,8 @@ uses
   untEasyPlateLoading in 'untEasyPlateLoading.pas' {frmEasyPlateLoading},
   EasyPlateHint in 'EasyPlateHint.pas' {Form1},
   untEasyLoginMain in 'untEasyLoginMain.pas' {frmEasyLoginMain},
-  untEasyPlateMain in 'untEasyPlateMain.pas' {frmEasyPlateMain};
+  untEasyPlateMain in 'untEasyPlateMain.pas' {frmEasyPlateMain},
+  untEasyPlateResourceManage in 'untEasyPlateResourceManage.pas' {frmEasyPlateResourceManage};
 
 type
   TShowSplashForm = function (AHandle: THandle): Boolean; stdcall;
