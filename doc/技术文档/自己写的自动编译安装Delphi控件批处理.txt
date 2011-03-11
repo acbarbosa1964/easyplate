@@ -1,0 +1,40 @@
+
+echo off
+set COMPONENTDIR=E:\DELPHIVCL
+set BPL=%COMPONENTDIR%\BPL
+set SUIPACKSOURCEDIR=%COMPONENTDIR%\SUIPack43\Source
+set COOLTRAYSOURCEDIR=%COMPONENTDIR%\COOLTRAY
+
+
+rem 其实安装Delphi控件不过就是在注册表的指定位置记录一下bpl而已
+set REG32=REG ADD "HKCU\Software\Borland\Delphi\7.0\Known Packages" /v "%BPL%
+
+echo 开始编译并安装CoolTray........
+del %BPL%\CoolTray.*
+set COOLTRAYDIR=%COMPONENTDIR%\COOLTRAY
+dcc32 %COOLTRAYDIR%\CoolTray.dpk -LE%BPL%
+%REG32%\CoolTray.bpl" /t REG_SZ /d "CoolTray Components"
+rem REG ADD "HKCU\Software\Borland\Delphi\7.0\Known Packages" /v "E:\DELPHIVCL\BPL\CoolTray.bpl" /t REG_SZ /d "CoolTray Components"
+
+echo 开始编译安装SUIPack43
+set SUIPACKDIR=%COMPONENTDIR%\SUIPack43\Packages
+rem dcc32 加-U参数指定单元文件所在路径 编译安装后还应将这些路径设置为Delphi的Library path
+dcc32 %SUIPACKDIR%\SUIPackD7.dpk -LE%BPL% -U"%SUIPACKSOURCEDIR%"
+%REG32%\SUIPackD7.bpl" /t REG_SZ /d "SUIPack4.3"
+
+echo 将源码路径添加到Delphi的搜索路径中......
+pause
+
+for /f "tokens=4" %%i in ('reg query HKCU\Software\Borland\Delphi\7.0\Library /v "Search Path"') do set DelphiSearchPath=%%i
+echo 现有路径为：%DelphiSearchPath%
+
+echo "%DelphiSearchPath%"|findstr ";%SUIPACKSOURCEDIR%" > nul
+if "%errorlevel%"=="1" set DelphiSearchPath=%DelphiSearchPath%;%SUIPACKSOURCEDIR%
+echo "%DelphiSearchPath%"|findstr ";%COOLTRAYSOURCEDIR%" > nul
+if "%errorlevel%"=="1" set DelphiSearchPath=%DelphiSearchPath%;%COOLTRAYSOURCEDIR%
+echo 处理后路径为：%DelphiSearchPath%
+
+REG add "HKCU\Software\Borland\Delphi\7.0\Library" /v "Search Path" /t REG_SZ /d "%DelphiSearchPath%"
+pause
+
+
