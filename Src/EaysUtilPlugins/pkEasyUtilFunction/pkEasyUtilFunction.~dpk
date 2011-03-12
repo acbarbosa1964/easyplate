@@ -35,13 +35,18 @@ requires
   vcljpg,
   vcldb,
   pkEasyStardard,
-  pkEasyAdditional;
+  pkEasyAdditional,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  cxEditorsVCLD7,
+  cxDataD7;
 
 contains
   untEasyUtilDLL in 'untEasyUtilDLL.pas',
   untEasyUtilInit in 'untEasyUtilInit.pas',
   untEasyUtilMethod in 'untEasyUtilMethod.pas',
-  untEasyUtilConst in 'untEasyUtilConst.pas';
+  untEasyUtilConst in 'untEasyUtilConst.pas',
+  untEasyIODFM in 'untEasyIODFM.pas';
 
 end.
 

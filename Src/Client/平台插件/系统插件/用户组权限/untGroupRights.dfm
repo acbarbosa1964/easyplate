@@ -99,6 +99,7 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
+            OnClick = btnAddRoleClick
           end
           object btnEditRole: TEasyToolBarButton
             Left = 73
@@ -120,6 +121,7 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
+            OnClick = btnEditRoleClick
           end
           object btnDeleteRole: TEasyToolBarButton
             Left = 137

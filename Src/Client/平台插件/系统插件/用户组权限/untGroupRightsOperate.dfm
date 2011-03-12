@@ -1,5 +1,179 @@
 inherited frmGroupRightsOperate: TfrmGroupRightsOperate
+  BorderStyle = bsDialog
   Caption = 'frmGroupRightsOperate'
+  ClientHeight = 478
+  ClientWidth = 598
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
+  object EasyPanel1: TEasyPanel
+    Left = 0
+    Top = 0
+    Width = 598
+    Height = 50
+    Align = alTop
+    BorderOuter = fsNone
+    TabOrder = 0
+    object EasyLabelEdit1: TEasyLabelEdit
+      Left = 64
+      Top = 16
+      Width = 193
+      Height = 19
+      BorderColor = clGray
+      TabOrder = 0
+      TextRightAlign = False
+      EnterTAB = True
+      FocusColor = clInfoBk
+      EditLabel.Width = 54
+      EditLabel.Height = 13
+      EditLabel.Caption = #35282#33394#21517#31216'  '
+      LabelPosition = lpLeft
+      LabelSpacing = 3
+    end
+    object EasyButtonEdit1: TEasyButtonEdit
+      Left = 342
+      Top = 16
+      Width = 251
+      Height = 19
+      BorderColor = clGray
+      Button.Color = clBtnFace
+      Button.ColorTo = clBtnFace
+      Button.ColorHot = clBtnFace
+      Button.ColorHotTo = clBtnFace
+      Button.ColorDown = clBtnFace
+      Button.ColorDownTo = clBtnFace
+      Button.Width = 16
+      TabOrder = 1
+      TextRightAlign = False
+      EnterTAB = True
+      FocusColor = clInfoBk
+      EditLabel.Width = 54
+      EditLabel.Height = 13
+      EditLabel.Caption = #19978#32423#35282#33394'  '
+      LabelPosition = lpLeft
+      LabelSpacing = 3
+    end
+  end
+  object EasyPanel3: TEasyPanel
+    Left = 0
+    Top = 50
+    Width = 598
+    Height = 428
+    Align = alClient
+    BorderOuter = fsNone
+    TabOrder = 1
+    object EasyPanel4: TEasyPanel
+      Left = 0
+      Top = 0
+      Width = 255
+      Height = 428
+      Align = alLeft
+      BorderOuter = fsNone
+      TabOrder = 0
+      object EasyCheckTree1: TEasyCheckTree
+        Left = 0
+        Top = 0
+        Width = 255
+        Height = 428
+        Align = alClient
+        Indent = 19
+        SelectionPen.Color = clBtnShadow
+        StateImages = EasyCheckTree1.CheckImages
+        TabOrder = 0
+      end
+    end
+    object EasyPanel5: TEasyPanel
+      Left = 343
+      Top = 0
+      Width = 255
+      Height = 428
+      Align = alRight
+      BorderOuter = fsNone
+      TabOrder = 1
+      object EasyCheckTree2: TEasyCheckTree
+        Left = 0
+        Top = 0
+        Width = 255
+        Height = 428
+        Align = alClient
+        Indent = 19
+        SelectionPen.Color = clBtnShadow
+        StateImages = EasyCheckTree1.CheckImages
+        TabOrder = 0
+      end
+    end
+    object EasyBitButton1: TEasyBitButton
+      Left = 266
+      Top = 80
+      Width = 65
+      Height = 25
+      Caption = '>>'
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 2
+    end
+    object EasyBitButton2: TEasyBitButton
+      Left = 266
+      Top = 120
+      Width = 65
+      Height = 25
+      Caption = '>'
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 3
+    end
+    object EasyBitButton3: TEasyBitButton
+      Left = 266
+      Top = 160
+      Width = 65
+      Height = 25
+      Caption = '<'
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 4
+    end
+    object EasyBitButton4: TEasyBitButton
+      Left = 266
+      Top = 200
+      Width = 65
+      Height = 25
+      Caption = '<<'
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 5
+    end
+    object EasyBitButton5: TEasyBitButton
+      Left = 265
+      Top = 248
+      Width = 65
+      Height = 25
+      Caption = #20445#23384
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 6
+    end
+    object EasyBitButton6: TEasyBitButton
+      Left = 265
+      Top = 288
+      Width = 65
+      Height = 25
+      Caption = #21462#28040
+      Color = clSilver
+      ModalResult = 0
+      ParentColor = False
+      Style = bsModern
+      TabOrder = 7
+      OnClick = EasyBitButton6Click
+    end
+  end
 end

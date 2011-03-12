@@ -21,6 +21,10 @@ unit untEasyUtilConst;
 interface
 
 const
+  EASY_OPERATE_ADD   = '增加';
+  EASY_OPERATE_EDIT   = '修改';
+  EASY_OPERATE_DELETE   = '删除';
+  
   EASY_SYS_ERROR     = '系统错误';
   EASY_SYS_HINT      = '系统提示';
   EASY_SYS_EXCEPTION = '系统异常';
@@ -49,6 +53,9 @@ const
   EASY_STATUBAR_DBHOST = ' 数据服务器 ';
 
 
+type
+  //操作数据状态
+  TEasyOperateType = (eotAdd, eotEdit, eotDelete);
   
 implementation
 

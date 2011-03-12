@@ -71,6 +71,8 @@ type
     procedure tvUserRolesClick(Sender: TObject);
     procedure tvUsersClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnAddRoleClick(Sender: TObject);
+    procedure btnEditRoleClick(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
@@ -115,6 +117,8 @@ var
   frmGroupRights: TfrmGroupRights;
 
 implementation
+
+uses untGroupRightsOperate, untEasyUtilConst;
 
 {$R *.dfm}
 
@@ -846,6 +850,30 @@ begin
       Break;
     end;
   end;      
+end;
+
+procedure TfrmGroupRights.btnAddRoleClick(Sender: TObject);
+begin
+  inherited;
+  frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
+  with frmGroupRightsOperate do
+  begin
+    FOperateType := eotAdd;
+  end;  
+  frmGroupRightsOperate.ShowModal;
+  frmGroupRightsOperate.Free;
+end;
+
+procedure TfrmGroupRights.btnEditRoleClick(Sender: TObject);
+begin
+  inherited;
+  frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
+  with frmGroupRightsOperate do
+  begin
+    FOperateType := eotEdit;
+  end;  
+  frmGroupRightsOperate.ShowModal;
+  frmGroupRightsOperate.Free;
 end;
 
 end.
