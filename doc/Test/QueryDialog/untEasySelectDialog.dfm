@@ -36,7 +36,7 @@ object frmEasySelectDialog: TfrmEasySelectDialog
     Width = 647
     Height = 217
     Align = alTop
-    TabOrder = 0
+    TabOrder = 1
     object EasyPanel1: TEasyPanel
       Left = 1
       Top = 1
@@ -162,7 +162,7 @@ object frmEasySelectDialog: TfrmEasySelectDialog
     Width = 647
     Height = 294
     Align = alClient
-    TabOrder = 1
+    TabOrder = 2
     object grdSelectMain: TcxGrid
       Left = 1
       Top = 1
@@ -198,6 +198,7 @@ object frmEasySelectDialog: TfrmEasySelectDialog
         DataController.Summary.SummaryGroups = <>
         OptionsCustomize.ColumnFiltering = False
         OptionsData.Inserting = False
+        OptionsView.Footer = True
         OptionsView.GroupByBox = False
         OptionsView.Indicator = True
         OptionsView.IndicatorWidth = 40
@@ -238,10 +239,12 @@ object frmEasySelectDialog: TfrmEasySelectDialog
     Top = 315
     object N1: TMenuItem
       Caption = #20840#37096#36873#25321
+      ShortCut = 32833
       OnClick = N1Click
     end
     object N3: TMenuItem
       Caption = #28165#38500#36873#25321
+      ShortCut = 32835
       OnClick = N3Click
     end
     object N4: TMenuItem
@@ -249,6 +252,7 @@ object frmEasySelectDialog: TfrmEasySelectDialog
     end
     object N2: TMenuItem
       Caption = #21453#36873
+      ShortCut = 32856
       OnClick = N2Click
     end
   end

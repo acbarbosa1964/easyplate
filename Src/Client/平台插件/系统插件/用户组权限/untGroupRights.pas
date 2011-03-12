@@ -1,3 +1,26 @@
+{-------------------------------------------------------------------------------
+//                       EasyComponents For Delphi 7
+//                         一轩软研第三方开发包                         
+//                         @Copyright 2010 hehf                      
+//                   ------------------------------------                       
+//                                                                              
+//           本开发包是公司内部使用,作为开发工具使用任何,何海锋个人负责开发,任何
+//       人不得外泄,否则后果自负.        
+//
+//            使用权限以及相关解释请联系何海锋  
+//                
+//                                                               
+//            网站地址：http://www.YiXuan-SoftWare.com                                  
+//            电子邮件：hehaifeng1984@126.com 
+//                      YiXuan-SoftWare@hotmail.com    
+//            QQ      ：383530895
+//            MSN     ：YiXuan-SoftWare@hotmail.com                                   
+//------------------------------------------------------------------------------
+//单元说明：
+//
+//主要实现：
+          用户权限管理
+//-----------------------------------------------------------------------------}
 unit untGroupRights;
 
 interface
@@ -20,11 +43,10 @@ type
     EasyToolBarOfficeStyler1: TEasyToolBarOfficeStyler;
     Splitter1: TSplitter;
     tvUserGroups: TEasyTreeView;
-    EasyToolBarButton1: TEasyToolBarButton;
+    btnAddRole: TEasyToolBarButton;
     imgUserGroup: TImageList;
-    EasyToolBarButton2: TEasyToolBarButton;
-    EasyToolBarButton3: TEasyToolBarButton;
-    EasyToolBarButton4: TEasyToolBarButton;
+    btnEditRole: TEasyToolBarButton;
+    btnDeleteRole: TEasyToolBarButton;
     EasyToolBarButton5: TEasyToolBarButton;
     cdsGroups: TClientDataSet;
     cdsUsers: TClientDataSet;
@@ -41,6 +63,7 @@ type
     tvUsers: TEasyTreeView;
     tvCheckResources: TEasyCheckTree;
     cdsUserResource: TClientDataSet;
+    EasyToolBarSeparator1: TEasyToolBarSeparator;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -55,8 +78,6 @@ type
     FGroupRoleList,
     FGroupUserList,
     FGroupRoleResourceList: TList;
-//    procedure GenerateTree(ATree: TEasyTreeView; AClientDataSet: TClientDataSet;
-//                            ARoot)
     //用户组--公司
     procedure InitGroupsTree(AClientDataSet: TClientDataSet);
     function InitRootGroupTree(AClientDataSet: TClientDataSet): TTreeNode;
@@ -68,14 +89,13 @@ type
     function FindGroupDept(ADeptGUID: string): TTreeNode;
     //用户组--角色
     procedure InitRoleTree(AClientDataSet: TClientDataSet; ADeptGUID: string);
+    function FindRoleNode(ARoleGUID: string): TTreeNode;
 
     //显示部门下的角色信息
-    function GetDeptGUID(APointer: Pointer): string;
     procedure DisplayRoles(ADeptGUID: string);
     procedure DisposeGroupRoleList;
 
     //显示角色下对应的员工
-    function GetRoleGUID(APointer: Pointer): string;
     procedure DisplayUsers(ARoleGUID: string);
     procedure InitUserTree(AClientDataSet: TClientDataSet; ARoleGUID: string);
     procedure DisposeGroupUserList;
@@ -474,7 +494,9 @@ var
   ATmpRoleNode: TTreeNode;
 begin
   AClientDataSet.Filtered := False;
-  AClientDataSet.Filter := ' DeptGUID = ' + QuotedStr(ADeptGUID) + ' AND RoleGUID <> ' + QuotedStr('');
+  AClientDataSet.Filter := ' DeptGUID = ' + QuotedStr(ADeptGUID)
+      + ' AND sParentRoleGUID = ' + QuotedStr('{00000000-0000-0000-0000-000000000004}')
+      + ' AND Trim(RoleGUID) <> ' + QuotedStr('');
   AClientDataSet.Filtered := True;
   for I := 0 to AClientDataSet.RecordCount - 1 do
   begin
@@ -499,12 +521,44 @@ begin
     AClientDataSet.Next;
   end;
   AClientDataSet.Filtered := False;
+
+  //挂靠二级角色 FindRoleNode
+  AClientDataSet.Filtered := False;
+  AClientDataSet.Filter := ' DeptGUID = ' + QuotedStr(ADeptGUID)
+      + ' AND sParentRoleGUID <> ' + QuotedStr('{00000000-0000-0000-0000-000000000004}')
+      + ' AND Trim(RoleGUID) <> ' + QuotedStr('');
+  AClientDataSet.Filtered := True;
+  for I := 0 to AClientDataSet.RecordCount - 1 do
+  begin
+    AGroupRole := TGroupRole.Create;
+    with AGroupRole do
+    begin
+      RoleGUID := AClientDataSet.fieldbyname('RoleGUID').AsString;
+      RoleName := AClientDataSet.fieldbyname('sRoleName').AsString;
+      ParentRoleGUID := AClientDataSet.fieldbyname('sParentRoleGUID').AsString;
+      iOrder := AClientDataSet.fieldbyname('iRoleOrder').AsInteger;
+      Description := AClientDataSet.fieldbyname('sDiscription').AsString;
+      DeptGUID := AClientDataSet.fieldbyname('DeptGUID').AsString;
+    end;
+    FGroupRoleList.Add(AGroupRole);
+    //将角色节点挂靠到对应的部门节点下面
+    ATmpRoleNode := tvUserRoles.Items.AddChild(FindRoleNode(AGroupRole.ParentRoleGUID), AGroupRole.RoleName);
+    ATmpRoleNode.Data := AGroupRole;
+
+    ATmpRoleNode.ImageIndex := 3;
+    ATmpRoleNode.SelectedIndex := ATmpRoleNode.ImageIndex + 1;
+
+    AClientDataSet.Next;
+  end;
+  AClientDataSet.Filtered := False;
+
+  tvUserRoles.FullExpand;
 end;
 
 procedure TfrmGroupRights.tvUserGroupsClick(Sender: TObject);
 begin
   inherited;
-  DisplayRoles(GetDeptGUID(tvUserGroups.Selected.Data));
+  DisplayRoles(TGroupDept(tvUserGroups.Selected.Data).DeptGUID);
 end;
 
 procedure TfrmGroupRights.DisplayRoles(ADeptGUID: string);
@@ -519,25 +573,17 @@ begin
   tvUserRoles.Items.EndUpdate;
 end;
 
-function TfrmGroupRights.GetDeptGUID(APointer: Pointer): string;
-var
-  I: Integer;
-begin
-  Result := '';
-  for I := 0 to FGroupDeptList.Count - 1 do
-  begin
-    if APointer = FGroupDeptList.Items[I] then
-      Result := TGroupDept(FGroupDeptList.Items[I]).DeptGUID;
-  end;
-end;
-
 procedure TfrmGroupRights.tvUserRolesClick(Sender: TObject);
 begin
   inherited;
   //显示此角色下的所有用户
-  DisplayUsers(GetRoleGUID(tvUserRoles.Selected.Data));
+  DisplayUsers(TGroupRole(tvUserRoles.Selected.Data).RoleGUID);
   //显示此角色所对应的权限资源
-  DisplayRole_Resources(GetRoleGUID(tvUserRoles.Selected.Data));
+
+  if TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID <> '{00000000-0000-0000-0000-000000000004}' then
+    DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID)
+  else
+    DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).RoleGUID);
 end;
 
 procedure TfrmGroupRights.DisplayUsers(ARoleGUID: string);
@@ -593,20 +639,6 @@ begin
     AClientDataSet.Next;
   end;
   AClientDataSet.Filtered := False;
-end;
-
-function TfrmGroupRights.GetRoleGUID(APointer: Pointer): string;
-var
-  I: Integer;
-begin
-  Result := '';
-  for I := 0 to FGroupRoleList.Count - 1 do
-  begin
-    if APointer = FGroupRoleList.Items[I] then
-    begin
-      Result := TGroupRole(FGroupRoleList.Items[I]).RoleGUID;
-    end;
-  end;
 end;
 
 procedure TfrmGroupRights.DisposeGroupRoleList;
@@ -760,15 +792,17 @@ procedure TfrmGroupRights.DisplayUser_Resources(AClientDataSet: TClientDataSet; 
 var
   I: Integer;
 begin
+  tvCheckResources.CascadeChecks := False;
   for I := 0 to tvCheckResources.Items.Count - 1 do
   begin
     if AClientDataSet.Locate('ResourceGUID',
       VarArrayOf([TGroupRoleResource(tvCheckResources.Items.Item[I].Data).ResourceGUID]),
                              [loCaseInsensitive]) then
-      tvCheckResources.ChangeNodeCheckState(tvCheckResources.Items.Item[I], csChecked)
+      tvCheckResources.ChangeNodeCheckState(tvCheckResources.Items.Item[I], csUnchecked)
     else
       tvCheckResources.ChangeNodeCheckState(tvCheckResources.Items.Item[I], csChecked);
   end;
+  tvCheckResources.CascadeChecks := True;
 end;
 
 procedure TfrmGroupRights.GetUserResources(ALoginName: string);
@@ -797,6 +831,21 @@ begin
   cdsUserResource.Data := null;
   cdsResources.Data := null;
   cdsUsers.Data := null;
+end;
+
+function TfrmGroupRights.FindRoleNode(ARoleGUID: string): TTreeNode;
+var
+  I: Integer;
+begin
+  Result := nil;
+  for I := 0 to tvUserRoles.Items.Count - 1 do
+  begin
+    if TGroupRole(tvUserRoles.Items[I].Data).RoleGUID = ARoleGUID then
+    begin
+      Result := tvUserRoles.Items[I];
+      Break;
+    end;
+  end;      
 end;
 
 end.

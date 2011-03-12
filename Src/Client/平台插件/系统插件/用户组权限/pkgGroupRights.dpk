@@ -40,6 +40,7 @@ requires
 
 contains
   untGroupRights in 'untGroupRights.pas' {frmGroupRights},
-  untGroupRightsObjects in 'untGroupRightsObjects.pas';
+  untGroupRightsObjects in 'untGroupRightsObjects.pas',
+  untGroupRightsOperate in 'untGroupRightsOperate.pas' {frmGroupRightsOperate};
 
 end.

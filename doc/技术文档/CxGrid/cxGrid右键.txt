@@ -1,0 +1,267 @@
+procedure TfrmEasySelectDialog.GenerateGridPopMenu(AcxGridPopupMenu: TcxGridPopupMenu);
+var
+  AMenu       :   TComponent;
+  FMenuItem,
+  FSubMenuItem:   TMenuItem;
+begin
+  AMenu := nil;
+  if AcxGridPopupMenu.BuiltInPopupMenus.Count = 0   then
+      Exit;
+  AMenu := AcxGridPopupMenu.BuiltInPopupMenus[0].PopupMenu; //第一个内置右键菜单(表头菜单)
+  if Assigned(AMenu) and AMenu.InheritsFrom(TPopupMenu) then
+  begin
+      TPopupMenu(AMenu).AutoHotkeys := maManual;         //手动热键
+
+      //-------------------------
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Caption := '-';
+      FMenuItem.Name := 'miLineForGroup';
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //展开所有组
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miExpandAllGroup';
+      FMenuItem.Caption := '展开所有组(&X)';
+      FMenuItem.OnClick := miExpandAllGroupClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //收缩所有组
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miCollapseAllGroup';
+      FMenuItem.Caption := '收缩所有组(&O)';
+      FMenuItem.OnClick := miCollapseAllGroupClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //-------------------------
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Caption := '-';
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //过滤面板
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miFilterPanel';
+      FMenuItem.Caption := '过滤面板(&P)';
+      //自动显示
+      FSubMenuItem := TMenuItem.Create(Self);
+      FSubMenuItem.Name := 'miFilterPanelAuto';
+      FSubMenuItem.Caption := '自动(&A)';
+      FSubMenuItem.RadioItem := True;
+      FSubMenuItem.GroupIndex := 5; //指定同一组
+      FSubMenuItem.Checked := True;
+      FSubMenuItem.OnClick := miFilterPanelClick;
+      FMenuItem.Add(FSubMenuItem); //加入二级子菜单
+      //总是显示
+      FSubMenuItem := TMenuItem.Create(Self);
+      FSubMenuItem.Name := 'miFilterPanelAlways';
+      FSubMenuItem.Caption := '总是显示(&W)';
+      FSubMenuItem.RadioItem := True;
+      FSubMenuItem.GroupIndex := 5;
+      FSubMenuItem.OnClick := miFilterPanelClick;
+      FMenuItem.Add(FSubMenuItem);
+      //从不显示
+      FSubMenuItem := TMenuItem.Create(Self);
+      FSubMenuItem.Name := 'miFilterPanelNerver';
+      FSubMenuItem.Caption := '从不显示(&N)';
+      FSubMenuItem.RadioItem := True;
+      FSubMenuItem.GroupIndex := 5;
+      FSubMenuItem.OnClick := miFilterPanelClick;
+      FMenuItem.Add(FSubMenuItem);
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //自定义过滤
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miCustomFilter';
+      FMenuItem.Caption := '自定义过滤(&M)';
+      FMenuItem.OnClick := miCustomFilterClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //过滤管理器
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miFilterBuilder';
+//      TPopupMenu(AMenu).Images.AddImage(FormMain.ImageListExtend, 44); //添加图标图像
+//      FMenuItem.ImageIndex := TPopupMenu(AMenu).Images.Count - 1; //指定图标序号
+      FMenuItem.Caption := '过滤管理器';
+      FMenuItem.OnClick := Self.miFilterBuilderClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //---------------------
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Caption := '-';
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //导出
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miExport';
+//      TPopupMenu(AMenu).Images.AddImage(FormMain.ImageListExtend, 37);
+//      FMenuItem.ImageIndex := TPopupMenu(AMenu).Images.Count - 1;
+      FMenuItem.Caption := '导出(&E)';
+      FMenuItem.OnClick := Self.miExportClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+
+      //打印
+      FMenuItem := TMenuItem.Create(Self);
+      FMenuItem.Name := 'miPrint';
+      FMenuItem.Caption := '打印(&P)';
+//      TPopupMenu(AMenu).Images.AddImage(FormMain.ImageListExtend, 14);
+//      FMenuItem.ImageIndex := TPopupMenu(AMenu).Images.Count - 1;
+      FMenuItem.OnClick := Self.miPrintClick;
+      TPopupMenu(AMenu).Items.Add(FMenuItem);
+  end;
+end;
+
+
+    procedure miExpandAllGroupClick(Sender: TObject);
+    procedure miCollapseAllGroupClick(Sender: TObject);
+    procedure miFilterPanelClick(Sender: TObject);
+    procedure miCustomFilterClick(Sender: TObject);
+    procedure miFilterBuilderClick(Sender: TObject);
+    procedure cxGridPopupMenuPopup(ASenderMenu: TComponent;
+      AHitTest: TcxCustomGridHitTest; X, Y: Integer;
+      var AllowPopup: Boolean);
+    procedure miPrintClick(Sender: TObject);
+    procedure miExportClick(Sender: TObject);
+
+
+procedure TfrmEasySelectDialog.miExpandAllGroupClick(Sender: TObject);
+begin
+  //展开所有组
+  grdSelectMainDBTableView1.DataController.Groups.FullExpand;
+end;
+
+procedure TfrmEasySelectDialog.miCollapseAllGroupClick(Sender: TObject);
+begin
+  //收缩所有组
+  grdSelectMainDBTableView1.DataController.Groups.FullCollapse;
+end;
+
+procedure TfrmEasySelectDialog.miFilterPanelClick(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  //隐藏/显示过滤面板
+  mi := TMenuItem(Sender);
+  mi.Checked := True;
+  if mi.Name = 'miFilterPanelAlways'   then
+    grdSelectMainDBTableView1.Filtering.Visible := fvAlways
+  else if mi.Name = 'miFilterPanelNerver'  then
+    grdSelectMainDBTableView1.Filtering.Visible := fvNever
+  else
+    grdSelectMainDBTableView1.Filtering.Visible := fvNonEmpty;
+end;
+
+procedure TfrmEasySelectDialog.miCustomFilterClick(Sender: TObject);
+var
+  AHitTest: TcxCustomGridHitTest;
+begin
+  //自定义过滤
+  //弹出Custom   Filter   Dialog对话框
+  AHitTest := cxGridPopupMenu1.HitTest;
+  if GetHitTypeByHitCode(AHitTest.HitTestCode) = gvhtColumnHeader then //获得右击的列
+    grdSelectMainDBTableView1.Filtering.RunCustomizeDialog(TcxGridColumnHeaderHitTest(AHitTest).Column);
+end;
+
+procedure TfrmEasySelectDialog.miFilterBuilderClick(Sender: TObject);
+begin
+  //过滤管理器
+  //弹出Filter   Builder   Dialog对话框
+  grdSelectMainDBTableView1.Filtering.RunCustomizeDialog;
+end;
+
+procedure TfrmEasySelectDialog.cxGridPopupMenuPopup(ASenderMenu: TComponent;
+  AHitTest: TcxCustomGridHitTest; X, Y: Integer; var AllowPopup: Boolean);
+begin
+  if GetHitTypeByHitCode(AHitTest.HitTestCode) = gvhtColumnHeader then //右击列标题时
+  begin
+    //if   tvResult.DataController.Groups.GroupingItemCount   >   0   then
+    if grdSelectMainDBTableView1.GroupedColumnCount > 0 then //有分组时显示
+    begin
+      TMenuItem(Self.FindComponent('miLineForGroup')).Visible := True;
+      TMenuItem(Self.FindComponent('miExpandAllGroup')).Visible := True;
+      TMenuItem(Self.FindComponent('miCollapseAllGroup')).Visible := True;
+    end
+    else
+    begin
+      TMenuItem(Self.FindComponent('miLineForGroup')).Visible := False;
+      TMenuItem(Self.FindComponent('miExpandAllGroup')).Visible := False;
+      TMenuItem(Self.FindComponent('miCollapseAllGroup')).Visible := False;
+    end;
+  end;
+end;
+
+procedure TfrmEasySelectDialog.miPrintClick(Sender: TObject);
+begin
+  //打印
+//  Self.dxComponentPrinter.Preview(True, Self.dxComponentPrinterLink1);
+end;
+
+procedure TfrmEasySelectDialog.miExportClick(Sender: TObject);
+var
+  FileName,
+  FileExt,
+  msg     : String;
+begin
+  if grdSelectMainDBTableView1.DataController.RecordCount <= 0 then
+  begin
+    msg := '没有导出数据...';
+    Application.MessageBox(PChar(msg), PChar(Application.Title), MB_OK or MB_IconWarning);
+    Exit;
+  end;
+
+  Self.SaveDialogExport.Filter := 'Excel文件(*.xls)|*.xls|XML文件(*.xml)|*.xml'
+      + '|文本文件(*.txt)|*.txt|网页文件(*.html)|*.html';
+  Self.SaveDialogExport.Title := '导出为...';
+
+  if not Self.SaveDialogExport.Execute then
+    Exit;
+
+  FileName := Self.SaveDialogExport.FileName;
+  FileExt := LowerCase(ExtractFileExt(FileName));
+//  if FileExt = '.xls' then
+//    ExportGrid4ToExcel(FileName, grdSelectMain)
+//  else if FileExt = '.xml' then
+//    ExportGrid4ToXML(FileName, grdSelectMain)
+//  else if FileExt = '.txt' then
+//    ExportGrid4ToText(FileName, grdSelectMain)
+//  else if FileExt = '.html'   then
+//    ExportGrid4ToHTML(FileName, grdSelectMain)
+//  else
+  begin
+    msg := '不支持的导出文件类型...';
+    Application.MessageBox(PChar(msg), PChar(Application.Title), MB_OK or MB_IconError);
+    Exit;
+  end;
+
+  msg := '导出完成...';
+  Application.MessageBox(PChar(msg), PChar(Application.Title), MB_OK or MB_IconInformation);
+end;
+
+procedure TfrmEasySelectDialog.Button3Click(Sender: TObject);
+var
+  IniFileName: string;
+begin
+ //保存布局
+  IniFileName := ExtractFilePath(Application.ExeName) + 'Layout\' +  Self.Name + '.ini';
+  if not DirectoryExists(ExtractFileDir(IniFileName))   then
+    CreateDir(ExtractFileDir(IniFileName));
+  grdSelectMainDBTableView1.StoreToIniFile(IniFileName); //保存为布局文件
+end;
+
+procedure TfrmEasySelectDialog.Button2Click(Sender: TObject);
+var
+  IniFileName: string;
+  I          : Integer;
+begin
+//恢复布局
+  IniFileName := ExtractFilePath(Application.ExeName) + 'Layout\' + Self.Name + '.ini';
+  if FileExists(IniFileName) then
+    grdSelectMainDBTableView1.RestoreFromIniFile(IniFileName) //从布局文件中恢复
+  else
+  begin
+    grdSelectMainDBTableView1.BeginUpdate;
+    for I := 0 to grdSelectMainDBTableView1.ItemCount - 1 do
+      grdSelectMainDBTableView1.Items[I].ApplyBestFit; //调整为最佳宽度
+    grdSelectMainDBTableView1.EndUpdate;
+  end;
+end;
+
+

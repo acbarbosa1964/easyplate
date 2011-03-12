@@ -110,4 +110,15 @@ object Form1_1_1_1: TForm
     TabOrder = 7
     Width = 121
   end
+  object EasyDevTextEdit1: TEasyDevTextEdit
+    Left = 657
+    Top = 48
+    TabOrder = 8
+    EditLabel.Width = 88
+    EditLabel.Height = 13
+    EditLabel.Caption = 'EasyDevTextEdit1'
+    LabelPosition = lpLeft
+    LabelSpacing = 3
+    Width = 121
+  end
 end

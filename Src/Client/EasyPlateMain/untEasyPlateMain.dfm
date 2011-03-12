@@ -1486,15 +1486,6 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       Caption = 'EIM'
     end
   end
-  object Memo1: TMemo
-    Left = 488
-    Top = 112
-    Width = 321
-    Height = 281
-    Lines.Strings = (
-      'Memo1')
-    TabOrder = 7
-  end
   object mmMain: TEasyMainMenu
     AutoHotkeys = maManual
     Images = img16

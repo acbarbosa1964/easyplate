@@ -1,6 +1,6 @@
 inherited frmGroupRights: TfrmGroupRights
-  Left = 245
-  Top = 144
+  Left = 206
+  Top = 143
   Caption = 'frmGroupRights'
   OnClose = FormClose
   OnDestroy = FormDestroy
@@ -79,7 +79,7 @@ inherited frmGroupRights: TfrmGroupRights
           Images = imgUserGroup
           ParentOptionPicture = True
           ToolBarIndex = -1
-          object EasyToolBarButton1: TEasyToolBarButton
+          object btnAddRole: TEasyToolBarButton
             Left = 9
             Top = 2
             Width = 64
@@ -100,7 +100,7 @@ inherited frmGroupRights: TfrmGroupRights
             Position = daTop
             ShowCaption = True
           end
-          object EasyToolBarButton2: TEasyToolBarButton
+          object btnEditRole: TEasyToolBarButton
             Left = 73
             Top = 2
             Width = 64
@@ -121,7 +121,7 @@ inherited frmGroupRights: TfrmGroupRights
             Position = daTop
             ShowCaption = True
           end
-          object EasyToolBarButton3: TEasyToolBarButton
+          object btnDeleteRole: TEasyToolBarButton
             Left = 137
             Top = 2
             Width = 64
@@ -142,29 +142,8 @@ inherited frmGroupRights: TfrmGroupRights
             Position = daTop
             ShowCaption = True
           end
-          object EasyToolBarButton4: TEasyToolBarButton
-            Left = 201
-            Top = 2
-            Width = 52
-            Height = 24
-            Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-            Appearance.CaptionFont.Color = clWindowText
-            Appearance.CaptionFont.Height = -11
-            Appearance.CaptionFont.Name = 'Tahoma'
-            Appearance.CaptionFont.Style = []
-            Caption = #20445#23384
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ImageIndex = 13
-            ParentFont = False
-            Position = daTop
-            ShowCaption = True
-          end
           object EasyToolBarButton5: TEasyToolBarButton
-            Left = 253
+            Left = 211
             Top = 2
             Width = 52
             Height = 24
@@ -183,6 +162,13 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
+          end
+          object EasyToolBarSeparator1: TEasyToolBarSeparator
+            Left = 201
+            Top = 2
+            Width = 10
+            Height = 22
+            LineColor = clBtnShadow
           end
         end
       end

@@ -107,6 +107,8 @@ var
 
 implementation
 
+uses cxGridDBDataDefinitions;
+
 {$R *.dfm}
 
 { TfrmEasySelectDialog }
@@ -361,11 +363,30 @@ begin
 end;
 
 procedure TfrmEasySelectDialog.FormShow(Sender: TObject);
+var
+  AFooterItem: TcxDataSummaryItem;
 begin
   GenerateTmpDataSet(AClientDataSet, ATmpClientDataSet);
   ADataSource.DataSet := ATmpClientDataSet;
   //生成Grid列
   GenerateColumns(grdSelectMainDBTableView1);
+
+  with grdSelectMainDBTableView1.DataController.Summary do
+  begin
+    BeginUpdate;
+    AFooterItem := FooterSummaryItems.Add;
+    with (AFooterItem as TcxGridDBTableSummaryItem) do
+    begin
+      if grdSelectMainDBTableView1.ColumnCount > 0 then
+      begin
+        Column := grdSelectMainDBTableView1.Columns[0];
+        FieldName := grdSelectMainDBTableView1.Columns[0].DataBinding.FieldName;
+        Format := '合计:0';
+        Kind := skCount;
+      end;
+    end;
+    EndUpdate;
+  end;  
 end;
 
 procedure TfrmEasySelectDialog.SelectedSet(ACds: TClientDataSet;

@@ -1,6 +1,7 @@
 inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
   Left = 223
   Top = 182
+  BorderIcons = [biSystemMenu, biMaximize]
   Caption = #24179#21488#36164#28304#31649#29702
   OnDestroy = FormDestroy
   PixelsPerInch = 96
@@ -36,17 +37,18 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
       Images = imgTlbDBForm
       ParentOptionPicture = True
       ToolBarIndex = -1
-      object btnNew: TEasyToolBarButton
+      object btnLang: TEasyToolBarButton
         Left = 9
         Top = 2
-        Width = 52
+        Width = 64
         Height = 24
+        Hint = #29983#25104#22810#35821#35328#25991#20214
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #26032#22686
+        Caption = #22810#35821#35328
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -56,18 +58,20 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
         ParentFont = False
         Position = daTop
         ShowCaption = True
+        OnClick = btnLangClick
       end
-      object btnEdit: TEasyToolBarButton
-        Left = 61
+      object btnResource: TEasyToolBarButton
+        Left = 73
         Top = 2
-        Width = 52
+        Width = 76
         Height = 24
+        Hint = #29983#25104#26435#38480#36164#28304#33050#26412
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #20462#25913
+        Caption = #26435#38480#36164#28304
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -77,117 +81,14 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
         ParentFont = False
         Position = daTop
         ShowCaption = True
-      end
-      object btnCancel: TEasyToolBarButton
-        Left = 165
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #25764#38144
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 3
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
-      end
-      object btnDelete: TEasyToolBarButton
-        Left = 113
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #21024#38500
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 2
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
-      end
-      object btnCopy: TEasyToolBarButton
-        Left = 217
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #22797#21046
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 4
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
-      end
-      object btnFind: TEasyToolBarButton
-        Left = 373
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #26597#25214
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 7
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
-      end
-      object btnPrint: TEasyToolBarButton
-        Left = 425
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #25171#21360
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 8
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
+        OnClick = btnResourceClick
       end
       object btnExit: TEasyToolBarButton
-        Left = 477
+        Left = 149
         Top = 2
         Width = 52
         Height = 24
+        Hint = #20851#38381
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
@@ -204,48 +105,6 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
         Position = daTop
         ShowCaption = True
         OnClick = btnExitClick
-      end
-      object btnRefresh: TEasyToolBarButton
-        Left = 321
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #21047#26032
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 6
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
-      end
-      object btnSave: TEasyToolBarButton
-        Left = 269
-        Top = 2
-        Width = 52
-        Height = 24
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Caption = #20445#23384
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 5
-        ParentFont = False
-        Position = daTop
-        ShowCaption = True
       end
     end
   end
@@ -308,7 +167,6 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
         Align = alClient
         Indent = 19
         TabOrder = 0
-        OnClick = tvResManageClick
       end
     end
   end
@@ -1115,6 +973,86 @@ inherited frmEasyPlateResourceManage: TfrmEasyPlateResourceManage
   object dsMain: TDataSource
     DataSet = cdsMain
     Left = 416
+    Top = 126
+  end
+  object EasyPopupMenu1: TEasyPopupMenu
+    MenuStyler = EasyMenuOfficeStyler1
+    Left = 452
+    Top = 126
+    object pmShowHint: TMenuItem
+      Caption = #26174#31034#25552#31034
+      OnClick = pmShowHintClick
+    end
+  end
+  object EasyMenuOfficeStyler1: TEasyMenuOfficeStyler
+    AntiAlias = aaNone
+    AutoThemeAdapt = False
+    Style = osOffice2003Blue
+    Background.Position = bpCenter
+    Background.Color = 16185078
+    Background.ColorTo = 16185078
+    ButtonAppearance.DownColor = 5149182
+    ButtonAppearance.DownColorTo = 9556991
+    ButtonAppearance.HoverColor = 13432063
+    ButtonAppearance.HoverColorTo = 9556223
+    ButtonAppearance.DownBorderColor = clNavy
+    ButtonAppearance.HoverBorderColor = clNavy
+    ButtonAppearance.CaptionFont.Charset = DEFAULT_CHARSET
+    ButtonAppearance.CaptionFont.Color = clWindowText
+    ButtonAppearance.CaptionFont.Height = -11
+    ButtonAppearance.CaptionFont.Name = 'Tahoma'
+    ButtonAppearance.CaptionFont.Style = []
+    IconBar.Color = 16773091
+    IconBar.ColorTo = 14986631
+    IconBar.CheckBorder = clNavy
+    IconBar.RadioBorder = clNavy
+    SelectedItem.BorderColor = clNavy
+    SelectedItem.Font.Charset = DEFAULT_CHARSET
+    SelectedItem.Font.Color = clWindowText
+    SelectedItem.Font.Height = -12
+    SelectedItem.Font.Name = #23435#20307
+    SelectedItem.Font.Style = []
+    SelectedItem.NotesFont.Charset = DEFAULT_CHARSET
+    SelectedItem.NotesFont.Color = clWindowText
+    SelectedItem.NotesFont.Height = -9
+    SelectedItem.NotesFont.Name = #23435#20307
+    SelectedItem.NotesFont.Style = []
+    SelectedItem.CheckBorder = clNavy
+    SelectedItem.RadioBorder = clNavy
+    RootItem.Color = 16105118
+    RootItem.ColorTo = 16240050
+    RootItem.Font.Charset = DEFAULT_CHARSET
+    RootItem.Font.Color = clMenuText
+    RootItem.Font.Height = -12
+    RootItem.Font.Name = #23435#20307
+    RootItem.Font.Style = []
+    RootItem.SelectedColor = 16773091
+    RootItem.SelectedColorTo = 15185299
+    RootItem.SelectedBorderColor = 9841920
+    RootItem.HoverColor = 13432063
+    RootItem.HoverColorTo = 10147583
+    SideBar.Font.Charset = DEFAULT_CHARSET
+    SideBar.Font.Color = clWhite
+    SideBar.Font.Height = -19
+    SideBar.Font.Name = 'Tahoma'
+    SideBar.Font.Style = [fsBold, fsItalic]
+    SideBar.Image.Position = bpCenter
+    SideBar.Background.Position = bpCenter
+    SideBar.SplitterColorTo = clBlack
+    Separator.Color = 13339754
+    Separator.GradientType = gtBoth
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMenuText
+    Font.Height = -12
+    Font.Name = #23435#20307
+    Font.Style = []
+    NotesFont.Charset = DEFAULT_CHARSET
+    NotesFont.Color = clGray
+    NotesFont.Height = -9
+    NotesFont.Name = #23435#20307
+    NotesFont.Style = []
+    MenuBorderColor = 9841920
+    Left = 492
     Top = 126
   end
 end

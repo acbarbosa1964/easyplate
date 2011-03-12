@@ -121,7 +121,6 @@ type
     ppMDITab: TEasyPopupMenu;
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
-    Memo1: TMemo;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
