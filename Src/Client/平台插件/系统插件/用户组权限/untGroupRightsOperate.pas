@@ -48,6 +48,8 @@ type
     procedure btnAssignAllClick(Sender: TObject);
     procedure btnRevokeAllClick(Sender: TObject);
     procedure btnAssignClick(Sender: TObject);
+    procedure btnRevokeClick(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
   private
     { Private declarations }
     FRoleResource,
@@ -56,8 +58,13 @@ type
     procedure InitRoleResourcesTree(AClientDataSet: TClientDataSet);
     procedure InitResourcesTree(AClientDataSet: TClientDataSet);
 
-    //权限分配
-    procedure AssignRight(ASrcTree, ADestTree: TEasyCheckTree; var ASrcList, ADestList: TList);
+    //权限分配 AType = 0分配权限 = 1移除权限
+    procedure AssignRight(ASrcTree, ADestTree: TEasyCheckTree; AType: Integer);
+
+    //分配权限时增加数据到ClietnDataSet
+    procedure AppendClientData(AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
+    procedure DeleteClientData(AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
+    procedure CreateParentNode(AParentNode: TTreeNode; ATree: TEasyCheckTree);
   public
     { Public declarations }
     FOperateType: TEasyOperateType;
@@ -71,6 +78,8 @@ var
 implementation
 
 {$R *.dfm}
+uses
+  untEasyUtilMethod;
 
 procedure TfrmGroupRightsOperate.btnCancelClick(Sender: TObject);
 begin
@@ -320,37 +329,17 @@ begin
 end;
 
 procedure TfrmGroupRightsOperate.AssignRight(ASrcTree,
-  ADestTree: TEasyCheckTree; var ASrcList, ADestList: TList);
+  ADestTree: TEasyCheckTree; AType: Integer);
 var
   I, J: Integer;
-  ATmpResource,
-  AGroupResource  : TGroupRoleResource;
   ATmpParentNode,
   ATmpResourceNode,
   ATmpNode        : TTreeNode;
+  ATmpParentNodeGUID: TStrings;
 begin
   ASrcTree.Items.BeginUpdate;
   ADestTree.Items.BeginUpdate;
-
-  for  I := ASrcTree.Items.Count - 1 downto 0 do
-  begin
-    if ASrcTree.ItemState[I] = csChecked then
-    begin
-      ATmpResourceNode := ASrcTree.Items.Item[I];
-      if TGroupRoleResource(ATmpResourceNode.Data).ParentResourceGUID
-          = '{00000000-0000-0000-0000-000000000003}' then
-      begin
-        //如果在目标树中不存在则创建
-        if FindResourceParentNode(TGroupRoleResource(ATmpResourceNode.Data).ResourceGUID,
-                                  ADestTree) = nil then
-        begin
-          ATmpNode := ADestTree.Items.AddChild(nil,
-                              TGroupRoleResource(ATmpResourceNode.Data).ResourceName);
-          ATmpNode.Data := ATmpResourceNode.Data;
-        end;
-      end;
-    end;
-  end;
+  ATmpParentNodeGUID := TStringList.Create;
 
   for  I := ASrcTree.Items.Count - 1 downto 0 do
   begin
@@ -359,17 +348,27 @@ begin
       ATmpResourceNode := ASrcTree.Items.Item[I];
       ATmpParentNode := ATmpResourceNode.Parent;
 
-      if TGroupRoleResource(ATmpResourceNode.Data).ParentResourceGUID
-          <> '{00000000-0000-0000-0000-000000000003}' then
+      if ATmpParentNode <> nil then
       begin
-        ATmpNode := ADestTree.Items.AddChild(
-          FindResourceParentNode(TGroupRoleResource(ATmpResourceNode.Data).ParentResourceGUID, ADestTree),
-                            TGroupRoleResource(ATmpResourceNode.Data).ResourceName);
-        ATmpNode.Data := ATmpResourceNode.Data;
-        ASrcTree.Items.Item[I].Delete;
-        if not ATmpParentNode.HasChildren then
-          ATmpNode.Delete;
+        CreateParentNode(ATmpParentNode, ADestTree);
+        if ATmpParentNodeGUID.IndexOf(TGroupRoleResource(ATmpParentNode.Data).GUID) = -1 then
+          ATmpParentNodeGUID.Add(TGroupRoleResource(ATmpParentNode.Data).GUID);
       end;
+      ATmpNode := ADestTree.Items.AddChild(
+        FindResourceParentNode(TGroupRoleResource(ATmpResourceNode.Data).ParentResourceGUID, ADestTree),
+                          TGroupRoleResource(ATmpResourceNode.Data).ResourceName);
+      ATmpNode.Data := ATmpResourceNode.Data;
+      
+      ATmpNode.ImageIndex := 0;
+      ATmpNode.SelectedIndex := ATmpNode.ImageIndex + 1;
+
+      if AType = 0 then
+        //生成数据集
+        AppendClientData(cdsRoleResource, TGroupRoleResource(ATmpNode.Data))
+      else
+        DeleteClientData(cdsRoleResource, TGroupRoleResource(ATmpNode.Data));
+
+      ASrcTree.Items.Item[I].Delete;
     end;
   end;
 
@@ -377,6 +376,16 @@ begin
   ADestTree.Refresh;
   ASrcTree.Items.EndUpdate;
   ADestTree.Items.EndUpdate;
+
+  for J := ASrcTree.Items.Count - 1 downto 0 do
+  begin
+    if ATmpParentNodeGUID.IndexOf(TGroupRoleResource(ASrcTree.Items.Item[J].Data).GUID) <> -1 then
+    begin
+      if (not ASrcTree.Items.Item[J].HasChildren) then
+        ASrcTree.Items.Item[J].Delete;
+    end;
+  end;
+  ATmpParentNodeGUID.Free;
 end;
 
 procedure TfrmGroupRightsOperate.btnAssignAllClick(Sender: TObject);
@@ -384,20 +393,82 @@ begin
   inherited;
   if tvNotHaveRights.Items.Count = 0 then Exit;
   tvNotHaveRights.SetAllNodes(csChecked);
-  AssignRight(tvNotHaveRights, tvHaveRights, FResource, FRoleResource);
+  AssignRight(tvNotHaveRights, tvHaveRights, 0);
 end;
 
 procedure TfrmGroupRightsOperate.btnRevokeAllClick(Sender: TObject);
 begin
   inherited;
   if tvHaveRights.Items.Count = 0 then Exit;
-  tvHaveRights.SetAllNodes(csUnknown);
+  tvHaveRights.SetAllNodes(csChecked);
+  AssignRight(tvHaveRights, tvNotHaveRights, 1);
 end;
 
 procedure TfrmGroupRightsOperate.btnAssignClick(Sender: TObject);
 begin
   inherited;
-  AssignRight(tvNotHaveRights, tvHaveRights, FResource, FRoleResource);
+  AssignRight(tvNotHaveRights, tvHaveRights, 0);
+end;
+
+procedure TfrmGroupRightsOperate.btnRevokeClick(Sender: TObject);
+begin
+  inherited;
+  AssignRight(tvHaveRights, tvNotHaveRights, 1);
+end;
+
+procedure TfrmGroupRightsOperate.AppendClientData(
+  AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
+begin
+  with AClientDataSet do
+  begin
+    Append;
+    FieldByName('GUID').AsString := GenerateGUID;
+    FieldByName('RoleGUID').AsString := Trim(edtRoleName.EditLabel.Hint);
+    FieldByName('ResourceGUID').AsString := ARoleResource.ResourceGUID;
+
+    FieldByName('sResourceName').AsString := ARoleResource.ResourceName;
+    FieldByName('sParentResourceGUID').AsString := ARoleResource.ParentResourceGUID;
+    FieldByName('iOrder').AsInteger := ARoleResource.iOrder;
+    Post;
+  end;  
+end;
+
+procedure TfrmGroupRightsOperate.DeleteClientData(
+  AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
+begin
+  if AClientDataSet.Locate('GUID', ARoleResource.GUID, [loCaseInsensitive]) then
+    AClientDataSet.Delete;
+end;
+
+procedure TfrmGroupRightsOperate.CreateParentNode(AParentNode: TTreeNode;
+  ATree: TEasyCheckTree);
+var
+  AATmpNode: TTreeNode;
+begin
+  if FindResourceParentNode(TGroupRoleResource(AParentNode.Data).ResourceGUID,
+                            ATree) = nil then
+  begin
+    AATmpNode := ATree.Items.AddChild(nil,
+                        TGroupRoleResource(AParentNode.Data).ResourceName);
+    AATmpNode.Data := AParentNode.Data;
+    //生成数据集
+    AppendClientData(cdsRoleResource, TGroupRoleResource(AParentNode.Data));
+  end;
+end;
+
+procedure TfrmGroupRightsOperate.btnSaveClick(Sender: TObject);
+var
+  AErrorCode: Integer;
+  AResultOLE: OleVariant;
+begin
+  inherited;
+  try                    //sysRole_Resource
+    AResultOLE := EasyRDMDisp.EasySaveRDMData('sysRole_Resource', cdsRoleResource.Delta,
+                                              'GUID', AErrorCode);
+    EasyHint(EASY_SYS_ERROR);
+  except on e: Exception do
+    EasyHint('保存失败，原因：' + e.Message + IntToStr(AErrorCode));
+  end;
 end;
 
 end.

@@ -237,10 +237,13 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       Top = 80
       Width = 65
       Height = 25
+      Hint = #20998#37197#25152#26377#26435#38480
       Caption = '<<'
       Color = clSilver
       ModalResult = 0
       ParentColor = False
+      ParentShowHint = False
+      ShowHint = True
       Style = bsModern
       TabOrder = 2
       OnClick = btnAssignAllClick
@@ -250,10 +253,13 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       Top = 120
       Width = 65
       Height = 25
+      Hint = #20998#37197#25351#23450#26435#38480
       Caption = '<'
       Color = clSilver
       ModalResult = 0
       ParentColor = False
+      ParentShowHint = False
+      ShowHint = True
       Style = bsModern
       TabOrder = 3
       OnClick = btnAssignClick
@@ -263,22 +269,29 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       Top = 160
       Width = 65
       Height = 25
+      Hint = #31227#38500#25351#23450#26435#38480
       Caption = '>'
       Color = clSilver
       ModalResult = 0
       ParentColor = False
+      ParentShowHint = False
+      ShowHint = True
       Style = bsModern
       TabOrder = 4
+      OnClick = btnRevokeClick
     end
     object btnRevokeAll: TEasyBitButton
       Left = 266
       Top = 200
       Width = 65
       Height = 25
+      Hint = #31227#38500#25152#26377#26435#38480
       Caption = '>>'
       Color = clSilver
       ModalResult = 0
       ParentColor = False
+      ParentShowHint = False
+      ShowHint = True
       Style = bsModern
       TabOrder = 5
       OnClick = btnRevokeAllClick
@@ -322,6 +335,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       ParentColor = False
       Style = bsModern
       TabOrder = 6
+      OnClick = btnSaveClick
     end
     object btnCancel: TEasyBitButton
       Left = 265

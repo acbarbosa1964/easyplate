@@ -29,7 +29,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm, ExtCtrls, untEasyGroupBox, untGroupRightsObjects,
   untEasyToolBar, untEasyToolBarStylers, ComCtrls, untEasyTreeView, ImgList,
-  DB, DBClient, StdCtrls;
+  DB, DBClient, StdCtrls, ActnList;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
@@ -64,6 +64,10 @@ type
     tvCheckResources: TEasyCheckTree;
     cdsUserResource: TClientDataSet;
     EasyToolBarSeparator1: TEasyToolBarSeparator;
+    actGroupRights: TActionList;
+    actAddGroup: TAction;
+    actEditGroup: TAction;
+    actDelGroup: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -71,8 +75,10 @@ type
     procedure tvUserRolesClick(Sender: TObject);
     procedure tvUsersClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnAddRoleClick(Sender: TObject);
-    procedure btnEditRoleClick(Sender: TObject);
+    procedure actAddGroupExecute(Sender: TObject);
+    procedure actEditGroupExecute(Sender: TObject);
+    procedure actEditGroupUpdate(Sender: TObject);
+    procedure actDelGroupUpdate(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
@@ -118,7 +124,7 @@ var
 
 implementation
 
-uses untGroupRightsOperate, untEasyUtilConst;
+uses untGroupRightsOperate, untEasyUtilConst, untEasyUtilMethod;
 
 {$R *.dfm}
 
@@ -865,28 +871,67 @@ begin
   end;      
 end;
 
-procedure TfrmGroupRights.btnAddRoleClick(Sender: TObject);
+procedure TfrmGroupRights.actAddGroupExecute(Sender: TObject);
+var
+  bCancel: Boolean;
+  sRoleResourceSQL: string;
+begin
+  inherited;
+  bCancel := False;
+  
+  frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
+  with frmGroupRightsOperate do
+  begin
+    FOperateType := eotAdd;
+    FRoleGUID := '';
+    edtRoleName.EditLabel.Hint := GenerateGUID;
+  end;
+  frmGroupRightsOperate.ShowModal;
+  if frmGroupRightsOperate.ModalResult = mrCancel then
+    bCancel := True;
+  frmGroupRightsOperate.Free;
+
+  if not bCancel then
+  begin
+    //返回操作则执行刷新
+    sRoleResourceSQL := 'SELECT * FROM vw_RoleResource ORDER BY sParentResourceGUID, iOrder';
+    cdsResources.Data := null;
+    cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
+  end;
+end;
+
+procedure TfrmGroupRights.actEditGroupExecute(Sender: TObject);
 begin
   inherited;
   frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
   with frmGroupRightsOperate do
   begin
-    FOperateType := eotAdd;
+    FOperateType := eotEdit;           
+    FRoleGUID := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
+
+    edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
+    edtRoleName.Text := TGroupRole(tvUserRoles.Selected.Data).RoleName;
+
+    edtParentRole.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
+    if tvUserRoles.Selected.Parent <> nil then
+      edtParentRole.Text := TGroupRole(tvUserRoles.Selected.Parent.Data).RoleName
+    else
+      edtParentRole.Text := 'NULL';
   end;  
   frmGroupRightsOperate.ShowModal;
   frmGroupRightsOperate.Free;
 end;
 
-procedure TfrmGroupRights.btnEditRoleClick(Sender: TObject);
+procedure TfrmGroupRights.actEditGroupUpdate(Sender: TObject);
 begin
   inherited;
-  frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
-  with frmGroupRightsOperate do
-  begin
-    FOperateType := eotEdit;
-  end;  
-  frmGroupRightsOperate.ShowModal;
-  frmGroupRightsOperate.Free;
+  actEditGroup.Enabled := tvUserRoles.Selected <> nil;
+end;
+
+procedure TfrmGroupRights.actDelGroupUpdate(Sender: TObject);
+begin
+  inherited;
+  actDelGroup.Enabled := tvUserRoles.Selected <> nil;
 end;
 
 end.

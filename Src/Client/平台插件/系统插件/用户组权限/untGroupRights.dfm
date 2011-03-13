@@ -84,12 +84,12 @@ inherited frmGroupRights: TfrmGroupRights
             Top = 2
             Width = 64
             Height = 24
+            Action = actAddGroup
             Appearance.CaptionFont.Charset = DEFAULT_CHARSET
             Appearance.CaptionFont.Color = clWindowText
             Appearance.CaptionFont.Height = -11
             Appearance.CaptionFont.Name = 'Tahoma'
             Appearance.CaptionFont.Style = []
-            Caption = #26032#22686#32452
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -99,19 +99,18 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
-            OnClick = btnAddRoleClick
           end
           object btnEditRole: TEasyToolBarButton
             Left = 73
             Top = 2
             Width = 64
             Height = 24
+            Action = actEditGroup
             Appearance.CaptionFont.Charset = DEFAULT_CHARSET
             Appearance.CaptionFont.Color = clWindowText
             Appearance.CaptionFont.Height = -11
             Appearance.CaptionFont.Name = 'Tahoma'
             Appearance.CaptionFont.Style = []
-            Caption = #32534#36753#32452
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -121,19 +120,18 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
-            OnClick = btnEditRoleClick
           end
           object btnDeleteRole: TEasyToolBarButton
             Left = 137
             Top = 2
             Width = 64
             Height = 24
+            Action = actDelGroup
             Appearance.CaptionFont.Charset = DEFAULT_CHARSET
             Appearance.CaptionFont.Color = clWindowText
             Appearance.CaptionFont.Height = -11
             Appearance.CaptionFont.Name = 'Tahoma'
             Appearance.CaptionFont.Style = []
-            Caption = #21024#38500#32452
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -1231,5 +1229,26 @@ inherited frmGroupRights: TfrmGroupRights
     Params = <>
     Left = 368
     Top = 98
+  end
+  object actGroupRights: TActionList
+    Images = imgUserGroup
+    Left = 368
+    Top = 130
+    object actAddGroup: TAction
+      Caption = #26032#22686#32452
+      ImageIndex = 3
+      OnExecute = actAddGroupExecute
+    end
+    object actEditGroup: TAction
+      Caption = #32534#36753#32452
+      ImageIndex = 7
+      OnExecute = actEditGroupExecute
+      OnUpdate = actEditGroupUpdate
+    end
+    object actDelGroup: TAction
+      Caption = #21024#38500#32452
+      ImageIndex = 2
+      OnUpdate = actDelGroupUpdate
+    end
   end
 end
