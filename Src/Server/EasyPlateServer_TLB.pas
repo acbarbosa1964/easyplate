@@ -12,7 +12,7 @@ unit EasyPlateServer_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2011-1-23 16:44:53 from Type Library described below.
+// File generated on 2011-03-13 14:17:41 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: E:\MyProject\E1Dev\Src\Server\EasyPlateServer.tlb (1)
@@ -78,6 +78,7 @@ type
                              const AKeyField: WideString; out AErrorCode: SYSINT): OleVariant; safecall;
     function EasySaveRDMDatas(ATableNameOLE: OleVariant; ADeltaOLE: OleVariant; 
                               AKeyFieldOLE: OleVariant; ACodeErrorOLE: OleVariant): OleVariant; safecall;
+    function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; safecall;
   end;
 
 // *********************************************************************//
@@ -92,6 +93,7 @@ type
                              const AKeyField: WideString; out AErrorCode: SYSINT): OleVariant; dispid 302;
     function EasySaveRDMDatas(ATableNameOLE: OleVariant; ADeltaOLE: OleVariant; 
                               AKeyFieldOLE: OleVariant; ACodeErrorOLE: OleVariant): OleVariant; dispid 303;
+    function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; dispid 304;
     function AS_ApplyUpdates(const ProviderName: WideString; Delta: OleVariant; MaxErrors: Integer; 
                              out ErrorCount: Integer; var OwnerData: OleVariant): OleVariant; dispid 20000000;
     function AS_GetRecords(const ProviderName: WideString; Count: Integer; out RecsOut: Integer; 

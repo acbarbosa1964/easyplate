@@ -230,8 +230,9 @@ begin
   mmResult.Lines.Add(TfrmEasyPlateBaseForm(AForm).Name + ATmpGUID);
   ASQL := ' INSERT INTO sysResource([GUID], ResourceGUID, sResourceID, sResourceName,'
           + 'sParentResourceGUID, iOrder) VALUES (';
-  ARootSQL := ASQL + QuotedStr(GenerateGUID) + ',' + QuotedStr(GenerateGUID) + ','
+  ARootSQL := ASQL + QuotedStr(GenerateGUID) + ','
               + QuotedStr(ATmpGUID) + ','
+              + QuotedStr(AForm.Name) + ','
               + QuotedStr(AForm.Caption) + ','
               + QuotedStr('{00000000-0000-0000-0000-000000000003}') + ', 0);';
   mmResult.Lines.Add(ARootSQL);

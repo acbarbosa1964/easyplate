@@ -154,6 +154,8 @@ var
   sGroupsSQL,
   sUsersSQL,
   sRoleResourceSQL: string;
+  ASQLOLE,
+  AResult: OleVariant;
 begin
   inherited;
   if not Assigned(FGroupCompanyList) then
@@ -173,16 +175,27 @@ begin
     
   FormId := '{3477B007-80AE-414E-BF67-9709FEEB3DD8}';
 
+  ASQLOLE := VarArrayCreate([0, 2], varVariant);
+  
   sGroupsSQL := 'SELECT * FROM vw_Groups ORDER BY sCompanyID, iDeptOrder, iRoleOrder';
-  cdsGroups.Data := EasyRDMDisp.EasyGetRDMData(sGroupsSQL);
+  ASQLOLE[0] := sGroupsSQL;
+//  cdsGroups.Data := EasyRDMDisp.EasyGetRDMData(sGroupsSQL);
 
   sUsersSQL := 'SELECT  LoginGUID, sLoginName, sRoleGUID, sEmployeeGUID, sEmployeeCName,'
                +' sEmployeeEName, sSexGUID FROM vw_InitUser '
                +' WHERE bEnable = 1 ORDER BY iOrderNo';
-  cdsUsers.Data := EasyRDMDisp.EasyGetRDMData(sUsersSQL);
+  ASQLOLE[1] := sUsersSQL;
+//  cdsUsers.Data := EasyRDMDisp.EasyGetRDMData(sUsersSQL);
 
   sRoleResourceSQL := 'SELECT * FROM vw_RoleResource';
-  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
+  ASQLOLE[2] := sRoleResourceSQL;
+//  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
+
+  AResult := EasyRDMDisp.EasyGetRDMDatas(ASQLOLE);
+
+  cdsGroups.Data := AResult[0];
+  cdsUsers.Data := AResult[1];
+  cdsResources.Data := AResult[2];
 end;
 
 procedure TfrmGroupRights.InitGroupsTree(AClientDataSet: TClientDataSet);

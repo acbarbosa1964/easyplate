@@ -97,6 +97,7 @@ type
       safecall;
     function EasySaveRDMDatas(ATableNameOLE, ADeltaOLE, AKeyFieldOLE,
       ACodeErrorOLE: OleVariant): OleVariant; safecall;
+    function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; safecall;
   public
     { Public declarations }
     property EasyDBIniFilePath: string read GetDBIniFilePath write SetDBIniFilePath;
@@ -459,6 +460,17 @@ procedure TRDMEasyPlateServer.EasyRDMDspBeforeGetRecords(Sender: TObject;
   var OwnerData: OleVariant);
 begin
   AddExecLog('GetRecords£º' + FTableName);
+end;
+
+function TRDMEasyPlateServer.EasyGetRDMDatas(
+  ASQLOLE: OleVariant): OleVariant;
+var
+  ACount, I: Integer;
+begin
+  ACount := VarArrayHighBound(ASQLOLE, 1);
+  Result := VarArrayCreate([0, ACount], varVariant);
+  for I := VarArrayLowBound(ASQLOLE, 1) to VarArrayHighBound(ASQLOLE, 1) do
+    Result[I] := EasyGetRDMData(ASQLOLE[I]);
 end;
 
 initialization
