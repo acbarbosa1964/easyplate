@@ -16,7 +16,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
     Height = 81
     Align = alTop
     BorderOuter = fsNone
-    TabOrder = 0
+    TabOrder = 1
     object EasyLabel1: TEasyLabel
       Left = 32
       Top = 48
@@ -169,6 +169,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
         FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC2A6A4C2A6A4C2A6A4C2A6A4C2
         A6A4C2A6A4C2A6A4C2A6A4FF00FFFF00FFFF00FFFF00FFFF00FF}
       Button.Width = 16
+      OnButtonClick = edtParentRoleButtonClick
       TabOrder = 1
       TextRightAlign = False
       EnterTAB = True
@@ -187,7 +188,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
     Height = 397
     Align = alClient
     BorderOuter = fsNone
-    TabOrder = 1
+    TabOrder = 2
     object EasyPanel4: TEasyPanel
       Left = 0
       Top = 0
@@ -234,7 +235,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
     end
     object btnAssignAll: TEasyBitButton
       Left = 266
-      Top = 80
+      Top = 112
       Width = 65
       Height = 25
       Hint = #20998#37197#25152#26377#26435#38480
@@ -245,12 +246,12 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       ParentShowHint = False
       ShowHint = True
       Style = bsModern
-      TabOrder = 2
+      TabOrder = 3
       OnClick = btnAssignAllClick
     end
     object btnAssign: TEasyBitButton
       Left = 266
-      Top = 120
+      Top = 72
       Width = 65
       Height = 25
       Hint = #20998#37197#25351#23450#26435#38480
@@ -261,7 +262,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       ParentShowHint = False
       ShowHint = True
       Style = bsModern
-      TabOrder = 3
+      TabOrder = 2
       OnClick = btnAssignClick
     end
     object btnRevoke: TEasyBitButton
@@ -383,7 +384,7 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
     Left = 432
     Top = 242
     Bitmap = {
-      494C010106000900040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010106000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -783,7 +784,8 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       C01FC00F8003C003C00FC00780038001C007C00780038001C007C00780030000
       C007C00780030000C007C00780030000C007E00780030000C007FC0780030000
       E00FFF9F80030000F21FF39F80038001F39FF39F80038001F13FF39F8003C003
-      F83FF83FC007E007FFFFFC7FFFFFF81F}
+      F83FF83FC007E007FFFFFC7FFFFFF81F00000000000000000000000000000000
+      000000000000}
   end
   object cdsResources: TClientDataSet
     Aggregates = <>
@@ -896,5 +898,9 @@ inherited frmGroupRightsOperate: TfrmGroupRightsOperate
       Caption = #20840#37096#25240#21472
       OnClick = pmFullCollapse1Click
     end
+  end
+  object hintBall: TEasyHintBalloonForm
+    Left = 272
+    Top = 97
   end
 end

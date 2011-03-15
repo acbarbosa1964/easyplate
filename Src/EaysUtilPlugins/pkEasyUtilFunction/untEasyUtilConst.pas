@@ -31,6 +31,12 @@ const
   EASY_SYS_EXIT      = '系统退出';
   EASY_SYS_ABORT     = '系统中断';
 
+  EASY_SYS_NOTNULL = '不能为空值!';
+  EASY_SYS_DATANOCHANGE = '数据未发生变更,不能进行保存!';
+
+  EASY_SYS_SAVE_SUCCESS = '保存成功!';
+  EASY_SYS_SAVE_FAILED = '保存失败,原因:';
+
 //包加载文件不存在
   EASY_BPL_NOTFOUND = '加载指定的文件%s已丢失!';
 //数据库连接
@@ -52,7 +58,8 @@ const
   EASY_STATUBAR_APP = '应用程序类型 ';
   EASY_STATUBAR_DBHOST = ' 数据服务器 ';
 
-
+//权限管理
+  EASY_RIGHT_TOPARENT = '只能对父节点或根节点进行资源权限分配!';
 type
   //操作数据状态
   TEasyOperateType = (eotAdd, eotEdit, eotDelete);

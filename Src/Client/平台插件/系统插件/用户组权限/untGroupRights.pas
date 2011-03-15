@@ -115,6 +115,9 @@ type
     //系统权限树
     procedure InitResourcesTree(AClientDataSet: TClientDataSet);
     function FindResourceParentNode(AParentRightGUID: string): TTreeNode;
+
+    //权限资源管理时的刷新操作
+    procedure RefreshRoleResouse;
   public
     { Public declarations }
   end;
@@ -878,14 +881,23 @@ var
 begin
   inherited;
   bCancel := False;
-  
+  if tvUserRoles.Selected.Parent <> nil then
+  begin
+    EasyHint(EASY_RIGHT_TOPARENT);
+    Exit;
+  end;  
   frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
   with frmGroupRightsOperate do
   begin
     FOperateType := eotAdd;
     FRoleGUID := '';
-    edtRoleName.EditLabel.Hint := GenerateGUID;
+    //如果选择的是根节点，就将新增的父节点设置为根节点的RoleGUID
+    if  TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID = '{00000000-0000-0000-0000-000000000004}' then
+      edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID
+    else
+      edtRoleName.EditLabel.Hint := '{00000000-0000-0000-0000-000000000004}';
   end;
+
   frmGroupRightsOperate.ShowModal;
   if frmGroupRightsOperate.ModalResult = mrCancel then
     bCancel := True;
@@ -897,18 +909,28 @@ begin
     sRoleResourceSQL := 'SELECT * FROM vw_RoleResource ORDER BY sParentResourceGUID, iOrder';
     cdsResources.Data := null;
     cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
+
+    RefreshRoleResouse;
   end;
 end;
 
 procedure TfrmGroupRights.actEditGroupExecute(Sender: TObject);
+var
+  bCancel: Boolean;
+  sRoleResourceSQL: string;
 begin
   inherited;
+  bCancel := False;
+  if tvUserRoles.Selected.Parent <> nil then
+  begin
+    EasyHint(EASY_RIGHT_TOPARENT);
+    Exit;
+  end;  
   frmGroupRightsOperate := TfrmGroupRightsOperate.Create(Self);
   with frmGroupRightsOperate do
   begin
     FOperateType := eotEdit;           
     FRoleGUID := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
-
     edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
     edtRoleName.Text := TGroupRole(tvUserRoles.Selected.Data).RoleName;
 
@@ -919,7 +941,19 @@ begin
       edtParentRole.Text := 'NULL';
   end;  
   frmGroupRightsOperate.ShowModal;
+  if frmGroupRightsOperate.ModalResult = mrCancel then
+    bCancel := True;
   frmGroupRightsOperate.Free;
+
+  if not bCancel then
+  begin
+    //返回操作则执行刷新
+    sRoleResourceSQL := 'SELECT * FROM vw_RoleResource ORDER BY sParentResourceGUID, iOrder';
+    cdsResources.Data := null;
+    cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
+
+    RefreshRoleResouse;
+  end;
 end;
 
 procedure TfrmGroupRights.actEditGroupUpdate(Sender: TObject);
@@ -932,6 +966,17 @@ procedure TfrmGroupRights.actDelGroupUpdate(Sender: TObject);
 begin
   inherited;
   actDelGroup.Enabled := tvUserRoles.Selected <> nil;
+end;
+
+procedure TfrmGroupRights.RefreshRoleResouse;
+begin
+  EasyFreeAndNilList(FGroupRoleResourceList);
+  //显示此角色所对应的权限资源
+  InitResourcesTree(cdsResources);
+  if TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID <> '{00000000-0000-0000-0000-000000000004}' then
+    DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID)
+  else
+    DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).RoleGUID);
 end;
 
 end.

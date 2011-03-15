@@ -41,6 +41,7 @@ requires
 contains
   untGroupRights in 'untGroupRights.pas' {frmGroupRights},
   untGroupRightsObjects in 'untGroupRightsObjects.pas',
-  untGroupRightsOperate in 'untGroupRightsOperate.pas' {frmGroupRightsOperate};
+  untGroupRightsOperate in 'untGroupRightsOperate.pas' {frmGroupRightsOperate},
+  untEasySelectParentRole in 'untEasySelectParentRole.pas' {frmEasySelectParentRole};
 
 end.

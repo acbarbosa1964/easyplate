@@ -28,7 +28,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, ActiveX, FileCtrl, UrlMon, TlHelp32, ExtCtrls,
   ComObj, WinSock, ComCtrls, DB, ADODB, IdGlobal, ImageHlp, untEasyTabSet,
-  Menus, DBClient, untEasyProgressBar;
+  Menus, DBClient, untEasyProgressBar, untEasyBallonControl;
 
 type
 
@@ -262,6 +262,7 @@ const
   procedure FreeComponent_Child(AComponent: TComponent);
   procedure FreeComponent_NoChild(AComponent: TComponent);
 
+  procedure EasyFreeAndNilList(AList: TList);  
 implementation
 
 uses untEasyUtilConst, TypInfo, cxDBEdit;
@@ -1212,6 +1213,15 @@ begin
     if AComponent.Components[0].ComponentCount > 0 then
       FreeComponent_Child(AComponent.Components[0])
   end;
+end;
+
+procedure EasyFreeAndNilList(AList: TList);
+var
+  I: Integer;
+begin
+  for I := AList.Count - 1 downto 0 do
+    TObject(AList.Items[I]).Free;
+  AList.Clear;
 end;
 
 end.

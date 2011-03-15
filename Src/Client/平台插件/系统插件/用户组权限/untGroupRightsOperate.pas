@@ -7,7 +7,7 @@ uses
   Dialogs, untEasyPlateDBBaseForm, ComCtrls, untEasyTreeView,
   untEasyButtons, ExtCtrls, untEasyGroupBox, untEasyEdit, StdCtrls,
   untEasyUtilConst, ImgList, DB, DBClient, untEasyLabel, untGroupRightsObjects,
-  Menus, untEasyMenus, untEasyMenuStylers;
+  Menus, untEasyMenus, untEasyMenuStylers, untEasyBallonControl;
 
 type
   TfrmGroupRightsOperate = class(TfrmEasyPlateDBBaseForm)
@@ -37,6 +37,7 @@ type
     pmHaveRights: TEasyPopupMenu;
     pmFullExpand1: TMenuItem;
     pmFullCollapse1: TMenuItem;
+    hintBall: TEasyHintBalloonForm;
     procedure btnCancelClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -50,6 +51,7 @@ type
     procedure btnAssignClick(Sender: TObject);
     procedure btnRevokeClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure edtParentRoleButtonClick(Sender: TObject);
   private
     { Private declarations }
     FRoleResource,
@@ -64,7 +66,7 @@ type
     //分配权限时增加数据到ClietnDataSet
     procedure AppendClientData(AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
     procedure DeleteClientData(AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
-    procedure CreateParentNode(AParentNode: TTreeNode; ATree: TEasyCheckTree);
+    procedure CreateParentNode(AParentNode: TTreeNode; ATree: TEasyCheckTree; AType: Integer);
   public
     { Public declarations }
     FOperateType: TEasyOperateType;
@@ -79,7 +81,7 @@ implementation
 
 {$R *.dfm}
 uses
-  untEasyUtilMethod;
+  untEasyUtilMethod, untEasySelectParentRole;
 
 procedure TfrmGroupRightsOperate.btnCancelClick(Sender: TObject);
 begin
@@ -88,6 +90,11 @@ begin
 end;
 
 procedure TfrmGroupRightsOperate.FormShow(Sender: TObject);
+var
+  ARoleResourceSQL,
+  AResourceSQL: string;
+  ASQLOLE,
+  AResultData : OleVariant;
 begin
   inherited;
   case FOperateType of
@@ -97,33 +104,27 @@ begin
       Self.Caption := Self.Caption + '-[' + EASY_OPERATE_EDIT + ']';
   end;
 
+  ASQLOLE := VarArrayCreate([0, 1], varVariant);
+  ARoleResourceSQL := ' SELECT * FROM vw_RoleResource WHERE RoleGUID = ' + QuotedStr(FRoleGUID);
+  ASQLOLE[0] := ARoleResourceSQL;
+  AResourceSQL := 'SELECT * FROM sysResource ORDER BY sParentResourceGUID, iOrder';
+  ASQLOLE[1] := AResourceSQL;
+//
+  AResultData := EasyRDMDisp.EasyGetRDMDatas(ASQLOLE);
+//  cdsRoleResource.Data := ASQLOLE[0];
+//  cdsResources.Data := ASQLOLE[1];
+  cdsRoleResource.Data := EasyRDMDisp.EasyGetRDMData(ARoleResourceSQL);
+  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(AResourceSQL);
   //显示树
   InitRoleResourcesTree(cdsRoleResource);
   InitResourcesTree(cdsResources);
 end;
 
 procedure TfrmGroupRightsOperate.FormCreate(Sender: TObject);
-var
-  ARoleResourceSQL,
-  AResourceSQL: string;
-  ASQLOLE,
-  AResultData : OleVariant;
 begin
   inherited;
   FRoleResource := TList.Create;
   FResource := TList.Create;
-
-  ASQLOLE := VarArrayCreate([0, 1], varVariant);
-  ARoleResourceSQL := ' SELECT * FROM vw_RoleResource WHERE RoleGUID = ' + QuotedStr(FRoleGUID);
-//  ASQLOLE[0] := ARoleResourceSQL;
-  AResourceSQL := 'SELECT * FROM sysResource ORDER BY sParentResourceGUID, iOrder';
-//  ASQLOLE[1] := AResourceSQL;
-//
-//  AResultData := EasyRDMDisp.EasyGetRDMDatas(ASQLOLE);
-//  cdsRoleResource.Data := ASQLOLE[0];
-//  cdsResources.Data := ASQLOLE[1];
-  cdsRoleResource.Data := EasyRDMDisp.EasyGetRDMData(ARoleResourceSQL);
-  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(AResourceSQL);
 end;
 
 procedure TfrmGroupRightsOperate.InitRoleResourcesTree(AClientDataSet: TClientDataSet);
@@ -302,6 +303,20 @@ begin
     AClientDataSet.Next;
   end;
   AClientDataSet.Filtered := False;
+
+  //如果此权限是根节点、而且已经出现在已分配权限中、并且没有子节点
+  //则不应出现在待分配权限中
+  for I := tvNotHaveRights.Items.Count - 1 downto 0 do
+  begin
+    if (FindResourceParentNode(TGroupRoleResource(tvNotHaveRights.Items.Item[I].Data).ResourceGUID,
+                              tvHaveRights) <> nil)
+        and (not tvNotHaveRights.Items.Item[I].HasChildren)
+        and (TGroupRoleResource(tvNotHaveRights.Items.Item[I].Data).ParentResourceGUID
+              = '{00000000-0000-0000-0000-000000000003}') then
+    begin
+      tvNotHaveRights.Items.Item[I].Delete;
+    end;  
+  end;  
 end;
 
 procedure TfrmGroupRightsOperate.pmFullCollapse1Click(Sender: TObject);
@@ -350,7 +365,7 @@ begin
 
       if ATmpParentNode <> nil then
       begin
-        CreateParentNode(ATmpParentNode, ADestTree);
+        CreateParentNode(ATmpParentNode, ADestTree, AType);
         if ATmpParentNodeGUID.IndexOf(TGroupRoleResource(ATmpParentNode.Data).GUID) = -1 then
           ATmpParentNodeGUID.Add(TGroupRoleResource(ATmpParentNode.Data).GUID);
       end;
@@ -430,18 +445,18 @@ begin
     FieldByName('sParentResourceGUID').AsString := ARoleResource.ParentResourceGUID;
     FieldByName('iOrder').AsInteger := ARoleResource.iOrder;
     Post;
-  end;  
+  end;
 end;
 
 procedure TfrmGroupRightsOperate.DeleteClientData(
   AClientDataSet: TClientDataSet; ARoleResource: TGroupRoleResource);
 begin
-  if AClientDataSet.Locate('GUID', ARoleResource.GUID, [loCaseInsensitive]) then
+  if AClientDataSet.Locate('ResourceGUID', ARoleResource.ResourceGUID, [loCaseInsensitive]) then
     AClientDataSet.Delete;
 end;
 
 procedure TfrmGroupRightsOperate.CreateParentNode(AParentNode: TTreeNode;
-  ATree: TEasyCheckTree);
+  ATree: TEasyCheckTree; AType: Integer);
 var
   AATmpNode: TTreeNode;
 begin
@@ -452,7 +467,10 @@ begin
                         TGroupRoleResource(AParentNode.Data).ResourceName);
     AATmpNode.Data := AParentNode.Data;
     //生成数据集
-    AppendClientData(cdsRoleResource, TGroupRoleResource(AParentNode.Data));
+    if AType = 0 then
+      AppendClientData(cdsRoleResource, TGroupRoleResource(AParentNode.Data))
+    else
+      DeleteClientData(cdsRoleResource, TGroupRoleResource(AParentNode.Data));
   end;
 end;
 
@@ -462,13 +480,52 @@ var
   AResultOLE: OleVariant;
 begin
   inherited;
+  if Trim(edtRoleName.Text) = '' then
+  begin
+    hintBall.ShowTextHintBalloon(bmtInfo, EASY_SYS_HINT, EASY_SYS_NOTNULL, 500, 200,
+                                 0, edtRoleName, bapBottomRight);
+    Exit;
+  end;
+  if Trim(edtParentRole.Text) = '' then
+  begin
+    hintBall.ShowTextHintBalloon(bmtInfo, EASY_SYS_HINT, EASY_SYS_NOTNULL, 500, 200,
+                                 0, edtParentRole, bapBottomRight);
+    Exit;
+  end;
+
+  if cdsRoleResource.ChangeCount = 0 then
+  begin
+    EasyHint(EASY_SYS_DATANOCHANGE);
+    Exit;
+  end;
   try                    //sysRole_Resource
     AResultOLE := EasyRDMDisp.EasySaveRDMData('sysRole_Resource', cdsRoleResource.Delta,
                                               'GUID', AErrorCode);
-    EasyHint(EASY_SYS_ERROR);
+    EasyHint(EASY_SYS_SAVE_SUCCESS);
+    Self.ModalResult := mrOk;
   except on e: Exception do
-    EasyHint('保存失败，原因：' + e.Message + IntToStr(AErrorCode));
+    EasyHint(EASY_SYS_SAVE_FAILED + e.Message + IntToStr(AErrorCode));
   end;
+end;
+
+procedure TfrmGroupRightsOperate.edtParentRoleButtonClick(Sender: TObject);
+var
+  APoint: TPoint;
+begin
+  inherited;
+  APoint.X := edtParentRole.Left;
+  APoint.Y := edtParentRole.Top + edtParentRole.Height;
+  APoint := ClientToScreen(APoint);
+  if frmEasySelectParentRole = nil then
+    frmEasySelectParentRole := TfrmEasySelectParentRole.Create(Self);
+  with frmEasySelectParentRole do
+  begin
+    BorderStyle := bsNone;
+    Left := APoint.X;
+    Top := APoint.Y;
+    Width := edtParentRole.Width;
+  end;
+  frmEasySelectParentRole.Show;
 end;
 
 end.
