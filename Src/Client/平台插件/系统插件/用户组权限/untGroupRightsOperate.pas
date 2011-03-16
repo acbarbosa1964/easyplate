@@ -510,22 +510,16 @@ end;
 
 procedure TfrmGroupRightsOperate.edtParentRoleButtonClick(Sender: TObject);
 var
-  APoint: TPoint;
+  AList: TStrings;
 begin
   inherited;
-  APoint.X := edtParentRole.Left;
-  APoint.Y := edtParentRole.Top + edtParentRole.Height;
-  APoint := ClientToScreen(APoint);
-  if frmEasySelectParentRole = nil then
-    frmEasySelectParentRole := TfrmEasySelectParentRole.Create(Self);
-  with frmEasySelectParentRole do
+  AList := TStringList.Create;
+  if EasySelectParentRole(AList) then
   begin
-    BorderStyle := bsNone;
-    Left := APoint.X;
-    Top := APoint.Y;
-    Width := edtParentRole.Width;
+    edtParentRole.EditLabel.Hint := AList.Values['ParentRoleGUID'];
+    edtParentRole.Text := AList.Values['ParentRoleName'];
   end;
-  frmEasySelectParentRole.Show;
+  AList.Free;
 end;
 
 end.

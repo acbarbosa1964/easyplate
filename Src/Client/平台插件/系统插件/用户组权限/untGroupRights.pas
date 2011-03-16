@@ -68,6 +68,9 @@ type
     actAddGroup: TAction;
     actEditGroup: TAction;
     actDelGroup: TAction;
+    btnRoleUsers: TEasyToolBarButton;
+    EasyToolBarSeparator2: TEasyToolBarSeparator;
+    actRoleUsers: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -79,6 +82,8 @@ type
     procedure actEditGroupExecute(Sender: TObject);
     procedure actEditGroupUpdate(Sender: TObject);
     procedure actDelGroupUpdate(Sender: TObject);
+    procedure actAddGroupUpdate(Sender: TObject);
+    procedure actRoleUsersUpdate(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
@@ -891,9 +896,14 @@ begin
   begin
     FOperateType := eotAdd;
     FRoleGUID := '';
-    //如果选择的是根节点，就将新增的父节点设置为根节点的RoleGUID
-    if  TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID = '{00000000-0000-0000-0000-000000000004}' then
-      edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID
+    if tvUserRoles.Selected <> nil then
+    begin
+      //如果选择的是根节点，就将新增的父节点设置为根节点的RoleGUID
+      if  TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID = '{00000000-0000-0000-0000-000000000004}' then
+        edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID
+      else
+        edtRoleName.EditLabel.Hint := '{00000000-0000-0000-0000-000000000004}';
+    end
     else
       edtRoleName.EditLabel.Hint := '{00000000-0000-0000-0000-000000000004}';
   end;
@@ -959,7 +969,8 @@ end;
 procedure TfrmGroupRights.actEditGroupUpdate(Sender: TObject);
 begin
   inherited;
-  actEditGroup.Enabled := tvUserRoles.Selected <> nil;
+  actEditGroup.Enabled := (tvUserRoles.Selected <> nil) and
+          (TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID = '{00000000-0000-0000-0000-000000000004}');
 end;
 
 procedure TfrmGroupRights.actDelGroupUpdate(Sender: TObject);
@@ -977,6 +988,18 @@ begin
     DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).ParentRoleGUID)
   else
     DisplayRole_Resources(TGroupRole(tvUserRoles.Selected.Data).RoleGUID);
+end;
+
+procedure TfrmGroupRights.actAddGroupUpdate(Sender: TObject);
+begin
+  inherited;
+  actAddGroup.Enabled := not (tvUserGroups.Selected.HasChildren);
+end;
+
+procedure TfrmGroupRights.actRoleUsersUpdate(Sender: TObject);
+begin
+  inherited;
+  actRoleUsers.Enabled := (tvUserRoles.Selected <> nil);
 end;
 
 end.

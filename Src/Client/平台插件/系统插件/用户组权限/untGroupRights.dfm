@@ -143,7 +143,7 @@ inherited frmGroupRights: TfrmGroupRights
             ShowCaption = True
           end
           object EasyToolBarButton5: TEasyToolBarButton
-            Left = 211
+            Left = 285
             Top = 2
             Width = 52
             Height = 24
@@ -164,10 +164,38 @@ inherited frmGroupRights: TfrmGroupRights
             ShowCaption = True
           end
           object EasyToolBarSeparator1: TEasyToolBarSeparator
-            Left = 201
+            Left = 275
             Top = 2
             Width = 10
             Height = 22
+            LineColor = clBtnShadow
+          end
+          object btnRoleUsers: TEasyToolBarButton
+            Left = 211
+            Top = 2
+            Width = 64
+            Height = 24
+            Action = actRoleUsers
+            Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+            Appearance.CaptionFont.Color = clWindowText
+            Appearance.CaptionFont.Height = -11
+            Appearance.CaptionFont.Name = 'Tahoma'
+            Appearance.CaptionFont.Style = []
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ImageIndex = 0
+            ParentFont = False
+            Position = daTop
+            ShowCaption = True
+          end
+          object EasyToolBarSeparator2: TEasyToolBarSeparator
+            Left = 201
+            Top = 2
+            Width = 10
+            Height = 23
             LineColor = clBtnShadow
           end
         end
@@ -1238,6 +1266,7 @@ inherited frmGroupRights: TfrmGroupRights
       Caption = #26032#22686#32452
       ImageIndex = 3
       OnExecute = actAddGroupExecute
+      OnUpdate = actAddGroupUpdate
     end
     object actEditGroup: TAction
       Caption = #32534#36753#32452
@@ -1249,6 +1278,11 @@ inherited frmGroupRights: TfrmGroupRights
       Caption = #21024#38500#32452
       ImageIndex = 2
       OnUpdate = actDelGroupUpdate
+    end
+    object actRoleUsers: TAction
+      Caption = #32452#29992#25143
+      ImageIndex = 0
+      OnUpdate = actRoleUsersUpdate
     end
   end
 end

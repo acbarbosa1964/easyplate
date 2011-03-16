@@ -42,6 +42,7 @@ contains
   untGroupRights in 'untGroupRights.pas' {frmGroupRights},
   untGroupRightsObjects in 'untGroupRightsObjects.pas',
   untGroupRightsOperate in 'untGroupRightsOperate.pas' {frmGroupRightsOperate},
-  untEasySelectParentRole in 'untEasySelectParentRole.pas' {frmEasySelectParentRole};
+  untEasySelectParentRole in 'untEasySelectParentRole.pas' {frmEasySelectParentRole},
+  untGroupRoleUserOperate in 'untGroupRoleUserOperate.pas' {frmGroupRoleUserOperate};
 
 end.
