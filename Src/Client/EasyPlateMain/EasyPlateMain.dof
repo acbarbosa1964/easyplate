@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=730
+Build=736
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=Easy工作平台主程序
-FileVersion=1.0.0.730
+FileVersion=1.0.0.736
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,7 +134,7 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2011-03-13 15:46:22
+LastCompiledTime=2011-03-26 17:37:47
 [Excluded Packages]
 d:\Program Files\APP2001\Developer Express Inc\ExpressWeb.Framework.v1.7.10\ExpressWeb Framework\D7\dclcxWebPascalScriptD7.bpl=Pascal Script Engine for EWF by Developer Express Inc.
 d:\Program Files\APP2001\Developer Express Inc\ExpressLayoutControl.v1.1.25\D7\dcldxLayoutControlD7.bpl=ExpressLayout Control by Developer Express Inc.
@@ -154,12 +154,3 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=$(EPP)\Src\dcu
-[HistoryLists\hlBPLOutput]
-Count=1
-Item0=$(EPP)\bin\plugins
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=$(EPP)\Src\dcp

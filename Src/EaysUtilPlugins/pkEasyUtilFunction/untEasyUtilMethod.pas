@@ -202,9 +202,9 @@ const
   //AType = 0表示不添加到MDITab
   function LoadPkg(APluginFile: string; ATmpStrings: TStrings; AMDITabSet: TEasyMDITabSet;
                   AEasyProgressBar: TEasyProgressBar;
-                  AMDICloseNotify: TMDICloseNotify; AType: Integer = 0): Boolean; overload;
+                  AMDICloseNotify: TMDICloseNotify; AType: Integer = 0): Boolean;
   //ShowModel加载插件
-  function LoadPkg(APluginFile: string; ATmpStrings: TStrings): Boolean; overload;
+  function LoadPkg_Normal(APluginFile: string; ATmpStrings: TStrings): Boolean;
 
   //获取硬盘序列号
   function GetIdeDiskSerialNumber(i:Integer) : String;
@@ -854,7 +854,7 @@ begin
       //进度窗体进度
       AEasyProgressBar.Position := 40;
       if @AShowBplForm = nil then
-        raise Exception.Create('不能加载插件:'+ APluginFile + ' 原因：未找到插件入口函数!')
+        raise Exception.Create(Format(EASY_PLUGIN_CANNOT_LOAD, [APluginFile]))
       else
       begin
         TmpForm := AShowBplForm(ATmpStrings);
@@ -899,11 +899,10 @@ begin
 end;
 
 //ShowModel加载插件
-function LoadPkg(APluginFile: string; ATmpStrings: TStrings): Boolean;
+function LoadPkg_Normal(APluginFile: string; ATmpStrings: TStrings): Boolean;
 var
   BplHandle   : THandle;
   AShowBplForm: TShowBplForm;
-  TmpForm     : TForm;
 begin
   if not FileExists(APluginFile) then
   begin
@@ -918,20 +917,19 @@ begin
     try
       AShowBplForm := GetProcAddress(BplHandle, PChar('ShowBplForm'));
       if @AShowBplForm = nil then
-        raise Exception.Create('cannot load:'+ APluginFile)
+        raise Exception.Create(Format(EASY_PLUGIN_CANNOT_LOAD, [APluginFile]))
       else
       begin
-         TmpForm := AShowBplForm(ATmpStrings);
+        AShowBplForm(ATmpStrings);
       end;
-      Application.FreeNotification(TmpForm);
-      TmpForm.ShowModal;
+//      Application.FreeNotification(TmpForm);
     finally
-//      UnloadPackage(BplHandle);
+      UnloadPackage(BplHandle);
     end;
   end;
   Result := True;
 end;
-
+  
 //创建文件夹
 function CreateDir_H(APath: string): Boolean;
 begin

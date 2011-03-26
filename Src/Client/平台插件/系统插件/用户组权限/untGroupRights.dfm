@@ -143,7 +143,7 @@ inherited frmGroupRights: TfrmGroupRights
             ShowCaption = True
           end
           object EasyToolBarButton5: TEasyToolBarButton
-            Left = 285
+            Left = 211
             Top = 2
             Width = 52
             Height = 24
@@ -163,39 +163,11 @@ inherited frmGroupRights: TfrmGroupRights
             Position = daTop
             ShowCaption = True
           end
-          object EasyToolBarSeparator1: TEasyToolBarSeparator
-            Left = 275
-            Top = 2
-            Width = 10
-            Height = 22
-            LineColor = clBtnShadow
-          end
-          object btnRoleUsers: TEasyToolBarButton
-            Left = 211
-            Top = 2
-            Width = 64
-            Height = 24
-            Action = actRoleUsers
-            Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-            Appearance.CaptionFont.Color = clWindowText
-            Appearance.CaptionFont.Height = -11
-            Appearance.CaptionFont.Name = 'Tahoma'
-            Appearance.CaptionFont.Style = []
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ImageIndex = 0
-            ParentFont = False
-            Position = daTop
-            ShowCaption = True
-          end
           object EasyToolBarSeparator2: TEasyToolBarSeparator
             Left = 201
             Top = 2
             Width = 10
-            Height = 23
+            Height = 22
             LineColor = clBtnShadow
           end
         end
@@ -1282,6 +1254,7 @@ inherited frmGroupRights: TfrmGroupRights
     object actRoleUsers: TAction
       Caption = #32452#29992#25143
       ImageIndex = 0
+      OnExecute = actRoleUsersExecute
       OnUpdate = actRoleUsersUpdate
     end
   end

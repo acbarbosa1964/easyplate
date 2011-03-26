@@ -63,12 +63,10 @@ type
     tvUsers: TEasyTreeView;
     tvCheckResources: TEasyCheckTree;
     cdsUserResource: TClientDataSet;
-    EasyToolBarSeparator1: TEasyToolBarSeparator;
     actGroupRights: TActionList;
     actAddGroup: TAction;
     actEditGroup: TAction;
     actDelGroup: TAction;
-    btnRoleUsers: TEasyToolBarButton;
     EasyToolBarSeparator2: TEasyToolBarSeparator;
     actRoleUsers: TAction;
     procedure FormCreate(Sender: TObject);
@@ -84,6 +82,7 @@ type
     procedure actDelGroupUpdate(Sender: TObject);
     procedure actAddGroupUpdate(Sender: TObject);
     procedure actRoleUsersUpdate(Sender: TObject);
+    procedure actRoleUsersExecute(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
@@ -132,7 +131,8 @@ var
 
 implementation
 
-uses untGroupRightsOperate, untEasyUtilConst, untEasyUtilMethod;
+uses untGroupRightsOperate, untEasyUtilConst, untEasyUtilMethod,
+  untGroupRoleUserOperate;
 
 {$R *.dfm}
 
@@ -198,6 +198,11 @@ begin
   sUsersSQL := 'SELECT  LoginGUID, sLoginName, sRoleGUID, sEmployeeGUID, sEmployeeCName,'
                +' sEmployeeEName, sSexGUID FROM vw_InitUser '
                +' WHERE bEnable = 1 ORDER BY iOrderNo';
+  {sUsersSQL := 'SELECT  A.LoginGUID, A.sLoginName, A.sRoleGUID, A.sEmployeeGUID, A.sEmployeeCName,'
+               +' A.sEmployeeEName, A.sSexGUID '
+               +' FROM sysRole_user B LEFT JOIN vw_InitUser A ON B.LoginGUID = A.LoginGUID '
+               +' WHERE bEnable = 1 AND GETDATE() < dDisenableTime '
+               +' ORDER BY iOrderNo';}
   ASQLOLE[1] := sUsersSQL;
 //  cdsUsers.Data := EasyRDMDisp.EasyGetRDMData(sUsersSQL);
 
@@ -1000,6 +1005,20 @@ procedure TfrmGroupRights.actRoleUsersUpdate(Sender: TObject);
 begin
   inherited;
   actRoleUsers.Enabled := (tvUserRoles.Selected <> nil);
+end;
+
+procedure TfrmGroupRights.actRoleUsersExecute(Sender: TObject);
+begin
+  inherited;
+  if tvUserRoles.Selected = nil then Exit;
+  frmGroupRoleUserOperate := TfrmGroupRoleUserOperate.Create(Application);
+  with frmGroupRoleUserOperate do
+  begin
+    edtRoleName.Text := TGroupRole(tvUserRoles.Selected.Data).RoleName;
+    edtRoleName.EditLabel.Hint := TGroupRole(tvUserRoles.Selected.Data).RoleGUID;
+  end;
+  frmGroupRoleUserOperate.ShowModal;
+  frmGroupRoleUserOperate.Free;
 end;
 
 end.

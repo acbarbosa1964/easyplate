@@ -121,6 +121,7 @@ type
     ppMDITab: TEasyPopupMenu;
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
+    actConnectDB: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -136,6 +137,7 @@ type
     procedure ppTVRefreshClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure EpResourceManageClick(Sender: TObject);
+    procedure actConnectDBExecute(Sender: TObject);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -474,7 +476,7 @@ end;
 procedure TfrmEasyPlateMain.About1Click(Sender: TObject);
 begin
   inherited;
-  LoadPkg('pkEasyAboutUS.bpl', FPluginParams);
+  LoadPkg_Normal('pkEasyAboutUS.bpl', FPluginParams);
 end;
 
 procedure TfrmEasyPlateMain.ChildFormClose(Sender: TObject;
@@ -620,6 +622,12 @@ begin
 //    Memo1.Lines.Add(Screen.Forms[I].Caption + TfrmEasyPlateBaseForm(Screen.Forms[I]).FormId);
 //  end;
 //  ShowMessage(IntToStr(Screen.FormCount));
+end;
+
+procedure TfrmEasyPlateMain.actConnectDBExecute(Sender: TObject);
+begin
+  inherited;
+  LoadPkg_Normal('pkEasyconnDB.bpl', FPluginParams);
 end;
 
 end.

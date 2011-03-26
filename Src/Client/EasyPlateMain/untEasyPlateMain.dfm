@@ -1514,7 +1514,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
         Caption = '&Print...'
       end
       object PrintSetup1: TMenuItem
-        Caption = 'P&rint Setup...'
+        Action = actConnectDB
       end
       object N1: TMenuItem
         Caption = '-'
@@ -2760,6 +2760,10 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     end
     object actAbout: TAction
       Caption = #20851#20110
+    end
+    object actConnectDB: TAction
+      Caption = #25968#25454#24211#36830#25509
+      OnExecute = actConnectDBExecute
     end
   end
   object img24: TImageList

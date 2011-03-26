@@ -60,6 +60,17 @@ const
 
 //权限管理
   EASY_RIGHT_TOPARENT = '只能对父节点或根节点进行资源权限分配!';
+
+//系统加密密钥
+  EASY_KEY_DB = 'ABC1?*_+23XZY';
+  EASY_KEY_FILE = 'acAB13XZ?*_+';
+  EASY_KEY_IM = 'ABC_abc*12';
+  EASY_KEY_MAIL = 'EASYMAILc*1';
+  EASY_KEY_OTERHR = 'EASYOTHER?*KEY';
+
+//插件加载
+  EASY_PLUGIN_LOAD_FAILED = '加载插件%s失败，原因：';
+  EASY_PLUGIN_CANNOT_LOAD = '不能加载插件:%s 原因：未找到插件入口函数!'; 
 type
   //操作数据状态
   TEasyOperateType = (eotAdd, eotEdit, eotDelete);

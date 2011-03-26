@@ -1,9 +1,10 @@
 object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
-  Left = 192
-  Top = 107
-  Width = 607
-  Height = 444
+  Left = 256
+  Top = 146
+  BorderStyle = bsDialog
   Caption = 'frmGroupRoleUserOperate'
+  ClientHeight = 417
+  ClientWidth = 599
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +12,10 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object EasyPanel1: TEasyPanel
@@ -137,7 +142,7 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       Top = 112
       Width = 65
       Height = 25
-      Hint = #20998#37197#25152#26377#26435#38480
+      Hint = #20998#37197#25152#26377#29992#25143
       Caption = '<<'
       Color = clSilver
       ModalResult = 0
@@ -146,13 +151,14 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ShowHint = True
       Style = bsModern
       TabOrder = 3
+      OnClick = btnAssignAllClick
     end
     object btnAssign: TEasyBitButton
       Left = 266
       Top = 72
       Width = 65
       Height = 25
-      Hint = #20998#37197#25351#23450#26435#38480
+      Hint = #20998#37197#25351#23450#29992#25143
       Caption = '<'
       Color = clSilver
       ModalResult = 0
@@ -161,13 +167,14 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ShowHint = True
       Style = bsModern
       TabOrder = 2
+      OnClick = btnAssignClick
     end
     object btnRevoke: TEasyBitButton
       Left = 266
       Top = 160
       Width = 65
       Height = 25
-      Hint = #31227#38500#25351#23450#26435#38480
+      Hint = #31227#38500#25351#23450#29992#25143
       Caption = '>'
       Color = clSilver
       ModalResult = 0
@@ -176,13 +183,14 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ShowHint = True
       Style = bsModern
       TabOrder = 4
+      OnClick = btnRevokeClick
     end
     object btnRevokeAll: TEasyBitButton
       Left = 266
       Top = 200
       Width = 65
       Height = 25
-      Hint = #31227#38500#25152#26377#26435#38480
+      Hint = #31227#38500#25152#26377#29992#25143
       Caption = '>>'
       Color = clSilver
       ModalResult = 0
@@ -191,6 +199,7 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ShowHint = True
       Style = bsModern
       TabOrder = 5
+      OnClick = btnRevokeAllClick
     end
     object btnSave: TEasyBitButton
       Left = 265
@@ -231,6 +240,7 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ParentColor = False
       Style = bsModern
       TabOrder = 6
+      OnClick = btnSaveClick
     end
     object btnCancel: TEasyBitButton
       Left = 265
@@ -271,13 +281,14 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       ParentColor = False
       Style = bsModern
       TabOrder = 7
+      OnClick = btnCancelClick
     end
   end
   object imgRR: TImageList
     Left = 368
     Top = 242
     Bitmap = {
-      494C010102000400040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010102000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000009933
       000099330000993300009933000099330000993300009933000099330000AD48
@@ -413,7 +424,8 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
       C003E00100000000C003E00100000000C003D00100000000E003C80100000000
       F007CC0300000000E00FC00700000000E00FC00700000000C007C00300000000
       C007C00300000000C007C00300000000C007C00300000000E00FC00300000000
-      E00FE00700000000F81FF11F00000000}
+      E00FE00700000000F81FF11F0000000000000000000000000000000000000000
+      000000000000}
   end
   object cdsUsers: TClientDataSet
     Aggregates = <>
@@ -516,5 +528,17 @@ object frmGroupRoleUserOperate: TfrmGroupRoleUserOperate
     object pmFullCollapse1: TMenuItem
       Caption = #20840#37096#25240#21472
     end
+  end
+  object cdsNotUsers: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 399
+    Top = 241
+  end
+  object cdsRoleUser: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 176
+    Top = 201
   end
 end
