@@ -256,18 +256,18 @@ begin
 
         (Components[I] as TClientDataSet).ProviderName := ATmpDsp.Name;
       end;
-    end
-    else if DMEasyDBConnection.EasyAppType = 'CAS' then
-    begin
-      if Components[I] is TClientDataSet then
-      begin
-        with Components[I] as TClientDataSet do
-        begin  
-          RemoteServer := DMEasyDBConnection.EasyScktConn;
-          ProviderName := 'EasyRDMDsp';
-        end;
-      end;
-    end;
+//    end
+//    else if DMEasyDBConnection.EasyAppType = 'CAS' then
+//    begin
+//      if Components[I] is TClientDataSet then     
+//      begin
+//        with Components[I] as TClientDataSet do
+//        begin
+//          RemoteServer := DMEasyDBConnection.EasyScktConn;
+//          ProviderName := 'EasyRDMDsp';
+//        end;
+//      end;
+    end;                                               
   end;
 end;
 

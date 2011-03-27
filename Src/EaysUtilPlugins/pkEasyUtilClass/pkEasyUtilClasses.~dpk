@@ -1,4 +1,4 @@
-package pkEasyconnDB;
+package pkEasyUtilClasses;
 
 {$R *.res}
 {$ALIGN 8}
@@ -22,29 +22,32 @@ package pkEasyconnDB;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
   vcl,
-  dbrtl,
-  adortl,
-  vcljpg,
-  dsnap,
+  designide,
+  vclactnband,
   vclx,
+  EasyDevExt,
+  pkHhfDB,
+  adortl,
+  dbrtl,
+  dsnap,
   vcldb,
+  pkEasyStardard,
+  vcljpg,
+  cxGridVCLD7,
+  cxPageControlVCLD7,
   cxLibraryVCLD7,
   dxThemeD7,
-  cxEditorsVCLD7,
+  cxExtEditorsVCLD7,
   cxDataD7,
-  indy,
-  dsnapcon,
-  pkEasyStardard,
-  pkEasyAdditional,
-  pkEasyUtilFunction;
+  cxEditorsVCLD7,
+  cxExportVCLD7;
 
 contains
-  EasyADOConEditor in 'EasyADOConEditor.pas' {frmEasyADOConEditor};
+  untEasyUtilClasses in 'untEasyUtilClasses.pas';
 
 end.

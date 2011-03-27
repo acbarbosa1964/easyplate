@@ -40,6 +40,7 @@ const
 //包加载文件不存在
   EASY_BPL_NOTFOUND = '加载指定的文件%s已丢失!';
 //数据库连接
+  EASY_DB_CONNECT_ERROR = '服务器连接失败,请重新设置服务连接参数, 原因：' ;
   EASY_DB_NOTFILE       = '系统文件丢失,原因：数据模块丢失!';
   EASY_DB_INITERROR     = '数据模块初始化失败,请检查数据连接模块!';
   EASY_DB_LOADERROR     = '数据模块加载失败,原因：数据模块损坏或丢失!';
@@ -68,6 +69,7 @@ const
   EASY_KEY_MAIL = 'EASYMAILc*1';
   EASY_KEY_OTERHR = 'EASYOTHER?*KEY';
 
+  EASY_DBCONNECT_SUCCESS = '服务器连接设置成功,重新登录软件生效!';
 //插件加载
   EASY_PLUGIN_LOAD_FAILED = '加载插件%s失败，原因：';
   EASY_PLUGIN_CANNOT_LOAD = '不能加载插件:%s 原因：未找到插件入口函数!'; 

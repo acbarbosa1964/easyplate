@@ -46,18 +46,15 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-    //获取库类型 MSSQL、ORACLE
-    FDBType: String;
     //当前程序运行模式：CS两层 CAS三层
     FAppType: string;
-    //连接类型：innet 内网 outnet 外网
-    FNetType: String;
     //服务器地址、用户名、密码、数据库、端口
     FDBHost,
     FDBUserName,
     FDBPassWord,
     FDBDataBase,
     FDBPort   : string;
+    FConnectString: WideString;
     //ScktConnection连接信息
     FScktHost,
     FScktIGUID,
@@ -70,27 +67,21 @@ type
     FCurrLoginDBHandle: Cardinal;
     //获取数据连接Ini
     FEasyDBIni: TEasyRWIni;
-    FDBIniFilePath: string;
-    function GetDBIniFilePath: string;
-    procedure SetDBIniFilePath(const Value: string);
     //打开ADOConnection
-    function OpenEasyADOConnection(DBType, NetType: string): Integer;
+    function OpenEasyADOConnection(): Integer;
     //打开Sckt连接
     function OpenEasyScktConnection: Integer;
-    //读取配置文件信息
-    procedure ReadIniFile(AFileName, ASeed: string);
     //负载均衡加载可用的服务器
     procedure LoadSOBServers;
     //读取负载均衡服务器
     procedure ReadSOBFile(AFileName, ASeed: string);
     
-    procedure SetNetType(const Value: string);
+    procedure LoadConnectString;
     procedure SetDBDataBase(const Value: string);
     procedure SetDBHost(const Value: string);
     procedure SetDBPassWord(const Value: string);
     procedure SetDBPort(const Value: string);
     procedure SetDBUserName(const Value: string);
-    procedure SetDBType(const Value: string);
     function GetCurrLoginDBHandle: Cardinal;
     function GetCurrLoginUserID: string;
     procedure SetCurrLoginDBHandle(const Value: Cardinal);
@@ -114,9 +105,6 @@ type
     EasyApplicationHandle: Cardinal;      //主应用程序句柄
     //如果是三层 获取远端的服务接口
     EasyIRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
-    property EasyDBIniFilePath: string read GetDBIniFilePath write SetDBIniFilePath;
-    property EasyDBType: string read FDBType write SetDBType;
-    property EasyNetType: string read FNetType write SetNetType;
     property EasyAppType: string read GetAppType write SetAppType;
 
     //服务器地址、用户名、密码、数据库、端口
@@ -150,7 +138,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ActiveX;
+  ActiveX, untEasyUtilMethod, untEasyUtilConst;
   
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
 begin
@@ -170,8 +158,6 @@ end;
 
 procedure TDMEasyDBConnection.DataModuleCreate(Sender: TObject);
 begin
-//  ShowMessage(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now));
-  FDBIniFilePath := 'DBConfig.ini';
   FAppType := 'CS';
 
   //调整查询缓存大小
@@ -180,41 +166,22 @@ begin
   EasyDsp.Options := EasyDsp.Options + [poAllowCommandText];
 
   //先初始化数据库配置
-  ReadIniFile(EasyDBIniFilePath, 'ABC123_888888');
-
+  LoadConnectString;
+  
   if UpperCase(EasyAppType) = 'CAS' then
   begin
-    //打开Sckt连接
-    if OpenEasyScktConnection <> 1 then
-    begin
-      Application.MessageBox('中间层服务器连接异常!', '提示', MB_OK + 
-        MB_ICONWARNING);
-      Exit;    
-    end
+    if OpenEasyScktConnection = 1 then
+    //如果是三层就获取远程的服务接口
+      EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
   end
   else
     //打开ADO两层数据连接
-    OpenEasyADOConnection(EasyDBType, EasyNetType);  
+    OpenEasyADOConnection();
   //加载可用的服务器
 //  LoadSOBServers;
   //调整负载均衡
 //  if not EasySOB.LoadBalanced then
 //    EasySOB.LoadBalanced := True;
-  //如果是三层就获取远程的服务接口
-  if UpperCase(EasyAppType) = 'CAS' then
-  begin
-    EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
-  end;
-end;
-
-function TDMEasyDBConnection.GetDBIniFilePath: string;
-begin
-  Result := FDBIniFilePath;
-end;
-
-procedure TDMEasyDBConnection.SetDBIniFilePath(const Value: string);
-begin
-  FDBIniFilePath := Value;
 end;
 
 procedure TDMEasyDBConnection.DataModuleDestroy(Sender: TObject);
@@ -223,53 +190,6 @@ begin
     EasyADOConn.Close;
   if Assigned(FEasyDBIni) then
     FEasyDBIni.Free;
-end;
-
-procedure TDMEasyDBConnection.ReadIniFile(AFileName, ASeed: string);
-var
-  Ini      : TEasyXorIniFile;
-  Sections,
-  Values   : TStrings;
-begin
-  Ini := nil;
-  Sections := nil;
-  Values := nil;
-  try
-    Ini := TEasyXorIniFile.Create(AFileName, ASeed);
-
-    Sections := TStringList.Create;
-    Values := TStringList.Create;
-
-    Ini.ReadSections(Sections);
-    //应用程序运行模式CS二层 CAS三层
-    FAppType := ini.ReadString('APPTYPE', 'APPTYPE', 'CS');
-    //获取数据库连接类型、连接内/外网
-    FDBType := ini.ReadString('DBTYPE', 'DBTYPE', 'MSSQL');
-    FNetType := ini.ReadString('NETTYPE', 'NETTYPE', 'innet');
-    //服务器地址、用户名、密码、数据库、端口
-    FDBHost := ini.ReadString('DBCONFIG', 'HOST', '');
-    FDBUserName := ini.ReadString('DBCONFIG', 'USERNAME', '');
-    FDBPassWord := ini.ReadString('DBCONFIG', 'PASSWORD', '');
-    FDBDataBase := ini.ReadString('DBCONFIG', 'DATABASE', '');
-    FDBPort := ini.ReadString('DBCONFIG', 'PORT', '');
-
-    //获取Sckt连接参数
-    FScktHost := ini.ReadString('SCKT', 'HOST', '');
-    FScktIGUID := ini.ReadString('SCKT', 'IGUID', '');
-    FScktIName := ini.ReadString('SCKT', 'INAME', '');
-    FScktSGUID := ini.ReadString('SCKT', 'SGUID', '');
-    FScktSName := ini.ReadString('SCKT', 'SNAME', '');
-    FScktPort := ini.ReadString('SCKT', 'PORT', '');
-  finally
-    Sections.Free;
-    Ini.Free;
-    Values.Free;
-  end;
-end;
-
-procedure TDMEasyDBConnection.SetNetType(const Value: string);
-begin
-  FNetType := Value;
 end;
 
 procedure TDMEasyDBConnection.SetDBDataBase(const Value: string);
@@ -298,8 +218,7 @@ begin
 end;
 
 //0成功 -1失败
-function TDMEasyDBConnection.OpenEasyADOConnection(DBType,
-  NetType: string): Integer;
+function TDMEasyDBConnection.OpenEasyADOConnection(): Integer;
 begin
   Result := 0;
   if EasyADOConn.Connected then
@@ -307,40 +226,22 @@ begin
   EasyADOConn.LoginPrompt := False;
   EasyADOConn.ConnectionString := '';
   begin
-    if UpperCase(trim(DBType)) = 'MSSQL' then
-    begin
-      if UpperCase(trim(NetType)) = 'INNET' then
-        EasyADOConn.ConnectionString := 'Provider=SQLOLEDB.1;Password='
-          + trim(EasyDBPassWord) + ';Persist Security Info=True;User ID='
-          + trim(EasyDBUserName) + ';Initial Catalog='
-          + trim(EasyDBDataBase) + ';Data Source='
-          + trim(EasyDBHost) + ';' + Trim(EasyDBPort) + ''
-      else
-        EasyADOConn.ConnectionString := 'Provider=SQLOLEDB.1;Password='
-          + trim(EasyDBPassWord) + ';Persist Security Info=True;User ID='
-          + trim(EasyDBUserName) + ';Initial Catalog='
-          + trim(EasyDBDataBase) + ';Data Source=' 
-          + trim(EasyDBDataBase) + ';NetWork Library=DBMSSOCN;NetWork Address='
-          + trim(EasyDBHost) + ';' + trim(EasyDBPort) + '';
-    end
-    else if UpperCase(trim(DBType)) = 'ORACLE' then
-      EasyADOConn.ConnectionString := 'Provider=MSDAORA.1;Password='
-          + trim(EasyDBPassWord) + ';User ID='
-          + trim(EasyDBUserName) + ';Data Source='
-          + trim(EasyDBDataBase) + ';Persist Security Info=False';
+    EasyADOConn.ConnectionString := FConnectString;
     try
       EasyADOConn.Open;
+
+      EasyDBHost := EasyADOConn.Properties.Item['Data Source'].Value;
+      EasyDBDataBase := EasyADOConn.Properties.Item['Initial Catalog'].Value;
+      EasyDBUserName := EasyADOConn.Properties.Item['User ID'].Value;
     except on e: Exception do
-      Result := -1
+      begin
+        Application.MessageBox(PChar(EASY_DB_CONNECT_ERROR + e.Message),
+                                EASY_SYS_ERROR, MB_OK + MB_ICONERROR);
+        Application.Terminate;
+      end;
     end; 
   end;  
 end;
-
-procedure TDMEasyDBConnection.SetDBType(const Value: string);
-begin
-  FDBType := Value;
-end;
-
 
 function TDMEasyDBConnection.GetCurrLoginDBHandle: Cardinal;
 begin
@@ -424,7 +325,6 @@ begin
   with EasyScktConn do
   begin
     Address := EasyScktHost;
-////    Host := EasyScktHost;
     if Trim(EasyScktIGUID) <> '' then
       InterceptGUID := EasyScktIGUID;
     if Trim(EasyScktIName) <> '' then
@@ -433,10 +333,17 @@ begin
     if Trim(EasyScktSGUID) <> '' then
       ServerGUID := EasyScktSGUID;
     ServerName := EasyScktSName;
-    Open;
+    try
+      Open;
+      Result := 1;
+    except on e:Exception do
+      begin
+        Application.MessageBox(PChar(EASY_DB_CONNECT_ERROR + e.Message),
+                                EASY_SYS_ERROR, MB_OK + MB_ICONERROR);
+        Application.Terminate;
+      end
+    end;
   end;
-  if EasyScktConn.Connected then
-    Result := 1;
 end;
 
 function TDMEasyDBConnection.GetScktHost: string;
@@ -497,6 +404,39 @@ end;
 procedure TDMEasyDBConnection.SetScktSName(const Value: string);
 begin
   FScktSName := Value;
+end;
+
+procedure TDMEasyDBConnection.LoadConnectString;
+var
+  AList: TStrings;
+  ATmpMMStream,
+  ADestMMStream: TMemoryStream;
+  AFile: string;
+begin
+  AFile := ExtractFilePath(Application.ExeName) + 'ConnectString.dll';
+  AList := TStringList.Create;
+  if FileExists(AFile) then
+  begin
+    ATmpMMStream := TMemoryStream.Create;
+    ADestMMStream := TMemoryStream.Create;
+    try
+      ATmpMMStream.LoadFromFile(AFile);
+      DeCompressFile_Easy(ATmpMMStream, ADestMMStream, AFile);
+      AList.LoadFromStream(ADestMMStream);
+      FAppType := AList.Values['APPTYPE'];
+      
+      EasyScktHost := AList.Values['HOST'];
+      EasyScktPort := AList.Values['PORT'];
+      EasyScktIGUID := AList.Values['IGUID'];
+      EasyScktSName := AList.Values['SNAME'];
+
+      FConnectString := AList.Values['CONNECTSTRING'];
+    finally
+      ATmpMMStream.Free;
+      ADestMMStream.Free;
+    end;
+  end;
+  AList.Free;
 end;
 
 initialization

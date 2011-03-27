@@ -28,7 +28,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, ActiveX, FileCtrl, UrlMon, TlHelp32, ExtCtrls,
   ComObj, WinSock, ComCtrls, DB, ADODB, IdGlobal, ImageHlp, untEasyTabSet,
-  Menus, DBClient, untEasyProgressBar, untEasyBallonControl;
+  Menus, DBClient, untEasyProgressBar, untEasyBallonControl, ZLib;
 
 type
 
@@ -217,7 +217,11 @@ const
   function Decrypt(const S: String; Key: Word): String;
   function EncStr(Str:String):String;//字符加密函數 這是用的一個異或加密
   function DecStr(Str:String):String;//字符解密函數
-  
+  //压缩、解压缩文件
+  procedure CompressFile_Easy(AFilePath: string;
+   var DestStream: TMemoryStream; ACompressLevel: TCompressionLevel);
+  procedure DeCompressFile_Easy(var srcStream, DestStream: TMemoryStream; AFilePath: string);
+
   //创建文件夹
   function CreateDir_H(APath: string): Boolean;
   //写入日志文档内容
@@ -1220,6 +1224,40 @@ begin
   for I := AList.Count - 1 downto 0 do
     TObject(AList.Items[I]).Free;
   AList.Clear;
+end;
+
+procedure CompressFile_Easy(AFilePath: string;
+ var DestStream: TMemoryStream; ACompressLevel: TCompressionLevel);
+var
+  cs: TCompressionStream; {定义压缩流}
+  fs: TMemoryStream;   {fs 是要压缩的流; ms 是接收压缩后文件的流}
+  num: Integer;           {原始文件大小}
+begin
+  fs := TMemoryStream.Create;
+  fs.LoadFromFile(AFilePath); {文件要存在啊}
+  num := fs.Size;
+  DestStream.Write(num, SizeOf(num));
+  cs := TCompressionStream.Create(ACompressLevel, DestStream);
+  fs.SaveToStream(cs); {传入要压缩的数据}
+  cs.Free;
+  fs.Free;
+end;
+
+procedure DeCompressFile_Easy(var srcStream, DestStream: TMemoryStream; AFilePath: string);
+var
+  ds: TDecompressionStream; {解压流}
+//  DestStream: TMemoryStream;
+  num: Integer;
+begin
+//  DestStream := TMemoryStream.Create;
+  srcStream.Position := 0;
+  srcStream.ReadBuffer(num, SizeOf(num));
+  DestStream.SetSize(num);
+  ds := TDecompressionStream.Create(srcStream); {参数是要解压的流}
+  ds.Read(DestStream.Memory^, num);
+//  DestStream.SaveToFile(AFilePath);
+  ds.Free;
+//  DestStream.Free;
 end;
 
 end.

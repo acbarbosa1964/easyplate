@@ -54,7 +54,9 @@ requires
   dsnapcon,
   pkEasyPlateBaseForm,
   pkEasyUtilFunction,
-  pkEasyUtilRWConfig;
+  pkEasyUtilRWConfig,
+  ecComnD7,
+  SyntEdit7;
 
 contains
   untEasyFormDesigner in 'untEasyFormDesigner.pas' {frmEasyFormDesigner},

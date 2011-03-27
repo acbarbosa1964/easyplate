@@ -148,3 +148,17 @@ C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=$(EPP)\Src\dcu
+[HistoryLists\hlOutputDirectorry]
+Count=2
+Item0=$(EPP)\binServer
+Item1=$(EPP)\bin
+[HistoryLists\hlBPLOutput]
+Count=1
+Item0=$(EPP)\bin
+[HistoryLists\hlDCPOutput]
+Count=2
+Item0=$(EPP)\Src\dcu
+Item1=$(EPP)\Src\dcp

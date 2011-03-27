@@ -26,7 +26,7 @@
 {                                                       }
 {*******************************************************}
 
-unit EasyADOConEditor;
+unit EasyADOConEditor_Server;
 
 {$R-}
 
@@ -190,9 +190,13 @@ begin
   FStep := spDefault;
   ChangeNBK(DBStep);
 
+  csStyle.Checked := True;
+  nbkMain.PageIndex := 1;
+  
   LoadConnectString;
-//  UseDataLinkFile.Enabled := False;
-//  UseConnectionString.Checked := True;
+  
+  DBStep := spConnSet;
+  ConnectionString.Text := FConnectString;
 end;
 
 procedure TfrmEasyADOConEditor.HelpButtonClick(Sender: TObject);
@@ -253,14 +257,14 @@ begin
         nbkMain.PageIndex := 1;
         btnNext.Caption := '确定';
         btnPrev.Caption := '上一步';
-        btnPrev.Visible := True;
+        btnPrev.Visible := False;
       end;
     spMidasSet:
       begin
         nbkMain.PageIndex := 2;
         btnNext.Caption := '确定';
         btnPrev.Caption := '上一步';
-        btnPrev.Visible := True;
+        btnPrev.Visible := False;
       end;
   end;
 end;

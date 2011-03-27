@@ -31,7 +31,18 @@ requires
   dsnap,
   dsnapcon,
   adortl,
-  pkEasyUtilRWConfig;
+  pkEasyUtilRWConfig,
+  vcljpg,
+  vclx,
+  vcldb,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  cxEditorsVCLD7,
+  cxDataD7,
+  indy,
+  pkEasyStardard,
+  pkEasyAdditional,
+  pkEasyUtilFunction;
 
 contains
   untEasyDBConnection in 'untEasyDBConnection.pas' {DMEasyDBConnection: TDataModule},

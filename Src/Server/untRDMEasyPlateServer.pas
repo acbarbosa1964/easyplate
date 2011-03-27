@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, ComServ, ComObj, VCLCom, DataBkr,
   DBClient, EasyPlateServer_TLB, StdVcl, DB, ADODB, Provider, MConnect,
-  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX;
+  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX, Forms;
 
 type
   TRDMEasyPlateServer = class(TRemoteDataModule, IRDMEasyPlateServer)
@@ -39,6 +39,12 @@ type
     EasyRDMQry: TADOQuery;
     EasyRDMDsp: TDataSetProvider;
     EasyRDMCds: TClientDataSet;
+    EasyRDMDsp_Update: TDataSetProvider;
+    EasyRDMQry_Update: TADOQuery;
+    EasyRDMCds_Update: TClientDataSet;
+    EasyRDMDsp_WhereAll: TDataSetProvider;
+    EasyRDMQry_WhereAll: TADOQuery;
+    EasyRDMCds_WhereAll: TClientDataSet;
     procedure RemoteDataModuleCreate(Sender: TObject);
     procedure RemoteDataModuleDestroy(Sender: TObject);
     procedure EasyRDMDspUpdateError(Sender: TObject;
@@ -47,41 +53,33 @@ type
     procedure EasyRDMDspBeforeUpdateRecord(Sender: TObject;
       SourceDS: TDataSet; DeltaDS: TCustomClientDataSet;
       UpdateKind: TUpdateKind; var Applied: Boolean);
-    procedure EasyRDMDspGetTableName(Sender: TObject; DataSet: TDataSet;
-      var TableName: String);
-    procedure EasyRDMDspBeforeGetRecords(Sender: TObject;
-      var OwnerData: OleVariant);
+    procedure EasyRDMQryPostError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
+    procedure EasyRDMQryEditError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
+    procedure EasyRDMQryDeleteError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
   private
     { Private declarations }
-    FTableName: string;
+    FTableName,
+    FConnectString: string;
     Params   : OleVariant;
     OwnerData: OleVariant;
-    //获取库类型 MSSQL、ORACLE
-    FDBType: String;
-    //连接类型：innet 内网 outnet 外网
-    FNetType: String;
     //服务器地址、用户名、密码、数据库、端口
     FDBHost,
     FDBUserName,
     FDBPassWord,
     FDBDataBase,
     FDBPort   : string;
-    //获取数据连接Ini
-    FEasyDBIni: TEasyRWIni;
-    FDBIniFilePath: string;
     //读取配置文件信息
-    procedure ReadIniFile(AFileName, ASeed: string);
+    procedure LoadConnectString;
     //打开ADOConnection
-    function OpenEasyADOConnection(DBType, NetType: string): Integer;
-    procedure GetDBType(const Value: string);
-    procedure GetNetType(const Value: string);
+    function OpenEasyADOConnection(): Integer;
     procedure SetDBDataBase(const Value: string);
     procedure SetDBHost(const Value: string);
     procedure SetDBPassWord(const Value: string);
     procedure SetDBPort(const Value: string);
     procedure SetDBUserName(const Value: string);
-    function GetDBIniFilePath: string;
-    procedure SetDBIniFilePath(const Value: string);
 
     // 手工加入
     function InnerGetData(strSQL: String): OleVariant;
@@ -100,10 +98,6 @@ type
     function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; safecall;
   public
     { Public declarations }
-    property EasyDBIniFilePath: string read GetDBIniFilePath write SetDBIniFilePath;
-    //当前数据库与网络类型
-    property EasyDBType: string read FDBType write GetDBType;
-    property EasyNetType: string read FNetType write GetNetType;
     //服务器地址、用户名、密码、数据库、端口
     property EasyDBHost: string read FDBHost write SetDBHost;
     property EasyDBUserName: string read FDBUserName write SetDBUserName;
@@ -119,7 +113,7 @@ var
   RDMEasyPlateServer: TRDMEasyPlateServer;
 implementation
 
-uses untEasyPlateServerMain, Variants;
+uses untEasyPlateServerMain, Variants, untEasyUtilMethod, untEasyUtilConst;
 
 {$R *.DFM}
 
@@ -146,22 +140,10 @@ begin
   EasyRDMDsp.Options := EasyRDMDsp.Options + [poAllowCommandText];
   //DataProvider只按主键更新
   EasyRDMDsp.UpdateMode := upWhereKeyOnly;
-  FDBIniFilePath := 'DBConfig.ini';
   //先初始化数据库配置
-  ReadIniFile(EasyDBIniFilePath, 'ABC123_888888');
+  LoadConnectString;
   //打开数据连接
-  OpenEasyADOConnection(EasyDBType, EasyNetType);
-//  MessageBox(0, PChar('create'), PChar('Hint'), 0);
-end;
-
-procedure TRDMEasyPlateServer.GetDBType(const Value: string);
-begin
-  FDBType := Value;
-end;
-
-procedure TRDMEasyPlateServer.GetNetType(const Value: string);
-begin
-  FNetType := Value;
+  OpenEasyADOConnection();
 end;
 
 procedure TRDMEasyPlateServer.SetDBDataBase(const Value: string);
@@ -189,40 +171,7 @@ begin
   FDBUserName := Value;
 end;
 
-procedure TRDMEasyPlateServer.ReadIniFile(AFileName, ASeed: string);
-var
-  Ini      : TEasyXorIniFile;
-  Sections,
-  Values   : TStrings;
-begin
-  Ini := nil;
-  Sections := nil;
-  Values := nil;
-  try
-    Ini := TEasyXorIniFile.Create(AFileName, ASeed);
-
-    Sections := TStringList.Create;
-    Values := TStringList.Create;
-
-    Ini.ReadSections(Sections);
-    //获取数据库连接类型、连接内/外网
-    FDBType := ini.ReadString('DBTYPE', 'DBTYPE', 'MSSQL');
-    FNetType := ini.ReadString('NETTYPE', 'NETTYPE', 'innet');
-    //服务器地址、用户名、密码、数据库、端口
-    FDBHost := ini.ReadString('DBCONFIG', 'HOST', '');
-    FDBUserName := ini.ReadString('DBCONFIG', 'USERNAME', '');
-    FDBPassWord := ini.ReadString('DBCONFIG', 'PASSWORD', '');
-    FDBDataBase := ini.ReadString('DBCONFIG', 'DATABASE', '');
-    FDBPort := ini.ReadString('DBCONFIG', 'PORT', '');
-  finally
-    Sections.Free;
-    Ini.Free;
-    Values.Free;
-  end;
-end;
-
-function TRDMEasyPlateServer.OpenEasyADOConnection(DBType,
-  NetType: string): Integer;
+function TRDMEasyPlateServer.OpenEasyADOConnection(): Integer;
 begin
   Result := 0;
   if EasyRDMADOConn.Connected then
@@ -230,49 +179,25 @@ begin
   EasyRDMADOConn.LoginPrompt := False;
   EasyRDMADOConn.ConnectionString := '';
   begin
-    if UpperCase(trim(DBType)) = 'MSSQL' then
-    begin
-      if UpperCase(trim(NetType)) = 'INNET' then
-        EasyRDMADOConn.ConnectionString := 'Provider=SQLOLEDB.1;Password='
-          + trim(EasyDBPassWord) + ';Persist Security Info=True;User ID='
-          + trim(EasyDBUserName) + ';Initial Catalog='
-          + trim(EasyDBDataBase) + ';Data Source='
-          + trim(EasyDBHost) + ';' + Trim(EasyDBPort) + ''
-      else
-        EasyRDMADOConn.ConnectionString := 'Provider=SQLOLEDB.1;Password='
-          + trim(EasyDBPassWord) + ';Persist Security Info=True;User ID='
-          + trim(EasyDBUserName) + ';Initial Catalog='
-          + trim(EasyDBDataBase) + ';Data Source=' 
-          + trim(EasyDBDataBase) + ';NetWork Library=DBMSSOCN;NetWork Address='
-          + trim(EasyDBHost) + ';' + trim(EasyDBPort) + '';
-    end
-    else if UpperCase(trim(DBType)) = 'ORACLE' then
-      EasyRDMADOConn.ConnectionString := 'Provider=MSDAORA.1;Password='
-          + trim(EasyDBPassWord) + ';User ID='
-          + trim(EasyDBUserName) + ';Data Source='
-          + trim(EasyDBDataBase) + ';Persist Security Info=False';
+    EasyRDMADOConn.ConnectionString := FConnectString;
     try
       EasyRDMADOConn.Open;
+
+      EasyDBHost := EasyRDMADOConn.Properties.Item['Data Source'].Value;
+      EasyDBDataBase := EasyRDMADOConn.Properties.Item['Initial Catalog'].Value;
+      EasyDBUserName := EasyRDMADOConn.Properties.Item['User ID'].Value;
     except on e: Exception do
-      Result := -1
-    end; 
+      begin
+        Application.MessageBox(PChar(EASY_DB_CONNECT_ERROR + e.Message),
+                                EASY_SYS_ERROR, MB_OK + MB_ICONERROR);
+        Application.Terminate;
+      end;
+    end;
   end;  
-end;
-
-function TRDMEasyPlateServer.GetDBIniFilePath: string;
-begin
-   result := FDBIniFilePath;
-end;
-
-procedure TRDMEasyPlateServer.SetDBIniFilePath(const Value: string);
-begin
-   FDBIniFilePath := value;
 end;
 
 procedure TRDMEasyPlateServer.RemoteDataModuleDestroy(Sender: TObject);
 begin
-  if Assigned(FEasyDBIni) then
-    FEasyDBIni.Free;
   if EasyRDMADOConn.Connected then
     EasyRDMADOConn.Close;
 end;
@@ -450,18 +375,6 @@ begin
     frmEasyPlateServerMain.mmErrorLog.Lines.Add(GetOperTime + ' ' + ALogStr);
 end;
 
-procedure TRDMEasyPlateServer.EasyRDMDspGetTableName(Sender: TObject;
-  DataSet: TDataSet; var TableName: String);
-begin
-  FTableName := TableName;
-end;
-
-procedure TRDMEasyPlateServer.EasyRDMDspBeforeGetRecords(Sender: TObject;
-  var OwnerData: OleVariant);
-begin
-  AddExecLog('GetRecords：' + FTableName);
-end;
-
 function TRDMEasyPlateServer.EasyGetRDMDatas(
   ASQLOLE: OleVariant): OleVariant;
 var
@@ -471,6 +384,50 @@ begin
   Result := VarArrayCreate([0, ACount], varVariant);
   for I := VarArrayLowBound(ASQLOLE, 1) to VarArrayHighBound(ASQLOLE, 1) do
     Result[I] := EasyGetRDMData(ASQLOLE[I]);
+end;
+
+procedure TRDMEasyPlateServer.LoadConnectString;
+var
+  AList: TStrings;
+  ATmpMMStream,
+  ADestMMStream: TMemoryStream;
+  AFile: string;
+begin
+  AFile := ExtractFilePath(Application.ExeName) + 'ConnectString.dll';
+  AList := TStringList.Create;
+  if FileExists(AFile) then
+  begin
+    ATmpMMStream := TMemoryStream.Create;
+    ADestMMStream := TMemoryStream.Create;
+    try
+      ATmpMMStream.LoadFromFile(AFile);
+      DeCompressFile_Easy(ATmpMMStream, ADestMMStream, AFile);
+      AList.LoadFromStream(ADestMMStream);
+      FConnectString := AList.Values['CONNECTSTRING'];
+    finally
+      ATmpMMStream.Free;
+      ADestMMStream.Free;
+    end;
+  end;
+  AList.Free;
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMQryPostError(DataSet: TDataSet;
+  E: EDatabaseError; var Action: TDataAction);
+begin
+  AddExecLog('Post:' + e.Message, 1);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMQryEditError(DataSet: TDataSet;
+  E: EDatabaseError; var Action: TDataAction);
+begin
+  AddExecLog('Edit:' + e.Message, 1);
+end;
+
+procedure TRDMEasyPlateServer.EasyRDMQryDeleteError(DataSet: TDataSet;
+  E: EDatabaseError; var Action: TDataAction);
+begin
+  AddExecLog('Delete:' + e.Message, 1);
 end;
 
 initialization

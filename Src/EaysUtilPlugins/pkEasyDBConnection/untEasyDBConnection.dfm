@@ -12,6 +12,11 @@ object DMEasyDBConnection: TDMEasyDBConnection
     Top = 32
   end
   object EasyScktConn: TSocketConnection
+    ServerGUID = '{4F1AC7AF-01E3-46AC-BB37-7C11C2D3B5E3}'
+    ServerName = 'EasyPlateServer.RDMEasyPlateServer'
+    Host = '127.0.0.1'
+    InterceptGUID = '{01913E60-9C6D-4F35-83C3-5E7A8A41CDEB}'
+    InterceptName = 'intrcpt.DataCompressor'
     Left = 48
     Top = 88
   end
