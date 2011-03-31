@@ -46,7 +46,9 @@ contains
   untEasyUtilInit in 'untEasyUtilInit.pas',
   untEasyUtilMethod in 'untEasyUtilMethod.pas',
   untEasyUtilConst in 'untEasyUtilConst.pas',
-  untEasyIODFM in 'untEasyIODFM.pas';
+  untEasyIODFM in 'untEasyIODFM.pas',
+  untEasyUtilCompression in 'untEasyUtilCompression.pas',
+  untEasyUtilFile in 'untEasyUtilFile.pas';
 
 end.
 

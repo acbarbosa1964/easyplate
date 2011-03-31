@@ -267,9 +267,12 @@ const
   procedure FreeComponent_NoChild(AComponent: TComponent);
 
   procedure EasyFreeAndNilList(AList: TList);  
+  // 设置默认打印机 默认打印机序号
+  function SetDefaultPrinter(mPrinterIndex: Integer): Boolean; // 返回设置是否成功
+
 implementation
 
-uses untEasyUtilConst, TypInfo, cxDBEdit;
+uses untEasyUtilConst, TypInfo, cxDBEdit, Printers;
 
 function GenerateGUID: string;
 var
@@ -1259,5 +1262,26 @@ begin
   ds.Free;
 //  DestStream.Free;
 end;
+
+// 设置默认打印机
+function SetDefaultPrinter(mPrinterIndex: Integer // 默认打印机序号
+): Boolean; // 返回设置是否成功
+var
+  vDevice: array[0..255] of Char;
+  vDriver: array[0..255] of Char;
+  vPort: array[0..255] of Char;
+  S: string;
+  vDeviceMode: THandle;
+begin
+  Result := False;
+  if mPrinterIndex < 0 then Exit;
+  if mPrinterIndex >= Printer.Printers.Count then Exit;
+  Printer.PrinterIndex := mPrinterIndex;
+  Printer.GetPrinter(vDevice, vDriver, vPort, vDeviceMode);
+  S := Format('%s,%s,%s', [vDevice, vDriver, vPort]);
+  WriteProfileString('Windows', 'Device', PChar(S));
+  S := 'Windows';
+  SendMessage(HWND_BROADCAST, WM_WININICHANGE, 0, Longint(@S));
+end; { SetDefaultPrinter }
 
 end.
