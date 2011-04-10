@@ -40,7 +40,8 @@ type
     FMouseInControl : Boolean;
     FFlat           : Boolean;
     FButton         : TDgrComboBtn;   //下拉按钮
-    
+    FOldCursor      : TCursor;        //鼠标状态
+
     FAppereanceStyle: TEasyComboStyle;
     FSelectionColor : TColor;
     FSelectionColorTo      : TColor;
@@ -53,6 +54,7 @@ type
     procedure DrawBorders; overload;
     
     procedure ButtonOnChange(Sender: TObject);
+    procedure WMMouseMove(var Msg: TWMMouse); message WM_MOUSEMOVE;
     procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
     procedure CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
     procedure WMPaint(var Msg: TWMPaint); message WM_PAINT;
@@ -68,12 +70,15 @@ type
     procedure SetEditRect;
     procedure Loaded; override;
     procedure DoEnter; override;
+    procedure DrawArrow(ArP: TPoint; ArClr: TColor); virtual;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
+    property About;
     property Anchors;
     property EnterTAB;
     property Color;
+    property BorderColor;
     property FocusColor;
 
     property AutoFocus: boolean read FAutoFocus write fAutoFocus default false;
@@ -99,6 +104,7 @@ type
   published
     property Anchors;
     property EnterTAB;
+    property BorderColor;
     property Color;
     property FocusColor;
 
@@ -176,6 +182,7 @@ begin
   FSelectionGradient := sgVerticalInOut;
 
   AppereanceStyle := esOffice2003Classic;//esOffice2003Blue;
+  FOldCursor := Cursor;
 end;
 
 destructor TEasyCustomDropDownEdit.Destroy;
@@ -191,15 +198,15 @@ var
   P: TPoint;
   l, t: integer;
 
-  procedure DrawArrow(ArP: TPoint; ArClr: TColor);
-  begin
-    Canvas.Pen.Color := ArClr;
-    Canvas.MoveTo(ArP.X, ArP.Y);
-    Canvas.LineTo(ArP.X + 5, ArP.Y);
-    Canvas.MoveTo(ArP.X + 1, ArP.Y + 1);
-    Canvas.LineTo(ArP.X + 4, ArP.Y + 1);
-    Canvas.Pixels[ArP.X + 2, ArP.Y + 2] := ArClr;
-  end;
+//  procedure DrawArrow(ArP: TPoint; ArClr: TColor);
+//  begin
+//    Canvas.Pen.Color := ArClr;
+//    Canvas.MoveTo(ArP.X, ArP.Y);
+//    Canvas.LineTo(ArP.X + 5, ArP.Y);
+//    Canvas.MoveTo(ArP.X + 1, ArP.Y + 1);
+//    Canvas.LineTo(ArP.X + 4, ArP.Y + 1);
+//    Canvas.Pixels[ArP.X + 2, ArP.Y + 2] := ArClr;
+//  end;
 
 begin
   Canvas := TCanvas.Create;
@@ -349,15 +356,6 @@ begin
     case FAppereanceStyle of
       esOffice2003Blue:
         begin
-          //CaptionColor := $D68759;
-          //CaptionColorTo := $933803;
-
-          //CaptionFont.Color := clWhite;
-          //Font.Color := clBlack;
-
-          //ActiveColor := $94E6FB;
-          //ActiveColorTo := $1595EE;
-
           FButton.Color := $FCE1CB;
           FButton.ColorTo := $E0A57D;
 
@@ -368,30 +366,10 @@ begin
           FButton.ColorHotTo := $5BC0F7;
 
           FSelectionColor := $E0A57D;
-
-          //SplitterColor := $D68759;
-          //SplitterColorTo := $962D00;
-
-          //BorderColor := $962D00;
-          BorderColor := BorderColor;
-//          BorderHotColor := clBlack;
-
-          //SectionColor := $FADAC4;
-          //SectionColorTo := $F5BFA0;
-
-          //DefaultGradientDirection := gdVertical;
+          BorderColor := $00E0A57D;
         end;
       esOffice2003Olive:
         begin
-         { CaptionColor := $82C0AF;
-          CaptionColorTo := $447A63;
-
-          CaptionFont.Color := clWhite;
-          Font.Color := clBlack;
-
-          ActiveColor := $94E6FB;
-          ActiveColorTo := $1595EE;
-         }
           FButton.Color := $CFF0EA;
           FButton.ColorTo := $8CC0B1;
 
@@ -402,29 +380,12 @@ begin
           FButton.ColorHotTo := $5BC0F7;
 
           FSelectionColor := $8CC0B1;
-         // SplitterColor := $6F8E78;
-         // SplitterColorTo := $588060;
 
           //BorderColor := $588060;
-          BorderColor := BorderColor;
-//          BorderHotColor := clBlack;
-
-         { SectionColor := $E4F1F2;
-          SectionColorTo := $AADADA;
-
-          DefaultGradientDirection := gdVertical; }
+          BorderColor := $8CC0B1;
         end;
       esOffice2003Silver:
         begin
-         { CaptionColor := $BDA4A5;
-          CaptionColorTo := $957475;
-
-          CaptionFont.Color := clWhite;
-          Font.Color := clBlack;
-
-          ActiveColor := $94E6FB;
-          ActiveColorTo := $1595EE;
-         }
           FButton.Color := $ECE2E1;
           FButton.ColorTo := $B39698;
 
@@ -435,29 +396,10 @@ begin
           FButton.ColorHotTo := $5BC0F7;
 
           FSelectionColor := $B39698;
-          //SplitterColor := $BFA7A8;
-          //SplitterColorTo := $947C7C;
-
-          //BorderColor := $947C7C;
-          BorderColor := BorderColor;
-//          BorderHotColor := clBlack;
-         {
-          SectionColor := $F7F3F3;
-          SectionColorTo := $E6D8D8;
-
-          DefaultGradientDirection := gdVertical; }
+          BorderColor := $B39698;
         end;
       esOffice2003Classic:
         begin
-         {CaptionColor := $808080;
-          CaptionColorTo := $808080;
-
-          CaptionFont.Color := clWhite;
-          Font.Color := clBlack;
-
-          ActiveColor := $D8D5D4;
-          ActiveColorTo := $D8D5D4;
-         }
           FButton.Color := clWhite;
           FButton.ColorTo := $C9D1D5;
 
@@ -468,17 +410,7 @@ begin
           FButton.ColorHotTo := $D2BDB6;
 
           FSelectionColor := $B59285;
-          //SplitterColor := $C8D0D4;
-          //SplitterColorTo := $8C8D8E;
-
-          //BorderColor := $808080;
-          BorderColor := BorderColor;
-//          BorderHotColor := clBlack;
-
-         { SectionColor := $F4F5F6;
-          SectionColorTo := $CAD2D6;
-
-          DefaultGradientDirection := gdVertical;  }
+          BorderColor := $C9D1D5;
         end;
     end;
   end;
@@ -568,6 +500,31 @@ procedure TEasyCustomDropDownEdit.Loaded;
 begin
   inherited Loaded;
   SetEditRect;
+end;
+
+procedure TEasyCustomDropDownEdit.DrawArrow(ArP: TPoint; ArClr: TColor);
+begin
+  Canvas.Pen.Color := ArClr;
+  Canvas.MoveTo(ArP.X, ArP.Y);
+  Canvas.LineTo(ArP.X + 5, ArP.Y);
+  Canvas.MoveTo(ArP.X + 1, ArP.Y + 1);
+  Canvas.LineTo(ArP.X + 4, ArP.Y + 1);
+  Canvas.Pixels[ArP.X + 2, ArP.Y + 2] := ArClr;
+end;
+
+procedure TEasyCustomDropDownEdit.WMMouseMove(var Msg: TWMMouse);
+begin
+  inherited;
+  if PtInRect(GetButtonRect, point(msg.xpos, msg.ypos)) then
+  begin
+    if (Cursor <> crArrow) then
+    begin
+      FOldCursor := Cursor;
+      Cursor := crArrow;
+    end;
+  end
+  else if (Cursor = crArrow) then
+    Cursor := FOldCursor;
 end;
 
 end.
