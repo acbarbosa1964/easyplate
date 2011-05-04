@@ -1,0 +1,48 @@
+procedure TForm1.LoadImages;
+var
+ i:integer;
+ r,c:integer;
+
+begin
+ dirpath:=directorylistbox1.directory;
+ if dirpath[length(dirpath)]<>'\' then dirpath:=dirpath+'\';
+ if filelistbox1.items.Count<=0 then exit;
+ advstringgrid1.Clear;
+ r:=1;
+ c:=1;
+
+ progressbar1.min:=1;
+ progressbar1.max:=filelistbox1.items.Count;
+ progressbar1.position:=1;
+ advstringgrid1.beginupdate;
+
+ with filelistbox1,advstringgrid1 do
+ for i:=1 to items.Count do
+  begin
+//   advstringgrid1.CreatePicture(c,r,true,StretchWithAspectRatio,20,haCenter,vaCenter).LoadFromFile(dirpath+items[i-1]);
+//   advstringgrid1.CreatePicture(c,r,true,ShrinkWithAspectRatio,20,haCenter,vaCenter).LoadFromFile(dirpath+items[i-1]);
+   if filenames.Checked then
+    begin
+     advstringgrid1.cells[c,r]:=items[i-1];
+     advstringgrid1.CreateFilePicture(c,r,true,ShrinkWithAspectRatio,20,haCenter,vaAboveText).FileName:=(dirpath+items[i-1]);
+    end
+   else
+    begin
+     advstringgrid1.CreateFilePicture(c,r,true,ShrinkWithAspectRatio,20,haCenter,vaCenter).FileName:=(dirpath+items[i-1]);
+    end;
+
+   inc(c);
+   if c=colcount then
+    begin
+     c:=1;
+     inc(r);
+    end;
+   if r=rowcount then
+     begin
+      rowcount:=rowcount+1;
+      rowheights[rowcount-1]:=rowheights[rowcount-2];
+     end;
+   progressbar1.position:=i;
+  end;
+ advstringgrid1.endupdate;
+end;

@@ -1,0 +1,15 @@
+//在onIsFixedCell事件中返回true的就是表头
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+AdvStringGrid1.FixedRows:=2;
+  AdvStringGrid1.SaveFixedCells := false;
+  AdvStringGrid1.MergeCells(1,0,2,1);
+  AdvStringGrid1.MergeCells(3,0,2,1);
+  AdvStringGrid1.Cells[1,0] := '<p align="center"> <b>Identification</b></p>';
+  AdvStringGrid1.Cells[1,1] := 'Brand';
+  AdvStringGrid1.Cells[2,1] := 'Type';
+  AdvStringGrid1.Cells[3,1] := 'CC';
+  AdvStringGrid1.Cells[4,1] := 'Pk';
+  AdvStringGrid1.Cells[3,0] := '<p align="center"><b>Power</b></p>';
+  AdvStringGrid1.BtnEdit.ButtonWidth := 24;
+end;

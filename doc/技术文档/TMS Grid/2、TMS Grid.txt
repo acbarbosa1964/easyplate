@@ -1,0 +1,127 @@
+1、创建单选按钮
+var
+  i:integer;
+  radopt1:tstringlist;
+  radopt2:tstringlist;
+
+begin
+  AdvStringGrid1.cells[0,1]:='10525';
+
+  radopt1:=tstringlist.Create;
+  radopt1.Add('Delphi');
+  radopt1.Add('C++Builder');
+  radopt1.Add('JBuilder');
+
+  radopt2:=tstringlist.Create;
+  radopt2.Add('Std');
+  radopt2.Add('Prof');
+  radopt2.Add('C/S');
+
+  with AdvStringGrid1 do
+  begin
+    for i := 1 to rowcount-1 do
+    begin
+      CreateRadio(1,i,0,-1).AddStrings(radopt1);
+      CreateRadio(2,i,1,-1).AddStrings(radopt2);
+    end;
+  end;
+
+  radopt1.Free;
+  radopt2.Free;
+end;
+
+获取单选按钮的值
+procedure TForm1.AdvStringGrid2GetEditorType(Sender: TObject; aCol,
+  aRow: Integer; var aEditor: TEditorType);
+begin
+  if acol in [1,2] then aEditor:=edComboList;
+  if acol=1 then
+    AdvStringGrid2.combobox.Items.Assign(AdvStringGrid1.GetRadioStrings(1,1));
+  if acol=2 then
+    AdvStringGrid2.combobox.Items.Assign(AdvStringGrid1.GetRadioStrings(2,1));
+end;
+
+2、插入列
+ advstringgrid1.insertcols(0,1);
+
+3、设置列样式
+procedure TForm1.AdvStringGrid1GetEditorType(Sender: TObject; ACol,
+  ARow: Integer; var aEditor: TEditorType);
+begin
+ if (aCol=1) then
+ begin
+   AdvStringGrid1.BtnUnitEdit.Units.Clear;
+   AdvStringGrid1.BtnUnitEdit.Units.Add('礎');
+   AdvStringGrid1.BtnUnitEdit.Units.Add('mA');
+   AdvStringGrid1.BtnUnitEdit.Units.Add('A');
+   aEditor := edUnitEditBtn;
+ end;
+ if (aCol=2) then
+ begin
+   AdvStringGrid1.BtnUnitEdit.Units.Clear;
+   AdvStringGrid1.BtnUnitEdit.Units.Add('$');
+   AdvStringGrid1.BtnUnitEdit.Units.Add('?);
+   AdvStringGrid1.BtnUnitEdit.Units.Add('EU');
+   aEditor := edUnitEditBtn;
+ end;
+
+
+end;
+
+4、设置列样式
+表头
+<IMG src="ssys:1">Column <B><FONT color="clyellow">1</FONT></B>
+<IMG src="ssys:2">Column <B><FONT color="clred">2</FONT></B>
+<IMG src="ssys:3">Column <B><FONT color="clblue">3</FONT></B>
+<IMG src="ssys:4">Column <B><FONT color="cllime">4</FONT></B>
+
+单元格
+var
+ i,j:integer;
+begin
+ with advstringgrid1 do
+ begin
+ for i:=FixedRows to Rowcount-1 do
+  for j:=FixedCols to ColCount-1 do
+   cells[j,i]:='<IMG src="idx:'+inttostr((i+j) mod 3)+'">This is <FONT color="clred">cell</FONT> <B>['+inttostr(j)+':'+inttostr(i)+']</B>';
+
+ autosizecolumns(false,10);
+	//第一列为序号
+ autonumbercol(0);
+ end;
+end;
+
+6、设置图像下拉框
+    AdvStringGrid1.AddDataImage(2,i,0,haCenter,vaTop);
+
+7、设置单元格内容格式
+procedure TForm1.AdvStringGrid1GetDisplText(Sender: TObject; ACol,
+  ARow: Integer; var Value: String);
+var
+  f: Double;
+  err: Integer;
+begin
+  if ACol = 1 then
+    Value := '<b>' + Value + '</b>';
+
+  if (ACol = 2) and (ARow > 0) then
+  begin
+    Val(Value,f,err);
+    f := f / 33;
+    if SpinEdit1.Text <> '' then
+      if SpinEdit1.Value > 0 then
+	//好的精确度方法
+      Value := Format('%.'+IntToStr(SpinEdit1.Value)+'f',[f]);
+  end;
+end;
+
+8、汇总合计FloatingFooter
+procedure TForm1.UpdateSums;
+var
+  i: Integer;
+begin
+  for i := 1 to AdvStringGrid1.ColCount  - 1 do
+    AdvStringGrid1.Floats[i,AdvStringGrid1.RowCount - 1] :=
+      AdvStringGrid1.ColumnSum(i,1,AdvStringGrid1.RowCount - 2);
+  AdvStringGrid1.FloatingFooter.Invalidate; 
+end;

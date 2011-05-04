@@ -1,0 +1,60 @@
+1、树形显示
+
+AddNode
+	折叠样式
+  case radiogroup1.itemindex of
+  0:advstringgrid1.cellnode.nodetype:=cnFlat;
+  1:advstringgrid1.cellnode.nodetype:=cn3D;
+  2:advstringgrid1.cellnode.nodetype:=cnLeaf;
+  end;
+
+	展开或关闭所有
+  advstringgrid1.expandall;
+  advstringgrid1.contractall;
+
+	展开或关闭指定节点
+  advstringgrid1.ExpandNode(bmwnode);
+  advstringgrid1.ContractNode(bmwnode);
+
+2、动态设置分组列
+procedure TForm1.AdvStringGrid1RightClickCell(Sender: TObject; Arow,
+  Acol: Integer);
+begin
+  with AdvStringGrid1 do
+  if ARow = 0 then
+  begin
+    Label3.Caption := Cells[ACol,0];
+    if (GroupColumn <> -1) and (ACol>=GroupColumn) then
+      Inc(ACol);
+	//动态设置分组列
+    if (GroupColumn <> ACol) then
+      GroupColumn := ACol;
+  end;
+end;
+
+3、设置分组节点行的颜色GetCellColor
+procedure TForm1.AdvStringGrid1GetCellColor(Sender: TObject; ARow,
+  ACol: Integer; AState: TGridDrawState; ABrush: TBrush; AFont: TFont);
+begin
+  if AdvStringGrid1.IsNode(arow) then
+  begin
+    ABrush.Color := clGray;
+    AFont.Color := clWhite;
+  end;
+end;
+
+4、设置单元格边框颜色
+procedure TForm1.AdvStringGrid1GetCellBorder(Sender: TObject; ARow,
+  ACol: Integer; APen: TPen; var borders: TCellBorders);
+begin
+  if not AdvStringgrid1.isNode(arow) and (ARow > 0) and (ACol > 0) then
+    Borders := [cbLeft];
+  APen.Width := 1;
+  APen.Color := clSilver;
+end;
+
+5、二级分组
+  advstringgrid1.Group(1);
+  advstringgrid1.SubGroup(1);
+
+  AdvStringGrid1.Grouping.MergeHeader := true;

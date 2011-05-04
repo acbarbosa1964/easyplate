@@ -1,0 +1,78 @@
+1、样式 Lookup
+
+2、列的对齐方式GetAlignment
+procedure TForm1.AdvStringGrid1GetAlignment(Sender: TObject; ARow,
+  ACol: Integer; var HAlign: TAlignment; var VAlign: TVAlignment);
+begin
+  case ACol of
+  1: HAlign:=taCenter;
+  2,4: HAlign:=taRightJustify;
+  end;
+end;
+
+3、列颜色和字体颜色GetCellColor
+procedure TForm1.AdvStringGrid1GetCellColor(Sender: TObject; ARow,
+  ACol: Integer; AState: TGridDrawState; ABrush: TBrush; AFont: TFont);
+begin
+  if ((ACol=0) and (ARow > 0)) then
+  begin
+   ABrush.Color := clYellow;
+   AFont.Color := clRed;
+   AFont.Style := [fsBold];
+  end;
+
+  if ((ACol=2) and (ARow>0)) then
+  begin
+   if (AdvStringGrid1.Cells[ACol,ARow]='4') then AFont.Color:=clGreen;
+   if (AdvStringGrid1.Cells[ACol,ARow]='6') then AFont.Color:=clBlue;
+   if (AdvStringGrid1.Cells[ACol,ARow]='8') then AFont.Color:=clBlack;
+   if (AdvStringGrid1.Cells[ACol,ARow]='12') then AFont.Color:=clRed;
+  end;
+
+end;
+
+4、单元格格式GetFormat
+procedure TForm1.AdvStringGrid1GetFormat(Sender: TObject; ACol: Integer;
+  var AStyle: TSortStyle; var aPrefix, aSuffix: String);
+begin
+  case ACol of
+  0:AStyle:=ssAlphaNoCase;
+  1:AStyle:=ssAlphaNoCase;
+  2:AStyle:=ssNumeric;
+  3:AStyle:=ssDate;
+  4:begin
+      AStyle:=ssNumeric;
+      ASuffix:='pk';
+    end;
+  5:begin
+      AStyle:=ssFinancial;
+      APrefix:='$';
+    end;
+  end;
+end;
+
+5、列提示信息GridHint
+procedure TForm1.AdvStringGrid1GridHint(Sender: TObject; ARow,
+  ACol: Integer; var hintstr: String);
+begin
+  case Acol of
+  0: hintstr:='Car manufacturer';
+  1: hintstr:='Car model';
+  2: hintstr:='Nr. of cylinders in model';
+  3: hintstr:='Introduction date';
+  4: hintstr:='Engine horse power';
+  5: hintstr:='Date of production start';
+  6: hintstr:='Link to manufacturer website';
+  end;
+
+end;
+
+6、显示为序号
+ advstringgrid1.autonumbercol(0);
+
+7、自动适应列宽
+advstringgrid1.autosizecolumns(true,5);
+
+8、列显示为图像
+  advstringgrid1.AddDataImage(8,i,0,habeforetext,vaTop);
+	提前设置好ImageList
