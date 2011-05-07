@@ -46,9 +46,14 @@ requires
   pkEasyStardard,
   pkEasyAdditional,
   pkEasyUtilFunction,
-  EasyDevExt;
+  EasyDevExt,
+  pkEasyPlateBaseForm,
+  pkEasyGrid;
 
 contains
-  untEasyDBTool in 'untEasyDBTool.pas' {frmEasyDBTool};
+  untEasyDBTool in 'untEasyDBTool.pas' {frmEasyDBTool},
+  untEasyDBToolUtil in 'untEasyDBToolUtil.pas',
+  untEasyDBToolObject in 'untEasyDBToolObject.pas',
+  untEasyDBToolObjectPas in 'untEasyDBToolObjectPas.pas' {frmEasyDBToolObjectPas};
 
 end.
