@@ -1,0 +1,36 @@
+工作流标准分类
+Wf-XML
+
+工作流管理联盟（Workflow Management Coalition，WfMC）中的 Wf-XML 和工作流参考模型（Workflow Reference Model）：Wf-XML 是一种基于 XML 的工作流互操作性信息的编码。工作流参考模型是一种底层工作流系统体系结构的描述。目前 Wf-XML 没有与 SOAP 和 WSDL 绑定。
+
+WSFL
+
+IBM Web 服务流语言（IBM Web Services Flow Language）：指定了 Web 服务组合的两种类型1）一个被认为是流模型（flowModel）的可执行业务流程，2）一个被认为是统一模型（globalModel）的业务合作。与 SOAP、UDDI 和 WSDL 兼容。
+
+XLANG
+
+Microsoft 的 XLANG：用于 BizTalk 的业务模型语言，该语言是可运行 EAI 的 .NET 组件。BizTalk 编制（BizTalk Orchestration）是工作流引擎，BizTalk 编制设计器（BizTalk Orchestration Designer）是基于 XLANG 的可视化业务流程模型工具。
+
+BPEL4WS
+
+用于 Web 服务的业务流程执行语言（Business Process Execution Language for Web Services）是用于 Web 服务编制、工作流和组合的 WSFL 和 XLANG 的协作合并。该语言还尚未被提交到 IT 标准组织。
+
+ebXML BPSS
+
+电子商务过渡工作组（eBusiness Transition Working Group）继承了业务流程规范方案（Business Process Specification Schema（BPSS））的 ebXML 层中的工作流对话和编制，ebXML 定义了许多基于 XML 的电子商务的协议和层。
+
+WSCI
+
+Sun/BEA/Intalio/SAP 联盟的 Web 服务编排接口（Web Services Choreography Interface）“是一种基于 XML 的接口描述语言，该语言描述了参与和其他服务的编排交互作用的 Web 服务所交换的信息流。”
+
+WSCL
+
+W3C 的 Web 服务对话语言（W3C's Web Services Conversation Language）：Hewlett-Packard 向 W3C 的提交，该提交允许定义 Web 服务的抽象接口（也就是，Web 服务支持的企业级对话或公共流程），以及交换的 XML 文档及其文档的排序。
+
+PIPs
+
+RosettaNet 的伙伴接口流程（Partner Interface Process ）：定义了贸易伙伴与指定的系统到系统（system-to-system)的基于 XML 的对话之间的业务流程。许多 PIP 被用来定义各种伙伴情况。
+
+JDF
+
+CIP4 的工作定义格式（Job Definition Format）是一种即将使用的用于图形艺术（Graphics Arts）工业的工作流工业标准，该标准用于简化不同应用程序和系统之间的信息交换。
