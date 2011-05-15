@@ -11,7 +11,6 @@ const
   HITTESTSENSITIVITY = 2;
   MAX_SHADOW_SIZE = 50;
   FOCUSED_DESIGN_COLOR = clRed;
-  FOCUSED_DESIGN_COLOR2 = clGreen;
 
   PI_Div4 = pi/4;
   PI_Div2 = pi/2;
@@ -92,12 +91,12 @@ type
     //Pen Change
     procedure PenOnChange(Sender: TObject);
     procedure PrepareBitmap; virtual;
-    procedure SetPen(const Value: TPen);
-    procedure SetFocused(const Value: boolean);
+    procedure SetPen(Value: TPen);
+    procedure SetFocused(Focused: boolean);
     procedure GetBinaryData(var lineIdx: integer);
     procedure SetBtnSize(size: integer);
-    procedure SetCanFocus(const Value: boolean);
-    procedure SetColorShadow(const Value: TColor);
+    procedure SetCanFocus(CanFocus: boolean);
+    procedure SetColorShadow(Color: TColor);
     procedure SetShadowSize(size: integer);
     function GetColor: TColor;
     function GetBitmap: TBitmap;
@@ -149,6 +148,8 @@ type
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer); override;
     //系统消息处理
     Procedure CMHittest(var msg: TCMHittest); message CM_HITTEST;
     procedure WMERASEBKGND(var message: TMessage); message WM_ERASEBKGND;
@@ -196,7 +197,7 @@ type
 
     property Margin: integer read fMargin write fMargin;
   published
-    property Pen: TPen read fPen write SetPen;
+    property Pen: TPen read fPen write SetPen;     //可设置线宽与线条颜色
     {:Focused: Displays the TDrawObjects's design buttons and a dotted bounding
     rectangle. Also triggers a FocusChangedEvent(). Note: TDrawObjects, being
     TGraphicControl descendants, never gain direct keyboard focus.
@@ -229,7 +230,9 @@ type
   private
     fArrowStart: boolean;
     fArrowEnd: boolean;
+    FStrings: TStrings;
     function GetButtonCount: integer;
+    procedure SetStrings(strings: TStrings);
   protected
     procedure CalcMargin; override;
     procedure SetButtonCount(count: integer); virtual;
@@ -245,6 +248,7 @@ type
     property ArrowStart: boolean read fArrowStart write SetArrowStart;
     property ArrowEnd: boolean read fArrowEnd write SetArrowEnd;
     property ButtonCount: integer read GetButtonCount write SetButtonCount;
+    property Strings: TStrings read fStrings write SetStrings;
   end;
   
   TEasyCustomConnector = class(TEasyCustomBaseLine)
@@ -362,6 +366,8 @@ type
     procedure SetCentered(Centered: boolean);
     procedure SetRounded(Rounded: boolean);
     procedure SetRectanglePts;
+    procedure RectangleDrawGradient(Canvas: TCanvas; FromColor, ToColor: TColor; Steps: Integer;
+        R: TRect; Direction: Boolean);
   protected
     procedure DrawStringsInRect(Canvas: TCanvas; Strings: TStrings);
     procedure InternalBtnMove(BtnIdx: integer; NewPt: TPoint); override;
@@ -586,6 +592,8 @@ type
     fRegular: boolean;
     procedure SetBalloonPoint(BalloonPoint: TBalloonPoint);
     procedure SetRegular(value: boolean);
+    procedure EllipseDrawGradient(Canvas: TCanvas; FromColor, ToColor: TColor; Steps: Integer;
+        R: TRect; Direction: Boolean);
   protected
     procedure SetAngle(angle: integer); override;
     procedure DrawStringsInEllipse(canvas: TCanvas; Strings: TStrings);
@@ -663,7 +671,10 @@ type
   published
     property Regular: boolean read fBoringStar write SetBoringStar;
   end;
-    
+
+type
+  TEasyFillType = (eftRect, eftRounRect, eftEllipse);
+  
 procedure OffsetPt(var pt: TPoint; dx, dy: integer);
 function RotatePt(pt, origin: TPoint; radians: single): TPoint;
 procedure RotatePts(var pts: array of TPoint;
@@ -680,6 +691,14 @@ function SquaredDistBetweenPoints(pt1, pt2: TPoint): cardinal;
 function MidPoint(pt1, pt2: TPoint): TPoint;
 function MakeNameForControl(ctrl: TControl): boolean;
 
+procedure SaveDrawObjectsToStrings(DoList: TList; Strings: TStrings);
+procedure LoadDrawObjectsFromStrings(strings: TStrings; Owner: TComponent;
+  Parent: TWinControl; EachDrawObjLoadedEvent: TNotifyEvent);
+
+//minRadius 画圆角时使用  
+procedure EasyDrawObjectDrawGradient(Canvas: TCanvas; FromColor, ToColor: TColor; Steps: Integer;
+        R: TRect; Direction: Boolean; EasyFillType: TEasyFillType; minRadius: integer = 0);
+        
 procedure Register;
 
 implementation
@@ -698,6 +717,223 @@ begin
     TEasyCustomRectangle, TEasyCustomPicture, TEasyCustomDiamond, TEasyCustomEllipse,
     TEasyCustomArc, TEasyCustomPolygon, TEasyCustomSolidArrow,
     TEasyCustomRandomPoly, TEasyCustomStar, TEasyCustomSolidPoint, TEasyCustomText]);
+end;
+
+procedure EasyDrawObjectDrawGradient(Canvas: TCanvas; FromColor, ToColor: TColor;
+          Steps: Integer; R: TRect; Direction: Boolean; EasyFillType: TEasyFillType;
+          minRadius: integer = 0);
+var
+  diffr, startr, endr: Integer;
+  diffg, startg, endg: Integer;
+  diffb, startb, endb: Integer;
+  rstepr, rstepg, rstepb, rstepw: Real;
+  i, stepw: Word;
+
+begin
+  if Steps = 0 then
+    Steps := 1;
+
+  FromColor := ColorToRGB(FromColor);
+  ToColor := ColorToRGB(ToColor);
+
+  startr := (FromColor and $0000FF);
+  startg := (FromColor and $00FF00) shr 8;
+  startb := (FromColor and $FF0000) shr 16;
+  endr := (ToColor and $0000FF);
+  endg := (ToColor and $00FF00) shr 8;
+  endb := (ToColor and $FF0000) shr 16;
+
+  diffr := endr - startr;
+  diffg := endg - startg;
+  diffb := endb - startb;
+
+  rstepr := diffr / steps;
+  rstepg := diffg / steps;
+  rstepb := diffb / steps;
+
+  if Direction then
+    rstepw := (R.Right - R.Left) / Steps
+  else
+    rstepw := (R.Bottom - R.Top) / Steps;
+
+  with Canvas do
+  begin
+    for i := 0 to steps - 1 do
+    begin
+      endr := startr + Round(rstepr * i);
+      endg := startg + Round(rstepg * i);
+      endb := startb + Round(rstepb * i);
+      stepw := Round(i * rstepw);
+      Pen.Color := endr + (endg shl 8) + (endb shl 16);
+      Brush.Color := Pen.Color;
+      if Direction then
+      begin
+//        Rectangle(R.Left + stepw, R.Top, R.Left + stepw + Round(rstepw) + 1, R.Bottom)
+        if EasyFillType = eftRect then
+          Rectangle(R.Left + stepw, R.Top, R.Left + stepw + Round(rstepw) + 1, R.Bottom)
+        else if EasyFillType = eftRounRect then
+          RoundRect(R.Left + stepw, R.Top, R.Left + stepw + Round(rstepw) + 1, R.Bottom,
+                    minRadius, minRadius)
+        else if EasyFillType = eftEllipse then
+          Ellipse(R.Left + stepw, R.Top, R.Left + stepw + Round(rstepw) + 1, R.Bottom);
+      end
+      else
+      begin
+//        Rectangle(R.Left, R.Top + stepw, R.Right, R.Top + stepw + Round(rstepw) + 1);
+        if EasyFillType = eftRect then
+          Rectangle(R.Left, R.Top + stepw, R.Right, R.Top + stepw + Round(rstepw) + 1)
+        else if EasyFillType = eftRounRect then
+          RoundRect(R.Left, R.Top + stepw, R.Right, R.Top + stepw + Round(rstepw) + 1,
+                    minRadius, minRadius)
+        else if EasyFillType = eftEllipse then
+          Ellipse(R.Left, R.Top + stepw, R.Right, R.Top + stepw + Round(rstepw) + 1);
+      end;
+    end;
+  end;
+end;
+
+procedure ClearAndNilObjPropertyList;
+var
+  i: integer;
+begin
+  if not assigned(ObjPropertyList) then exit;
+  for i := 0 to ObjPropertyList.Count -1 do
+    dispose(PObjPropInfo(ObjPropertyList[i]));
+  FreeAndNil(ObjPropertyList);
+end;
+
+procedure GetClassAndName(const ClassInfoLine: string;
+  out objClass, objName: string);
+var
+  i: integer;
+begin
+  i := pos(':',ClassInfoLine);
+  objClass := copy(ClassInfoLine,2,i-2);
+  objName := copy(ClassInfoLine,i+1,length(ClassInfoLine)-i -1);
+end;
+
+function FindNextObjectLineIdx(Lines: TStrings; StartAtLine: integer): integer;
+var
+  EndAtLine: integer;
+begin
+  EndAtLine := Lines.Count;
+  result := StartAtLine;
+  while (result < EndAtLine) do
+    if (Lines[result] <> '') and (Lines[result][1] = '[') then break
+    else inc(result);
+end;
+
+procedure LoadDrawObjectsFromStrings(strings: TStrings; Owner: TComponent;
+  Parent: TWinControl; EachDrawObjLoadedEvent: TNotifyEvent);
+var
+  i,j: integer;
+  ObjList: TList;
+
+{steps:
+1. Create a list of instantiated DrawObjects
+2. DrawObjects fill their own properties and add any DrawObj links to a fixup
+   list (containing instance, property, name value)
+3. Parse fixup list - using name values to find and assign link instances }
+
+  function NameInUse(const newName: string): boolean;
+  var
+    i: integer;
+  begin
+    result := true;
+    for i := 0 to Owner.ComponentCount -1 do
+      if SameText(Owner.Components[i].Name, newName) then exit;
+    result := false;
+  end;
+
+  procedure BuildObjList(Lines: TStrings; ObjList: TList);
+  var
+    i, ClassInfoLineIdx, StartAtLine, EndAtLine: integer;
+    ObjInstance: TEasyCustomDrawObject;
+    objClass, objName: string;
+    PersistentClass: TPersistentClass;
+  begin
+    EndAtLine := Lines.Count;
+    ClassInfoLineIdx := FindNextObjectLineIdx(Lines, 0);
+    while ClassInfoLineIdx < EndAtLine do
+    begin
+      //for each item ...
+      StartAtLine := ClassInfoLineIdx;
+      GetClassAndName(Lines[ClassInfoLineIdx], objClass, objName);
+      ObjInstance := nil;
+      try
+        PersistentClass := FindClass(objClass);
+        if assigned(PersistentClass) and
+          PersistentClass.InheritsFrom(TEasyCustomDrawObject) then
+            ObjInstance := TDrawObjectClass(PersistentClass).Create(Owner);
+      except
+      end;
+      //find offset of next item so we know which lines pertain to this one ...
+      ClassInfoLineIdx := FindNextObjectLineIdx(Lines, ClassInfoLineIdx+1);
+
+      if ObjInstance = nil then continue;
+
+      ObjInstance.Parent := Parent;
+      
+      if NameInUse(objName) then
+        MakeNameForControl(ObjInstance) else
+        ObjInstance.Name := objName;
+
+      ObjList.Add(ObjInstance);
+      //copy property strings to the new object ...
+      for i := StartAtLine to ClassInfoLineIdx -1 do
+        ObjInstance.PropStrings.Add(Lines[i]);
+      ObjInstance.LoadFromPropStrings;
+      ObjInstance.PropStrings.Clear;
+    end;
+  end;
+
+begin
+  if not assigned(owner) or not assigned(parent) then exit;
+
+  ObjPropertyList := TList.Create;
+  ObjList := TList.create;
+  try
+    //fill ObjList with new top level items ...
+    BuildObjList(Strings, ObjList);
+
+    //fixup any entries in ObjPropertyList...
+    for i := 0 to ObjPropertyList.Count -1 do
+      with PObjPropInfo(ObjPropertyList[i])^ do
+        for j := 0 to ObjList.Count -1 do
+          if (TEasyCustomDrawObject(ObjList[j]).fStreamID = fPropVal) then
+          begin
+            SetObjectProp(fOwner, fProperty, TObject(ObjList[j]));
+            break; //ie this property has been fixed up
+          end;
+    for i := 0 to ObjList.count -1 do
+    begin
+      TEasyCustomDrawObject(ObjList[i]).fStreamID := '';
+      //notify of object creation ...
+      if assigned(EachDrawObjLoadedEvent) then
+        EachDrawObjLoadedEvent(TEasyCustomDrawObject(ObjList[i]));
+    end;
+  finally
+    ObjList.free;
+    ClearAndNilObjPropertyList;
+  end;
+end;
+
+procedure SaveDrawObjectsToStrings(DoList: TList; Strings: TStrings);
+var
+  i: integer;
+begin
+  //use the object pointer as a unique ID ...
+  for i := 0 to DoList.Count -1 do
+    TEasyCustomDrawObject(DoList[i]).fStreamID := inttohex(longint(DoList[i]),8);
+
+  for i := 0 to DoList.Count -1 do
+    with TEasyCustomDrawObject(DoList[i]) do
+    begin
+      SaveToPropStrings;
+      Strings.AddStrings(PropStrings);
+      Strings.Add(''); //add a blank line between each component
+      fStreamID := ''; //finally, cleanup temp streaming name
+    end;
 end;
 
 function MakeNameForControl(ctrl: TControl): boolean;
@@ -1799,6 +2035,7 @@ begin
   inherited Create(AOwner);
   FBitmap := TBitmap.Create;
   FPen := TPen.Create;
+  FPen.Color := clBlue;
   FPen.OnChange := PenOnChange;
   
   FPropStrings := TStringList.Create;
@@ -1822,11 +2059,12 @@ begin
   else
     FBitmap.TransparentColor := clBtnFace;
 
-  FColorShadow := clWhite;
-  FShadowSize := -2;
+  //阴影设为0 
+  FColorShadow := clBlue;
+  FShadowSize := 1;
   FBitmap.Width := 100;
   FBitmap.Height := 100;
-  SetBounds(0, 0, 100, 100);
+  SetBounds(0, 0, 175, 77);
 
   CalcMargin;      //计算边距
   //设置锚点的位置
@@ -1887,7 +2125,7 @@ begin
   begin
     Font.Assign(self.font);
     Pen.Assign(self.fPen);
-    //draw the object shadow ...
+    //d绘制阴影
     if fShadowSize <> 0 then
     begin
       Pen.Color := fColorShadow;
@@ -1900,7 +2138,7 @@ begin
       end;
     end;
 
-    //draw the object ...
+    //绘制控件
     Pen.Color := self.Pen.Color;
     brush.Color := self.Color;
     OffsetBtns(offsetX, offsetY);
@@ -1922,12 +2160,17 @@ begin
   begin
     if Focused or (fPressedBtnIdx >= 0) or Moving then
     begin
-      if LastBtn then Pen.Color := FOCUSED_DESIGN_COLOR2
-      else Pen.Color := FOCUSED_DESIGN_COLOR
-    end else Pen.Color := clSkyBlue;
-    Rectangle(BtnRect);
-    InflateRect(BtnRect,-1,-1);
-    if Pressed then
+      if LastBtn then
+        Pen.Color := FOCUSED_DESIGN_COLOR
+      else
+        Pen.Color := FOCUSED_DESIGN_COLOR
+    end
+    else
+      Pen.Color := clBtnFace;  //默认颜色
+    Ellipse(BtnRect);
+//    Rectangle(BtnRect);
+//    InflateRect(BtnRect,-1,-1);
+  {  if Pressed then
       Pen.Color := clBtnShadow else
       Pen.Color := clBtnHighlight;
     MoveTo(BtnRect.Left, BtnRect.Bottom-1);
@@ -1937,7 +2180,7 @@ begin
       Pen.Color := clBtnHighlight else
       Pen.Color := clBtnShadow;
     LineTo(BtnRect.Right-1, BtnRect.Bottom-1);
-    LineTo(BtnRect.Left-1, BtnRect.Bottom-1);
+    LineTo(BtnRect.Left-1, BtnRect.Bottom-1);  }
   end;
 end;
 
@@ -2255,7 +2498,8 @@ begin
     if Button = mbLeft then
     begin
       if not focused then fPressedBtnIdx := -1
-      else if BtnIdxFromPt(Point(X,Y), true, fPressedBtnIdx) then invalidate;
+      else if BtnIdxFromPt(Point(X,Y), true, fPressedBtnIdx) then
+        invalidate;
       if (fPressedBtnIdx < 0) and CanMove then
       begin
         fMovingPt := Point(X,Y);
@@ -2300,6 +2544,21 @@ begin
   end;
 end;
 
+procedure TEasyCustomDrawObject.MouseUp(Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if not (csDesigning in ComponentState) then
+  begin
+    if fPressedBtnIdx >= 0 then
+    begin
+      fPressedBtnIdx := -1;
+      invalidate;
+    end;
+    fMoving := false;
+  end;
+  inherited;
+end;
+
 function TEasyCustomDrawObject.MoveBtnTo(BtnIdx: integer;
   screenPt: TPoint): boolean;
 var
@@ -2342,7 +2601,9 @@ begin
       Pen.Width := 1;
       Pen.Style := psDot;
       brush.Style := bsClear;
-      canvas.Rectangle(clientRect);
+
+//      canvas.Rectangle(clientRect);
+      //贝塞尔曲线拉伸时使用
       DrawControlLines;
 
       //finally, draw buttons ...
@@ -2541,7 +2802,7 @@ begin
   CalcMargin;
 end;
 
-procedure TEasyCustomDrawObject.SetCanFocus(const Value: boolean);
+procedure TEasyCustomDrawObject.SetCanFocus(CanFocus: boolean);
 begin
   if fCanFocus = CanFocus then exit;
   fCanFocus := CanFocus;
@@ -2555,14 +2816,14 @@ begin
   UpdateNeeded;
 end;
 
-procedure TEasyCustomDrawObject.SetColorShadow(const Value: TColor);
+procedure TEasyCustomDrawObject.SetColorShadow(Color: TColor);
 begin
   if fColorShadow = Color then exit;
   fColorShadow := Color;
   UpdateNeeded;
 end;
 
-procedure TEasyCustomDrawObject.SetFocused(const Value: boolean);
+procedure TEasyCustomDrawObject.SetFocused(Focused: boolean);
 begin
   if (FFocused = Focused) or (not FCanFocus and Focused) then exit;
   FFocused := Focused;
@@ -2570,7 +2831,7 @@ begin
   invalidate;
 end;
 
-procedure TEasyCustomDrawObject.SetPen(const Value: TPen);
+procedure TEasyCustomDrawObject.SetPen(Value: TPen);
 begin
   FPen.Assign(Value);
 end;
@@ -2663,8 +2924,17 @@ begin
 end;
 
 procedure TEasyCustomBaseLine.SaveToPropStrings;
+var
+  I: Integer;
 begin
   inherited;
+  if Strings.Count > 0 then
+  begin
+    AddToPropStrings('Strings', '{');
+    for i := 0 to Strings.Count -1 do
+      AddToPropStrings('', '  '+Strings[i]);
+    AddToPropStrings('', '}');
+  end;
   if fArrowStart then AddToPropStrings('ArrowStart', GetEnumProp(self, 'ArrowStart'));
   if fArrowEnd then AddToPropStrings('ArrowEnd', GetEnumProp(self, 'ArrowEnd'));
 end;
@@ -2691,6 +2961,11 @@ end;
 function TEasyCustomBaseLine.Shrink(TopEnd: boolean): boolean;
 begin
   result := false; //override in descendant classes
+end;
+
+procedure TEasyCustomBaseLine.SetStrings(strings: TStrings);
+begin
+  FStrings.Assign(strings);
 end;
 
 { TEasyCustomConnector }
@@ -3343,6 +3618,9 @@ begin
       //use polygon for rotation support ...
       Polygon([BtnPoints[2],BtnPoints[3],BtnPoints[4],BtnPoints[5]]);
 
+    if not IsShadow then
+      RectangleDrawGradient(Canvas, clSkyBlue, clBlue, 30, TmpRect, False);
+  
     if IsShadow or (Strings.Count = 0) then exit;
     DrawStringsInRect(Canvas, strings);
   end;
@@ -3402,6 +3680,7 @@ begin
     YPos := BtnPoints[0].Y + pad;
     if i > 1 then inc(YPos, i div 2);
     //now second time to draw text ...
+    Brush.Style := bsClear;
     CalcOnlyOrTextOut(false);
   end;
 end;
@@ -3411,6 +3690,18 @@ procedure TEasyCustomRectangle.InternalBtnMove(BtnIdx: integer;
 begin
   inherited;
   SetRectanglePts;
+end;
+
+procedure TEasyCustomRectangle.RectangleDrawGradient(Canvas: TCanvas;
+  FromColor, ToColor: TColor; Steps: Integer; R: TRect;
+  Direction: Boolean);
+begin
+  if not fRounded then
+    EasyDrawObjectDrawGradient(Canvas, FromColor, ToColor, Steps, R, Direction,
+                                eftRect)
+  else
+    EasyDrawObjectDrawGradient(Canvas, FromColor, ToColor, Steps, R, Direction,
+                                eftRounRect);
 end;
 
 function TEasyCustomRectangle.ResizeObjectToFitText: boolean;
@@ -3933,7 +4224,7 @@ function TEasyCustomBezier.Grow(TopEnd: boolean): boolean;
 var
   i: integer;
 begin
-  result := not IsConnected;
+   result := not IsConnected;
   if not result then exit;
   InternalSetCount(buttonCount + 3);
   if TopEnd then
@@ -5160,6 +5451,7 @@ var
   dx, dy: integer;
   SavedClr: TColor;
   IsValidPoints: boolean;
+  TmpRect: TRect;
 
   //Get2PtsOnEllipse: helper function for Balloon extention drawing.
   //Since the balloon tip is in one corner, from that corner (pt1) find the
@@ -5256,6 +5548,12 @@ begin
       ellipse(BtnPoints[0].X,BtnPoints[0].Y,BtnPoints[1].X,BtnPoints[1].Y);
       //draw 'balloon' extension if required ...
       if (fBalloonPoint <> bpNone) then DrawBalloonExtension;
+    end;
+    //Draw Gradient
+    if not IsShadow then
+    begin
+      TmpRect := Rect(BtnPoints[0].X,BtnPoints[0].Y,BtnPoints[1].X,BtnPoints[1].Y);
+      EllipseDrawGradient(Canvas, clSkyBlue, clBlue, 30, TmpRect, True);
     end;
     //finally draw text ...
     if IsShadow or (Strings.Count = 0) then exit;
@@ -5777,8 +6075,24 @@ begin
   end;
 end;
 
+procedure __RegisterClasses;
+begin
+  RegisterClasses([TEasyCustomLine, TEasyCustomLLine, TEasyCustomZLine,
+    TEasyCustomBezier, TEasyCustomSolidBezier, TEasyCustomTextBezier,
+    TEasyCustomRectangle, TEasyCustomPicture, TEasyCustomDiamond, TEasyCustomEllipse,
+    TEasyCustomArc, TEasyCustomPolygon, TEasyCustomSolidArrow,
+    TEasyCustomRandomPoly, TEasyCustomStar, TEasyCustomSolidPoint, TEasyCustomText]);
+end;
+
+procedure TEasyCustomEllipse.EllipseDrawGradient(Canvas: TCanvas;
+  FromColor, ToColor: TColor; Steps: Integer; R: TRect;
+  Direction: Boolean);
+begin
+  EasyDrawObjectDrawGradient(Canvas, FromColor, ToColor, Steps, R, Direction, eftEllipse);
+end;
+
 initialization
-  //
+  __RegisterClasses;
   
 finalization
   FreeAndNil(fDummyStrings);
