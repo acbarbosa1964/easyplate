@@ -1,3 +1,25 @@
+{-------------------------------------------------------------------------------
+//                       EasyComponents For Delphi 7
+//                         一轩软研第三方开发包                         
+//                         @Copyright 2010 hehf                      
+//                   ------------------------------------                       
+//                                                                              
+//           本开发包是公司内部使用,作为开发工具使用任何,何海锋个人负责开发,任何
+//       人不得外泄,否则后果自负.        
+//
+//            使用权限以及相关解释请联系何海锋  
+//                
+//                                                               
+//            网站地址：http://www.YiXuan-SoftWare.com                                  
+//            电子邮件：hehaifeng1984@126.com 
+//                      YiXuan-SoftWare@hotmail.com    
+//            QQ      ：383530895
+//            MSN     ：YiXuan-SoftWare@hotmail.com                                   
+//------------------------------------------------------------------------------
+//单元说明：
+//
+//主要实现：
+//-----------------------------------------------------------------------------}
 unit untEasyUtilFile;
 
 interface
@@ -20,30 +42,31 @@ type
     rVsFixedFileInfo: VS_FIXEDFILEINFO;
     rDefineValue: string;
   end;
-  
-function GetFileVersionInfomation( // 读取文件的版本信息
-  mFileName: string; // 目标文件名
-  var nFileVersionInfomation: TFileVersionInfomation; // 文件信息结构
-  mDefineName: string = '' // 自定义字段名
-): Boolean; // 返回是否读取成功
 
-function DeletePath( // 删除指定目录
-  mDirName: string; // 目录名
-  mPrefix: string; // 前缀
-  mChangeAttrib: Boolean // 是否修改属性以便删除
-): Boolean; // 返回删除指定目录是否成功
+// 读取文件的版本信息
+//mFileName 目标文件名
+//nFileVersionInfomation 文件信息结构
+//mDefineName 自定义字段名
+//返回是否读取成功
+function GetFileVersionInfomation(mFileName: string;
+        var nFileVersionInfomation: TFileVersionInfomation; mDefineName: string = ''): Boolean; 
 
-function FileTimeToDateTime( // 将文件时间处理为TDateTime
-  mFileTime: TFileTime // 文件时间
-): TDateTime; // 返回处理后的结果
+// 删除指定目录
+//mDirName 目录名
+//mPrefix 前缀
+//mChangeAttrib 是否修改属性以便删除
+// 返回删除指定目录是否成功
+function DeletePath(mDirName: string; mPrefix: string; mChangeAttrib: Boolean): Boolean;
+
+// 将文件时间处理为TDateTime
+//mFileTime 文件时间
+// 返回处理后的结果
+function FileTimeToDateTime(mFileTime: TFileTime): TDateTime; 
 
 implementation
 
-function GetFileVersionInfomation( // 读取文件的版本信息
-  mFileName: string; // 目标文件名
-  var nFileVersionInfomation: TFileVersionInfomation; // 文件信息结构
-  mDefineName: string = '' // 自定义字段名
-): Boolean; // 返回是否读取成功
+function GetFileVersionInfomation(mFileName: string;
+        var nFileVersionInfomation: TFileVersionInfomation; mDefineName: string = ''): Boolean; 
 var
   vHandle: Cardinal;
   vInfoSize: Cardinal;
@@ -110,11 +133,7 @@ begin
   Result := True;
 end; { GetFileVersionInfomation }
 
-function DeletePath( // 删除指定目录
-  mDirName: string; // 目录名
-  mPrefix: string; // 前缀
-  mChangeAttrib: Boolean // 是否修改属性以便删除
-): Boolean; // 返回删除指定目录是否成功
+function DeletePath(mDirName: string; mPrefix: string; mChangeAttrib: Boolean): Boolean;
 var
   vSearchRec: TSearchRec;
   vPathName: string;
@@ -146,9 +165,7 @@ begin
   Result := RemoveDir(mDirName);
 end; { DeletePath }
 
-function FileTimeToDateTime( // 将文件时间处理为TDateTime
-  mFileTime: TFileTime // 文件时间
-): TDateTime; // 返回处理后的结果
+function FileTimeToDateTime(mFileTime: TFileTime): TDateTime; 
 var
   vSystemTime: TSystemTime;
   vLocalFileTime: TFileTime;

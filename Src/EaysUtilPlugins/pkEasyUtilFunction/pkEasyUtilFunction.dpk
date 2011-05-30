@@ -48,7 +48,8 @@ contains
   untEasyUtilConst in 'untEasyUtilConst.pas',
   untEasyIODFM in 'untEasyIODFM.pas',
   untEasyUtilCompression in 'untEasyUtilCompression.pas',
-  untEasyUtilFile in 'untEasyUtilFile.pas';
+  untEasyUtilFile in 'untEasyUtilFile.pas',
+  untEasyUtilCrypt in 'untEasyUtilCrypt.pas';
 
 end.
 

@@ -266,7 +266,15 @@ const
   procedure FreeComponent_Child(AComponent: TComponent);
   procedure FreeComponent_NoChild(AComponent: TComponent);
 
-  procedure EasyFreeAndNilList(AList: TList);  
+  procedure EasyFreeAndNilList(AList: TList);
+  //获取对象的 RTTI 属性与事件的函数
+  function GetPropertyAndEventList(obj: TObject; pList,eList: TStringList): Boolean;
+  //获取对象的 RTTI 属性的函数
+  function GetPropertyList(obj: TObject; pList: TStringList): Boolean;
+  //获取对象的 RTTI 事件的函数
+  function GetEventList(obj: TObject; eList: TStringList): Boolean;
+
+
   // 设置默认打印机 默认打印机序号
   function SetDefaultPrinter(mPrinterIndex: Integer): Boolean; // 返回设置是否成功
 
@@ -1283,5 +1291,115 @@ begin
   S := 'Windows';
   SendMessage(HWND_BROADCAST, WM_WININICHANGE, 0, Longint(@S));
 end; { SetDefaultPrinter }
+
+//获取对象的 RTTI 属性与事件的函数
+function GetPropertyAndEventList(obj: TObject; pList,eList: TStringList): Boolean;
+var
+  ClassTypeInfo: PTypeInfo; {类的信息结构指针}
+  ClassDataInfo: PTypeData; {类的数据结构指针}
+  propertyList : PPropList; {TPropInfo 是属性的数据结构;
+                             PPropList 是其指针;
+                             TPropList 是属性结构指针的列表数组;
+                             PPropList 是指向这个数组的指针}
+
+  num : Integer;            {记录属性的总数}
+  size: Integer;            {记录属性结构的大小}
+  i: Integer;
+begin
+  ClassTypeInfo := obj.ClassInfo;              {先获取: 类的信息结构指针}
+  ClassDataInfo := GetTypeData(ClassTypeInfo); {再获取: 类的数据结构指针}
+  num := ClassDataInfo.PropCount;              {属性总数}
+  size := SizeOf(TPropInfo);                   {属性结构大小}
+
+  GetMem(propertyList, size*num);              {给属性数组分配内存}
+
+  GetPropInfos(ClassTypeInfo, propertyList);   {获取属性列表}
+
+  for i := 0 to num - 1 do
+  begin
+    if propertyList[i].PropType^.Kind = tkMethod then {如果是事件; 事件也是属性吗, 给分出来}
+      eList.Add(propertyList[i].Name)
+    else
+      pList.Add(propertyList[i].Name);
+  end;
+
+  pList.Sort; eList.Sort; {排序}
+
+  FreeMem(propertyList); {释放属性数组的内存}
+
+  Result := True;
+end;
+
+//获取对象的 RTTI 属性的函数
+function GetPropertyList(obj: TObject; pList: TStringList): Boolean;
+var
+  ClassTypeInfo: PTypeInfo; {类的信息结构指针}
+  ClassDataInfo: PTypeData; {类的数据结构指针}
+  propertyList : PPropList; {TPropInfo 是属性的数据结构;
+                             PPropList 是其指针;
+                             TPropList 是属性结构指针的列表数组;
+                             PPropList 是指向这个数组的指针}
+
+  num : Integer;            {记录属性的总数}
+  size: Integer;            {记录属性结构的大小}
+  i: Integer;
+begin
+  ClassTypeInfo := obj.ClassInfo;              {先获取: 类的信息结构指针}
+  ClassDataInfo := GetTypeData(ClassTypeInfo); {再获取: 类的数据结构指针}
+  num := ClassDataInfo.PropCount;              {属性总数}
+  size := SizeOf(TPropInfo);                   {属性结构大小}
+
+  GetMem(propertyList, size*num);              {给属性数组分配内存}
+
+  GetPropInfos(ClassTypeInfo, propertyList);   {获取属性列表}
+
+  for i := 0 to num - 1 do
+  begin
+    if propertyList[i].PropType^.Kind <> tkMethod then {如果是事件; 事件也是属性吗, 给分出来}
+      pList.Add(propertyList[i].Name);
+  end;
+
+  pList.Sort; {排序}
+
+  FreeMem(propertyList); {释放属性数组的内存}
+
+  Result := True;
+end;
+
+//获取对象的 RTTI 属性与事件的函数
+function GetEventList(obj: TObject; eList: TStringList): Boolean;
+var
+  ClassTypeInfo: PTypeInfo; {类的信息结构指针}
+  ClassDataInfo: PTypeData; {类的数据结构指针}
+  propertyList : PPropList; {TPropInfo 是属性的数据结构;
+                             PPropList 是其指针;
+                             TPropList 是属性结构指针的列表数组;
+                             PPropList 是指向这个数组的指针}
+
+  num : Integer;            {记录属性的总数}
+  size: Integer;            {记录属性结构的大小}
+  i: Integer;
+begin
+  ClassTypeInfo := obj.ClassInfo;              {先获取: 类的信息结构指针}
+  ClassDataInfo := GetTypeData(ClassTypeInfo); {再获取: 类的数据结构指针}
+  num := ClassDataInfo.PropCount;              {属性总数}
+  size := SizeOf(TPropInfo);                   {属性结构大小}
+
+  GetMem(propertyList, size*num);              {给属性数组分配内存}
+
+  GetPropInfos(ClassTypeInfo, propertyList);   {获取属性列表}
+
+  for i := 0 to num - 1 do
+  begin
+    if propertyList[i].PropType^.Kind = tkMethod then {如果是事件; 事件也是属性吗, 给分出来}
+      eList.Add(propertyList[i].Name)
+  end;
+
+  eList.Sort; {排序}
+
+  FreeMem(propertyList); {释放属性数组的内存}
+
+  Result := True;
+end;
 
 end.

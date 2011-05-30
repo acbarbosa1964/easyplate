@@ -1,3 +1,24 @@
+{-------------------------------------------------------------------------------
+//                       EasyComponents For Delphi 7
+//                         一轩软研第三方开发包                         
+//                         @Copyright 2010 hehf                      
+//                   ------------------------------------                       
+//                                                                              
+//           本开发包是公司内部使用,作为开发工具使用任何,何海锋个人负责开发,任何
+//       人不得外泄,否则后果自负.        
+//
+//            使用权限以及相关解释请联系何海锋  
+//                
+//                                                               
+//            网站地址：http://www.YiXuan-SoftWare.com                                  
+//            电子邮件：hehaifeng1984@126.com 
+//                      YiXuan-SoftWare@hotmail.com    
+//            QQ      ：383530895
+//            MSN     ：YiXuan-SoftWare@hotmail.com
+//
+//主要功能：
+//        流解压缩、文件夹解压缩                               
+//------------------------------------------------------------------------------}
 unit untEasyUtilCompression;
 
 interface
@@ -24,66 +45,82 @@ type
     rIdent: array[0..2] of Char; //标识
     rVersion: Byte; //版本
   end;
-  
-// 获得目录的大小、文件个数、目录个数
-function DirectoryInfo(mDirectory: string; // 目录名
-          var nFileSize: Integer; // 总大小
-          var nFileCount: Integer; // 文件个数
-          var nDirectoryCount: Integer // 目录个数
-        ): Boolean; // 返回目录的大小
 
-function FileCompression( // 将文件压缩到流中
-          mFileName: string; // 文件名
-          mStream: TStream // 目标
-        ): Integer; // 返回压缩后的大小
+  //解压缩流
+  procedure UnCompressionStream(var ASrcStream:TMemoryStream);
+  //压缩流
+  procedure CompressionStream(var ASrcStream:TMemoryStream;ACompressionLevel:Integer = 2);
 
-function FileDecompression( // 从流中解压文件
-          mFileName: string; // 目标文件名
-          mStream: TStream // 来源
-        ): Integer; // 返回解压后的大小
+  // 获得目录的大小、文件个数、目录个数
+  //mDirectory 目录名
+  //nFileSize 总大小
+  //nFileCount  文件个数
+  //nDirectoryCount 目录个数
+  function DirectoryInfo(mDirectory: string; var nFileSize: Integer;
+            var nFileCount: Integer; var nDirectoryCount: Integer): Boolean;
 
-function DirectoryCompression( // 将目录压缩成文件
-  mDirectory: string; // 目录名
-  mFileName: string // 压缩后的文件名
-): Integer; overload; // 返回压缩后的大小 //如果为负数则标识错误
+  // 将文件压缩到流中
+  //mFileName 文件名
+  // mStream  目标
+  //返回解压后的大小
+  function FileCompression(mFileName: string; mStream: TStream): Integer;
 
-function DirectoryCompression( // 将目录压缩成流
-  mDirectory: string; // 目录名
-  mStream: TStream // 压缩后的流
-): Integer; overload; // 返回压缩后的大小 //如果为负数则标识错误
+  // 从流中解压文件
+  // mFileName 目标文件名
+  // mStream  来源
+  // 返回解压后的大小
+  function FileDecompression(mFileName: string; mStream: TStream): Integer;
 
-function DirectoryDecompression( // 从文件中解压目录
-  mDirectory: string; // 目录名
-  mFileName: string; // 压缩文件名
-  mProgress: TDirectoryDecompressionProgress = nil; // 进度处理
-  mParam: Integer = 0 // 附加参数
-): Integer; overload; // 返回解压后的个数
+  // 将目录压缩成文件
+  // mDirectory 目录名
+  // mFileName 压缩后的文件名
+  // 返回压缩后的大小 //如果为负数则标识错误
+  function DirectoryCompression(mDirectory: string; mFileName: string): Integer; overload;
 
-function DirectoryDecompression( // 从流中解压目录
-  mDirectory: string; // 指定目录名
-  mStream: TStream; // 压缩流
-  mProgress: TDirectoryDecompressionProgress = nil; // 进度处理
-  mParam: Integer = 0 // 附加参数
-): Integer; overload; // 返回解压的文件个数
-        
+  // 将目录压缩成流
+  //mDirectory  目录名
+  //mStream 压缩后的流
+  //返回压缩后的大小 //如果为负数则标识错误
+  function DirectoryCompression(mDirectory: string; mStream: TStream): Integer; overload;
+
+  // 从文件中解压目录
+  //mDirectory 目录名
+  //mFileName 压缩文件名
+  //mProgress 进度处理
+  //mParam  附加参数
+  //返回解压后的个数
+  function DirectoryDecompression(mDirectory: string; mFileName: string;
+    mProgress: TDirectoryDecompressionProgress = nil; mParam: Integer = 0): Integer; overload;
+
+  // 从流中解压目录
+  //mDirectory  指定目录名
+  //mStream 压缩流
+  //mProgress 进度处理
+  //mParam 附加参数
+  //返回解压的文件个数
+  function DirectoryDecompression(mDirectory: string; mStream: TStream;
+    mProgress: TDirectoryDecompressionProgress = nil; mParam: Integer = 0): Integer; overload;
+
 implementation
 
-function StrLeft( //取左边的字符串
-  mStr: string; //原字符串
-  mDelimiter: string; //分隔符
-  mIgnoreCase: Boolean = False //是否忽略大小写
-): string; //返回第一个分隔符左边的字符串
+//取左边的字符串
+//mStr 原字符串
+//mDelimiter 分隔符
+//mIgnoreCase 是否忽略大小写
+//返回第一个分隔符左边的字符串
+function StrLeft(mStr: string; mDelimiter: string; mIgnoreCase: Boolean = False): string;
 begin
   if mIgnoreCase then
     Result := Copy(mStr, 1, Pos(UpperCase(mDelimiter), UpperCase(mStr)) - 1)
   else Result := Copy(mStr, 1, Pos(mDelimiter, mStr) - 1);
 end; { StrLeft }
 
-function StrRight( //取右边的字符串
-  mStr: string; //原字符串
-  mDelimiter: string; //分隔符
-  mIgnoreCase: Boolean = False //是否忽略大小写
-): string; //返回第一个分隔符右边的字符串
+//取右边的字符串
+//mStr 原字符串
+//mDelimiter 分隔符
+//mIgnoreCase 是否忽略大小写
+//返回第一个分隔符右边的字符串
+function StrRight(mStr: string; mDelimiter: string; mIgnoreCase: Boolean = False): string;
 begin
   if mIgnoreCase then
   begin
@@ -99,12 +136,8 @@ begin
   end;
 end; { StrRight }
 
-// 获得目录的大小、文件个数、目录个数
-function DirectoryInfo(mDirectory: string; // 目录名
-          var nFileSize: Integer; // 总大小
-          var nFileCount: Integer; // 文件个数
-          var nDirectoryCount: Integer // 目录个数
-        ): Boolean; // 返回目录的大小
+function DirectoryInfo(mDirectory: string; var nFileSize: Integer;
+          var nFileCount: Integer; var nDirectoryCount: Integer): Boolean;
 var
   vSearchRec: TSearchRec;
   vFileSize: Integer; // 总大小
@@ -113,7 +146,7 @@ var
 begin
   Result := False;
   if not DirectoryExists(mDirectory) then Exit; // 目录不存在
-  nFileSize := 0; 
+  nFileSize := 0;
   nFileCount := 0;
   nDirectoryCount := 0;
   mDirectory := IncludeTrailingPathDelimiter(mDirectory);
@@ -143,10 +176,7 @@ begin
   Result := True;
 end;
 
-function FileCompression( // 将文件压缩到流中
-          mFileName: string; // 文件名
-          mStream: TStream // 目标
-        ): Integer; // 返回压缩后的大小
+function FileCompression(mFileName: string; mStream: TStream): Integer;
 var
   vFileStream: TFileStream;
   vBuffer: array[0..cBufferSize]of Char;
@@ -178,10 +208,7 @@ begin
   Result := mStream.Size - vPosition; //增量
 end;  
 
-function FileDecompression( // 从流中解压文件
-          mFileName: string; // 目标文件名
-          mStream: TStream // 来源
-        ): Integer; // 返回解压后的大小
+function FileDecompression(mFileName: string; mStream: TStream): Integer; 
 var
   vFileStream: TFileStream;
   vFileHandle: THandle;
@@ -208,10 +235,7 @@ begin
   end;
 end;  
 
-function DirectoryCompression( // 压缩目录
-  mDirectory: string; // 目录名
-  mFileName: string // 压缩后的文件名
-): Integer; overload; // 返回压缩后的大小 //如果为负数则标识错误
+function DirectoryCompression(mDirectory: string; mFileName: string): Integer; overload;
 var
   vFileStream: TFileStream;
 begin
@@ -223,10 +247,7 @@ begin
   end;
 end; { DirectoryCompression }
 
-function DirectoryCompression( // 将目录压缩成流
-  mDirectory: string; // 目录名
-  mStream: TStream // 压缩后的流
-): Integer; overload; // 返回压缩后的大小 //如果为负数则标识错误
+function DirectoryCompression(mDirectory: string; mStream: TStream): Integer; overload;
 var
   vFileInfo: TStrings;
   vFileInfoSize: Integer;
@@ -288,12 +309,8 @@ begin
   end;
 end;
 
-function DirectoryDecompression( // 从文件中解压目录
-  mDirectory: string; // 目录名
-  mFileName: string; // 压缩文件名
-  mProgress: TDirectoryDecompressionProgress = nil; // 进度处理
-  mParam: Integer = 0 // 附加参数
-): Integer; overload; // 返回解压的文件个数
+function DirectoryDecompression(mDirectory: string; mFileName: string;
+  mProgress: TDirectoryDecompressionProgress = nil; mParam: Integer = 0): Integer; overload; 
 var
   vFileStream: TFileStream;
 begin
@@ -306,12 +323,8 @@ begin
   end;
 end; { DirectoryDeompression }
 
-function DirectoryDecompression( // 从流中解压目录
-  mDirectory: string; // 指定目录名
-  mStream: TStream; // 压缩流
-  mProgress: TDirectoryDecompressionProgress = nil; // 进度处理
-  mParam: Integer = 0 // 附加参数
-): Integer; overload; // 返回解压的文件个数
+function DirectoryDecompression(mDirectory: string; mStream: TStream;
+  mProgress: TDirectoryDecompressionProgress = nil; mParam: Integer = 0): Integer; overload; 
 var
   vFileInfo: TStrings;
   vFileInfoSize: Integer;
@@ -360,6 +373,69 @@ begin
   finally
     vFileInfo.Free;
     vMemoryStream.Free;
+  end;
+end;
+
+//解压缩
+procedure UnCompressionStream(var ASrcStream:TMemoryStream);
+var
+  nTmpStream:TDecompressionStream;
+  nDestStream:TMemoryStream;
+  nBuf: array[1..512] of Byte;
+  nSrcCount: integer;
+begin
+  ASrcStream.Position := 0;
+  nDestStream := TMemoryStream.Create;
+  nTmpStream := TDecompressionStream.Create(ASrcStream);
+  try
+    repeat
+      //读入实际大小
+      nSrcCount := nTmpStream.Read(nBuf, SizeOf(nBuf));
+      if nSrcCount > 0 then
+        nDestStream.Write(nBuf, nSrcCount);
+    until (nSrcCount = 0);
+    ASrcStream.Clear;
+    ASrcStream.LoadFromStream(nDestStream);
+    ASrcStream.Position := 0;
+  finally
+    nDestStream.Clear;
+    nDestStream.Free;
+    nTmpStream.Free;
+  end;
+end;
+
+//压缩流
+procedure CompressionStream(var ASrcStream:TMemoryStream;ACompressionLevel:Integer = 2);
+var
+  nDestStream:TMemoryStream;
+  nTmpStream:TCompressionStream;
+  nCompressionLevel:TCompressionLevel;
+begin
+  ASrcStream.Position := 0;
+  nDestStream := TMemoryStream.Create;
+  try
+    //级别
+    case ACompressionLevel of
+      0:nCompressionLevel := clNone;
+      1:nCompressionLevel := clFastest;
+      2:nCompressionLevel := clDefault;
+      3:nCompressionLevel := clMax;
+    else
+        nCompressionLevel := clMax;
+    end;
+    //开始压缩
+    nTmpStream := TCompressionStream.Create(nCompressionLevel,nDestStream);
+    try
+      ASrcStream.SaveToStream(nTmpStream);
+    finally
+      nTmpStream.Free;//释放后nDestStream才会有数据
+    end;
+    ASrcStream.Clear;
+    ASrcStream.LoadFromStream(nDestStream);
+    ASrcStream.Position := 0;
+  finally
+    nDestStream.Clear;
+    nDestStream.Free;
   end;
 end;
 
