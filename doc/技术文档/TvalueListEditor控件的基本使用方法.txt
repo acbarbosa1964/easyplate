@@ -1,0 +1,116 @@
+本文简单介绍了TvalueListEditor控件的基本使用方法。可以使用该控件实现类似DELPHI中OBJECT INSPECTOR的功能。下文所有vle为一个TvalueListEditor对象。 
+1简单操作
+
+操作                                                                代码 
+添加一个属性编辑                                           InsertRow(Field,Value,Append); 
+删除一个属性                                                  DeleteRow(RowIndex); 
+统计属性个数                                                  RowCount; 
+获得激活的属性                                              INDEX Row  
+定位根据KEYSTR定位，找到后的位置保存在INDEX中 FindRow(KeyStr,Index); 
+获得KEY的内容字符串                                   skey:=vle.Keys[vle.row]; 
+修改/获得VALUE的内容字符串                        vle.Values[key]:=txtvalue.Text; 
+属性值只读                                                     Vle.ItemProp[I].ReadOnly:=True;
+
+ 
+
+2 数据绑定形式
+
+21 数据存储格式
+
+TvalueListEditor的数据实体是保存在TvalueListEditor对象的Strings成员中，Strings成员是一个Tstring类型对象，通常以TstringList实现。
+
+在TstringList中每个string必须以如下形式存储：
+
+KeyStr=ValueStr
+
+如果等号没有找到，整个string会被作为Value处理，此时Key为空。
+
+修改GRID内容后，会影响到STRINGS的数据。
+2.2 导入导出
+
+TSTRING对象可以将数据导出，函数为：
+
+SaveToFile和LoadFromFile
+　 
+3 编辑样式设置
+
+3.1 KEY字段的样式
+
+KEY字段（属性名称）是4种显示样式的组合。
+　样式 介绍 
+KeyEdit KEY列的内容也可以由用户修改 
+KeyAdd 用户可以添加一个属性
+按INS键或者在最后条按DOWN
+必须和KEYEDIT配合使用 
+KeyDelete 用户可以删除一个属性
+按DEL键（未实现） 
+KeyUnique 禁止创建重复KEY的属性
+
+vle.KeyOptions:=[keyUnique, keyEdit, keyAdd] ;
+
+建议使用keyUnique样式，禁止创建重名的属性，便于根据KEY定位到值。
+
+当创建重名属性时会raise一个Exception。
+
+3.2 项目编辑方式
+ItemProps.EditStyle属性决定了编辑的样式：普通，下拉列表，弹出窗口。
+esSimple, esEllipsis, esPickList 
+3.2.1 下拉列表
+先设置某项的ItemProps为esPickList，然后将一个TstringList对象赋值给ItemProps的PickList成员。该StringList将成为下拉列表中的选项内容。
+ItemProps[I].EditStype:=esPickList;
+ItemProps[i].PickList:=TStringList_Object;
+其中参数I可以是KEY(STR)也可以是INDEX（INTEGER）。 
+3.2.2 普通编辑方式
+
+使用Input Mask
+
+ItemProps[I].EditStype:=esSimple;
+ItemProps[i].Mask:=StrMaskCharacters;
+MASK串的相应功能可以参考HELP。 
+3.2.3 使用弹出编辑器
+
+ItemProps[i].EditStyle:=esEllipsis;
+
+用户按下[…]按钮后会触发TvalueListEditor的OnEditButtonClick事件。我们可以在此前的OnClick时间中记录选中的行号：
+
+strGlobalSelKey:=vle.Key(vle.Row);
+在事件OnEditButtonClick 中判断要打开的编辑窗口。为VLE.STRING每个STRING维护一个TSTRINGLIST，记录编辑样式和弹出窗口ID。
+
+1. 根据SWITCH判断要打开的编辑窗口
+
+2. 将激活的KEY传递给编辑窗口
+
+3. 编辑窗口完成编辑后将VLE.VALUE(KEY):=EditValue;保存返回。
+(in FormMain Unit)
+
+......
+
+with FormEdit do
+
+   begin
+
+      key:=FormMain.skey;
+
+      Caption:='edit: '+skey ;
+
+      ShowModal ;
+
+    end;
+
+......
+(in FormEditing Unit)
+
+......
+
+     formmain.vle.Values[key]:=txtvalue.Text;
+
+     self.Close;
+
+......
+　 
+4可能会需要用到的一些类型转换函数
+
+StrToBool　 
+StrToDate/StrToDateTim　 
+StrToFloat 
+StrToIntDef
