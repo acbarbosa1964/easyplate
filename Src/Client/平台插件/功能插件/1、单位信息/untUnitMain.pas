@@ -60,7 +60,7 @@ procedure TfrmEasyUnitMain.btnSaveClick(Sender: TObject);
 var
   AErrorCode: Integer;
 begin
-  inherited;
+  inherited DoSave(Sender);
   EasyRDMDisp.EasySaveRDMData('puUnit', cdsMain.Delta, 'GUID', AErrorCode);
   if AErrorCode > 0 then
     ShowMessage('Error');

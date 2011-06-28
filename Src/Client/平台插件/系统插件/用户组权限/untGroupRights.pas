@@ -69,6 +69,7 @@ type
     actDelGroup: TAction;
     EasyToolBarSeparator2: TEasyToolBarSeparator;
     actRoleUsers: TAction;
+    cdsCompany: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -83,6 +84,7 @@ type
     procedure actAddGroupUpdate(Sender: TObject);
     procedure actRoleUsersUpdate(Sender: TObject);
     procedure actRoleUsersExecute(Sender: TObject);
+    procedure EasyToolBarButton5Click(Sender: TObject);
   private
     { Private declarations }
     FGroupCompanyList,
@@ -165,6 +167,7 @@ end;
 
 procedure TfrmGroupRights.FormCreate(Sender: TObject);
 var
+  sCompanySQL,
   sGroupsSQL,
   sUsersSQL,
   sRoleResourceSQL: string;
@@ -189,7 +192,7 @@ begin
     
   FormId := '{3477B007-80AE-414E-BF67-9709FEEB3DD8}';
 
-  ASQLOLE := VarArrayCreate([0, 2], varVariant);
+  ASQLOLE := VarArrayCreate([0, 3], varVariant);
   
   sGroupsSQL := 'SELECT * FROM vw_Groups ORDER BY sCompanyID, iDeptOrder, iRoleOrder';
   ASQLOLE[0] := sGroupsSQL;
@@ -210,11 +213,15 @@ begin
   ASQLOLE[2] := sRoleResourceSQL;
 //  cdsResources.Data := EasyRDMDisp.EasyGetRDMData(sRoleResourceSQL);
 
+  sCompanySQL := 'SELECT * FROM vw_Company';
+  ASQLOLE[3] := sCompanySQL;
+
   AResult := EasyRDMDisp.EasyGetRDMDatas(ASQLOLE);
 
   cdsGroups.Data := AResult[0];
   cdsUsers.Data := AResult[1];
   cdsResources.Data := AResult[2];
+  cdsCompany.Data := AResult[3];
 end;
 
 procedure TfrmGroupRights.InitGroupsTree(AClientDataSet: TClientDataSet);
@@ -245,7 +252,7 @@ begin
   //初始化总公司
   tvUserGroups.Items.BeginUpdate;
 
-  AGroupRootNode := InitRootGroupTree(AClientDataSet);
+  AGroupRootNode := InitRootGroupTree(cdsCompany);
 
   if AGroupRootNode <> nil then
   begin
@@ -318,7 +325,7 @@ end;
 procedure TfrmGroupRights.FormShow(Sender: TObject);
 begin
   inherited;
-  InitGroupsTree(cdsGroups);
+  InitGroupsTree(cdsCompany);
   InitResourcesTree(cdsResources);
 end;
 
@@ -1019,6 +1026,12 @@ begin
   end;
   frmGroupRoleUserOperate.ShowModal;
   frmGroupRoleUserOperate.Free;
+end;
+
+procedure TfrmGroupRights.EasyToolBarButton5Click(Sender: TObject);
+begin
+  inherited;
+  Close;
 end;
 
 end.

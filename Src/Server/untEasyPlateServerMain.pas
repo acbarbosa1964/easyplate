@@ -30,8 +30,8 @@ uses
   ExtCtrls, Grids, untEasyBaseGrid, untEasyGrid, untEasyStatusBar, Registry,
   untEasyStatusBarStylers, untEasyGroupBox, Menus, untEasyMenus, IniFiles,
   untEasyMenuStylers, untEasyTrayIcon, SvcMgr, ScktComp, ScktCnst, ActnList,
-  AdvNavBar, untEasyEdit, ComCtrls, ImgList, untEasyPageControl,
-  untEasyMemo;
+  untEasyEdit, ComCtrls, ImgList, untEasyPageControl,
+  untEasyMemo, untEasyNavBarExt;
 
 const
   EApplicationName = 'EasyPlate·þÎñ³ÌÐò';
@@ -66,10 +66,10 @@ type
     RemovePortAction: TAction;
     RegisteredAction: TAction;
     AllowXML: TAction;
-    AdvNavBar1: TAdvNavBar;
-    nbpPort: TAdvNavBarPanel;
+    EasyNavBarExt1: TEasyNavBarExt;
+    nbpPort: TEasyNavBarExtPanel;
     PortList: TListBox;
-    nbpSocketSet: TAdvNavBarPanel;
+    nbpSocketSet: TEasyNavBarExtPanel;
     PortNo: TEasyLabelEdit;
     ThreadSize: TEasyLabelEdit;
     Timeout: TEasyLabelEdit;

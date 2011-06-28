@@ -44,7 +44,7 @@ var
   //加载指定包
   function LoadPkg(APkgName, AFunctionName: string; var AParamList: TStrings): Integer;
   begin
-    Result := -1;
+//    Result := -1;
     try
       if not FileExists(APkgName) then
         Result := -2

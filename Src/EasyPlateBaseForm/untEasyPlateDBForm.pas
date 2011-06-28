@@ -29,9 +29,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm, DB, DBClient, ImgList, untEasyToolBar,
   untEasyToolBarStylers, untReconcileError, ExtCtrls, untEasyGroupBox, DBGrids,
-  untEasyPageControl, untEasyDevExt, untEasyDBDevExt, Buttons, Grids, ComCtrls,
-  StdCtrls, DBCtrls, dbcgrids, Tabs, cxGrid, cxGridDBTableView, cxGridCustomTableView,
-  cxGridTableView;
+  untEasyPageControl, Buttons, Grids, ComCtrls, StdCtrls, DBCtrls, dbcgrids, Tabs;
 
 type
   //浏览 编辑(插入) 无记录 不可用状态
@@ -83,7 +81,6 @@ type
     { Private declarations }
     FMainClientDataSet: TClientDataSet;         //绑定数据的ClientDataSet
     FMainDataSource   : TDataSource;
-    FMainGrid         : TcxGrid;
     FMainSQL          : string;                 //窗体初始化时执行的SQL语句
     FDeleteMark: String;                    //删除标志
 
@@ -110,8 +107,8 @@ type
     procedure ReadError(Reader: TReader; const Message: string; var Handled: Boolean);
     function GetMainDataSource: TDataSource;
     procedure SetMainDataSource(const Value: TDataSource);
-    function GetMainGrid: TcxGrid;
-    procedure SetMainGrid(const Value: TcxGrid);
+//    function GetMainGrid: TcxGrid;
+//    procedure SetMainGrid(const Value: TcxGrid);
   protected
     { protected declarations }
     //改变按钮输入状态的过程
@@ -190,7 +187,7 @@ type
     //初始化数据集信息
     property MainClientDataSet: TClientDataSet read GetMainClientDataSet write SetClientDataSet;
     property MainDataSource: TDataSource read GetMainDataSource write SetMainDataSource;
-    property MainGrid: TcxGrid read GetMainGrid write SetMainGrid;
+//    property MainGrid: TcxGrid read GetMainGrid write SetMainGrid;
     property MainSQL: string read GetMainSQL write SetMainSQL;
   end;
 
@@ -202,7 +199,7 @@ implementation
 {$R *.dfm}
 
 uses
-   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, cxDBEdit, TypInfo,
+   untEasyUtilMethod, untEasyDBConnection, untEasyBaseConst, TypInfo,
    untEasyIODFM, untEasyStdCmpsReg, untEasyPlateBaseForm;
 
 { TfrmEasyPlateDBForm }
@@ -945,7 +942,8 @@ begin
         begin
           Result := True;
           EasyHint('【' + ACaption +'】' + EasyNotNullField_Hint);
-          Break;
+          Exit;
+//          Break;
         end;
       end;
     end;
@@ -970,7 +968,8 @@ begin
           begin
             Result := True;
             EasyHint('【' + ACaption +'】' + EasyNotNullField_Hint);
-            Break;
+            Exit;
+//            Break;
           end;
         end;
       end;
@@ -1168,15 +1167,15 @@ begin
   FMainDataSource := Value;
 end;
 
-function TfrmEasyPlateDBForm.GetMainGrid: TcxGrid;
-begin
-  Result := FMainGrid;
-end;
-
-procedure TfrmEasyPlateDBForm.SetMainGrid(const Value: TcxGrid);
-begin
-  FMainGrid := Value;
-end;
+//function TfrmEasyPlateDBForm.GetMainGrid: TcxGrid;
+//begin
+//  Result := FMainGrid;
+//end;
+//
+//procedure TfrmEasyPlateDBForm.SetMainGrid(const Value: TcxGrid);
+//begin
+//  FMainGrid := Value;
+//end;
 
 procedure TfrmEasyPlateDBForm.dsMainStateChange(Sender: TObject);
 begin

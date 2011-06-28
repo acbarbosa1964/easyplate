@@ -31,15 +31,11 @@ requires
   dsnap,
   vclx,
   indy,
-  adortl,
   vcljpg,
   vcldb,
   pkEasyStardard,
   pkEasyAdditional,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7;
+  adortl;
 
 contains
   untEasyUtilDLL in 'untEasyUtilDLL.pas',

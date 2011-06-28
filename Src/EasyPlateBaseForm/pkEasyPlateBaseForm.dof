@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=0
 Release=0
-Build=276
+Build=279
 Debug=0
 PreRelease=0
 Special=0
@@ -126,7 +126,7 @@ CodePage=936
 [Version Info Keys]
 CompanyName=一轩软件研发有限公司
 FileDescription=EasyPlate Base Forms
-FileVersion=1.0.0.276
+FileVersion=1.0.0.279
 InternalName=
 LegalCopyright=一轩软研
 LegalTrademarks=
@@ -134,31 +134,16 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-LastCompiledTime=2011-03-27 10:53:48
-[Excluded Packages]
-c:\program files\borland\delphi7\Projects\Bpl\pkGraph.bpl=(untitled)
-C:\Program Files\Borland\Delphi7\Projects\Bpl\pkEasyUtilRWConfig.bpl=(untitled)
-C:\Program Files\RemObjects Software\Everwood\Bin\RemObjects_Everwood_D7.bpl=RemObjects Everwood for Delphi
-c:\program files\borland\delphi7\Projects\Bpl\bs.bpl=(untitled)
-D:\Program Files\Raize\RC5\Bin\RaizeComponentsVcl_Design70.bpl=Raize Components 5.1.2
-D:\Program Files\Raize\RC5\Bin\RaizeComponentsVclDB_Design70.bpl=Raize Components 5.1.2 (Data-Aware)
-d:\Program Files\APP2001\Developer Express Inc\ExpressWeb.Framework.v1.7.10\ExpressWeb Framework\D7\dclcxWebTeeChartD7.bpl=WebTeeChart for EWF by Developer Express Inc.
-C:\Program Files\Borland\Delphi7\BIN\dxPSTeeChartD7.bpl=ExpressPrinting System ReportLink for TeeChart by Developer Express Inc.
-C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System ReportLink for DBTeeChart by Developer Express Inc.
+LastCompiledTime=2011-04-03 8:51:30
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlUnitOutputDirectory]
 Count=1
 Item0=$(EPP)\Src\dcu
-[HistoryLists\hlOutputDirectorry]
-Count=2
-Item0=$(EPP)\binServer
-Item1=$(EPP)\bin
 [HistoryLists\hlBPLOutput]
 Count=1
 Item0=$(EPP)\bin
 [HistoryLists\hlDCPOutput]
-Count=2
-Item0=$(EPP)\Src\dcu
-Item1=$(EPP)\Src\dcp
+Count=1
+Item0=$(EPP)\Src\dcp

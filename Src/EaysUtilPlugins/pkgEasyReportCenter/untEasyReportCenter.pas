@@ -30,6 +30,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBBaseForm;
 
+  //插件导出函数
+  function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
 type
   TfrmEasyReportCenter = class(TfrmEasyPlateDBBaseForm)
   private
@@ -44,5 +46,16 @@ var
 implementation
 
 {$R *.dfm}
+
+//引出函数实现
+function ShowBplForm(AParamList: TStrings): TForm;
+begin
+  frmEasyReportCenter := TfrmEasyReportCenter.Create(Application);
+  if frmEasyReportCenter.FormStyle <> fsMDIChild then
+    frmEasyReportCenter.FormStyle := fsMDIChild;
+  if frmEasyReportCenter.WindowState <> wsMaximized then
+    frmEasyReportCenter.WindowState := wsMaximized;
+  Result := frmEasyReportCenter;
+end;
 
 end.

@@ -52,6 +52,7 @@ type
     FUpdateMode   : TEasyUpdateMode;
     FTag          : Integer;
     FFlag         : string;
+    FData         : Pointer;
     function GetClientDataSet: TClientDataSet;
     function GetEasyUpdateMode: TEasyUpdateMode;
     function GetFlag: string;
@@ -66,9 +67,12 @@ type
     procedure SetKeyField(const Value: string);
     procedure SetRecordList(const Value: TStrings);
     procedure SetTag(const Value: Integer);
+    function GetData: Pointer;
+    procedure SetData(const Value: Pointer);
   public
     constructor Create; virtual;
     destructor Destroy; override;
+    procedure GenerateListByRecord(var AClientDataSet: TClientDataSet); virtual;
     property GUID: string read GetGUID write SetGUID;
     property ClientDataSet: TClientDataSet read GetClientDataSet write SetClientDataSet;
     property RecordList: TStrings read GetRecordList write SetRecordList;
@@ -76,6 +80,7 @@ type
     property UpdateMode: TEasyUpdateMode read GetEasyUpdateMode write SetEasyUpdateMode;
     property Tag: Integer read GetTag write SetTag;
     property Flag: string read GetFlag write SetFlag;
+    property Data: Pointer read GetData write SetData;
   end;
 
 implementation
@@ -91,12 +96,27 @@ end;
 destructor TEasyObject.Destroy;
 begin
   FRecordList.Free;
+  if FData <> nil then
+    TObject(FData).Free;
   inherited;
+end;
+
+procedure TEasyObject.GenerateListByRecord(var AClientDataSet: TClientDataSet);
+var
+  J: Integer;
+begin
+  for J := 0 to AClientDataSet.FieldCount - 1 do
+    FRecordList.Add(AClientDataSet.Fields[J].FieldName + '=' + AClientDataSet.Fields[J].Value);
 end;
 
 function TEasyObject.GetClientDataSet: TClientDataSet;
 begin
   Result := FClientDataSet;
+end;
+
+function TEasyObject.GetData: Pointer;
+begin
+  Result := FData;
 end;
 
 function TEasyObject.GetEasyUpdateMode: TEasyUpdateMode;
@@ -132,6 +152,11 @@ end;
 procedure TEasyObject.SetClientDataSet(const Value: TClientDataSet);
 begin
   FClientDataSet := Value;
+end;
+
+procedure TEasyObject.SetData(const Value: Pointer);
+begin
+  FData := Value;
 end;
 
 procedure TEasyObject.SetEasyUpdateMode(const Value: TEasyUpdateMode);

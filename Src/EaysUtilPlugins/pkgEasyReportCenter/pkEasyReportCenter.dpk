@@ -26,6 +26,30 @@ package pkEasyReportCenter;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  vcl,
+  vcljpg,
+  dbrtl,
+  dsnap,
+  vclx,
+  vcldb,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  cxEditorsVCLD7,
+  cxDataD7,
+  cxExtEditorsVCLD7,
+  cxGridVCLD7,
+  cxPageControlVCLD7,
+  indy,
+  dsnapcon,
+  adortl,
+  pkEasyStardard,
+  pkEasyAdditional,
+  pkEasyUtilFunction,
+  EasyDevExt,
+  pkEasyPlateBaseForm;
+
+contains
+  untEasyReportCenter in 'untEasyReportCenter.pas' {frmEasyReportCenter};
 
 end.

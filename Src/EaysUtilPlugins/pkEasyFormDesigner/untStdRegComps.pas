@@ -38,7 +38,8 @@ uses
   Classes, Graphics, Controls, Forms, Dialogs, ActnList, ComCtrls,
   Menus, StdCtrls, ImgList, Buttons, ExtCtrls, Tabs, ExtDlgs, Mask,
   Grids, CheckLst, AppEvnts, MPlayer, OleCtnrs,
-  StdDsnEditors, DesignEditors, DesignIntf, untEasyDevExt, untEasyDBDevExt;
+  StdDsnEditors, DesignEditors, DesignIntf, untEasyDevExt, untEasyDBDevExt,
+  untEasyGrid, untEasyDBGrid;
 
 procedure StandardRegister;
 begin
@@ -50,7 +51,7 @@ begin
     TEasyDevCurrencyEdit, TEasyDevBlobEdit, TEasyDevMRUEdit, TEasyDevPopupEdit,
     TEasyDevListBox, TEasyDevCheckListBox, TEasyDevRichEdit, TEasyDevLabel,
     TEasyDevImage, TEasyDevCheckBox, TEasyDevCheckGroup, TEasyDevRadioButton,
-    TEasyDevRadioGroup]);
+    TEasyDevRadioGroup, TEasyStringGrid]);
   RegisterComponents('Easy DB', [TEasyDevDBTextEdit, TEasyDevDBMaskEdit, TEasyDevDBMemo,
     TEasyDevDBDateEdit, TEasyDevDBTimeEdit, TEasyDevDBButtonEdit, TEasyDevDBComboBox,
     TEasyDevDBImageComboBox, TEasyDevDBLookupComboBox, TEasyDevDBLookupComboBoxExt,
@@ -59,7 +60,7 @@ begin
     TEasyDevDBCurrencyEdit, TEasyDevDBBlobEdit, TEasyDevDBMRUEdit, TEasyDevDBPopupEdit,
     TEasyDevDBListBox, TEasyDevDBCheckListBox, TEasyDevDBRichEdit, TEasyDevDBLabel,
     TEasyDevDBImage, TEasyDevDBCheckBox, TEasyDevDBCheckGroup, TEasyDevDBRadioButton,
-    TEasyDevDBRadioGroup{, TEasyDevSQL}]);
+    TEasyDevDBRadioGroup{, TEasyDevSQL}, TEasyDBGrid]);
 
 //±ê×¼¿Ø¼þ
   RegisterComponents('Standard', [TMainMenu, TPopupMenu, TLabel, TEdit,

@@ -21,7 +21,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
   object dkpMain: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 804
+    Width = 796
     Height = 42
     MinimumSize = 3
     LockHeight = False
@@ -32,7 +32,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
     object tlbMain: TEasyToolBar
       Left = 3
       Top = 1
-      Width = 798
+      Width = 790
       Height = 40
       AllowFloating = True
       AutoDockOnClose = True
@@ -615,8 +615,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
   end
   object stbMain: TEasyStatusBar
     Left = 0
-    Top = 371
-    Width = 804
+    Top = 359
+    Width = 796
     Height = 19
     AnchorHint = False
     Panels = <
@@ -724,25 +724,25 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
   object EasyPanel1: TEasyPanel
     Left = 0
     Top = 42
-    Width = 804
-    Height = 329
+    Width = 796
+    Height = 317
     Align = alClient
     BorderOuter = fsNone
     TabOrder = 4
     object Splitter1: TSplitter
       Left = 250
       Top = 0
-      Height = 329
+      Height = 317
     end
-    object AdvNavBar1: TAdvNavBar
+    object EasyNavBarExt1: TEasyNavBarExt
       Left = 0
       Top = 0
       Width = 250
-      Height = 329
+      Height = 317
       Align = alLeft
       ActiveColor = 9758459
       ActiveColorTo = 1414638
-      ActiveTabIndex = 0
+      ActiveTabIndex = 1
       BorderColor = 9841920
       CaptionColor = 14059353
       CaptionColorTo = 9648131
@@ -780,11 +780,33 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
       SplitterColor = 14059353
       SplitterColorTo = 9841920
       Version = '1.6.0.1'
-      object nbpSocketSet: TAdvNavBarPanel
+      object nbpPort: TEasyNavBarExtPanel
         Left = 1
         Top = 27
         Width = 248
-        Height = 199
+        Height = 187
+        Caption = 'Socket'#31471#21475#35774#32622
+        Color = clWhite
+        PanelIndex = 0
+        Sections = <>
+        object PortList: TListBox
+          Left = 0
+          Top = 0
+          Width = 248
+          Height = 187
+          Align = alClient
+          Ctl3D = False
+          ItemHeight = 13
+          ParentCtl3D = False
+          TabOrder = 0
+          OnClick = PortListClick
+        end
+      end
+      object nbpSocketSet: TEasyNavBarExtPanel
+        Left = 1
+        Top = 27
+        Width = 248
+        Height = 187
         Caption = #36890#20449#35774#32622
         Color = clWhite
         PanelIndex = 1
@@ -914,34 +936,12 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
           TabOrder = 5
         end
       end
-      object nbpPort: TAdvNavBarPanel
-        Left = 1
-        Top = 27
-        Width = 248
-        Height = 199
-        Caption = 'Socket'#31471#21475#35774#32622
-        Color = clWhite
-        PanelIndex = 0
-        Sections = <>
-        object PortList: TListBox
-          Left = 0
-          Top = 0
-          Width = 248
-          Height = 199
-          Align = alClient
-          Ctl3D = False
-          ItemHeight = 13
-          ParentCtl3D = False
-          TabOrder = 0
-          OnClick = PortListClick
-        end
-      end
     end
     object pgcServerMain: TEasyPageControl
       Left = 253
       Top = 0
-      Width = 551
-      Height = 329
+      Width = 543
+      Height = 317
       ActivePage = tbsConnHost
       Align = alClient
       TabIndex = 0
@@ -953,8 +953,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         object ConnectionList: TListView
           Left = 0
           Top = 0
-          Width = 549
-          Height = 308
+          Width = 541
+          Height = 296
           Align = alClient
           Columns = <
             item
@@ -984,8 +984,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         object mmExecLog: TEasyMemo
           Left = 0
           Top = 0
-          Width = 549
-          Height = 308
+          Width = 541
+          Height = 296
           EditLabel.Width = 6
           EditLabel.Height = 13
           EditLabel.Caption = '  '
@@ -999,8 +999,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
           TabOrder = 0
           OnChange = mmExecLogChange
           DesignSize = (
-            549
-            308)
+            541
+            296)
         end
       end
       object tbsErrorLog: TEasyTabSheet
@@ -1008,8 +1008,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         object mmErrorLog: TEasyMemo
           Left = 0
           Top = 0
-          Width = 549
-          Height = 308
+          Width = 541
+          Height = 296
           EditLabel.Width = 6
           EditLabel.Height = 13
           EditLabel.Caption = '  '
@@ -1023,8 +1023,8 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
           TabOrder = 0
           OnChange = mmErrorLogChange
           DesignSize = (
-            549
-            308)
+            541
+            296)
         end
       end
     end

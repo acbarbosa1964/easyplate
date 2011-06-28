@@ -56,7 +56,8 @@ requires
   pkEasyUtilFunction,
   pkEasyUtilRWConfig,
   ecComnD7,
-  SyntEdit7;
+  SyntEdit7,
+  pkEasyGrid;
 
 contains
   untEasyFormDesigner in 'untEasyFormDesigner.pas' {frmEasyFormDesigner},

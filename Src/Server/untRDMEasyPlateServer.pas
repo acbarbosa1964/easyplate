@@ -434,7 +434,7 @@ initialization
   TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
     Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
   //如果是Vista或Win7需要执行此句，在此全部执行
-//  ComServer.UpdateRegistry(True);//加入此名，可正常注入系统
+  ComServer.UpdateRegistry(True);//加入此名，可正常注入系统
 
 {initialization
   RDMFactory := TComponentFactory.Create(ComServer, TRDMEasyPlateServer,

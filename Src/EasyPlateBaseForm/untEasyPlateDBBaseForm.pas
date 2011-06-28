@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage,
-  untEasyPlateBaseForm, untEasyDBDevExt, EasyPlateServer_TLB;
+  untEasyPlateBaseForm, EasyPlateServer_TLB;
 
 type
   TfrmEasyPlateDBBaseForm = class(TfrmEasyPlateBaseForm)

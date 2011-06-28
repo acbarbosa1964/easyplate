@@ -25,27 +25,24 @@ package pkEasyDBConnection;
 {$IMPLICITBUILD ON}
 
 requires
+  vcljpg,
   vcl,
   rtl,
   dbrtl,
   dsnap,
-  dsnapcon,
-  adortl,
-  pkEasyUtilRWConfig,
-  vcljpg,
   vclx,
-  vcldb,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7,
   indy,
+  dsnapcon,
+  vcldb,
+  adortl,
   pkEasyStardard,
   pkEasyAdditional,
   pkEasyUtilFunction;
 
 contains
   untEasyDBConnection in 'untEasyDBConnection.pas' {DMEasyDBConnection: TDataModule},
-  EasyPlateServer_TLB in '..\..\Server\EasyPlateServer_TLB.pas';
+  EasyPlateServer_TLB in '..\..\Server\EasyPlateServer_TLB.pas',
+  untEasyUtilRWIni in 'untEasyUtilRWIni.pas',
+  untEasyUtilStream in 'untEasyUtilStream.pas';
 
 end.

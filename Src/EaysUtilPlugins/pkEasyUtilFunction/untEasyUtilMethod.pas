@@ -280,7 +280,7 @@ const
 
 implementation
 
-uses untEasyUtilConst, TypInfo, cxDBEdit, Printers;
+uses untEasyUtilConst, TypInfo, Printers;
 
 function GenerateGUID: string;
 var
@@ -1077,10 +1077,10 @@ end;
 function GetDBDataBindingDataSet(AClass: TObject): TDataSet;
 var
   PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
   Result := nil;
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { PropInfoPtr := GetPropInfo(AClass,'DataBinding');
   if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
@@ -1089,17 +1089,17 @@ begin
       BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
       Result := BoundLabel.DataSource.DataSet;
     end;
-  end;
+  end; }
 end;
 
 //获取绑定数据属性
 function GetEditDataSource(AClass: TObject): TDataSource;
-var
-  PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//var
+//  PropInfoPtr: PPropInfo;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
   Result := nil;
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { PropInfoPtr := GetPropInfo(AClass,'DataBinding');
   if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
@@ -1108,17 +1108,17 @@ begin
       BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
       Result := BoundLabel.DataSource;
     end;
-  end;
+  end; }
 end;
 
 //设置绑定数据属性
 procedure SetEditDataSource(AClass: TObject; ADataSource: TDataSource);
-var
-  PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//var
+//  PropInfoPtr: PPropInfo;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
-  if PropInfoPtr=nil then exit;
+//  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
     if GetObjectPropClass(AClass, PropInfoPtr) = TcxDBTextEditDataBinding then
@@ -1126,17 +1126,17 @@ begin
       BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
       BoundLabel.DataSource := ADataSource;
     end;
-  end;
+  end; }
 end;
 
 //获取绑定数据属性   数据字段
 function GetEditDataField(AClass: TObject): string;
-var
-  PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//var
+//  PropInfoPtr: PPropInfo;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
   Result := '';
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { PropInfoPtr := GetPropInfo(AClass,'DataBinding');
   if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
@@ -1145,16 +1145,16 @@ begin
       BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
       Result := BoundLabel.DataField;
     end;
-  end;
+  end;   }
 end;
 
 //设置绑定数据属性   数据字段
 procedure SetEditDataField(AClass: TObject; AFieldName: string);
-var
-  PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//var
+//  PropInfoPtr: PPropInfo;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { PropInfoPtr := GetPropInfo(AClass,'DataBinding');
   if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
@@ -1163,17 +1163,17 @@ begin
       BoundLabel := TcxDBTextEditDataBinding(GetObjectProp(AClass, PropInfoPtr));
       BoundLabel.DataField := AFieldName;
     end;
-  end;
+  end;}
 end;
 
 //获取控件的绑定数据字段
 function GetDBDataBinding(AClass: TObject; var ABondLabelCaption: string): string;
-var
-  PropInfoPtr: PPropInfo;
-  BoundLabel : TcxDBTextEditDataBinding;
+//var
+//  PropInfoPtr: PPropInfo;
+//  BoundLabel : TcxDBTextEditDataBinding;
 begin
   Result := '';
-  PropInfoPtr := GetPropInfo(AClass,'DataBinding');
+ { PropInfoPtr := GetPropInfo(AClass,'DataBinding');
   if PropInfoPtr=nil then exit;
   if PropInfoPtr^.PropType^.Kind = tkClass then
   begin
@@ -1183,7 +1183,7 @@ begin
       ABondLabelCaption := GetEditLabelCaption(AClass);
       Result := BoundLabel.DataField;
     end;
-  end;
+  end;}
 end;
 
 //获取指定控件BondLabel的标题

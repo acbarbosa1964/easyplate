@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, DBCtrls, Grids, DBGrids, Buttons, StdCtrls, DB,
-  ComCtrls,dbcgrids, Tabs, untEasyDevExt, untEasyDBDevExt;
+  ComCtrls,dbcgrids, Tabs;
 
 implementation
 
@@ -45,7 +45,7 @@ begin
 
   RegisterClass(TDataSource);
 
-  RegisterClass(TEasyDevTextEdit);
+{  RegisterClass(TEasyDevTextEdit);
   RegisterClass(TEasyDevMaskEdit);
   RegisterClass(TEasyDevMemo);
   RegisterClass(TEasyDevDateEdit);
@@ -105,7 +105,7 @@ begin
   RegisterClass(TEasyDevDBCheckBox);
   RegisterClass(TEasyDevDBCheckGroup);
   RegisterClass(TEasyDevDBRadioButton);
-  RegisterClass(TEasyDevDBRadioGroup);
+  RegisterClass(TEasyDevDBRadioGroup);   }
 end;
 
 procedure UnRegisterAllClasses;
@@ -144,7 +144,7 @@ begin
 
   UnRegisterClass(TDataSource);
 
-  UnRegisterClass(TEasyDevTextEdit);
+{  UnRegisterClass(TEasyDevTextEdit);
   UnRegisterClass(TEasyDevMaskEdit);
   UnRegisterClass(TEasyDevMemo);
   UnRegisterClass(TEasyDevDateEdit);
@@ -204,7 +204,7 @@ begin
   UnRegisterClass(TEasyDevDBCheckBox);
   UnRegisterClass(TEasyDevDBCheckGroup);
   UnRegisterClass(TEasyDevDBRadioButton);
-  UnRegisterClass(TEasyDevDBRadioGroup);
+  UnRegisterClass(TEasyDevDBRadioGroup); }
 end;
 
 initialization

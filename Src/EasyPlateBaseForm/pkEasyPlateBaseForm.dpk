@@ -34,24 +34,13 @@ requires
   adortl,
   pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilRWConfig,
   pkEasyDBConnection,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7,
-  cxExtEditorsVCLD7,
-  cxPageControlVCLD7,
-  cxGridVCLD7,
-  EasyDevExt,
   indy,
   pkEasyUtilFunction,
   designide,
   vclactnband,
   vclx,
-  pkHhfDB,
-  vcldb,
-  cxExportVCLD7;
+  vcldb;
 
 contains
   untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},

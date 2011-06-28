@@ -12,7 +12,7 @@ unit EasyPlateServer_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2011-03-27 12:19:24 from Type Library described below.
+// File generated on 2011-05-07 16:56:44 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: E:\MyProject\E1Dev\Src\Server\EasyPlateServer.tlb (1)

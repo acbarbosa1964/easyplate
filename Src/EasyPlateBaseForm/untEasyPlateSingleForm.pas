@@ -5,22 +5,14 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, untEasyPlateDBForm, DB, DBClient, ImgList, untEasyToolBar,
-  untEasyToolBarStylers, untEasyPageControl, ExtCtrls, untEasyGroupBox,
-  cxStyles, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
-  cxEdit, cxDBData, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
-  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid;
+  untEasyToolBarStylers, untEasyPageControl, ExtCtrls, untEasyGroupBox;
 
 type
   TEasyPlateSingleForm = class(TfrmEasyPlateDBForm)
     Splitter1: TSplitter;
     pnlClient: TEasyPanel;
-    grdSingleMain: TcxGrid;
-    grdSingleMainDBTableView1: TcxGridDBTableView;
-    grdSingleMainLevel1: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
-    procedure grdSingleMainDBTableView1CanFocusRecord(
-      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-      var AAllow: Boolean);
+    procedure btnSaveClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,16 +29,12 @@ implementation
 procedure TEasyPlateSingleForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  MainGrid := grdSingleMain;
+//  MainGrid := grdSingleMain;
 end;
 
-procedure TEasyPlateSingleForm.grdSingleMainDBTableView1CanFocusRecord(
-  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-  var AAllow: Boolean);
+procedure TEasyPlateSingleForm.btnSaveClick(Sender: TObject);
 begin
-  inherited;
-  if (EasyDataState = edsInsert) or (EasyDataState = edsEdit) then
-    AAllow := False;
+  inherited  DoSave(Sender); 
 end;
 
 end.

@@ -3,13 +3,12 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnKeyUp = FormKeyUp
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object dkpDBForm: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 862
+    Width = 854
     Height = 28
     MinimumSize = 3
     LockHeight = False
@@ -20,7 +19,7 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
     object tlbDBForm: TEasyToolBar
       Left = 3
       Top = 1
-      Width = 856
+      Width = 848
       Height = 26
       AllowFloating = True
       AutoDockOnClose = True
@@ -262,7 +261,7 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
   object pnlContainer: TEasyPanel
     Left = 0
     Top = 28
-    Width = 862
+    Width = 854
     Height = 245
     Align = alTop
     BorderOuter = fsGroove
@@ -270,7 +269,7 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
     object pgcContainer: TEasyPageControl
       Left = 2
       Top = 2
-      Width = 858
+      Width = 850
       Height = 241
       Align = alClient
       TabOrder = 0

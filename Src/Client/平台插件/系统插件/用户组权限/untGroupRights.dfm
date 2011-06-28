@@ -162,6 +162,7 @@ inherited frmGroupRights: TfrmGroupRights
             ParentFont = False
             Position = daTop
             ShowCaption = True
+            OnClick = EasyToolBarButton5Click
           end
           object EasyToolBarSeparator2: TEasyToolBarSeparator
             Left = 201
@@ -1257,5 +1258,11 @@ inherited frmGroupRights: TfrmGroupRights
       OnExecute = actRoleUsersExecute
       OnUpdate = actRoleUsersUpdate
     end
+  end
+  object cdsCompany: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 274
+    Top = 62
   end
 end

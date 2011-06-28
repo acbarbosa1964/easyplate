@@ -9,11 +9,12 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkEasyUtilRWConfig.bpl \
-  pkgEasyPlateManager.bpl pkEasyPlateBaseForm.bpl pkEasyUtilClasses.bpl \
-  pkEasyUtilFunction.bpl pkgGroupRights.bpl EasyPlateServer.exe pkEasyUnit.bpl \
-  Project1.exe pkEasyFormDesigner.bpl pkEasySQLEditor.bpl pkEasyconnDB.bpl \
-  EasyconnDB.exe EasyconnDB_Server.exe pkEasyAboutUS.bpl
+PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkgEasyPlateManager.bpl \
+  pkEasyPlateBaseForm.bpl pkEasyUtilClasses.bpl pkEasyUtilFunction.bpl \
+  pkgGroupRights.bpl EasyPlateServer.exe pkEasyUnit.bpl pkEasyFormDesigner.bpl \
+  pkEasySQLEditor.bpl pkEasyconnDB.bpl EasyconnDB.exe EasyconnDB_Server.exe \
+  pkEasyAboutUS.bpl pkEasyReportCenter.bpl pkEasyDBTool.bpl EasyMail.exe \
+  pkEasyGrid.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -22,9 +23,6 @@ EasyPlateMain.exe: Client\EasyPlateMain\EasyPlateMain.dpr
   $(DCC)
 
 pkEasyDBConnection.bpl: EaysUtilPlugins\pkEasyDBConnection\pkEasyDBConnection.dpk
-  $(DCC)
-
-pkEasyUtilRWConfig.bpl: EaysUtilPlugins\pkEasyUtilRWConfig\pkEasyUtilRWConfig.dpk
   $(DCC)
 
 pkgEasyPlateManager.bpl: Client\平台插件\系统插件\系统平台管理\pkgEasyPlateManager.dpk
@@ -48,9 +46,6 @@ EasyPlateServer.exe: Server\EasyPlateServer.dpr
 pkEasyUnit.bpl: Client\平台插件\功能插件\1、单位信息\pkEasyUnit.dpk
   $(DCC)
 
-Project1.exe: C:\TESTS\Project1.dpr
-  $(DCC)
-
 pkEasyFormDesigner.bpl: EaysUtilPlugins\pkEasyFormDesigner\pkEasyFormDesigner.dpk
   $(DCC)
 
@@ -67,6 +62,18 @@ EasyconnDB.exe: EaysUtilPlugins\pkEasyconnDB\EasyconnDB.dpr
   $(DCC)
 
 EasyconnDB_Server.exe: EaysUtilPlugins\pkEasyconnDB\EasyconnDB_Server.dpr
+  $(DCC)
+
+pkEasyReportCenter.bpl: EaysUtilPlugins\pkgEasyReportCenter\pkEasyReportCenter.dpk
+  $(DCC)
+
+pkEasyDBTool.bpl: EaysUtilPlugins\pkEasyDBTool\pkEasyDBTool.dpk
+  $(DCC)
+
+EasyMail.exe: ..\..\EasyMail\EasyMail.dpr
+  $(DCC)
+
+pkEasyGrid.bpl: ..\..\EasyControls2.0\EasyGrid\pkEasyGrid.dpk
   $(DCC)
 
 
