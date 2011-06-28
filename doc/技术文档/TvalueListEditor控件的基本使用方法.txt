@@ -114,3 +114,20 @@ StrToBool　
 StrToDate/StrToDateTim　 
 StrToFloat 
 StrToIntDef
+
+.请问在ValueListEditor里，如何知道我选择了哪一行吗？？
+答：用procedure TControlPanel.ParamEditorSelectCell(Sender: TObject; ACol,
+ARow: Integer; var CanSelect: Boolean);事件
+注：ParamEditor是我用组件的名字
+2.ValueListEditor，他竟然没有Clear方法！
+答：用Strings.Clear;
+3.ValueListeditor真是垃圾,用ValueListEditor1.Strings.Clear;后ValueListeditor的RowCount=2 一行是标题,另一行是空行 
+答：后面用InsertRow('测量时间', '0', True);应该没有问题的
+4.比如某一行只有下拉框选项而不能直接输入 
+答：用        ItemProps['前置放大'].PickList.Add('ON');
+        ItemProps['前置放大'].PickList.Add('OFF');
+或        ItemProps['前置放大'].PickList:=sSpan;//sSpan : TStrings;
+5.以及Mask的用法 如何使输入显示*号
+答：用事件procedure TControlPanel.ParamEditorKeyPress(Sender: TObject; var Key: Char);
+和procedure TControlPanel.ParamEditorStringsChange(Sender: TObject);
+控制。
