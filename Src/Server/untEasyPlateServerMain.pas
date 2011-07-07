@@ -36,7 +36,7 @@ uses
 const
   EApplicationName = 'EasyPlate服务程序';
   EAlreadyRunning = '系统中已存在运行的服务程序实例,请不要重复运行!';
-  
+  ESQueryDisconnect = '断开客户端连接,将导致客户端异常退出,是否现在断开?';
 type
   TfrmEasyPlateServerMain = class(TForm)
     dkpMain: TEasyDockPanel;
@@ -89,6 +89,9 @@ type
     mmExecLog: TEasyMemo;
     mmErrorLog: TEasyMemo;
     EasyToolBarButton3: TEasyToolBarButton;
+    EasyToolBarSeparator1: TEasyToolBarSeparator;
+    EasyToolBarSeparator2: TEasyToolBarSeparator;
+    EasyToolBarButton4: TEasyToolBarButton;
     procedure FormCreate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure ApplyActionExecute(Sender: TObject);
@@ -106,7 +109,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure mmErrorLogChange(Sender: TObject);
     procedure mmExecLogChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure EasyToolBarButton3Click(Sender: TObject);
+    procedure EasyToolBarButton4Click(Sender: TObject);
   private
     { Private declarations }
     FFromService: Boolean;
@@ -137,7 +141,10 @@ type
     procedure AddClient(Thread: TServerClientThread);
     procedure RemoveClient(Thread: TServerClientThread);
     procedure ClearModifications;
+    //创建数据模块
     procedure RDMServerCreated(var msg: TMessage); message WM_USER + 99;
+    //释放数据模块
+    procedure RDMServerDestroy(var msg: TMessage); message WM_USER + 100;
   end;
 
   TSocketService = class(TService)
@@ -351,13 +358,15 @@ var
   Item: TListItem;
 begin
   Item := ConnectionList.FindData(0, Thread, True, False);
-  if Assigned(Item) then Item.Free;
+  if Assigned(Item) then
+  begin
+    //增加客户端时输出日志信息
+    frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 断开连接!', [
+                Item.SubItems[2], Item.SubItems[1],
+                Item.SubItems[0], Item.Caption]));
+    Item.Free;
+  end;
   UpdateStatus;
-  //增加客户端时输出日志信息
-  frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 断开连接!', [
-              DateTimeToStr(TSocketDispatcherThread(Thread).LastActivity),
-              Thread.ClientSocket.RemoteHost,
-              Thread.ClientSocket.RemoteAddress, IntToStr(Thread.ClientSocket.LocalPort)]));
 end;
 
 procedure TfrmEasyPlateServerMain.WriteSettings;
@@ -400,6 +409,7 @@ begin
   ServerType := stThreadBlocking;
   //获取线程事件绑定
   OnGetThread := GetThread;
+  frmEasyPlateServerMain.mmExecLog.Lines.Add('GetThread');
 end;
 
 destructor TSocketDispatcher.Destroy;
@@ -479,6 +489,22 @@ end;
 procedure TSocketDispatcherThread.AddClient;
 begin
   frmEasyPlateServerMain.AddClient(Self);
+  if frmEasyPlateServerMain.ConnectionList.Items.Count > 2 then
+  begin
+    frmEasyPlateServerMain.mmExecLog.Lines.Add('已超出最大有效客户端连接数!');
+    //要存在开打的端口
+    with TServerSocket(frmEasyPlateServerMain.PortList.Items.Objects[0]).Socket do
+    begin
+      Lock;
+      try
+        with frmEasyPlateServerMain.ConnectionList.Items[frmEasyPlateServerMain.ConnectionList.Items.Count - 1] do
+          TServerClientThread(Data).ClientSocket.Close;
+      finally
+        Unlock;
+      end;
+    end;
+    frmEasyPlateServerMain.RemoveClient(Self);
+  end;
 end;
 
 procedure TSocketDispatcherThread.ClientExecute;
@@ -708,7 +734,7 @@ procedure TfrmEasyPlateServerMain.DisconnectActionExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  if MessageDlg(SQueryDisconnect, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg(ESQueryDisconnect, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     Exit;
   with SelectedSocket.Socket do
   begin
@@ -971,9 +997,19 @@ begin
   end;
 end;
 
-procedure TfrmEasyPlateServerMain.Button1Click(Sender: TObject);
+procedure TfrmEasyPlateServerMain.EasyToolBarButton3Click(Sender: TObject);
 begin
   RefreshTableCache;
+end;
+
+procedure TfrmEasyPlateServerMain.EasyToolBarButton4Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmEasyPlateServerMain.RDMServerDestroy(var msg: TMessage);
+begin
+  mmExecLog.Lines.Add('RDM销毁完成!');
 end;
 
 end.

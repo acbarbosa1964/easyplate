@@ -204,6 +204,7 @@ procedure TRDMEasyPlateServer.RemoteDataModuleDestroy(Sender: TObject);
 begin
   if EasyRDMADOConn.Connected then
     EasyRDMADOConn.Close;
+  PostMessage(frmEasyPlateServerMain.Handle, WM_USER + 100, 0, 0);
 end;
 
 function TRDMEasyPlateServer.EasyGetRDMData(const ASQL: WideString): OleVariant;
