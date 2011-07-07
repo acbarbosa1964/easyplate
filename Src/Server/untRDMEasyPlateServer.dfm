@@ -5,8 +5,9 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
   Left = 515
   Top = 220
   Height = 428
-  Width = 282
+  Width = 574
   object EasyRDMADOConn: TADOConnection
+    LoginPrompt = False
     Left = 56
     Top = 24
   end
@@ -25,14 +26,15 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
     UpdateMode = upWhereKeyOnly
     OnUpdateError = EasyRDMDspUpdateError
     BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
-    Left = 56
-    Top = 80
+    Left = 232
+    Top = 24
   end
   object EasyRDMCds: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 144
-    Top = 80
+    ProviderName = 'EasyRDMDsp'
+    Left = 320
+    Top = 24
   end
   object EasyRDMDsp_Update: TDataSetProvider
     DataSet = EasyRDMQry_Update
@@ -40,39 +42,60 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
     UpdateMode = upWhereKeyOnly
     OnUpdateError = EasyRDMDspUpdateError
     BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
-    Left = 56
-    Top = 144
+    Left = 232
+    Top = 88
   end
   object EasyRDMQry_Update: TADOQuery
     Connection = EasyRDMADOConn
     Parameters = <>
-    Left = 56
-    Top = 200
+    Left = 144
+    Top = 88
   end
   object EasyRDMCds_Update: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 176
-    Top = 144
+    ProviderName = 'EasyRDMDsp_Update'
+    Left = 320
+    Top = 88
   end
   object EasyRDMDsp_WhereAll: TDataSetProvider
     DataSet = EasyRDMQry_WhereAll
     Options = [poAllowCommandText]
     OnUpdateError = EasyRDMDspUpdateError
     BeforeUpdateRecord = EasyRDMDspBeforeUpdateRecord
-    Left = 56
-    Top = 256
+    Left = 232
+    Top = 152
   end
   object EasyRDMQry_WhereAll: TADOQuery
     Connection = EasyRDMADOConn
     Parameters = <>
-    Left = 56
-    Top = 312
+    Left = 144
+    Top = 152
   end
   object EasyRDMCds_WhereAll: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 176
-    Top = 256
+    ProviderName = 'EasyRDMDsp_WhereAll'
+    Left = 320
+    Top = 152
+  end
+  object dspTable: TDataSetProvider
+    DataSet = QryTable
+    Options = [poAllowCommandText]
+    Left = 240
+    Top = 216
+  end
+  object cdsTable: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspTable'
+    Left = 320
+    Top = 216
+  end
+  object QryTable: TADOQuery
+    Connection = EasyRDMADOConn
+    Parameters = <>
+    Left = 144
+    Top = 216
   end
 end

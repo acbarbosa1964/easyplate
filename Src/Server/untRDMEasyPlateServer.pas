@@ -45,6 +45,9 @@ type
     EasyRDMDsp_WhereAll: TDataSetProvider;
     EasyRDMQry_WhereAll: TADOQuery;
     EasyRDMCds_WhereAll: TClientDataSet;
+    dspTable: TDataSetProvider;
+    cdsTable: TClientDataSet;
+    QryTable: TADOQuery;
     procedure RemoteDataModuleCreate(Sender: TObject);
     procedure RemoteDataModuleDestroy(Sender: TObject);
     procedure EasyRDMDspUpdateError(Sender: TObject;
@@ -144,6 +147,7 @@ begin
   LoadConnectString;
   //打开数据连接
   OpenEasyADOConnection();
+  PostMessage(frmEasyPlateServerMain.Handle, WM_USER + 99, 0, 0);
 end;
 
 procedure TRDMEasyPlateServer.SetDBDataBase(const Value: string);

@@ -30,12 +30,13 @@ uses
   ExtCtrls, Grids, untEasyBaseGrid, untEasyGrid, untEasyStatusBar, Registry,
   untEasyStatusBarStylers, untEasyGroupBox, Menus, untEasyMenus, IniFiles,
   untEasyMenuStylers, untEasyTrayIcon, SvcMgr, ScktComp, ScktCnst, ActnList,
-  untEasyEdit, ComCtrls, ImgList, untEasyPageControl,
+  untEasyEdit, ComCtrls, ImgList, untEasyPageControl, DB, DBClient,
   untEasyMemo, untEasyNavBarExt;
 
 const
   EApplicationName = 'EasyPlate服务程序';
   EAlreadyRunning = '系统中已存在运行的服务程序实例,请不要重复运行!';
+  
 type
   TfrmEasyPlateServerMain = class(TForm)
     dkpMain: TEasyDockPanel;
@@ -87,6 +88,7 @@ type
     tbsErrorLog: TEasyTabSheet;
     mmExecLog: TEasyMemo;
     mmErrorLog: TEasyMemo;
+    EasyToolBarButton3: TEasyToolBarButton;
     procedure FormCreate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure ApplyActionExecute(Sender: TObject);
@@ -101,10 +103,10 @@ type
     procedure ApplyActionUpdate(Sender: TObject);
     procedure DisconnectActionUpdate(Sender: TObject);
     procedure RemovePortActionUpdate(Sender: TObject);
-    procedure ServerTrayIconCycle(Sender: TObject; Current: Integer);
     procedure FormShow(Sender: TObject);
     procedure mmErrorLogChange(Sender: TObject);
     procedure mmExecLogChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
     FFromService: Boolean;
@@ -121,6 +123,7 @@ type
     //输出日志
     //App\log 运行日志App\log\ExecLog 错误日志 App\log\ErrorLog
 //    procedure SaveLogMemo(ALogFile: string);
+    procedure RefreshTableCache;
   public
     { Public declarations }
     procedure Initialize(FromService: Boolean);
@@ -134,6 +137,7 @@ type
     procedure AddClient(Thread: TServerClientThread);
     procedure RemoveClient(Thread: TServerClientThread);
     procedure ClearModifications;
+    procedure RDMServerCreated(var msg: TMessage); message WM_USER + 99;
   end;
 
   TSocketService = class(TService)
@@ -144,13 +148,16 @@ type
     function GetServiceController: TServiceController; override;
     constructor CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
   end;
+  
 var
   frmEasyPlateServerMain: TfrmEasyPlateServerMain;
   SocketService: TSocketService;
 
 implementation
 
-uses untRDMEasyPlateServer, SConnect, ActiveX, MidConst;
+uses
+  untRDMEasyPlateServer, SConnect, ActiveX, MidConst, untEasyLocalDM,
+  untEasyUtilMethod;
 
 {$R *.dfm}
 
@@ -193,16 +200,20 @@ type
 { TSocketDispatcher }
 
 type
+  //套接字分配器
   TSocketDispatcher = class(TServerSocket)
   private
+    FScktIniFile: TIniFile;
     FInterceptGUID: string;
     FTimeout: Integer;
+    //获取套接字线程
     procedure GetThread(Sender: TObject; ClientSocket: TServerClientWinSocket;
       var SocketThread: TServerClientThread);
   public
     constructor Create(AOwner: TComponent); override;
-    procedure ReadSettings(PortNo: Integer; Reg: TRegINIFile);
-    procedure WriteSettings(Reg: TRegINIFile);
+    destructor Destroy; override;
+    procedure ReadSettings(PortNo: Integer{; Reg: TRegINIFile});
+    procedure WriteSettings({Reg: TRegINIFile});
     property InterceptGUID: string read FInterceptGUID write FInterceptGUID;
     property Timeout: Integer read FTimeout write FTimeout;
   end;
@@ -224,6 +235,11 @@ begin
   if Thread is TSocketDispatcherThread then
     Item.SubItems.Add(DateTimeToStr(TSocketDispatcherThread(Thread).LastActivity));
   Item.Data := Pointer(Thread);
+  //增加客户端时输出日志信息
+  frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 连接成功!', [
+              DateTimeToStr(TSocketDispatcherThread(Thread).LastActivity),
+              Thread.ClientSocket.RemoteHost,
+              Thread.ClientSocket.RemoteAddress, IntToStr(Thread.ClientSocket.LocalPort)]));
   UpdateStatus;
 end;
 
@@ -272,14 +288,15 @@ end;
 
 procedure TfrmEasyPlateServerMain.ReadSettings;
 var
-  Reg: TRegINIFile;
+//  Reg: TRegINIFile;
+  Reg: TIniFile;
 
   procedure CreateItem(ID: Integer);
   var
     SH: TSocketDispatcher;
   begin
     SH := TSocketDispatcher.Create(nil);
-    SH.ReadSettings(ID, Reg);
+    SH.ReadSettings(ID{, Reg});
     PortList.Items.AddObject(IntToStr(SH.Port), SH);
     try
       SH.Open;
@@ -291,20 +308,29 @@ var
 
 var
   Sections: TStringList;
+  pCount, //已创建端口计数，只允许创建一个
   i: Integer;
 begin
-  Reg := TRegINIFile.Create('');
+//  Reg := TRegINIFile.Create('');
+  pCount := 0;
+  Reg := TIniFile.Create(ExtractFilePath(Forms.Application.ExeName) + '\ScktIni.ini');
   try
-    Reg.RootKey := HKEY_LOCAL_MACHINE;
-    Reg.OpenKey(KEY_SOCKETSERVER, True);
+//    Reg.RootKey := HKEY_LOCAL_MACHINE;
+//    Reg.OpenKey(KEY_SOCKETSERVER, True);
     Sections := TStringList.Create;
     try
       Reg.ReadSections(Sections);
       if Sections.Count > 1 then
       begin
         for i := 0 to Sections.Count - 1 do
-          if CompareText(Sections[i], csSettings) <> 0 then
+        begin
+          //只有配置文件的第一个端口节设置有效
+          if (CompareText(Sections[i], csSettings) <> 0) and (pCount = 0) then
+          begin
             CreateItem(StrToInt(Sections[i]));
+            pCount := 1;
+          end;
+        end;
       end
       else
         CreateItem(-1);
@@ -327,28 +353,35 @@ begin
   Item := ConnectionList.FindData(0, Thread, True, False);
   if Assigned(Item) then Item.Free;
   UpdateStatus;
+  //增加客户端时输出日志信息
+  frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 断开连接!', [
+              DateTimeToStr(TSocketDispatcherThread(Thread).LastActivity),
+              Thread.ClientSocket.RemoteHost,
+              Thread.ClientSocket.RemoteAddress, IntToStr(Thread.ClientSocket.LocalPort)]));
 end;
 
 procedure TfrmEasyPlateServerMain.WriteSettings;
 var
-  Reg: TRegINIFile;
+//  Reg: TRegINIFile;
+  Reg: TIniFile;
   Sections: TStringList;
   i: Integer;
 begin
-  Reg := TRegINIFile.Create('');
+//  Reg := TRegINIFile.Create('');
+  Reg := TIniFile.Create(ExtractFilePath(Forms.Application.ExeName) + '\ScktIni.ini');
   try
-    Reg.RootKey := HKEY_LOCAL_MACHINE;
-    Reg.OpenKey(KEY_SOCKETSERVER, True);
+//    Reg.RootKey := HKEY_LOCAL_MACHINE;
+//    Reg.OpenKey(KEY_SOCKETSERVER, True);
     Sections := TStringList.Create;
     try
       Reg.ReadSections(Sections);
-      for i := 0 to Sections.Count - 1 do
-        TRegistry(Reg).DeleteKey(Sections[i]);
+//      for i := 0 to Sections.Count - 1 do
+//        TRegistry(Reg).DeleteKey(Sections[i]);
     finally
       Sections.Free;
     end;
     for i := 0 to PortList.Items.Count - 1 do
-      TSocketDispatcher(PortList.Items.Objects[i]).WriteSettings(Reg);
+      TSocketDispatcher(PortList.Items.Objects[i]).WriteSettings({Reg});
     Reg.WriteBool(csSettings, ckShowHost, ShowHostAction.Checked);
     Reg.WriteBool(csSettings, ckRegistered, RegisteredAction.Checked);
   finally
@@ -361,8 +394,18 @@ end;
 constructor TSocketDispatcher.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  //
+  FScktIniFile := TIniFile.Create(ExtractFilePath(Forms.Application.ExeName) + '\ScktIni.ini');
+  //阻塞模式线程开启  
   ServerType := stThreadBlocking;
+  //获取线程事件绑定
   OnGetThread := GetThread;
+end;
+
+destructor TSocketDispatcher.Destroy;
+begin
+  FScktIniFile.Free;
+  inherited Destroy;
 end;
 
 procedure TSocketDispatcher.GetThread(Sender: TObject;
@@ -372,40 +415,51 @@ begin
   SocketThread := TSocketDispatcherThread.Create(False, ClientSocket,
     InterceptGUID, Timeout, frmEasyPlateServerMain.RegisteredAction.Checked,
     frmEasyPlateServerMain.AllowXML.Checked);
+
+  //输出获取套接字线程信息
+  //增加客户端时输出日志信息
+  frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 获取Socket Thread, ThreadID:%d!', [
+              DateTimeToStr(TSocketDispatcherThread(SocketThread).LastActivity),
+              SocketThread.ClientSocket.RemoteHost,
+              SocketThread.ClientSocket.RemoteAddress, IntToStr(SocketThread.ClientSocket.LocalPort),
+              SocketThread.ThreadID]));
 end;
 
-procedure TSocketDispatcher.ReadSettings(PortNo: Integer;
-  Reg: TRegINIFile);
+procedure TSocketDispatcher.ReadSettings(PortNo: Integer{;
+  Reg: TRegINIFile});
 var
   Section: string;
 begin
   if PortNo = -1 then
   begin
     Section := csSettings;
-    //默认取211端口
-    Port := Reg.ReadInteger(Section, ckPort, 211);
     //2011-01-05将默认端口调成9090
 //    Port := Reg.ReadInteger(Section, ckPort, 9090);
   end
   else
   begin
     Section := IntToStr(PortNo);
-    Port := PortNo;
+//    Port := PortNo;
   end;
-  ThreadCacheSize := Reg.ReadInteger(Section, ckThreadCacheSize, 10);
-  FInterceptGUID := Reg.ReadString(Section, ckInterceptGUID, '');
-  FTimeout := Reg.ReadInteger(Section, ckTimeout, 0);
+  Port := FScktIniFile.ReadInteger(Section, ckPort, 9090);
+  ThreadCacheSize := FScktIniFile.ReadInteger(Section, ckThreadCacheSize, 10);
+  FInterceptGUID := FScktIniFile.ReadString(Section, ckInterceptGUID, '');
+  FTimeout := FScktIniFile.ReadInteger(Section, ckTimeout, 0);
 end;
 
-procedure TSocketDispatcher.WriteSettings(Reg: TRegINIFile);
+procedure TSocketDispatcher.WriteSettings({Reg: TRegINIFile});
 var
   Section: string;
 begin
   Section := IntToStr(Port);
-  Reg.WriteInteger(Section, ckPort, Port);
-  Reg.WriteInteger(Section, ckThreadCacheSize, ThreadCacheSize);
-  Reg.WriteString(Section, ckInterceptGUID, InterceptGUID);
-  Reg.WriteInteger(Section, ckTimeout, Timeout);
+//  Reg.WriteInteger(Section, ckPort, Port);
+//  Reg.WriteInteger(Section, ckThreadCacheSize, ThreadCacheSize);
+//  Reg.WriteString(Section, ckInterceptGUID, InterceptGUID);
+//  Reg.WriteInteger(Section, ckTimeout, Timeout);
+  FScktIniFile.WriteInteger(Section, ckPort, Port);
+  FScktIniFile.WriteInteger(Section, ckThreadCacheSize, ThreadCacheSize);
+  FScktIniFile.WriteString(Section, ckInterceptGUID, InterceptGUID);
+  FScktIniFile.WriteInteger(Section, ckTimeout, Timeout);
 end;
 
 { TSocketDispatcherThread }
@@ -587,19 +641,19 @@ begin
 end;
 
 procedure TfrmEasyPlateServerMain.Initialize(FromService: Boolean);
-  function IE4Installed: Boolean;
-  var
-    RegKey: HKEY;
-  begin
-    Result := False;
-    if RegOpenKey(HKEY_LOCAL_MACHINE, KEY_IE, RegKey) = ERROR_SUCCESS then
-    try
-      Result := RegQueryValueEx(RegKey, 'Version', nil, nil, nil, nil) = ERROR_SUCCESS;
-    finally
-      RegCloseKey(RegKey);
-    end;
-  end;
-
+//  function IE4Installed: Boolean;
+//  var
+//    RegKey: HKEY;
+//  begin
+//    Result := False;
+//    if RegOpenKey(HKEY_LOCAL_MACHINE, KEY_IE, RegKey) = ERROR_SUCCESS then
+//    try
+//      Result := RegQueryValueEx(RegKey, 'Version', nil, nil, nil, nil) = ERROR_SUCCESS;
+//    finally
+//      RegCloseKey(RegKey);
+//    end;
+//  end;
+//
 begin
   FFromService := FromService;
   NT351 := (Win32MajorVersion <= 3) and (Win32Platform = VER_PLATFORM_WIN32_NT);
@@ -609,11 +663,11 @@ begin
       raise Exception.CreateRes(@SServiceOnly);
   end;
   ReadSettings;
-  if FromService then
-  begin
+//  if FromService then
+//  begin
 //    miClose.Visible := False;
 //    N1.Visible := False;
-  end;
+//  end;
 //  if IE4Installed then
 //    FTaskMessage := RegisterWindowMessage('TaskbarCreated')
 //  else
@@ -724,8 +778,7 @@ end;
 
 procedure TfrmEasyPlateServerMain.UpdateStatus;
 begin
-//  ServerTrayIcon.Icon := TIcon(ServerTrayIcon.IconList.i
-//  UserStatus.SimpleText := Format(SStatusLine,[ConnectionList.Items.Count]);
+  stbMain.Panels[0].Text := Format('在线客户: %d ', [ConnectionList.Items.Count]);
 end;
 
 procedure TfrmEasyPlateServerMain.FormDestroy(Sender: TObject);
@@ -791,12 +844,6 @@ end;
 procedure TfrmEasyPlateServerMain.RemovePortActionUpdate(Sender: TObject);
 begin
   RemovePortAction.Enabled := (PortList.Items.Count > 1) and (ItemIndex <> -1);
-end;
-
-procedure TfrmEasyPlateServerMain.ServerTrayIconCycle(Sender: TObject;
-  Current: Integer);
-begin
-//
 end;
 
 procedure TfrmEasyPlateServerMain.FormShow(Sender: TObject);
@@ -874,6 +921,59 @@ begin
     while not FileExists(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log') do
       mmExecLog.Lines.SaveToFile(ExecLogPath + GetLocalDate + '\' + GetLocalTime + '.log');
   end;
+end;
+
+procedure TfrmEasyPlateServerMain.RDMServerCreated(var msg: TMessage);
+begin
+  mmExecLog.Lines.Add('RDM创建成功!');
+  //
+end;
+
+procedure TfrmEasyPlateServerMain.RefreshTableCache;
+var
+  I: Integer;
+  ASQL: string;
+  ACds : TClientDataSet;
+begin
+  ASQL := 'SELECT [name] FROM sys.all_objects WHERE type = ' + QuotedStr('U');
+  with DMLocal.EasyLocalCds do
+  begin
+    Close;
+    CommandText := ASQL;
+    Open;
+    if RecordCount > 0 then
+    begin
+      ACds := TClientDataSet.Create(nil);
+      ACds.Data := Data;
+      try
+        for I := 0 to ACds.RecordCount - 1 do
+        begin
+          with DMLocal.EasyLocalCds do
+          begin
+            Close;
+            CommandText :=  'SELECT * FROM ' + ACds.fieldbyname('name').AsString
+                                    + ' WHERE 1 = 2';
+            Open;
+            if not DirectoryExists(AppServerPath + 'Cache\Table\') then
+            begin
+              if CreateDir_H(AppServerPath + 'Cache\Table\') then
+            end;
+            SaveToFile(AppServerPath + 'Cache\Table\'
+                       + ACds.fieldbyname('name').AsString + '.xml', dfXMLUTF8);
+          end;
+          ACds.Next;
+        end;
+        MessageDlg('表缓存更新成功!',  mtInformation, [mbOK], 0);
+      finally
+        ACds.Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmEasyPlateServerMain.Button1Click(Sender: TObject);
+begin
+  RefreshTableCache;
 end;
 
 end.

@@ -9,7 +9,8 @@ uses
   ScktCnst,
   untEasyPlateServerMain in 'untEasyPlateServerMain.pas' {frmEasyPlateServerMain},
   EasyPlateServer_TLB in 'EasyPlateServer_TLB.pas',
-  untRDMEasyPlateServer in 'untRDMEasyPlateServer.pas' {RDMEasyPlateServer: TRemoteDataModule} {RDMEasyPlateServer: CoClass};
+  untRDMEasyPlateServer in 'untRDMEasyPlateServer.pas' {RDMEasyPlateServer: TRemoteDataModule} {RDMEasyPlateServer: CoClass},
+  untEasyLocalDM in 'untEasyLocalDM.pas' {DMLocal: TDataModule};
 
 {$R *.TLB}
 
@@ -83,9 +84,13 @@ begin
   begin
     Forms.Application.Initialize;
     Forms.Application.CreateForm(TfrmEasyPlateServerMain, frmEasyPlateServerMain);
+  Application.CreateForm(TDMLocal, DMLocal);
+  //    Forms.Application.CreateForm(TDMLocal, DMLocal);
+  //根据配置文件初始化Socket
     frmEasyPlateServerMain.Initialize(False);
     //创建附属Forms的远程数据模块
-    Forms.Application.CreateForm(TRDMEasyPlateServer, RDMEasyPlateServer);
+    //RDM随Socket线程创建，此处不需要再创建
+//    Forms.Application.CreateForm(TRDMEasyPlateServer, RDMEasyPlateServer);
     Forms.Application.Run;
   end;
 end.
