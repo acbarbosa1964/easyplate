@@ -135,15 +135,3 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 LastCompiledTime=2011-04-03 8:51:30
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=$(EPP)\Src\dcu
-[HistoryLists\hlBPLOutput]
-Count=1
-Item0=$(EPP)\bin
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=$(EPP)\Src\dcp

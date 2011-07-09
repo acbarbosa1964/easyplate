@@ -83,6 +83,7 @@ begin
   else  }
   begin
     Forms.Application.Initialize;
+    Forms.Application.Title := 'EasyPlate·þÎñ³ÌÐò';
     Forms.Application.CreateForm(TfrmEasyPlateServerMain, frmEasyPlateServerMain);
   Application.CreateForm(TDMLocal, DMLocal);
   //    Forms.Application.CreateForm(TDMLocal, DMLocal);

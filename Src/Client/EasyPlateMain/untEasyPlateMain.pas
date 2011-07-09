@@ -31,7 +31,8 @@ uses
   untEasyToolBarStylers, untEasyTabSet, untEasyOfficeTabSetStylers,
   untEasyPageControl, ExtCtrls, untEasyTrayIcon, ImgList, ComCtrls,
   untEasyTreeView, untEasyWaterImage, jpeg, StdCtrls, ActnList, Provider,
-  DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc, untEasyPlateDBBaseForm;
+  DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc, untEasyPlateDBBaseForm,
+  AppEvnts;
 
 type
 
@@ -122,6 +123,7 @@ type
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
     actConnectDB: TAction;
+    ApplicationEvents1: TApplicationEvents;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -138,6 +140,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure EpResourceManageClick(Sender: TObject);
     procedure actConnectDBExecute(Sender: TObject);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -628,6 +631,17 @@ procedure TfrmEasyPlateMain.actConnectDBExecute(Sender: TObject);
 begin
   inherited;
   LoadPkg_Normal('pkEasyconnDB.bpl', FPluginParams);
+end;
+
+procedure TfrmEasyPlateMain.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  inherited;
+  if E.ClassType.ClassName = 'ESocketConnectionError' then
+    Application.MessageBox('与服务器失去连接,请重新登录客户端!', '提示', MB_OK + 
+      MB_ICONINFORMATION)
+  else
+    raise E;
 end;
 
 end.

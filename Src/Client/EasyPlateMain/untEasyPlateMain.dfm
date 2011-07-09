@@ -1,6 +1,6 @@
 inherited frmEasyPlateMain: TfrmEasyPlateMain
-  Left = 229
-  Top = 133
+  Left = 207
+  Top = 147
   Caption = 'frmEasyPlateMain'
   FormStyle = fsMDIForm
   Menu = mmMain
@@ -12,15 +12,15 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object Splitter1: TSplitter
     Left = 257
     Top = 65
-    Height = 370
+    Height = 358
     Color = 14986888
     ParentColor = False
   end
   object EasyWaterImage1: TEasyWaterImage
     Left = 260
     Top = 65
-    Width = 602
-    Height = 370
+    Width = 594
+    Height = 358
     Align = alClient
     Radius = 0
     Interval = 5000
@@ -902,8 +902,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   end
   object stbMain: TEasyStatusBar
     Left = 0
-    Top = 435
-    Width = 862
+    Top = 423
+    Width = 854
     Height = 19
     AnchorHint = False
     Images = imgtv
@@ -1037,6 +1037,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psNumLock
+        Text = 'NUM'
         TimeFormat = 'h:mm:ss'
         Width = 35
       end
@@ -1154,7 +1155,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object EasyDockPanel1: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 862
+    Width = 854
     Height = 38
     MinimumSize = 3
     LockHeight = False
@@ -1235,7 +1236,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object EasyMDITabSet1: TEasyMDITabSet
     Left = 0
     Top = 38
-    Width = 862
+    Width = 854
     Height = 27
     EasyOfficeTabSetStyler = tbsStyleMain
     Align = alTop
@@ -1416,7 +1417,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Left = 0
     Top = 65
     Width = 257
-    Height = 370
+    Height = 358
     ActivePage = tsbSysNav
     Align = alLeft
     UseColoredTabs = True
@@ -1449,7 +1450,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
         Left = 0
         Top = 0
         Width = 255
-        Height = 345
+        Height = 333
         SelectionPen.Color = clActiveCaption
         Align = alClient
         BorderStyle = bsNone
@@ -1491,8 +1492,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Images = img16
     DisabledImages = img16_d
     MenuStyler = mmstyleMain
-    Left = 192
-    Top = 80
+    Left = 477
+    Top = 143
     object File1: TMenuItem
       Caption = #25991#20214'(&F)'
       object New1: TMenuItem
@@ -1574,8 +1575,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object pmMain: TEasyPopupMenu
     AutoHotkeys = maManual
     MenuStyler = mmstyleMain
-    Left = 232
-    Top = 80
+    Left = 349
+    Top = 207
   end
   object mmstyleMain: TEasyMenuOfficeStyler
     AntiAlias = aaNone
@@ -1645,8 +1646,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     NotesFont.Name = #23435#20307
     NotesFont.Style = []
     MenuBorderColor = 9841920
-    Left = 272
-    Top = 80
+    Left = 349
+    Top = 175
   end
   object stbStyleMain: TEasyStatusBarOfficeStyler
     BorderColor = 14986888
@@ -1688,8 +1689,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     PanelAppearanceDark.TextColorHot = clWhite
     PanelAppearanceDark.TextColorDown = clWhite
     PanelAppearanceDark.TextStyle = []
-    Left = 784
-    Top = 400
+    Left = 381
+    Top = 207
   end
   object tlbStyleMain: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181
@@ -1943,8 +1944,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     TabAppearance.BackGround.Color = 14986888
     TabAppearance.BackGround.ColorTo = 16440004
     TabAppearance.BackGround.Direction = gdHorizontal
-    Left = 344
-    Top = 80
+    Left = 445
+    Top = 207
   end
   object tbsStyleMain: TEasyTabSetOfficeStyler
     ButtonBorderColor = clNone
@@ -2021,8 +2022,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     TabAppearance.BackGround.Color = 14986888
     TabAppearance.BackGround.ColorTo = 16440004
     TabAppearance.BackGround.Direction = gdHorizontal
-    Left = 304
-    Top = 80
+    Left = 413
+    Top = 207
   end
   object EasyTrayIcon1: TEasyTrayIcon
     CycleInterval = 0
@@ -2331,12 +2332,12 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       000000000000F000000000000000F800000000000000FC00000000000000FC00
       000000000000FE00000000000000FF00000000000000FF80000000000000}
     PopupMenu = ppMenuTrayIcon
-    Left = 752
-    Top = 400
+    Left = 477
+    Top = 207
   end
   object imgNav: TImageList
-    Left = 304
-    Top = 137
+    Left = 413
+    Top = 239
     Bitmap = {
       494C010106000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -2743,8 +2744,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   end
   object actEasyMain: TActionList
     Images = img24
-    Left = 376
-    Top = 184
+    Left = 349
+    Top = 143
     object actExit: TAction
       Caption = #36864#20986#31995#32479
       Hint = #36864#20986#31995#32479
@@ -2769,8 +2770,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object img24: TImageList
     Height = 24
     Width = 24
-    Left = 376
-    Top = 216
+    Left = 381
+    Top = 239
     Bitmap = {
       494C010126002700040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000F000000001002000000000000068
@@ -5752,8 +5753,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object img24_d: TImageList
     Height = 24
     Width = 24
-    Left = 416
-    Top = 216
+    Left = 445
+    Top = 239
     Bitmap = {
       494C010122002700040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000F000000001002000000000000068
@@ -8733,8 +8734,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       000000000000}
   end
   object img16: TImageList
-    Left = 376
-    Top = 256
+    Left = 349
+    Top = 271
     Bitmap = {
       494C010123002800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000A0000000010020000000000000A0
@@ -10064,8 +10065,8 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       000000000000}
   end
   object img16_d: TImageList
-    Left = 416
-    Top = 256
+    Left = 477
+    Top = 239
     Bitmap = {
       494C01011F002300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000009000000001002000000000000090
@@ -11266,14 +11267,14 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Aggregates = <>
     Params = <>
     ProviderName = 'DataSetProvider1'
-    Left = 576
-    Top = 144
+    Left = 445
+    Top = 143
   end
   object ppMenuTrayIcon: TEasyPopupMenu
     AutoHotkeys = maManual
     MenuStyler = mmstyleMain
-    Left = 720
-    Top = 400
+    Left = 477
+    Top = 175
     object N5: TMenuItem
       Caption = '-'
     end
@@ -11282,15 +11283,15 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     end
   end
   object imgtv: TImageList
-    Left = 376
-    Top = 296
+    Left = 349
+    Top = 239
   end
   object tvNavPP: TEasyPopupMenu
     AutoHotkeys = maManual
     Images = imgtv
     MenuStyler = mmstyleMain
-    Left = 192
-    Top = 112
+    Left = 445
+    Top = 175
     object N6: TMenuItem
       Caption = #20840#37096#23637#24320
       ImageIndex = 3
@@ -11322,14 +11323,14 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object ppTabList: TEasyPopupMenu
     AutoHotkeys = maManual
     MenuStyler = mmstyleMain
-    Left = 232
-    Top = 112
+    Left = 381
+    Top = 175
   end
   object ppMDITab: TEasyPopupMenu
     AutoHotkeys = maManual
     MenuStyler = mmstyleMain
-    Left = 272
-    Top = 112
+    Left = 413
+    Top = 175
     object N11: TMenuItem
       Caption = #20840#37096#20851#38381
       OnClick = N11Click
@@ -11338,7 +11339,12 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   object cdsMainTV: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 193
-    Top = 154
+    Left = 413
+    Top = 143
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
+    Left = 381
+    Top = 143
   end
 end

@@ -37,6 +37,7 @@ const
   EApplicationName = 'EasyPlate服务程序';
   EAlreadyRunning = '系统中已存在运行的服务程序实例,请不要重复运行!';
   ESQueryDisconnect = '断开客户端连接,将导致客户端异常退出,是否现在断开?';
+  ESErrClose = '有客户端正在连接, 是否继续退出服务?';
 type
   TfrmEasyPlateServerMain = class(TForm)
     dkpMain: TEasyDockPanel;
@@ -92,6 +93,13 @@ type
     EasyToolBarSeparator1: TEasyToolBarSeparator;
     EasyToolBarSeparator2: TEasyToolBarSeparator;
     EasyToolBarButton4: TEasyToolBarButton;
+    N6: TMenuItem;
+    H1: TMenuItem;
+    R1: TMenuItem;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure ApplyActionExecute(Sender: TObject);
@@ -111,6 +119,8 @@ type
     procedure mmExecLogChange(Sender: TObject);
     procedure EasyToolBarButton3Click(Sender: TObject);
     procedure EasyToolBarButton4Click(Sender: TObject);
+    procedure N12Click(Sender: TObject);
+    procedure N13Click(Sender: TObject);
   private
     { Private declarations }
     FMaxClientCount: Integer;
@@ -555,6 +565,7 @@ begin
               while PeekMessage(msg, 0, 0, 0, PM_REMOVE) do
                 DispatchMessage(msg);
             WAIT_TIMEOUT:
+              //过期自动退出
               if (FTimeout > 0) and ((Now - FLastActivity) > FTimeout) then
                 FTransport.Connected := False;
           end;
@@ -666,7 +677,7 @@ end;
 
 procedure TfrmEasyPlateServerMain.N5Click(Sender: TObject);
 begin
-  frmEasyPlateServerMain.WindowState := wsMaximized;
+  ServerTrayIcon.ShowMainForm;
 end;
 
 procedure TfrmEasyPlateServerMain.Initialize(FromService: Boolean);
@@ -707,7 +718,9 @@ begin
   with TSocketDispatcher(SelectedSocket) do
   begin
     if Socket.ActiveConnections > 0 then
-      if MessageDlg(SErrChangeSettings, mtConfirmation, [mbYes, mbNo], 0) = idNo then
+      if Forms.Application.MessageBox(PChar(SErrChangeSettings), PChar('提示'), MB_OKCANCEL +
+        MB_ICONQUESTION) = IDCANCEL then
+//      if MessageDlg(SErrChangeSettings, mtConfirmation, [mbYes, mbNo], 0) = idNo then
         Exit;
     Close;
     Port := StrToInt(PortNo.Text);
@@ -737,7 +750,9 @@ procedure TfrmEasyPlateServerMain.DisconnectActionExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  if MessageDlg(ESQueryDisconnect, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+  if Forms.Application.MessageBox(PChar(ESQueryDisconnect), PChar('提示'), MB_OKCANCEL +
+    MB_ICONQUESTION) = IDCANCEL then
+//  if MessageDlg(ESQueryDisconnect, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     Exit;
   with SelectedSocket.Socket do
   begin
@@ -838,18 +853,29 @@ end;
 
 procedure TfrmEasyPlateServerMain.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
+var
+  Factory: IClassFactory;
 begin
   try
     CanClose := False;
-    if ApplyAction.Enabled then ApplyAction.Execute;
-    if FClosing and (not FFromService) and (ConnectionList.Items.Count > 0) then
+    //EXE应用程序退出
+    if ConnectionList.Items.Count > 0 then
     begin
-      FClosing := False;
-      if MessageDlg(SErrClose, mtConfirmation, [mbYes, mbNo], 0) <> idYes then
-        Exit;
+      if Forms.Application.MessageBox(PChar(ESErrClose), PChar('提示'), MB_OKCANCEL +
+        MB_ICONQUESTION) = IDCANCEL then
+      begin
+      end else
+      begin
+        //关闭服务时不提示COM警告信息
+        CoGetClassObject(StringToGUID('{4F1AC7AF-01E3-46AC-BB37-7C11C2D3B5E3}'),
+                          CLSCTX_SERVER, nil, IClassFactory, Factory);
+        Factory.LockServer(False);
+        if ApplyAction.Enabled then
+          ApplyAction.Execute;
+        WriteSettings;
+        CanClose := True;
+      end;
     end;
-    WriteSettings;
-    CanClose := True;
   finally
   end;
 end;
@@ -993,7 +1019,7 @@ begin
           end;
           ACds.Next;
         end;
-        MessageDlg('表缓存更新成功!',  mtInformation, [mbOK], 0);
+        Forms.Application.MessageBox('表缓存更新成功!', '', MB_OK + MB_ICONINFORMATION);
       finally
         ACds.Free;
         Screen.Cursor := crDefault;
@@ -1020,6 +1046,16 @@ end;
 procedure TfrmEasyPlateServerMain.RDMServerPoolerCreate(var msg: TMessage);
 begin
   mmExecLog.Lines.Add('IRDM New完成!');
+end;
+
+procedure TfrmEasyPlateServerMain.N12Click(Sender: TObject);
+begin
+  ServerTrayIcon.HideMainForm;
+end;
+
+procedure TfrmEasyPlateServerMain.N13Click(Sender: TObject);
+begin
+  Close;
 end;
 
 end.

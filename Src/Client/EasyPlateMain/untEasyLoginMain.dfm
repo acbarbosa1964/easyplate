@@ -19,8 +19,8 @@ object frmEasyLoginMain: TfrmEasyLoginMain
   object imgLoginBC: TImage
     Left = 0
     Top = 0
-    Width = 671
-    Height = 423
+    Width = 663
+    Height = 412
     Align = alClient
     Picture.Data = {
       0A544A504547496D616765AF560100FFD8FFE000104A46494600010201004800
@@ -2853,7 +2853,7 @@ object frmEasyLoginMain: TfrmEasyLoginMain
   end
   object bbtnCancel: TEasyBitButton
     Left = 432
-    Top = 248
+    Top = 241
     Width = 65
     Height = 25
     Cursor = crHandPoint
@@ -2869,7 +2869,7 @@ object frmEasyLoginMain: TfrmEasyLoginMain
   end
   object bbtnLogin: TEasyBitButton
     Left = 352
-    Top = 248
+    Top = 241
     Width = 65
     Height = 25
     Cursor = crHandPoint

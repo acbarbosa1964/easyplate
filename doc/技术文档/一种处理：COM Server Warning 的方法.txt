@@ -1,0 +1,29 @@
+有时候我们在应用Com组件的时候，退出程序前会遇到一下警告信息：
+ 
+ 
+ 
+---------------------------
+COM Server Warning
+---------------------------
+There are still active COM objects in this application.  One or more clients may have references to these objects, so manually closing this application may cause those client application(s) to fail.
+ 
+ 
+ 
+Are you sure you want to close this application?
+---------------------------
+是(Y)   否(N)   
+---------------------------
+ 
+ 
+ 
+在你退出程序之前这样处理就可以了：
+ 
+var  Factory: IClassFactory;
+ 
+begin
+ 
+      CoGetClassObject(<你所使用的com的GUID>, CLSCTX_SERVER, nil, IClassFactory, Factory);
+ 
+      Factory.LockServer(False);
+ 
+end

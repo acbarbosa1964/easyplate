@@ -145,6 +145,3 @@ D:\Program Files\Raize\RC5\Bin\RaizeComponentsVclDB_Design70.bpl=Raize Component
 d:\Program Files\APP2001\Developer Express Inc\ExpressWeb.Framework.v1.7.10\ExpressWeb Framework\D7\dclcxWebTeeChartD7.bpl=WebTeeChart for EWF by Developer Express Inc.
 C:\Program Files\Borland\Delphi7\BIN\dxPSTeeChartD7.bpl=ExpressPrinting System ReportLink for TeeChart by Developer Express Inc.
 C:\Program Files\Borland\Delphi7\BIN\dxPSDBTeeChartD7.bpl=ExpressPrinting System ReportLink for DBTeeChart by Developer Express Inc.
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;

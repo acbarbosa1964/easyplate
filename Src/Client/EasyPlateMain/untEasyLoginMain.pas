@@ -99,7 +99,7 @@ begin
     begin
       if UpperCase(DMEasyDBConnection.EasyAppType) = 'CAS' then
       begin
-        cdsLogin.Data := EasyRDMDisp.EasyGetRDMData('SELECT sSQL FROM sysSQL WHERE iFlag = 1 AND sSQLEName = ''UserLoginCheck''');
+        cdsLogin.Data := EasyRDMDisp.EasyGetRDMData('SELECT SQLContext FROM sysSQL WHERE IsEnable = 1 AND SQLName = ''UserLoginCheck''');
 //        cdsLogin.RemoteServer := DMEasyDBConnection.EasyScktConn;
 //        cdsLogin.ProviderName := 'EasyRDMDsp';
       end
@@ -107,12 +107,12 @@ begin
       begin
         cdsLogin.ProviderName := 'DspLogin';
         if Active then Close;
-        CommandText := 'SELECT sSQL FROM sysSQL WHERE iFlag = 1 AND sSQLEName = ''UserLoginCheck''';
+        CommandText := 'SELECT SQLContext FROM sysSQL WHERE IsEnable = 1 AND SQLName = ''UserLoginCheck''';
         Open;
       end;
 
       if cdsLogin.RecordCount > 0 then
-        TmpSQL := cdsLogin.fieldbyname('sSQL').AsString;
+        TmpSQL := cdsLogin.fieldbyname('SQLContext').AsString;
       close;
     end;
     if Trim(TmpSQL) <> '' then

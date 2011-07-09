@@ -95,7 +95,7 @@ UnitOutputDir=$(EPP)\Src\dcu
 PackageDLLOutputDir=
 PackageDCPOutputDir=$(EPP)\Src\dcu
 SearchPath=$(DELPHI)\Lib\Debug
-Packages=vcl;rtl;pkEasyAdditional;pkEasyPlateBaseForm
+Packages=vcl;rtl;pkEasyDBConnection;pkEasyAdditional;pkEasyPlateBaseForm
 Conditionals=
 DebugSourceDirs=
 UsePackages=1
@@ -134,18 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=1
-Item0=$(DELPHI)\Lib\Debug
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=$(EPP)\Src\dcu
-[HistoryLists\hlOutputDirectorry]
-Count=1
-Item0=$(EPP)\bin
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=$(EPP)\Src\dcu

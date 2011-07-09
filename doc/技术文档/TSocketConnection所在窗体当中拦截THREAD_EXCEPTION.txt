@@ -1,0 +1,18 @@
+Windows socket error: 远程主机强迫关闭了一个现有的连接. 10054 On API 'recv' 的异常名是什么啊? 
+
+(E is ESocketConnectionError) or (E is ESocketError) 都不对 
+
+有谁能告诉我是什么不? 
+
+异常名是ESocketError,从TSocketConnection所在窗体当中拦截THREAD_EXCEPTION.也可以通过Application.OnMessage当中过滤.
+
+OK
+
+procedure TfmLogin.ApplicationEvents1Exception(Sender: TObject;
+E: Exception);
+begin
+if E.ClassType.ClassName = 'ESocketConnectionError' then
+showmessage(E.ClassType.ClassName)
+else
+raise E;
+end;
