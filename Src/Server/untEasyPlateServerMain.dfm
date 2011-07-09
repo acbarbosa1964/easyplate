@@ -1345,7 +1345,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psDate
-        Text = '2011-7-7'
+        Text = '2011-7-8'
         TimeFormat = 'h:mm:ss'
         Width = 80
       end
@@ -1371,7 +1371,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psTime
-        Text = '18:44:12'
+        Text = '23:29:47'
         TimeFormat = 'h:mm:ss'
         Width = 80
       end
@@ -1578,7 +1578,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
           FocusColor = clInfoBk
           EditLabel.Width = 44
           EditLabel.Height = 11
-          EditLabel.Caption = #32531#23384#22823#23567
+          EditLabel.Caption = #32447#31243#32531#23384
           EditLabel.Font.Charset = ANSI_CHARSET
           EditLabel.Font.Color = clBlack
           EditLabel.Font.Height = -11

@@ -9,7 +9,8 @@ unit untEasyRDMPooler;
 interface
 
 uses
-  ComObj, ActiveX, EasyPlateServer_TLB, Classes, SyncObjs, Windows;
+  ComObj, ActiveX, EasyPlateServer_TLB, Classes, SyncObjs, Windows, Variants, DB,
+  Provider, Messages, Forms;
 
 type
 {
@@ -21,6 +22,9 @@ type
   private
     function LockRDM: IRDMEasyPlateServer;
     procedure UnlockRDM(Value: IRDMEasyPlateServer);
+    // 手工加入
+    function InnerGetData(strSQL: String): OleVariant;
+    function InnerPostData(Delta: OleVariant; out ErrorCode: Integer): OleVariant;
   protected
     { IAppServer }
     function  AS_ApplyUpdates(const ProviderName: WideString; Delta: OleVariant;
@@ -35,6 +39,13 @@ type
                             var OwnerData: OleVariant): OleVariant; safecall;
     procedure AS_Execute(const ProviderName: WideString; const CommandText: WideString;
                          var Params: OleVariant; var OwnerData: OleVariant); safecall;
+    function EasyGetRDMData(const ASQL: WideString): OleVariant; safecall;
+    function EasySaveRDMData(const ATableName: WideString; ADelta: OleVariant;
+      const AKeyField: WideString; out AErrorCode: SYSINT): OleVariant;
+      safecall;
+    function EasySaveRDMDatas(ATableNameOLE, ADeltaOLE, AKeyFieldOLE,
+      ACodeErrorOLE: OleVariant): OleVariant; safecall;
+    function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; safecall;
   end;
 
 {
@@ -73,15 +84,16 @@ var
 
 implementation
 
-uses ComServ, untRDMEasyPlateServer, SysUtils;
+uses ComServ, untRDMEasyPlateServer, SysUtils, untEasyPlateServerMain;
 
 constructor TPoolManager.Create;
 begin
   FRDMList := TList.Create;
   FCriticalSection := TCriticalSection.Create;
   FTimeout := 5000;
-  FMaxCount := 15;
+  FMaxCount := 5;
   FSemaphore := CreateSemaphore(nil, FMaxCount, FMaxCount, nil);
+//  PostMessage(Application.MainForm.Handle, WM_USER + 101, 0, 0);
 end;
 
 destructor TPoolManager.Destroy;
@@ -134,6 +146,7 @@ begin
     p.InUse := True;
     FRDMList.Add(p);
     Result := p.Intf;
+    PostMessage(Application.MainForm.Handle, WM_USER + 101, 0, 0);
   finally
     FCriticalSection.Leave;
   end;
@@ -145,7 +158,7 @@ var
 begin
   Result := nil;
   if WaitForSingleObject(FSemaphore, Timeout) = WAIT_FAILED then
-    raise Exception.Create('Server too busy');
+    raise Exception.Create('服务器繁忙!');//Server too busy
   for i := 0 to FRDMList.Count - 1 do
   begin
     if GetLock(i) then
@@ -157,7 +170,7 @@ begin
   if FRDMList.Count < MaxCount then
     Result := CreateNewInstance;
   if Result = nil then { This shouldn't happen because of the sempahore locks }
-    raise Exception.Create('Unable to lock RDM');
+    raise Exception.Create('无法锁定远程数据服务模块!'); //Unable to lock RDM
 end;
 
 procedure TPoolManager.UnlockRDM(var Value: IRDMEasyPlateServer);
@@ -284,10 +297,147 @@ begin
   end;
 end;
 
-initialization
+function TPooler.EasyGetRDMData(const ASQL: WideString): OleVariant;
+begin
+  Result := Self.InnerGetData(ASQL);
+end;
+
+function TPooler.EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant;
+var
+  ACount, I: Integer;
+begin
+  ACount := VarArrayHighBound(ASQLOLE, 1);
+  Result := VarArrayCreate([0, ACount], varVariant);
+  for I := VarArrayLowBound(ASQLOLE, 1) to VarArrayHighBound(ASQLOLE, 1) do
+    Result[I] := EasyGetRDMData(ASQLOLE[I]);
+end;
+
+function TPooler.EasySaveRDMData(const ATableName: WideString;
+  ADelta: OleVariant; const AKeyField: WideString;
+  out AErrorCode: SYSINT): OleVariant;
+var
+  KeyField: TField;
+begin
+  //执行之前检查要更新的字段是否存在
+  with RDMEasyPlateServer do
+  begin
+    EasyRDMCds.Data := ADelta;
+    if EasyRDMCds.IsEmpty then Exit;
+    KeyField := EasyRDMCds.FindField(AKeyField);
+    if KeyField=nil then
+    begin
+      frmEasyPlateServerMain.mmErrorLog.Lines.Add('主键字段:' + AKeyField + '未提供');
+      Exit;
+    end;
+    EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
+    EasyRDMQry.Open;
+    with EasyRDMQry.FieldByName(AKeyField) do
+      ProviderFlags := ProviderFlags + [pfInKey];
+    EasyRDMDsp.UpdateMode := upWhereKeyOnly;
+    Result := InnerPostData(ADelta, AErrorCode);
+  end;
+end;
+
+function TPooler.EasySaveRDMDatas(ATableNameOLE, ADeltaOLE, AKeyFieldOLE,
+  ACodeErrorOLE: OleVariant): OleVariant;
+var
+  I, ErrorCode: Integer;
+  CanCommit: Boolean;
+begin
+  CanCommit := True;
+  with RDMEasyPlateServer do
+  begin
+    if EasyRDMADOConn.InTransaction then
+      EasyRDMADOConn.RollbackTrans;
+
+    if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(AKeyFieldOLE, 1) then
+    begin
+      AddExecLog('表数量<>主健数量', 1);
+      Exit;
+    end;
+    if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(ADeltaOLE, 1) then
+    begin
+      AddExecLog('表数量<>提交数据集数量', 1);
+      Exit;
+    end;
+    if VarArrayHighBound(ATableNameOLE, 1) <> VarArrayHighBound(ACodeErrorOLE, 1) then
+    begin
+      AddExecLog('表数量<>错误返回数量', 1);
+      Exit;
+    end;
+
+    EasyRDMADOConn.BeginTrans;
+    AddExecLog('BeginTrans');
+    try
+      for I := VarArrayLowBound(ATableNameOLE, 1) to VarArrayHighBound(ATableNameOLE, 1) do
+      begin
+        Result := EasySaveRDMData(ATableNameOLE[I], ADeltaOLE[I], AKeyFieldOLE[I], ErrorCode);
+        ACodeErrorOLE[I] := ErrorCode;
+      end;
+      for I := VarArrayLowBound(ACodeErrorOLE, 1) to VarArrayHighBound(ACodeErrorOLE, 1) do
+      begin
+        if ACodeErrorOLE[I] <> 0 then
+          CanCommit := False;
+      end;
+      if CanCommit then
+      begin
+        EasyRDMADOConn.CommitTrans;
+        AddExecLog('CommitTrans');
+      end
+      else
+      begin
+        EasyRDMADOConn.RollbackTrans;
+        AddExecLog('RollbackTrans');
+      end;
+    except on e:Exception do
+      begin
+        EasyRDMADOConn.RollbackTrans;
+        AddExecLog('RollbackTrans:' + e.Message);
+      end;
+    end;
+  end;
+end;
+
+function TPooler.InnerGetData(strSQL: String): OleVariant;
+var
+  I: Integer;
+begin
+  // 必须是CLOSE状态, 否则报错.
+  with RDMEasyPlateServer do
+  begin
+    if EasyRDMQry.Active then
+      EasyRDMQry.Active := False;
+    Result := Self.AS_GetRecords('EasyRDMDsp', -1, I, ResetOption+MetaDataOption,
+      strSQL, Params, OwnerData);
+  end;
+end;
+
+function TPooler.InnerPostData(Delta: OleVariant;
+  out ErrorCode: Integer): OleVariant;
+begin
+  with RDMEasyPlateServer do
+  begin
+    Result := Self.AS_ApplyUpdates('EasyRDMDsp', Delta, 0, ErrorCode, OwnerData);
+  end;
+end;
+
+{ciInternal       --对象不受外部影响
+ciSingleInstance --单实例，每启动一个COM新实例就是一个新进程
+ciMultiInstance  --多实例, 启动多个COM实例也只启动一个进程
+
+tmSingle         --单线程, 自动化对象的执行线程是主线程
+tmApartment      --公寓线程, 自动化对象的执行线程也是主线程
+tmFree           --自由线程,自动化对象的执行线程是新的工作线程
+tmBoth           --没研究，效果同上
+tmNeutral        --没研究，效果同上}
+{initialization
   PoolManager := TPoolManager.Create;
-  TAutoObjectFactory.Create(ComServer, TPooler, CLASS_RDMEasyPlatePoolerServer, ciMultiInstance, tmFree);
-  
+  //自由线程,自动化对象的执行线程是新的工作线程
+  TAutoObjectFactory.Create(ComServer, TPooler, CLASS_RDMEasyPlatePoolerServer,
+                            ciMultiInstance, tmFree);
+  //tmFree
+
 finalization
-  PoolManager.Free;
+  PoolManager.Free;   }
+
 end.

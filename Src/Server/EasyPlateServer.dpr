@@ -70,7 +70,7 @@ begin
       MessageBox(0, PChar(EAlreadyRunning), EApplicationName, MB_ICONERROR);
       Halt;
     end;
-  end;
+  end;  
   {if Installing or StartService then
   begin
     SvcMgr.Application.Initialize;

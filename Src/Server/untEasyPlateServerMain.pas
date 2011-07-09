@@ -113,6 +113,7 @@ type
     procedure EasyToolBarButton4Click(Sender: TObject);
   private
     { Private declarations }
+    FMaxClientCount: Integer;
     FFromService: Boolean;
     NT351: Boolean;
 
@@ -145,6 +146,7 @@ type
     procedure RDMServerCreated(var msg: TMessage); message WM_USER + 99;
     //释放数据模块
     procedure RDMServerDestroy(var msg: TMessage); message WM_USER + 100;
+    procedure RDMServerPoolerCreate(var msg: TMessage); message WM_USER + 101;
   end;
 
   TSocketService = class(TService)
@@ -409,7 +411,7 @@ begin
   ServerType := stThreadBlocking;
   //获取线程事件绑定
   OnGetThread := GetThread;
-  frmEasyPlateServerMain.mmExecLog.Lines.Add('GetThread');
+  frmEasyPlateServerMain.mmExecLog.Lines.Add('SocketDispatcher创建完成!');
 end;
 
 destructor TSocketDispatcher.Destroy;
@@ -452,7 +454,7 @@ begin
 //    Port := PortNo;
   end;
   Port := FScktIniFile.ReadInteger(Section, ckPort, 9090);
-  ThreadCacheSize := FScktIniFile.ReadInteger(Section, ckThreadCacheSize, 10);
+  ThreadCacheSize := FScktIniFile.ReadInteger(Section, ckThreadCacheSize, 0);
   FInterceptGUID := FScktIniFile.ReadString(Section, ckInterceptGUID, '');
   FTimeout := FScktIniFile.ReadInteger(Section, ckTimeout, 0);
 end;
@@ -489,7 +491,8 @@ end;
 procedure TSocketDispatcherThread.AddClient;
 begin
   frmEasyPlateServerMain.AddClient(Self);
-  if frmEasyPlateServerMain.ConnectionList.Items.Count > 2 then
+  frmEasyPlateServerMain.FMaxClientCount := 5;
+  if frmEasyPlateServerMain.ConnectionList.Items.Count > frmEasyPlateServerMain.FMaxClientCount then
   begin
     frmEasyPlateServerMain.mmExecLog.Lines.Add('已超出最大有效客户端连接数!');
     //要存在开打的端口
@@ -972,6 +975,7 @@ begin
       ACds := TClientDataSet.Create(nil);
       ACds.Data := Data;
       try
+        Screen.Cursor := crHourGlass;
         for I := 0 to ACds.RecordCount - 1 do
         begin
           with DMLocal.EasyLocalCds do
@@ -992,6 +996,7 @@ begin
         MessageDlg('表缓存更新成功!',  mtInformation, [mbOK], 0);
       finally
         ACds.Free;
+        Screen.Cursor := crDefault;
       end;
     end;
   end;
@@ -1010,6 +1015,11 @@ end;
 procedure TfrmEasyPlateServerMain.RDMServerDestroy(var msg: TMessage);
 begin
   mmExecLog.Lines.Add('RDM销毁完成!');
+end;
+
+procedure TfrmEasyPlateServerMain.RDMServerPoolerCreate(var msg: TMessage);
+begin
+  mmExecLog.Lines.Add('IRDM New完成!');
 end;
 
 end.

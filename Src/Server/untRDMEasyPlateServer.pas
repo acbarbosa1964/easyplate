@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, ComServ, ComObj, VCLCom, DataBkr,
   DBClient, EasyPlateServer_TLB, StdVcl, DB, ADODB, Provider, MConnect,
-  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX, Forms;
+  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX, Forms, SyncObjs;
 
 type
   TRDMEasyPlateServer = class(TRemoteDataModule, IRDMEasyPlateServer)
@@ -66,8 +66,6 @@ type
     { Private declarations }
     FTableName,
     FConnectString: string;
-    Params   : OleVariant;
-    OwnerData: OleVariant;
     //服务器地址、用户名、密码、数据库、端口
     FDBHost,
     FDBUserName,
@@ -89,7 +87,6 @@ type
     function InnerPostData(Delta: OleVariant; out ErrorCode: Integer): OleVariant;
     //获取当前操作时间
     function GetOperTime: string;
-    procedure AddExecLog(ALogStr: string; AType: Integer = 0);
   protected
     class procedure UpdateRegistry(Register: Boolean; const ClassID, ProgID: string); override;
     function EasyGetRDMData(const ASQL: WideString): OleVariant; safecall;
@@ -101,12 +98,15 @@ type
     function EasyGetRDMDatas(ASQLOLE: OleVariant): OleVariant; safecall;
   public
     { Public declarations }
+    Params   : OleVariant;
+    OwnerData: OleVariant;
     //服务器地址、用户名、密码、数据库、端口
     property EasyDBHost: string read FDBHost write SetDBHost;
     property EasyDBUserName: string read FDBUserName write SetDBUserName;
     property EasyDBPassWord: string read FDBPassWord write SetDBPassWord;
     property EasyDBDataBase: string read FDBDataBase write SetDBDataBase;
     property EasyDBPort: string read FDBPort write SetDBPort;
+    procedure AddExecLog(ALogStr: string; AType: Integer = 0);
   end;
 
 var
@@ -114,6 +114,7 @@ var
   class. }
   RDMFactory: TComponentFactory;
   RDMEasyPlateServer: TRDMEasyPlateServer;
+  
 implementation
 
 uses untEasyPlateServerMain, Variants, untEasyUtilMethod, untEasyUtilConst;
@@ -229,7 +230,7 @@ begin
   begin
     frmEasyPlateServerMain.mmErrorLog.Lines.Add('主键字段:' + AKeyField + '未提供');
     Exit;
-  end;  
+  end;
   EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
   EasyRDMQry.Open;
   with EasyRDMQry.FieldByName(AKeyField) do
@@ -244,8 +245,8 @@ var
 begin
   // 必须是CLOSE状态, 否则报错.
   if EasyRDMQry.Active then
-    EasyRDMQry.Active := False;   
-  Result := Self.AS_GetRecords('EasyRDMDsp', -1, I, ResetOption+MetaDataOption,   
+    EasyRDMQry.Active := False;
+  Result := Self.AS_GetRecords('EasyRDMDsp', -1, I, ResetOption+MetaDataOption,
     strSQL, Params, OwnerData);
 end;
 
@@ -436,15 +437,13 @@ begin
 end;
 
 initialization
-  TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
-    Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
-  //如果是Vista或Win7需要执行此句，在此全部执行
-  ComServer.UpdateRegistry(True);//加入此名，可正常注入系统
-
-{initialization
+  //ciInternal--对象不受外部影响
   RDMFactory := TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
-    Class_RDMEasyPlateServer, ciInternal, tmApartment);
-  //如果是Vista或Win7需要执行此句，在此全部执行
-  ComServer.UpdateRegistry(True);//加入此名，可正常注入系统  }
+    Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
+
+//  TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
+//    Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
+  //如果是Vista或Win7需要执行此句，在此全部执行      tmApartment
+  ComServer.UpdateRegistry(True);//加入此名，可正常注入系统
 
 end.
