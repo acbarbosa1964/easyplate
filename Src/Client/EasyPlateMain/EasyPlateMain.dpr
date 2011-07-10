@@ -14,8 +14,7 @@ uses
   EasyPlateHint in 'EasyPlateHint.pas' {Form1},
   untEasyLoginMain in 'untEasyLoginMain.pas' {frmEasyLoginMain},
   untEasyPlateMain in 'untEasyPlateMain.pas' {frmEasyPlateMain},
-  untEasyPlateResourceManage in 'untEasyPlateResourceManage.pas' {frmEasyPlateResourceManage},
-  untEasyClassPluginDirectory in '..\..\EaysUtilPlugins\pkEasyUtilClass\untEasyClassPluginDirectory.pas';
+  untEasyPlateResourceManage in 'untEasyPlateResourceManage.pas' {frmEasyPlateResourceManage};
 
 type
   TShowSplashForm = function (AHandle: THandle): Boolean; stdcall;

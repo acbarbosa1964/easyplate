@@ -386,7 +386,7 @@ begin
   begin
     //增加客户端时输出日志信息
     frmEasyPlateServerMain.mmExecLog.Lines.Add(Format('%s 客户端 %s IP:%s:%s 断开连接!', [
-                Item.SubItems[2], Item.SubItems[1],
+                DateTimeToStr(Now()), Item.SubItems[1],
                 Item.SubItems[0], Item.Caption]));
     Item.Free;
   end;

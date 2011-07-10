@@ -14,11 +14,11 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
   object EasyPanel1: TEasyPanel
     Left = 0
     Top = 0
-    Width = 866
+    Width = 858
     Height = 41
     Align = alTop
     BorderOuter = fsFlat
-    TabOrder = 1
+    TabOrder = 0
     object lblOperateHint: TEasyLabel
       Left = 16
       Top = 8
@@ -85,17 +85,17 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
   object EasyPanel2: TEasyPanel
     Left = 0
     Top = 41
-    Width = 866
-    Height = 591
+    Width = 858
+    Height = 580
     Align = alClient
     BorderOuter = fsFlat
     TabOrder = 2
     object pgcSystemManager: TEasyPageControl
       Left = 1
       Top = 1
-      Width = 864
-      Height = 589
-      ActivePage = tbsSystemFileUpdate
+      Width = 856
+      Height = 578
+      ActivePage = tbsDirectoryManage
       Align = alClient
       UseColoredTabs = True
       Font.Charset = DEFAULT_CHARSET
@@ -104,7 +104,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
       Font.Name = 'Verdana'
       Font.Style = []
       ParentFont = False
-      TabIndex = 2
+      TabIndex = 0
       TabOrder = 0
       TabStyle = tsDoubleSlant
       OnChange = pgcSystemManagerChange
@@ -114,27 +114,27 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object EasyPanel11: TEasyPanel
           Left = 0
           Top = 0
-          Width = 860
-          Height = 566
+          Width = 852
+          Height = 555
           Align = alClient
           TabOrder = 0
           object Splitter2: TSplitter
             Left = 249
             Top = 2
-            Height = 562
+            Height = 551
           end
           object EasyPanel12: TEasyPanel
             Left = 2
             Top = 2
             Width = 247
-            Height = 562
+            Height = 551
             Align = alLeft
             TabOrder = 0
             object tvSysDirectory: TEasyTreeView
               Left = 2
               Top = 33
               Width = 243
-              Height = 527
+              Height = 516
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Images = imgTv
@@ -429,8 +429,8 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           object pgcDirOperate: TEasyPageControl
             Left = 252
             Top = 2
-            Width = 606
-            Height = 562
+            Width = 598
+            Height = 551
             ActivePage = EasyTabSheet3
             Align = alClient
             TabIndex = 0
@@ -778,7 +778,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object EasyPanel7: TEasyPanel
           Left = 0
           Top = 0
-          Width = 860
+          Width = 852
           Height = 41
           Align = alTop
           TabOrder = 0
@@ -866,27 +866,27 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object EasyPanel8: TEasyPanel
           Left = 0
           Top = 41
-          Width = 860
-          Height = 525
+          Width = 852
+          Height = 514
           Align = alClient
           TabOrder = 1
           object Splitter1: TSplitter
             Left = 217
             Top = 2
-            Height = 521
+            Height = 510
           end
           object EasyPanel9: TEasyPanel
             Left = 2
             Top = 2
             Width = 215
-            Height = 521
+            Height = 510
             Align = alLeft
             TabOrder = 0
             object tvModules: TEasyTreeView
               Left = 2
               Top = 2
               Width = 211
-              Height = 517
+              Height = 506
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Indent = 19
@@ -896,8 +896,8 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           object EasyPanel10: TEasyPanel
             Left = 220
             Top = 2
-            Width = 638
-            Height = 521
+            Width = 630
+            Height = 510
             Align = alClient
             TabOrder = 1
             object EasyLabelEdit1: TEasyLabelEdit
@@ -1096,8 +1096,8 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         Caption = #31995#32479#25991#20214#21319#32423'(&S)'
         object EasyPanel3: TEasyPanel
           Left = 0
-          Top = 525
-          Width = 860
+          Top = 514
+          Width = 852
           Height = 41
           Align = alBottom
           TabOrder = 1
@@ -1225,15 +1225,15 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object EasyPanel4: TEasyPanel
           Left = 0
           Top = 0
-          Width = 860
-          Height = 525
+          Width = 852
+          Height = 514
           Align = alClient
           TabOrder = 0
           object EasyStringGrid1: TEasyStringGrid
             Left = 2
             Top = 2
-            Width = 856
-            Height = 521
+            Width = 848
+            Height = 510
             Cursor = crDefault
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
@@ -1475,8 +1475,8 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object mmOPLog: TEasyMemo
           Left = 0
           Top = 0
-          Width = 860
-          Height = 566
+          Width = 852
+          Height = 555
           EditLabel.Width = 8
           EditLabel.Height = 13
           EditLabel.Caption = '  '
@@ -1496,8 +1496,8 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           ParentFont = False
           TabOrder = 0
           DesignSize = (
-            860
-            566)
+            852
+            555)
         end
       end
     end

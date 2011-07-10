@@ -174,7 +174,7 @@ type
     procedure ShowCheckLoginUser();
     //加载子节点
     procedure LoadChildTreeNodes(ATreeView: TEasyTreeView;
-                               ADataList: TList{array of PEasytvNavRecord};
+                               ADataList: TList;
                                ParentNode: TTreeNode);
     //释放插件存放数组
     procedure DisposePlugArray;
@@ -195,6 +195,10 @@ uses
   untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage,
   untEasyClassPluginDirectory;
 
+const
+  PluginDirectorySQL = 'SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder';
+  PluginParamSQL = 'SELECT * FROM vwSysPluginParams';
+  
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);
 begin
   //为空时按下的可能是取消 在按下取消时将登录用户名置空
@@ -252,8 +256,34 @@ var
   DestMenuItem         : TMenuItem;
 begin
   mmMain.BeginUpdate;
-
-  for I := Low(FPluginsList) to High(FPluginsList) do
+  for I := 0 to PluginDirectoryList.Count - 1 do
+  begin
+    with TEasysysPluginsDirectory(PluginDirectoryList[I]) do
+    begin
+      if ParentPluginGUID = EasyRootGUID then
+      begin
+        //创建模块菜单
+        TmpMenuItem := TMenuItem.Create(mmMain);
+        with TmpMenuItem do
+        begin
+          Caption := PluginName;
+        end;
+        DestMenuItem := mmMain.Items.Find('模块(&M)');
+        if DestMenuItem <> nil then
+        begin
+          DestMenuItem.Add(TmpMenuItem);
+        end;
+      end;
+    end;
+    //加载窗体的进度条
+    with frmEasyPlateLoading.EasyProgressBar1 do
+    begin
+      if Position > Max then
+        Position := Max - 20;
+      Position := Position + I*2;
+    end;     
+  end;
+ { for I := Low(FPluginsList) to High(FPluginsList) do
   begin
     if PEasytvNavRecord(FPluginsList[I])^.sParentGUID = EasyRootGUID then
     begin
@@ -262,7 +292,6 @@ begin
       with TmpMenuItem do
       begin
         Caption := PEasytvNavRecord(FPluginsList[I])^.sCName;
-//        TmpMenuItem.
       end;
       DestMenuItem := mmMain.Items.Find('模块(&M)');
       if DestMenuItem <> nil then
@@ -277,7 +306,7 @@ begin
         Position := Max - 20;
       Position := Position + I*2;
     end;     
-  end;
+  end; }
   mmMain.EndUpdate;
 end;
 
@@ -315,60 +344,26 @@ procedure TfrmEasyPlateMain.InitTreeViewNav;
 var
   I: Integer;
   ATmpNode: TTreeNode;
+  AData: OleVariant;
 begin
   //清空树
   tvNav.Items.Clear;
-  with cdsMainTV do
+  AData := EasyRDMDisp.EasyGetRDMData(PluginDirectorySQL);
+  TEasysysPluginsDirectory.GeneratePluginDirectoryList(AData);
+  for I := 0 to PluginDirectoryList.Count - 1 do
   begin
-    TEasysysPluginsDirectory.GeneratePluginDirectoryList();
-    for I := 0 to PluginDirectoryList.Count - 1 do
+    with TEasysysPluginsDirectory(PluginDirectoryList[I]) do
     begin
-      with TEasysysPluginsDirectory(PluginDirectoryList[I]) do
+      //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
+      if (ParentPluginGUID = EasyRootGUID) and (IsDirectory = True) then
       begin
-        //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
-        if (ParentPluginGUID = EasyRootGUID) and (IsDirectory = True) then
-        begin
-          ATmpNode := tvNav.Items.AddChildObject(nil, PluginName, PluginDirectoryList[I]);
-          ATmpNode.ImageIndex := ImageIndex;
-          ATmpNode.SelectedIndex := SelectedImageIndex;
-          //增加临时子节点
-          tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
-        end;
+        ATmpNode := tvNav.Items.AddChildObject(nil, PluginName, PluginDirectoryList[I]);
+        ATmpNode.ImageIndex := ImageIndex;
+        ATmpNode.SelectedIndex := SelectedImageIndex;
+        //增加临时子节点
+        tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
       end;
     end;
-   { cdsMainTV.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM sysPluginsDirectory ORDER BY IsDirectory, iOrder');
-    First;
-    for I := 0 to RecordCount - 1 do
-    begin
-        SetLength(FPluginsList, Length(FPluginsList) + 1);
-        New(FPluginsList[High(FPluginsList)]);
-        FPluginsList[High(FPluginsList)]^.sGUID := FieldByName('PluginGUID').AsString;
-        FPluginsList[High(FPluginsList)]^.sEName := FieldByName('PluginName').AsString;
-        FPluginsList[High(FPluginsList)]^.sCName := FieldByName('PluginName').AsString;
-        FPluginsList[High(FPluginsList)]^.sParentGUID := FieldByName('ParentPluginGUID').AsString;
-        FPluginsList[High(FPluginsList)]^.iOrder := FieldByName('iOrder').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iImage1 := FieldByName('ImageIndex').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iImage2 := FieldByName('SelectedImageIndex').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iFlag := 0;
-        FPluginsList[High(FPluginsList)]^.sPluginFileName := FieldByName('PluginFileName').AsString;
-        if FieldByName('IsDirectory').AsBoolean then
-          FPluginsList[High(FPluginsList)]^.bDir := 1
-        else
-          FPluginsList[High(FPluginsList)]^.bDir := 0;
-
-        if (FieldByName('ParentPluginGUID').AsString = EasyRootGUID)
-           //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
-           and (FieldByName('IsDirectory').AsBoolean = True) then
-        begin
-          ATmpNode := tvNav.Items.AddChildObject(nil, FPluginsList[High(FPluginsList)]^.sCName,
-                                                FPluginsList[High(FPluginsList)]);
-          ATmpNode.ImageIndex := FPluginsList[High(FPluginsList)]^.iImage1;
-          ATmpNode.SelectedIndex := FPluginsList[High(FPluginsList)]^.iImage2;
-          //增加临时子节点
-          tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
-        end;
-        Next;
-    end;  }
   end;
   cdsMainTV.Close;
 end;
@@ -479,7 +474,6 @@ begin
   if not TEasysysPluginsDirectory(tvNav.Selected.Data).IsDirectory then
   begin
     TmpPlugFileName := TEasysysPluginsDirectory(tvNav.Selected.Data).PluginFileName;
-    ShowMessage(TmpPlugFileName);
     if FileExists(EasyPlugPath + TmpPlugFileName) then
       CreatePG_Plug(LoadPlugFile, '正在加载插件,请稍后...', tvNav.Selected)
     else
@@ -592,19 +586,6 @@ begin
         end;
       end;
     end;
-    {for I := Low(AData) to High(AData) do
-    begin
-      if AData[I]^.sParentGUID = PEasytvNavRecord(ParentNode.Data)^.sGUID then
-      begin
-        ATmpNode := ATreeView.Items.AddChildObject(ParentNode, AData[I]^.sCName, AData[I]);
-        ATmpNode.ImageIndex := AData[I]^.iImage1;
-        ATmpNode.SelectedIndex := AData[I]^.iImage2;
-
-        //生成临时节点 只有目录
-        if AData[I]^.bDir = 1 then
-          ATreeView.Items.AddChildFirst(ATmpNode, 'ChildTest');
-      end;
-    end; }
   end;
 end;
 

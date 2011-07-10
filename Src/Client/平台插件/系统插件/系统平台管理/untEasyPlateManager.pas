@@ -165,7 +165,7 @@ type
     AAddedTreeGUID: TStrings;
     //初始化树，只生成第一层节点
     procedure GenerateTreeView(ATreeView: TEasyTreeView;
-                               AData: array of PEasytvDirectoryRecord;
+                               AData: TList{array of PEasytvDirectoryRecord};
                                RootFlag: string);
     procedure GenerateTreeNode(ATreeView: TEasyTreeView;
                                AData: PEasytvDirectoryRecord;
@@ -205,7 +205,7 @@ implementation
 {$R *.dfm}
 
 uses
-  untTvDirectoryOper, ActiveX, untEasyUtilDLL, untPlugParamsOP,
+  untTvDirectoryOper, ActiveX, untEasyUtilDLL, untPlugParamsOP, untEasyClassPluginDirectory,
   untEasyUtilMethod;
 
 
@@ -247,7 +247,7 @@ begin
   //初始化数据
   InitDirectoryData;
   //生成目录树
-  GenerateTreeView(tvSysDirectory, tvTmpData, ParentNodeFlag);
+  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
   //
   tvSysDirectory.ReadOnly := True;
   mmOPLog.ReadOnly := True;
@@ -255,7 +255,7 @@ begin
 end;
 
 procedure TfrmEasyPlateManage.GenerateTreeView(ATreeView: TEasyTreeView;
-  AData: array of PEasytvDirectoryRecord; RootFlag: string);
+  AData: TList{array of PEasytvDirectoryRecord}; RootFlag: string);
 var
   I       : Integer;
   ATmpNode: TTreeNode;
@@ -263,7 +263,25 @@ begin
   ATreeView.Items.Clear;
   with ATreeView do
   begin
-    for I := Low(AData) to High(AData) do
+        Application.MessageBox(PChar(IntToStr(AData.Count)), PChar('提示'), 0);
+    for I := 0 to AData.Count - 1 do
+    begin
+      with TEasysysPluginsDirectory(AData[I]) do
+      begin
+        if (ParentPluginGUID = RootFlag) and (PluginName <> '') then
+        begin
+          ATmpNode := ATreeView.Items.AddChildObject(nil, PluginName, AData[I]);
+          ATmpNode.ImageIndex := ImageIndex;
+          ATmpNode.SelectedIndex := SelectedImageIndex;
+
+//          AAddedTreeGUID.Add(AData[I]^.sGUID);
+          //生成临时节点 只有目录
+          if IsDirectory then
+            ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
+        end;
+      end;  
+    end;  
+   { for I := Low(AData) to High(AData) do
     begin
       if (AData[I]^.sParentGUID = RootFlag) and  (AData[I]^.sCName <> '')
          and (AData[I]^.sFlag <> Easy_Del)
@@ -278,7 +296,7 @@ begin
         if AData[I]^.bDir = 0 then
           ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
       end;
-    end;
+    end; }
   end;
   if ATreeView.Items.Count = 0 then
   begin
@@ -575,7 +593,7 @@ begin
 
   InitDirectoryData;
   //生成目录树
-  GenerateTreeView(tvSysDirectory, tvTmpData, ParentNodeFlag);
+  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
 end;
 
 procedure TfrmEasyPlateManage.btnCancelClick(Sender: TObject);
@@ -596,7 +614,7 @@ begin
   end;  
 
   //生成目录树
-  GenerateTreeView(tvSysDirectory, tvTmpData, ParentNodeFlag);
+  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
 end;
 
 procedure TfrmEasyPlateManage.DisposeArrayTvDirectory(AFlag: string = '0');
@@ -621,47 +639,11 @@ begin
 end;
 
 procedure TfrmEasyPlateManage.InitDirectoryData;
-var
-  I: Integer;
 begin
-  if cdsDirManager.Active then                   
+  if cdsDirManager.Active then
     cdsDirManager.Close;
   //初始化系统目录数组
-  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vw_sysPlugins ORDER BY bDir, iOrder');
-//  cdsDirManager.CommandText := '';
-//  cdsDirManager.CommandText := 'SELECT * FROM vw_sysPlugins ORDER BY bDir, iOrder';
-//  cdsDirManager.Open;
-  cdsDirManager.First;  //*
-  for I := 0 to cdsDirManager.RecordCount - 1 do
-  begin
-    SetLength(tvTmpData, Length(tvTmpData) + 1);
-    New(tvTmpData[High(tvTmpData)]);
-
-    tvTmpData[High(tvTmpData)]^.sGUID := cdsDirManager.fieldbyname('GUID').AsString;
-    tvTmpData[High(tvTmpData)]^.sEName := cdsDirManager.fieldbyname('sEName').AsString;
-    tvTmpData[High(tvTmpData)]^.sCName := cdsDirManager.fieldbyname('sCName').AsString;
-    tvTmpData[High(tvTmpData)]^.iOrder := cdsDirManager.fieldbyname('iOrder').AsInteger;
-    tvTmpData[High(tvTmpData)]^.iImage1 := cdsDirManager.fieldbyname('iImage1').AsInteger;
-    tvTmpData[High(tvTmpData)]^.iImage2 := cdsDirManager.fieldbyname('iImage2').AsInteger;
-    tvTmpData[High(tvTmpData)]^.iFlag := cdsDirManager.fieldbyname('iFlag').AsInteger;
-    tvTmpData[High(tvTmpData)]^.sParentGUID := cdsDirManager.fieldbyname('sParentGUID').AsString;
-    tvTmpData[High(tvTmpData)]^.bDir := cdsDirManager.fieldbyname('bDir').AsInteger;
-    tvTmpData[High(tvTmpData)]^.sPluginFileName := cdsDirManager.fieldbyname('sPluginFileName').AsString;
-    //参数
-    if cdsDirManager.fieldbyname('bDir').AsInteger = 1 then
-    begin
-      SetLength(tvTmpParamsData, Length(tvTmpParamsData) + 1);
-      New(tvTmpParamsData[High(tvTmpParamsData)]);
-      tvTmpParamsData[High(tvTmpParamsData)]^.ParamGUID := cdsDirManager.fieldbyname('ParamGUID').AsString;
-      tvTmpParamsData[High(tvTmpParamsData)]^.sPluginGUID := cdsDirManager.fieldbyname('PlugGUID').AsString;
-      tvTmpParamsData[High(tvTmpParamsData)]^.sParamEName := cdsDirManager.fieldbyname('sParamEName').AsString;
-      tvTmpParamsData[High(tvTmpParamsData)]^.sParamCName := cdsDirManager.fieldbyname('sParamCName').AsString;
-      tvTmpParamsData[High(tvTmpParamsData)]^.sValueType := cdsDirManager.fieldbyname('sValueType').AsString;
-      tvTmpParamsData[High(tvTmpParamsData)]^.sValue := cdsDirManager.fieldbyname('sValue').AsString;
-    end;
-
-    cdsDirManager.Next;
-  end;
+  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder');
 end;
 
 procedure TfrmEasyPlateManage.LoadChildTreeNodes(ATreeView: TEasyTreeView;
@@ -1042,7 +1024,7 @@ end;
 procedure TfrmEasyPlateManage.InitTvModules;
 begin
   //生成目录树
-  GenerateTreeView(tvModules, tvTmpData, ParentNodeFlag);
+  GenerateTreeView(tvModules, PluginDirectoryList, ParentNodeFlag);
 end;
 
 end.
