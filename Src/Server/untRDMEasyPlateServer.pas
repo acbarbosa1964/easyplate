@@ -31,7 +31,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, ComServ, ComObj, VCLCom, DataBkr,
   DBClient, EasyPlateServer_TLB, StdVcl, DB, ADODB, Provider, MConnect,
-  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX, Forms, SyncObjs;
+  ObjBrkr, IniFiles, untEasyUtilRWIni, ActiveX, Forms, SyncObjs, AppEvnts;
 
 type
   TRDMEasyPlateServer = class(TRemoteDataModule, IRDMEasyPlateServer)
@@ -48,6 +48,7 @@ type
     dspTable: TDataSetProvider;
     cdsTable: TClientDataSet;
     QryTable: TADOQuery;
+    ApplicationEvents1: TApplicationEvents;
     procedure RemoteDataModuleCreate(Sender: TObject);
     procedure RemoteDataModuleDestroy(Sender: TObject);
     procedure EasyRDMDspUpdateError(Sender: TObject;
@@ -62,6 +63,7 @@ type
       var Action: TDataAction);
     procedure EasyRDMQryDeleteError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
+    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
     FTableName,
@@ -210,6 +212,8 @@ end;
 
 function TRDMEasyPlateServer.EasyGetRDMData(const ASQL: WideString): OleVariant;
 begin
+  if frmEasyPlateServerMain.mmDetailLog.Checked then
+    AddExecLog(ASQL, 1);
   Result := Self.InnerGetData(ASQL);
 end;
 
@@ -231,6 +235,7 @@ begin
     frmEasyPlateServerMain.mmErrorLog.Lines.Add('主键字段:' + AKeyField + '未提供');
     Exit;
   end;
+  { TODO : 表结构如果在缓存目录中存在就从缓存中更新 }
   EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
   EasyRDMQry.Open;
   with EasyRDMQry.FieldByName(AKeyField) do
@@ -436,13 +441,17 @@ begin
   AddExecLog('Delete:' + e.Message, 1);
 end;
 
+procedure TRDMEasyPlateServer.ApplicationEvents1Exception(Sender: TObject;
+  E: Exception);
+begin
+  AddExecLog(GetOperTime + ' ' + e.Message, 1);
+end;
+
 initialization
   //ciInternal--对象不受外部影响
   RDMFactory := TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
     Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
 
-//  TComponentFactory.Create(ComServer, TRDMEasyPlateServer,
-//    Class_RDMEasyPlateServer, ciMultiInstance, tmApartment);
   //如果是Vista或Win7需要执行此句，在此全部执行      tmApartment
   ComServer.UpdateRegistry(True);//加入此名，可正常注入系统
 

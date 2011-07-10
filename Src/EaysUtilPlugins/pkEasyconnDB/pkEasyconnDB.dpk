@@ -28,21 +28,14 @@ package pkEasyconnDB;
 requires
   rtl,
   vcl,
-  dbrtl,
-  adortl,
   vcljpg,
-  dsnap,
   vclx,
   vcldb,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7,
   indy,
-  dsnapcon,
   pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilFunction;
+  pkEasyUtilFunction,
+  dsnapcon;
 
 contains
   EasyADOConEditor in 'EasyADOConEditor.pas' {frmEasyADOConEditor};

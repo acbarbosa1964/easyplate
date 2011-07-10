@@ -35,7 +35,6 @@ requires
   dsnapcon,
   adortl,
   pkEasyAdditional,
-  pkEasyUtilRWConfig,
   pkEasyUtilFunction,
   pkEasyDBConnection,
   pkEasyPlateBaseForm;

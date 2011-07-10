@@ -11343,7 +11343,6 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Top = 143
   end
   object ApplicationEvents1: TApplicationEvents
-    OnException = ApplicationEvents1Exception
     Left = 381
     Top = 143
   end

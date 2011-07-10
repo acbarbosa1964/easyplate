@@ -4,7 +4,7 @@
 create table sysUser (
    UserGUID             varchar(50)          not null,
    UserName             varchar(30)          not null,
-   PassWord             varchar(30)          not null,
+   PassWord             varchar(32)          not null,
    EmployeeGUID         varchar(50)          not null,
    IsEnable             bit                  not null default 0,
    EndDate              datetime             not null,

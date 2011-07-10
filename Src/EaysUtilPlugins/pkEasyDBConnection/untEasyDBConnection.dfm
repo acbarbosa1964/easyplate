@@ -7,7 +7,11 @@ object DMEasyDBConnection: TDMEasyDBConnection
   Height = 250
   Width = 371
   object EasyADOConn: TADOConnection
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=EasyERP;Data Source=127.0.0.1;'
     LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
     Left = 48
     Top = 32
   end

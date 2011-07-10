@@ -4,7 +4,14 @@ interface
 
 const
   //获取数据库名称
-  EASY_DATABASE_USER = 'Select Name, dbid, sid, crdate, filename, version FROM Master..SysDatabases '
+  EASY_DATABASE_USER = 'SELECT * FROM vw_sysDataBase_User ORDER BY Name';
+  EASY_DATABASE_ALL = 'SELECT * FROM vw_sysDataBase ORDER BY Name';
+  EASY_DATATYPES = 'SELECT * FROM vw_sysTypes';
+  EASY_TABLE = 'SELECT * FROM vw_sysTables_User ORDER BY Name';
+  EASY_TABLEFIELD = 'SELECT * FROM vw_sysTable_Fields '
+                    +' WHERE TableName = ''%s'''
+                    + ' ORDER BY FieldNo';
+ { EASY_DATABASE_USER = 'Select Name, dbid, sid, crdate, filename, version FROM Master..SysDatabases '
                       + ' WHERE name NOT IN(''model'' ,''master'', ''msdb'', ''tempdb'') '
                       + ' ORDER BY Name ';
   EASY_DATABASE_ALL = 'Select Name, dbid, sid, crdate, filename, version FROM Master..SysDatabases '
@@ -42,7 +49,7 @@ const
 	+' left join syscomments e on a.cdefault=e.id '
 	+' left join sysproperties g on a.id=g.id AND a.colid = g.smallid '
   +' WHERE d.name = ''%s'''
-  +' order by a.id,a.colorder ';
+  +' order by a.id,a.colorder ';  }
   
 implementation
 

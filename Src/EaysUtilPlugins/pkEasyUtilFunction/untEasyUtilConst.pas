@@ -40,7 +40,10 @@ const
 //包加载文件不存在
   EASY_BPL_NOTFOUND = '加载指定的文件%s已丢失!';
 //数据库连接
-  EASY_DB_CONNECT_ERROR = '服务器连接失败,请重新设置服务连接参数, 原因：' ;
+  EASY_DB_CONNECT_ERROR = '服务器连接失败, 原因：' ;
+  EASY_DB_CONNECT_ERROR1 = '1、请检查应用服务器是否开启;' ;
+  EASY_DB_CONNECT_ERROR2 = '2、请检查客户端参数设置是否正确.' ;
+  
   EASY_DB_NOTFILE       = '系统文件丢失,原因：数据模块丢失!';
   EASY_DB_INITERROR     = '数据模块初始化失败,请检查数据连接模块!';
   EASY_DB_LOADERROR     = '数据模块加载失败,原因：数据模块损坏或丢失!';

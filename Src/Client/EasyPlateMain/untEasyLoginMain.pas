@@ -95,6 +95,7 @@ begin
   try
     Screen.Cursor := crHourGlass;
     //开始验证户名和密码 分CS/CAS
+    { TODO : 将系统运行的SQL语句从表sysSQL缓存到本地 }
     with cdsLogin do
     begin
       if UpperCase(DMEasyDBConnection.EasyAppType) = 'CAS' then
@@ -142,7 +143,7 @@ begin
 
         if cdsLogin.RecordCount > 0 then
         begin
-          if transfer(edtPassWord.Text) = LowerCase(FieldByName('sLoginPassWord').AsString) then
+          if transfer(edtPassWord.Text) = LowerCase(FieldByName('PassWord').AsString) then
           begin
             frmEasyPlateMain.EasyLoginUserID := EasyLoginUserID;
             frmEasyLoginMain.Close;

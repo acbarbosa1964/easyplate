@@ -140,7 +140,6 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure EpResourceManageClick(Sender: TObject);
     procedure actConnectDBExecute(Sender: TObject);
-    procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -175,7 +174,7 @@ type
     procedure ShowCheckLoginUser();
     //加载子节点
     procedure LoadChildTreeNodes(ATreeView: TEasyTreeView;
-                               AData: array of PEasytvNavRecord;
+                               ADataList: TList{array of PEasytvNavRecord};
                                ParentNode: TTreeNode);
     //释放插件存放数组
     procedure DisposePlugArray;
@@ -193,7 +192,8 @@ implementation
 uses
   untEasyUtilInit, untEasyDBConnection, untEasyUtilDLL, untEasyUtilMethod,
   untEasyUtilClasses, untEasyPlateLoading, untEasyUtilConst, 
-  untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage;
+  untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage,
+  untEasyClassPluginDirectory;
 
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);
 begin
@@ -204,15 +204,12 @@ begin
   end;  
   with cdsMain do
   begin
-    cdsMain.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vw_inituser  WHERE sLoginName = ' + QuotedStr(UserID));
-//    Close;
-//    CommandText := 'SELECT * FROM vw_inituser  WHERE sLoginName = ' + QuotedStr(UserID);
-//    Open;
+    cdsMain.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vw_inituser  WHERE UserName = ' + QuotedStr(UserID));
     if cdsMain.RecordCount = 1 then
     begin
       stbMain.Panels[0].Text := '<a color="clblue">' + EASY_DISPLAYUSERINFO_WELCOME
                                 + '</a>'
-                                + fieldbyname('sEmployeeCName').AsString;
+                                + fieldbyname('EmployeeCName').AsString;
       stbMain.Panels[1].Text := '<a color="clblue">' + EASY_DISPLAYUSERINFO_DEPT
                                 + '</a>';
       Close;
@@ -323,39 +320,55 @@ begin
   tvNav.Items.Clear;
   with cdsMainTV do
   begin
-    cdsMainTV.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM sysPluginsDirectory ORDER BY bDir, iOrder');
-//    Close;
-//    CommandText := 'SELECT * FROM sysPluginsDirectory ORDER BY bDir, iOrder';
-//    Open;
+    TEasysysPluginsDirectory.GeneratePluginDirectoryList();
+    for I := 0 to PluginDirectoryList.Count - 1 do
+    begin
+      with TEasysysPluginsDirectory(PluginDirectoryList[I]) do
+      begin
+        //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
+        if (ParentPluginGUID = EasyRootGUID) and (IsDirectory = True) then
+        begin
+          ATmpNode := tvNav.Items.AddChildObject(nil, PluginName, PluginDirectoryList[I]);
+          ATmpNode.ImageIndex := ImageIndex;
+          ATmpNode.SelectedIndex := SelectedImageIndex;
+          //增加临时子节点
+          tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
+        end;
+      end;
+    end;
+   { cdsMainTV.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM sysPluginsDirectory ORDER BY IsDirectory, iOrder');
     First;
     for I := 0 to RecordCount - 1 do
     begin
         SetLength(FPluginsList, Length(FPluginsList) + 1);
         New(FPluginsList[High(FPluginsList)]);
-        FPluginsList[High(FPluginsList)]^.sGUID := FieldByName('GUID').AsString;
-        FPluginsList[High(FPluginsList)]^.sEName := FieldByName('sEName').AsString;
-        FPluginsList[High(FPluginsList)]^.sCName := FieldByName('sCName').AsString;
-        FPluginsList[High(FPluginsList)]^.sParentGUID := FieldByName('sParentGUID').AsString;
+        FPluginsList[High(FPluginsList)]^.sGUID := FieldByName('PluginGUID').AsString;
+        FPluginsList[High(FPluginsList)]^.sEName := FieldByName('PluginName').AsString;
+        FPluginsList[High(FPluginsList)]^.sCName := FieldByName('PluginName').AsString;
+        FPluginsList[High(FPluginsList)]^.sParentGUID := FieldByName('ParentPluginGUID').AsString;
         FPluginsList[High(FPluginsList)]^.iOrder := FieldByName('iOrder').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iImage1 := FieldByName('iImage1').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iImage2 := FieldByName('iImage2').AsInteger;
-        FPluginsList[High(FPluginsList)]^.iFlag := FieldByName('iFlag').AsInteger;
-        FPluginsList[High(FPluginsList)]^.sPluginFileName := FieldByName('sPluginFileName').AsString;
-        FPluginsList[High(FPluginsList)]^.bDir := FieldByName('bDir').AsInteger;
+        FPluginsList[High(FPluginsList)]^.iImage1 := FieldByName('ImageIndex').AsInteger;
+        FPluginsList[High(FPluginsList)]^.iImage2 := FieldByName('SelectedImageIndex').AsInteger;
+        FPluginsList[High(FPluginsList)]^.iFlag := 0;
+        FPluginsList[High(FPluginsList)]^.sPluginFileName := FieldByName('PluginFileName').AsString;
+        if FieldByName('IsDirectory').AsBoolean then
+          FPluginsList[High(FPluginsList)]^.bDir := 1
+        else
+          FPluginsList[High(FPluginsList)]^.bDir := 0;
 
-      if (FieldByName('sParentGUID').AsString = EasyRootGUID)
-         //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
-         and (FieldByName('bDir').AsString = '0') then
-      begin
-        ATmpNode := tvNav.Items.AddChildObject(nil, FPluginsList[High(FPluginsList)]^.sCName,
-                                              FPluginsList[High(FPluginsList)]);
-        ATmpNode.ImageIndex := FPluginsList[High(FPluginsList)]^.iImage1;
-        ATmpNode.SelectedIndex := FPluginsList[High(FPluginsList)]^.iImage2;
-        //增加临时子节点
-        tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
-      end;
-      Next;
-    end;
+        if (FieldByName('ParentPluginGUID').AsString = EasyRootGUID)
+           //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
+           and (FieldByName('IsDirectory').AsBoolean = True) then
+        begin
+          ATmpNode := tvNav.Items.AddChildObject(nil, FPluginsList[High(FPluginsList)]^.sCName,
+                                                FPluginsList[High(FPluginsList)]);
+          ATmpNode.ImageIndex := FPluginsList[High(FPluginsList)]^.iImage1;
+          ATmpNode.SelectedIndex := FPluginsList[High(FPluginsList)]^.iImage2;
+          //增加临时子节点
+          tvNav.Items.AddChildFirst(ATmpNode, 'ChildTest');
+        end;
+        Next;
+    end;  }
   end;
   cdsMainTV.Close;
 end;
@@ -438,7 +451,8 @@ begin
     if Node.Item[0].Text = 'ChildTest' then
     begin
       Node.Item[0].Delete;
-      LoadChildTreeNodes(tvNav, FPluginsList, Node);
+      //调用之前TreeView已完成PluginDirectoryList的初始化
+      LoadChildTreeNodes(tvNav, PluginDirectoryList, Node);
     end;
   end;
 end;       
@@ -462,9 +476,10 @@ begin
   inherited;
   if tvNav.Selected = nil then
     Exit;
-  if PEasytvNavRecord(tvNav.Selected.Data)^.bDir = 1 then
+  if not TEasysysPluginsDirectory(tvNav.Selected.Data).IsDirectory then
   begin
-    TmpPlugFileName := PEasytvNavRecord(tvNav.Selected.Data)^.sPluginFileName;
+    TmpPlugFileName := TEasysysPluginsDirectory(tvNav.Selected.Data).PluginFileName;
+    ShowMessage(TmpPlugFileName);
     if FileExists(EasyPlugPath + TmpPlugFileName) then
       CreatePG_Plug(LoadPlugFile, '正在加载插件,请稍后...', tvNav.Selected)
     else
@@ -521,7 +536,7 @@ begin
   TmpNode := frmEasyPlateLoading.ATmpNode_Loading;
   //进度窗体进度
   frmEasyPlateLoading.EasyProgressBar1.Position := 10;
-  TmpPluginFile := EasyPlugPath + PEasytvNavRecord(TmpNode.Data)^.sPluginFileName;
+  TmpPluginFile := EasyPlugPath + TEasysysPluginsDirectory(TmpNode.Data).PluginFileName;
   if (pos('.bpl', TmpPluginFile) > 0) and (FileExists(TmpPluginFile)) then
   begin
     LoadPkg(TmpPluginFile, FPluginParams, EasyMDITabSet1,
@@ -553,26 +568,43 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.LoadChildTreeNodes(ATreeView: TEasyTreeView;
-  AData: array of PEasytvNavRecord; ParentNode: TTreeNode);
+                               ADataList: TList{array of PEasytvNavRecord};
+                               ParentNode: TTreeNode);
 var
   I       : Integer;
   ATmpNode: TTreeNode;
 begin
   with ATreeView do
   begin
-    for I := Low(AData) to High(AData) do
+    for I := 0 to ADataList.Count - 1 do
+    begin
+      with TEasysysPluginsDirectory(ADataList[I]) do
+      begin
+        if ParentPluginGUID = TEasysysPluginsDirectory(ParentNode.Data).PluginGUID then
+        begin
+          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginName, ADataList[I]);
+          ATmpNode.ImageIndex := ImageIndex;
+          ATmpNode.SelectedIndex := SelectedImageIndex;
+
+          //生成临时节点 只有目录
+          if IsDirectory then
+            ATreeView.Items.AddChildFirst(ATmpNode, 'ChildTest');
+        end;
+      end;
+    end;
+    {for I := Low(AData) to High(AData) do
     begin
       if AData[I]^.sParentGUID = PEasytvNavRecord(ParentNode.Data)^.sGUID then
       begin
         ATmpNode := ATreeView.Items.AddChildObject(ParentNode, AData[I]^.sCName, AData[I]);
         ATmpNode.ImageIndex := AData[I]^.iImage1;
         ATmpNode.SelectedIndex := AData[I]^.iImage2;
-        
+
         //生成临时节点 只有目录
-        if AData[I]^.bDir = 0 then
+        if AData[I]^.bDir = 1 then
           ATreeView.Items.AddChildFirst(ATmpNode, 'ChildTest');
       end;
-    end;
+    end; }
   end;
 end;
 
@@ -633,15 +665,11 @@ begin
   LoadPkg_Normal('pkEasyconnDB.bpl', FPluginParams);
 end;
 
-procedure TfrmEasyPlateMain.ApplicationEvents1Exception(Sender: TObject;
-  E: Exception);
-begin
-  inherited;
-  if E.ClassType.ClassName = 'ESocketConnectionError' then
-    Application.MessageBox('与服务器失去连接,请重新登录客户端!', '提示', MB_OK + 
-      MB_ICONINFORMATION)
-  else
-    raise E;
-end;
+//  inherited;
+//  if E.ClassType.ClassName = 'ESocketConnectionError' then
+//    Application.MessageBox('与服务器失去连接,请重新登录客户端!', '提示', MB_OK +
+//      MB_ICONINFORMATION);
+//  else
+//    raise E;
 
 end.

@@ -30,7 +30,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, DB, ADODB, IniFiles, Forms, untEasyUtilRWIni,
-  Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB;
+  Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB,
+  AppEvnts;
 
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
          exports GenrateEasyDBConnection;
@@ -338,7 +339,10 @@ begin
       Result := 1;
     except on e:Exception do
       begin
-        Application.MessageBox(PChar(EASY_DB_CONNECT_ERROR + e.Message),
+        Application.MessageBox(PChar(EASY_DB_CONNECT_ERROR + e.Message
+                                + #10#13 + '请检查:'
+                                + #10#13 + '1、应用服务器是否开启;'
+                                + #10#13 + '2、客户端连接服务器参数设置是否正确.'),
                                 EASY_SYS_ERROR, MB_OK + MB_ICONERROR);
         Application.Terminate;
       end
@@ -447,4 +451,4 @@ initialization
 finalization
   CoUninitialize;
 
-end.                                   
+end.

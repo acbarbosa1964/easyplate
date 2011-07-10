@@ -39,7 +39,6 @@ requires
   pkEasyAdditional,
   pkEasyGrid,
   pkEasyUtilFunction,
-  pkEasyUtilRWConfig,
   pkEasyDBConnection,
   pkEasyPlateBaseForm;
 

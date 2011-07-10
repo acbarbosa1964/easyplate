@@ -98,4 +98,9 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
     Left = 144
     Top = 216
   end
+  object ApplicationEvents1: TApplicationEvents
+    OnException = ApplicationEvents1Exception
+    Left = 56
+    Top = 88
+  end
 end

@@ -8,8 +8,8 @@ inherited frmEasyDBTool: TfrmEasyDBTool
   object pnlMain: TEasyPanel
     Left = 0
     Top = 0
-    Width = 862
-    Height = 473
+    Width = 854
+    Height = 462
     Align = alClient
     BorderOuter = fsNone
     BorderColor = clNone
@@ -22,13 +22,13 @@ inherited frmEasyDBTool: TfrmEasyDBTool
     object Splitter1: TSplitter
       Left = 185
       Top = 0
-      Height = 473
+      Height = 462
     end
     object EasyPanel1: TEasyPanel
       Left = 0
       Top = 0
       Width = 185
-      Height = 473
+      Height = 462
       Align = alLeft
       BorderOuter = fsFlat
       TabOrder = 0
@@ -36,7 +36,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
         Left = 1
         Top = 1
         Width = 183
-        Height = 471
+        Height = 460
         SelectionPen.Color = clBtnShadow
         Align = alClient
         BorderStyle = bsNone
@@ -54,24 +54,24 @@ inherited frmEasyDBTool: TfrmEasyDBTool
     object EasyPanel2: TEasyPanel
       Left = 188
       Top = 0
-      Width = 674
-      Height = 473
+      Width = 666
+      Height = 462
       Align = alClient
       BorderOuter = fsNone
       TabOrder = 1
       object EasyPanel4: TEasyPanel
         Left = 0
         Top = 0
-        Width = 674
-        Height = 473
+        Width = 666
+        Height = 462
         Align = alClient
         BorderOuter = fsNone
         TabOrder = 0
         object pgcDBDetail: TEasyPageControl
           Left = 0
           Top = 0
-          Width = 674
-          Height = 473
+          Width = 666
+          Height = 462
           ActivePage = tsbTableField
           Align = alClient
           TabIndex = 0
@@ -82,8 +82,8 @@ inherited frmEasyDBTool: TfrmEasyDBTool
             object sgrdTableField: TEasyStringGrid
               Left = 0
               Top = 28
-              Width = 670
-              Height = 422
+              Width = 662
+              Height = 411
               Cursor = crDefault
               Align = alClient
               ColCount = 9
@@ -194,7 +194,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
             object EasyDockPanel1: TEasyDockPanel
               Left = 0
               Top = 0
-              Width = 670
+              Width = 662
               Height = 28
               MinimumSize = 3
               LockHeight = False
@@ -205,7 +205,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
               object EasyToolBar1: TEasyToolBar
                 Left = 3
                 Top = 1
-                Width = 664
+                Width = 656
                 Height = 26
                 AllowFloating = True
                 CaptionFont.Charset = DEFAULT_CHARSET
@@ -224,8 +224,8 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                 object btnNew: TEasyToolBarButton
                   Left = 9
                   Top = 2
-                  Width = 48
-                  Height = 22
+                  Width = 52
+                  Height = 24
                   Appearance.CaptionFont.Charset = DEFAULT_CHARSET
                   Appearance.CaptionFont.Color = clWindowText
                   Appearance.CaptionFont.Height = -11
@@ -244,7 +244,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   OnClick = btnNewClick
                 end
                 object EasyToolBarButton3: TEasyToolBarButton
-                  Left = 133
+                  Left = 137
                   Top = 2
                   Width = 76
                   Height = 24
@@ -266,7 +266,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   OnClick = EasyToolBarButton3Click
                 end
                 object EasyToolBarButton1: TEasyToolBarButton
-                  Left = 57
+                  Left = 61
                   Top = 2
                   Width = 76
                   Height = 24
@@ -295,7 +295,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
             object EasyDockPanel2: TEasyDockPanel
               Left = 0
               Top = 0
-              Width = 670
+              Width = 662
               Height = 28
               MinimumSize = 3
               LockHeight = False
@@ -306,7 +306,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
               object EasyToolBar2: TEasyToolBar
                 Left = 3
                 Top = 1
-                Width = 664
+                Width = 656
                 Height = 26
                 AllowFloating = True
                 CaptionFont.Charset = DEFAULT_CHARSET
@@ -621,7 +621,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
     Left = 424
     Top = 200
     Bitmap = {
-      494C01010E001300040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C01010E001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1285,7 +1285,8 @@ inherited frmEasyDBTool: TfrmEasyDBTool
       F007C03F80708007F707800300210000F7FF800300030000F707800300070000
       F0078003000F0000F707801F00070007F7FF801F00070007F707801F00070007
       F007801F000F003FF707801F000F003FC1FF801F003F003FC1FF801F003F003F
-      C1FFC03F807F807FFFFFE07FC0FFC0FF}
+      C1FFC03F807F807FFFFFE07FC0FFC0FF00000000000000000000000000000000
+      000000000000}
   end
   object cdsDataBases: TClientDataSet
     Aggregates = <>

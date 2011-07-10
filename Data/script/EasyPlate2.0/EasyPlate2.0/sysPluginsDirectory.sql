@@ -29,3 +29,5 @@ alter table sysPluginsDirectory
    add constraint FK_SYSPLUGI_REFERENCE_SYSPLUGI foreign key (PluginParamGUID)
       references sysPluginParams (PluginParamGUID)
 go
+--插件显示样式
+ALTER TABLE sysPluginsDirectory ADD ShowModal BIT NOT NULL DEFAULT 0

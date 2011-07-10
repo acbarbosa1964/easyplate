@@ -208,13 +208,13 @@ begin
       begin
         Cells[0, I + 1] := IntToStr(I + 1);
         Cells[1, I + 1] := AClientDataSet.fieldbyname('FieldName').AsString;
-        Cells[2, I + 1] := AClientDataSet.fieldbyname('DataType').AsString;
-        Cells[3, I + 1] := AClientDataSet.fieldbyname('DataLong').AsString;
-        Cells[4, I + 1] := AClientDataSet.fieldbyname('DataPrecision').AsString;
+        Cells[2, I + 1] := AClientDataSet.fieldbyname('Type').AsString;
+        Cells[3, I + 1] := AClientDataSet.fieldbyname('Long').AsString;
+        Cells[4, I + 1] := AClientDataSet.fieldbyname('percent').AsString;
         Cells[5, I + 1] := AClientDataSet.fieldbyname('PrimaryKey').AsString;
-        Cells[6, I + 1] := AClientDataSet.fieldbyname('AllowNULL').AsString;
+        Cells[6, I + 1] := AClientDataSet.fieldbyname('IsNull').AsString;
         Cells[7, I + 1] := AClientDataSet.fieldbyname('DefaultValue').AsString;
-        Cells[8, I + 1] := AClientDataSet.fieldbyname('FieldRemark').AsString;
+        //Cells[8, I + 1] := AClientDataSet.fieldbyname('Comment').AsString;
       end;
       AClientDataSet.Next;
     end;  

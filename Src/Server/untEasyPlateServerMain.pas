@@ -92,14 +92,18 @@ type
     EasyToolBarButton3: TEasyToolBarButton;
     EasyToolBarSeparator1: TEasyToolBarSeparator;
     EasyToolBarSeparator2: TEasyToolBarSeparator;
-    EasyToolBarButton4: TEasyToolBarButton;
+    btnExit: TEasyToolBarButton;
     N6: TMenuItem;
     H1: TMenuItem;
     R1: TMenuItem;
     N10: TMenuItem;
-    N11: TMenuItem;
+    mmAutoRun: TMenuItem;
     N12: TMenuItem;
     N13: TMenuItem;
+    mmDetailLog: TMenuItem;
+    N14: TMenuItem;
+    N15: TMenuItem;
+    N16: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure N5Click(Sender: TObject);
     procedure ApplyActionExecute(Sender: TObject);
@@ -118,9 +122,13 @@ type
     procedure mmErrorLogChange(Sender: TObject);
     procedure mmExecLogChange(Sender: TObject);
     procedure EasyToolBarButton3Click(Sender: TObject);
-    procedure EasyToolBarButton4Click(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
     procedure N12Click(Sender: TObject);
     procedure N13Click(Sender: TObject);
+    procedure mmDetailLogClick(Sender: TObject);
+    procedure N14Click(Sender: TObject);
+    procedure N16Click(Sender: TObject);
+    procedure mmAutoRunClick(Sender: TObject);
   private
     { Private declarations }
     FMaxClientCount: Integer;
@@ -139,6 +147,10 @@ type
     //App\log 运行日志App\log\ExecLog 错误日志 App\log\ErrorLog
 //    procedure SaveLogMemo(ALogFile: string);
     procedure RefreshTableCache;
+    //开机自动启动 注册与反注册
+    procedure RegAutoRun(Key, AppPath: string);
+    procedure UnRegAutoRun(Key: string);
+    function FindRegAutoRun(Key: string): Boolean;
   public
     { Public declarations }
     procedure Initialize(FromService: Boolean);
@@ -176,7 +188,7 @@ implementation
 
 uses
   untRDMEasyPlateServer, SConnect, ActiveX, MidConst, untEasyLocalDM,
-  untEasyUtilMethod;
+  untEasyUtilMethod, EasyPlateServer_TLB;
 
 {$R *.dfm}
 
@@ -867,15 +879,15 @@ begin
       end else
       begin
         //关闭服务时不提示COM警告信息
-        CoGetClassObject(StringToGUID('{4F1AC7AF-01E3-46AC-BB37-7C11C2D3B5E3}'),
-                          CLSCTX_SERVER, nil, IClassFactory, Factory);
+        CoGetClassObject(Class_RDMEasyPlateServer, CLSCTX_SERVER, nil, IClassFactory, Factory);
         Factory.LockServer(False);
         if ApplyAction.Enabled then
           ApplyAction.Execute;
         WriteSettings;
         CanClose := True;
       end;
-    end;
+    end else
+      CanClose := True;
   finally
   end;
 end;
@@ -936,6 +948,8 @@ begin
       ShowMessage('日志目录检查出错, 原因：' + e.Message);
     end;
   end;
+  if FindRegAutoRun('EasyPlateServer') then
+    mmAutoRun.Checked := True;
 end;
 
 function TfrmEasyPlateServerMain.GetLocalDate: string;
@@ -1033,7 +1047,7 @@ begin
   RefreshTableCache;
 end;
 
-procedure TfrmEasyPlateServerMain.EasyToolBarButton4Click(Sender: TObject);
+procedure TfrmEasyPlateServerMain.btnExitClick(Sender: TObject);
 begin
   Close;
 end;
@@ -1056,6 +1070,69 @@ end;
 procedure TfrmEasyPlateServerMain.N13Click(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmEasyPlateServerMain.mmDetailLogClick(Sender: TObject);
+begin
+  mmDetailLog.Checked := not mmDetailLog.Checked;
+end;
+
+procedure TfrmEasyPlateServerMain.N14Click(Sender: TObject);
+begin
+  btnExitClick(Sender);
+end;
+
+procedure TfrmEasyPlateServerMain.N16Click(Sender: TObject);
+begin
+  N12Click(Sender);
+end;
+
+procedure TfrmEasyPlateServerMain.RegAutoRun(Key, AppPath: string);
+//开机自动启动 
+var 
+  Reg: TRegistry; 
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  Reg.OpenKey( '\SOFTWARE\Microsoft\windows\CurrentVersion\Run', False);
+  Reg.writeString(Key, AppPath);
+  Reg.CloseKey;
+end;
+
+procedure TfrmEasyPlateServerMain.UnRegAutoRun(Key: string);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  Reg.OpenKey( '\SOFTWARE\Microsoft\windows\CurrentVersion\Run', False);
+  Reg.DeleteValue(Key);
+  Reg.CloseKey;
+end;
+
+procedure TfrmEasyPlateServerMain.mmAutoRunClick(Sender: TObject);
+begin
+  mmAutoRun.Checked := not mmAutoRun.Checked;
+  if mmAutoRun.Checked then
+    RegAutoRun('EasyPlateServer', Forms.Application.ExeName)
+  else
+    UnRegAutoRun('EasyPlateServer');
+end;
+
+function TfrmEasyPlateServerMain.FindRegAutoRun(Key: string): Boolean;
+var
+  Reg: TRegistry;
+  AFilePath: string;
+begin
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  Reg.OpenKey( '\SOFTWARE\Microsoft\windows\CurrentVersion\Run', False);
+  AFilePath := Reg.ReadString(Key);
+  if FileExists(AFilePath) then
+    Result := True
+  else
+    Result := False;
+  Reg.CloseKey;
 end;
 
 end.
