@@ -11,90 +11,19 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object EasyPanel1: TEasyPanel
+  object EasyPanel2: TEasyPanel
     Left = 0
     Top = 0
     Width = 858
-    Height = 41
-    Align = alTop
-    BorderOuter = fsFlat
-    TabOrder = 0
-    object lblOperateHint: TEasyLabel
-      Left = 16
-      Top = 8
-      Width = 65
-      Height = 17
-      AutoSize = False
-      Caption = #20934#22791#23436#25104'...'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlue
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      Style = EasyfNormal
-      Angle = 0
-      Effect3D.Style = EasyfFun
-      Effect3D.Orientation = EasyfRightTop
-      Effect3D.Depth = 0
-      Effect3D.ShadowedColor = clGray
-      PenWidth = 1
-    end
-    object pgbOperate: TEasyProgressBar
-      Left = 96
-      Top = 8
-      Width = 209
-      Height = 18
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Verdana'
-      Font.Style = []
-      Level0ColorTo = 14811105
-      Level1ColorTo = 13303807
-      Level2Color = 5483007
-      Level2ColorTo = 11064319
-      Level3ColorTo = 13290239
-      Level1Perc = 70
-      Level2Perc = 90
-      Position = 0
-      ShowBorder = True
-    end
-    object EasyLabel1: TEasyLabel
-      Left = 432
-      Top = 8
-      Width = 401
-      Height = 17
-      AutoSize = False
-      Caption = #26412#27169#22359#20027#35201#26159#23558#31995#32479#26356#26032#30340#25991#20214#25552#20132#21040#25968#25454#24211#20013#65292#20379#23458#25143#31471#26356#26032#12290
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      Style = EasyfNormal
-      Angle = 0
-      Effect3D.Style = EasyfCool
-      Effect3D.Orientation = EasyfRightBottom
-      Effect3D.Depth = 0
-      Effect3D.ShadowedColor = clGray
-      PenWidth = 1
-    end
-  end
-  object EasyPanel2: TEasyPanel
-    Left = 0
-    Top = 41
-    Width = 858
-    Height = 580
+    Height = 621
     Align = alClient
     BorderOuter = fsFlat
-    TabOrder = 2
+    TabOrder = 1
     object pgcSystemManager: TEasyPageControl
       Left = 1
       Top = 1
       Width = 856
-      Height = 578
+      Height = 619
       ActivePage = tbsDirectoryManage
       Align = alClient
       UseColoredTabs = True
@@ -115,26 +44,26 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 852
-          Height = 555
+          Height = 596
           Align = alClient
           TabOrder = 0
           object Splitter2: TSplitter
             Left = 249
             Top = 2
-            Height = 551
+            Height = 592
           end
           object EasyPanel12: TEasyPanel
             Left = 2
             Top = 2
             Width = 247
-            Height = 551
+            Height = 592
             Align = alLeft
             TabOrder = 0
             object tvSysDirectory: TEasyTreeView
               Left = 2
               Top = 33
               Width = 243
-              Height = 516
+              Height = 557
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Images = imgTv
@@ -430,7 +359,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             Left = 252
             Top = 2
             Width = 598
-            Height = 551
+            Height = 592
             ActivePage = EasyTabSheet3
             Align = alClient
             TabIndex = 0
@@ -867,26 +796,26 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 41
           Width = 852
-          Height = 514
+          Height = 555
           Align = alClient
           TabOrder = 1
           object Splitter1: TSplitter
             Left = 217
             Top = 2
-            Height = 510
+            Height = 551
           end
           object EasyPanel9: TEasyPanel
             Left = 2
             Top = 2
             Width = 215
-            Height = 510
+            Height = 551
             Align = alLeft
             TabOrder = 0
             object tvModules: TEasyTreeView
               Left = 2
               Top = 2
               Width = 211
-              Height = 506
+              Height = 547
               SelectionPen.Color = clBtnShadow
               Align = alClient
               Indent = 19
@@ -897,7 +826,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
             Left = 220
             Top = 2
             Width = 630
-            Height = 510
+            Height = 551
             Align = alClient
             TabOrder = 1
             object EasyLabelEdit1: TEasyLabelEdit
@@ -1476,7 +1405,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Left = 0
           Top = 0
           Width = 852
-          Height = 555
+          Height = 596
           EditLabel.Width = 8
           EditLabel.Height = 13
           EditLabel.Caption = '  '
@@ -1497,7 +1426,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           TabOrder = 0
           DesignSize = (
             852
-            555)
+            596)
         end
       end
     end

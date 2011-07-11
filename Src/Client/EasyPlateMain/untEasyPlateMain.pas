@@ -283,37 +283,13 @@ begin
       Position := Position + I*2;
     end;     
   end;
- { for I := Low(FPluginsList) to High(FPluginsList) do
-  begin
-    if PEasytvNavRecord(FPluginsList[I])^.sParentGUID = EasyRootGUID then
-    begin
-      //创建模块菜单
-      TmpMenuItem := TMenuItem.Create(mmMain);
-      with TmpMenuItem do
-      begin
-        Caption := PEasytvNavRecord(FPluginsList[I])^.sCName;
-      end;
-      DestMenuItem := mmMain.Items.Find('模块(&M)');
-      if DestMenuItem <> nil then
-      begin
-        DestMenuItem.Add(TmpMenuItem);
-      end;
-    end;
-    //加载窗体的进度条
-    with frmEasyPlateLoading.EasyProgressBar1 do
-    begin
-      if Position > Max then
-        Position := Max - 20;
-      Position := Position + I*2;
-    end;     
-  end; }
   mmMain.EndUpdate;
 end;
 
 procedure TfrmEasyPlateMain.InitStbMain;
 begin
   //本地时间初始化
-  stbMain.Panels[2].Text:='<a color="clblue">农历   ' + GetChinaDay + '  ' + FormatDateTime('YYYY-MM-DD', Date)
+  stbMain.Panels[2].Text:='<a color="clblue"> ' + GetChinaDay + '  ' + FormatDateTime('YYYY-MM-DD', Date)
             + '</a>';
   //网络连接信息
   with stbMain.Panels[7] do
@@ -349,7 +325,7 @@ begin
   //清空树
   tvNav.Items.Clear;
   AData := EasyRDMDisp.EasyGetRDMData(PluginDirectorySQL);
-  TEasysysPluginsDirectory.GeneratePluginDirectoryList(AData);
+  TEasysysPluginsDirectory.GeneratePluginDirectory(AData);
   for I := 0 to PluginDirectoryList.Count - 1 do
   begin
     with TEasysysPluginsDirectory(PluginDirectoryList[I]) do
@@ -481,7 +457,7 @@ begin
       Application.MessageBox(PChar('插件文件【'+ TmpPlugFileName +'】未找到,请检查系统完整性或通知系统管理员！'),
         '提示', MB_OK + MB_ICONSTOP);
       Exit;
-    end;  
+    end;
   end;
 end;
 
@@ -531,6 +507,8 @@ begin
   //进度窗体进度
   frmEasyPlateLoading.EasyProgressBar1.Position := 10;
   TmpPluginFile := EasyPlugPath + TEasysysPluginsDirectory(TmpNode.Data).PluginFileName;
+  if Pos('.bpl', TmpPluginFile) = 0 then
+    TmpPluginFile := TmpPluginFile + '.bpl';
   if (pos('.bpl', TmpPluginFile) > 0) and (FileExists(TmpPluginFile)) then
   begin
     LoadPkg(TmpPluginFile, FPluginParams, EasyMDITabSet1,

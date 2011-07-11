@@ -171,6 +171,12 @@ begin
   
   if UpperCase(EasyAppType) = 'CAS' then
   begin
+    //加载可用的服务器
+    LoadSOBServers;
+    //调整负载均衡
+    if not EasySOB.LoadBalanced then
+      EasySOB.LoadBalanced := True;
+
     if OpenEasyScktConnection = 1 then
     //如果是三层就获取远程的服务接口
       EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
@@ -178,11 +184,6 @@ begin
   else
     //打开ADO两层数据连接
     OpenEasyADOConnection();
-  //加载可用的服务器
-//  LoadSOBServers;
-  //调整负载均衡
-//  if not EasySOB.LoadBalanced then
-//    EasySOB.LoadBalanced := True;
 end;
 
 procedure TDMEasyDBConnection.DataModuleDestroy(Sender: TObject);

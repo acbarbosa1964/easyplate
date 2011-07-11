@@ -2,8 +2,8 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
   OldCreateOrder = False
   OnCreate = RemoteDataModuleCreate
   OnDestroy = RemoteDataModuleDestroy
-  Left = 515
-  Top = 220
+  Left = 341
+  Top = 185
   Height = 428
   Width = 574
   object EasyRDMADOConn: TADOConnection

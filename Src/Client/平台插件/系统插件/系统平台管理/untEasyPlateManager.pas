@@ -60,16 +60,12 @@ type
   end;
 
   TfrmEasyPlateManage = class(TfrmEasyPlateDBBaseForm)
-    EasyPanel1: TEasyPanel;
     EasyPanel2: TEasyPanel;
     pgcSystemManager: TEasyPageControl;
     tbsDirectoryManage: TEasyTabSheet;
     tbsModulesUpdate: TEasyTabSheet;
     tbsSystemFileUpdate: TEasyTabSheet;
     tbsReportUpdate: TEasyTabSheet;
-    lblOperateHint: TEasyLabel;
-    pgbOperate: TEasyProgressBar;
-    EasyLabel1: TEasyLabel;
     EasyPanel3: TEasyPanel;
     EasyPanel4: TEasyPanel;
     EasyBitButton1: TEasyBitButton;
@@ -165,14 +161,14 @@ type
     AAddedTreeGUID: TStrings;
     //初始化树，只生成第一层节点
     procedure GenerateTreeView(ATreeView: TEasyTreeView;
-                               AData: TList{array of PEasytvDirectoryRecord};
+                               var AData: TList;
                                RootFlag: string);
     procedure GenerateTreeNode(ATreeView: TEasyTreeView;
                                AData: PEasytvDirectoryRecord;
                                ParentNode: TTreeNode);
     //加载子节点
     procedure LoadChildTreeNodes(ATreeView: TEasyTreeView;
-                               AData: array of PEasytvDirectoryRecord;
+                               var AData: TList;
                                ParentNode: TTreeNode);
     
     procedure InitDirectoryData;
@@ -216,6 +212,8 @@ var
   Easy_Del :string= 'Del';
 
   ParentNodeFlag :string = '{00000000-0000-0000-0000-000000000000}';
+  APluginDirectoryList: TList;
+  
 //引出函数实现
 function ShowBplForm(AParamList: TStrings): TForm;
 begin
@@ -235,7 +233,8 @@ begin
   inherited;
   //已添加到树的节点 提前创建
   AAddedTreeGUID := TStringList.Create;
-
+  APluginDirectoryList := TList.Create;
+  
   //初始化分页显示页面
   pgcSystemManager.ActivePageIndex := 0;
   pgcDirOperate.ActivePageIndex := 0;
@@ -247,7 +246,7 @@ begin
   //初始化数据
   InitDirectoryData;
   //生成目录树
-  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
+  GenerateTreeView(tvSysDirectory, APluginDirectoryList, ParentNodeFlag);
   //
   tvSysDirectory.ReadOnly := True;
   mmOPLog.ReadOnly := True;
@@ -255,7 +254,7 @@ begin
 end;
 
 procedure TfrmEasyPlateManage.GenerateTreeView(ATreeView: TEasyTreeView;
-  AData: TList{array of PEasytvDirectoryRecord}; RootFlag: string);
+  var AData: TList; RootFlag: string);
 var
   I       : Integer;
   ATmpNode: TTreeNode;
@@ -263,7 +262,6 @@ begin
   ATreeView.Items.Clear;
   with ATreeView do
   begin
-        Application.MessageBox(PChar(IntToStr(AData.Count)), PChar('提示'), 0);
     for I := 0 to AData.Count - 1 do
     begin
       with TEasysysPluginsDirectory(AData[I]) do
@@ -274,29 +272,12 @@ begin
           ATmpNode.ImageIndex := ImageIndex;
           ATmpNode.SelectedIndex := SelectedImageIndex;
 
-//          AAddedTreeGUID.Add(AData[I]^.sGUID);
           //生成临时节点 只有目录
           if IsDirectory then
             ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
         end;
       end;  
     end;  
-   { for I := Low(AData) to High(AData) do
-    begin
-      if (AData[I]^.sParentGUID = RootFlag) and  (AData[I]^.sCName <> '')
-         and (AData[I]^.sFlag <> Easy_Del)
-         and (AAddedTreeGUID.IndexOf(AData[I]^.sGUID) = -1) then
-      begin
-        ATmpNode := ATreeView.Items.AddChildObject(nil, AData[I]^.sCName, AData[I]);
-        ATmpNode.ImageIndex := AData[I]^.iImage1;
-        ATmpNode.SelectedIndex := AData[I]^.iImage2;
-        
-        AAddedTreeGUID.Add(AData[I]^.sGUID);
-        //生成临时节点 只有目录
-        if AData[I]^.bDir = 0 then
-          ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
-      end;
-    end; }
   end;
   if ATreeView.Items.Count = 0 then
   begin
@@ -459,6 +440,8 @@ begin
   inherited;
   DisposeArrayTvDirectory;
   DisposeArrayTvParams;
+
+  EasyFreeAndNilList(APluginDirectoryList);
 end;
 
 procedure TfrmEasyPlateManage.btnEditClick(Sender: TObject);
@@ -491,7 +474,6 @@ begin
   inherited;
   J := 0;
   ADivValue := 100 div High(tvTmpData);
-  pgbOperate.Position := 0;
   //新增 修改 删除 保存操作
   try
     for I := Low(tvTmpData) to High(tvTmpData) do
@@ -514,18 +496,15 @@ begin
           UpdateDirectory(tvTmpData[I]);
         end;
       end;
-      pgbOperate.Position := pgbOperate.Position + ADivValue;
     end;
     if J > 0 then
     begin
       Application.MessageBox('提交完成！', '提示', MB_OK + MB_ICONINFORMATION);
       btnRefreshClick(Sender);
-      pgbOperate.Position := 0;
       lvDeleted.Items.Clear;
     end
     else
     begin
-      pgbOperate.Position := 0;
       Application.MessageBox('没有要提交的更改！', '提示', MB_OK + MB_ICONINFORMATION);
     end;
   except on e:Exception do
@@ -533,12 +512,10 @@ begin
               + '具体可查看【操作日志】！'), '提示', MB_OKCANCEL + MB_ICONWARNING) = IDOK then
     begin
       pgcSystemManager.ActivePage := tbsOPLog;
-      pgbOperate.Position := 0;
       lvDeleted.Items.Clear;
     end
     else
     begin
-      pgbOperate.Position := 0;
       lvDeleted.Items.Clear;
     end;  
     //将未操作数据处理                                
@@ -639,35 +616,39 @@ begin
 end;
 
 procedure TfrmEasyPlateManage.InitDirectoryData;
+var
+  ATmpData: OleVariant;
 begin
   if cdsDirManager.Active then
     cdsDirManager.Close;
   //初始化系统目录数组
   cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder');
+  ATmpData := cdsDirManager.Data;
+  TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
 end;
 
 procedure TfrmEasyPlateManage.LoadChildTreeNodes(ATreeView: TEasyTreeView;
-  AData: array of PEasytvDirectoryRecord; ParentNode: TTreeNode);
+                               var AData: TList; ParentNode: TTreeNode);
 var
   I       : Integer;
   ATmpNode: TTreeNode;
 begin
   with ATreeView do
   begin
-    for I := Low(AData) to High(AData) do
+    for I := 0 to AData.Count - 1 do
     begin
-      if (AData[I]^.sParentGUID = PEasytvDirectoryRecord(ParentNode.Data)^.sGUID) and
-         (AData[I]^.sCName <> '') and (AData[I]^.sFlag <> Easy_Del)
-          and (AAddedTreeGUID.IndexOf(AData[I]^.sGUID) = -1) then
+      with TEasysysPluginsDirectory(AData[I]) do
       begin
-        ATmpNode := ATreeView.Items.AddChildObject(ParentNode, AData[I]^.sCName, AData[I]);
-        ATmpNode.ImageIndex := AData[I]^.iImage1;
-        ATmpNode.SelectedIndex := AData[I]^.iImage2;
-        
-        AAddedTreeGUID.Add(AData[I]^.sGUID);
-        //生成临时节点 只有目录
-        if AData[I]^.bDir = 0 then
-          ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
+        if ParentPluginGUID = TEasysysPluginsDirectory(ParentNode.Data).PluginGUID then
+        begin
+          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginName, AData[I]);
+          ATmpNode.ImageIndex := ImageIndex;
+          ATmpNode.SelectedIndex := SelectedImageIndex;
+
+          //生成临时节点 只有目录
+          if IsDirectory then
+            ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
+        end;
       end;
     end;
   end;
@@ -682,7 +663,7 @@ begin
     if Node.Item[0].Text = 'TempChildNode' then
     begin
       Node.Item[0].Delete;
-      LoadChildTreeNodes(tvSysDirectory, tvTmpData, Node);
+      LoadChildTreeNodes(tvSysDirectory, APluginDirectoryList, Node);
     end;
   end;
 end;

@@ -40,7 +40,8 @@ requires
   pkEasyGrid,
   pkEasyUtilFunction,
   pkEasyDBConnection,
-  pkEasyPlateBaseForm;
+  pkEasyPlateBaseForm,
+  pkEasyUtilClasses;
 
 contains
   untEasyPlateManager in 'untEasyPlateManager.pas' {frmEasyPlateManage},

@@ -59,7 +59,8 @@ type
     property IsEnable: Boolean read FIsEnable write FIsEnable;
     property ShowModal: Boolean read FShowModal write FShowModal;
 
-    class procedure GeneratePluginDirectoryList(var Data: OleVariant);
+    class procedure GeneratePluginDirectory(var Data: OleVariant);
+    class procedure GeneratePluginDirectoryList(var Data: OleVariant; AResult: TList);
   end;
 
   { TEasysysPluginParam }
@@ -81,6 +82,7 @@ type
     property PluginGUID: string read FPluginGUID write FPluginGUID;
 
     class procedure GeneratePluginParam(var Data: OleVariant);
+    class procedure GeneratePluginParamList(var Data: OleVariant; AResult: TList);
   end;
 
 var
@@ -91,7 +93,47 @@ implementation
 
 { TEasysysPluginsDirectory }
 
-class procedure TEasysysPluginsDirectory.GeneratePluginDirectoryList(var Data: OleVariant);
+class procedure TEasysysPluginsDirectory.GeneratePluginDirectoryList(
+  var Data: OleVariant; AResult: TList);
+var
+  I: Integer;
+  AEasysysPluginsDirectory: TEasysysPluginsDirectory;
+  AClientDataSet: TClientDataSet;
+begin
+  //创建数据源，并获取数据
+  AClientDataSet := TClientDataSet.Create(nil);
+  AClientDataSet.Data := Data;
+   //此句为实例化指定的对象
+  AClientDataSet.First;
+  try
+    for I := 0 to AClientDataSet.RecordCount - 1 do
+    begin
+      AEasysysPluginsDirectory := TEasysysPluginsDirectory.Create;
+      with AEasysysPluginsDirectory do
+      begin
+        PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
+        PluginName := AClientDataSet.FieldByName('PluginName').AsString;
+        iOrder := AClientDataSet.FieldByName('iOrder').AsInteger;
+        PluginParamGUID := AClientDataSet.FieldByName('PluginParamGUID').AsString;
+        ImageIndex := AClientDataSet.FieldByName('ImageIndex').AsInteger;
+        SelectedImageIndex := AClientDataSet.FieldByName('SelectedImageIndex').AsInteger;
+        IsDirectory := AClientDataSet.FieldByName('IsDirectory').AsBoolean;
+        PluginFileName := AClientDataSet.FieldByName('PluginFileName').AsString;
+        ParentPluginGUID := AClientDataSet.FieldByName('ParentPluginGUID').AsString;
+        IsEnable := AClientDataSet.FieldByName('IsEnable').AsBoolean;
+        ShowModal := AClientDataSet.FieldByName('ShowModal').AsBoolean;
+      end;
+     //在此添加将对象存放到指定容器的代码
+      AResult.Add(AEasysysPluginsDirectory);
+     //如果要关联树也在此添加相应代码
+      AClientDataSet.Next;
+    end;
+  finally
+    AClientDataSet.Free;
+  end;
+end;
+
+class procedure TEasysysPluginsDirectory.GeneratePluginDirectory(var Data: OleVariant);
 var
   I: Integer;
   AEasysysPluginsDirectory: TEasysysPluginsDirectory;
@@ -163,6 +205,37 @@ begin
     end;
     //在此添加将对象存放到指定容器的代码
     PluginParamsList.Add(AEasysysPluginParam);
+    //如果要关联树也在此添加相应代码
+    AClientDataSet.Next;
+  end;
+end;
+
+class procedure TEasysysPluginParam.GeneratePluginParamList(
+  var Data: OleVariant; AResult: TList);
+var
+  I: Integer;
+  AEasysysPluginParam: TEasysysPluginParam;
+  AClientDataSet: TClientDataSet;
+begin
+  //创建数据源，并获取数据
+  AClientDataSet := TClientDataSet.Create(nil);
+  AClientDataSet.Data := Data;
+
+   //此句为实例化指定的对象
+  AClientDataSet.First;
+  for I := 0 to AClientDataSet.RecordCount - 1 do
+  begin
+    AEasysysPluginParam := TEasysysPluginParam.Create;
+    with AEasysysPluginParam do
+    begin
+      PluginParamGUID := AClientDataSet.FieldByName('PluginParamGUID').AsString;
+      ParamName := AClientDataSet.FieldByName('ParamName').AsString;
+      ValueType := AClientDataSet.FieldByName('ValueType').AsString;
+      Value := AClientDataSet.FieldByName('Value').AsString;
+      PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
+    end;
+    //在此添加将对象存放到指定容器的代码
+    AResult.Add(AEasysysPluginParam);
     //如果要关联树也在此添加相应代码
     AClientDataSet.Next;
   end;

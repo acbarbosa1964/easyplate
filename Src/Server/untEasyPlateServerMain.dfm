@@ -1,6 +1,6 @@
 object frmEasyPlateServerMain: TfrmEasyPlateServerMain
-  Left = 241
-  Top = 147
+  Left = 80
+  Top = 34
   Width = 812
   Height = 436
   Caption = 'EasyPlate'#26381#21153#31243#24207
@@ -1345,7 +1345,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psDate
-        Text = '2011-7-10'
+        Text = '2011-7-11'
         TimeFormat = 'h:mm:ss'
         Width = 80
       end
@@ -1371,7 +1371,7 @@ object frmEasyPlateServerMain: TfrmEasyPlateServerMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psTime
-        Text = '10:46:10'
+        Text = '19:58:56'
         TimeFormat = 'h:mm:ss'
         Width = 80
       end
