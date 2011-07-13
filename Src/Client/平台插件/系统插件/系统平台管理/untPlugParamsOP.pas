@@ -35,7 +35,7 @@ type
     procedure btnOKClick(Sender: TObject);
   private
     { Private declarations }
-    FAData: PEasytvParamsRecord;
+//    FAData: PEasytvParamsRecord;
   public
     { Public declarations }
   end;
@@ -43,8 +43,8 @@ type
 var
   frmPlugParamsOP: TfrmPlugParamsOP;
 
-  procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
-  
+//  procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
+
 implementation
 
 {$R *.dfm}
@@ -52,9 +52,9 @@ implementation
 uses
   untEasyUtilMethod;
 
-procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
-begin
-  try
+//procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
+//begin
+ { try
     frmPlugParamsOP := TfrmPlugParamsOP.Create(Application);
     if AFlag = 'Add' then
     begin
@@ -76,9 +76,9 @@ begin
     frmPlugParamsOP.ShowModal;
   finally
     FreeAndNil(frmPlugParamsOP);
-  end;
-end;
-  
+  end;  }
+//end;
+
 procedure TfrmPlugParamsOP.btnCancelClick(Sender: TObject);
 begin
   Close;
@@ -86,10 +86,10 @@ end;
 
 procedure TfrmPlugParamsOP.btnOKClick(Sender: TObject);
 begin
-  FAData^.sParamEName := Trim(edtEName.Text);
-  FAData^.sParamCName := Trim(edtCName.Text);
-  FAData^.sValueType := 'S';
-  FAData^.sValue := Trim(edtParam.Text);
+//  FAData^.sParamEName := Trim(edtEName.Text);
+//  FAData^.sParamCName := Trim(edtCName.Text);
+//  FAData^.sValueType := 'S';
+//  FAData^.sValue := Trim(edtParam.Text);
   Close;
 end;
 

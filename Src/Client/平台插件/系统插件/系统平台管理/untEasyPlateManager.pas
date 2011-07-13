@@ -32,93 +32,11 @@ uses
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
 type
 
-  PEasytvDirectoryRecord = ^TEasytvDirectoryRecord;
-  TEasytvDirectoryRecord = record
-    sGUID,
-    sEName,
-    sCName,
-    sParentGUID : string;     //父节点GUID
-    iOrder,                   //排序
-    iImage1,                  //节点\展开的图标
-    iImage2,
-    bDir,                     //0目录 1插件
-    iFlag   : Integer;
-    sPluginFileName: string; //要调用的插件文件名称
-    sFlag: string;  //Add 新增 Edit 编辑 Del 删除
-  end;
-
-  PEasytvParamsRecord = ^TEasytvParamsRecord;
-  TEasytvParamsRecord = record
-    //提取参数
-    ParamGUID,
-    sPluginGUID,//GUID 挂靠节点
-    sParamEName,
-    sParamCName,
-    sValueType,
-    sValue,
-    sFlag     : string;
-  end;
+  TEasyRefreshType = (ertSaveRefresh, ertNoSaveRefresh);
 
   TfrmEasyPlateManage = class(TfrmEasyPlateDBBaseForm)
-    EasyPanel2: TEasyPanel;
-    pgcSystemManager: TEasyPageControl;
-    tbsDirectoryManage: TEasyTabSheet;
-    tbsModulesUpdate: TEasyTabSheet;
-    tbsSystemFileUpdate: TEasyTabSheet;
-    tbsReportUpdate: TEasyTabSheet;
-    EasyPanel3: TEasyPanel;
-    EasyPanel4: TEasyPanel;
-    EasyBitButton1: TEasyBitButton;
-    EasyBitButton2: TEasyBitButton;
-    EasyStringGrid1: TEasyStringGrid;
-    EasyPanel5: TEasyPanel;
-    EasyPanel6: TEasyPanel;
-    EasyStringGrid2: TEasyStringGrid;
-    EasyPanel11: TEasyPanel;
-    Splitter2: TSplitter;
-    EasyPanel12: TEasyPanel;
-    tvSysDirectory: TEasyTreeView;
-    EasyPanel13: TEasyPanel;
-    btnAdd: TEasyBitButton;
-    btnInsert: TEasyBitButton;
-    btnEdit: TEasyBitButton;
-    pgcDirOperate: TEasyPageControl;
-    EasyTabSheet3: TEasyTabSheet;
-    EasyLabel4: TEasyLabel;
-    lvParamers: TListView;
-    btnParamAdd: TEasyBitButton;
-    btnParamEdit: TEasyBitButton;
-    btnParamDelete: TEasyBitButton;
-    EasyPanel8: TEasyPanel;
-    Splitter1: TSplitter;
-    EasyPanel9: TEasyPanel;
-    tvModules: TEasyTreeView;
-    EasyPanel10: TEasyPanel;
-    EasyLabelEdit1: TEasyLabelEdit;
-    EasyLabelEdit2: TEasyLabelEdit;
-    EasyLabelEdit3: TEasyLabelEdit;
-    EasyLabelEdit4: TEasyLabelEdit;
-    EasyBitButton7: TEasyBitButton;
-    EasyBitButton8: TEasyBitButton;
-    EasyLabelEdit5: TEasyLabelEdit;
-    EasyLabelEdit6: TEasyLabelEdit;
-    rdgUpdateOptions: TEasyRadioGroup;
-    EasyPanel7: TEasyPanel;
-    EasyBitButton5: TEasyBitButton;
-    EasyBitButton6: TEasyBitButton;
-    EasyLabel6: TEasyLabel;
-    lvDeleted: TListView;
-    btnSave: TEasyBitButton;
-    btnCancel: TEasyBitButton;
-    btnRefresh: TEasyBitButton;
-    EasyBitButton19: TEasyBitButton;
-    EasyBitButton3: TEasyBitButton;
-    EasyBitButton4: TEasyBitButton;
     cdsDirManager: TClientDataSet;
-    btnDelete: TEasyBitButton;
     imgTv: TImageList;
-    tbsOPLog: TEasyTabSheet;
-    mmOPLog: TEasyMemo;
     tvNavPP: TEasyPopupMenu;
     N6: TMenuItem;
     N7: TMenuItem;
@@ -127,6 +45,27 @@ type
     EasyMenuOfficeStyler1: TEasyMenuOfficeStyler;
     imglv: TImageList;
     imglvDel: TImageList;
+    EasyPanel11: TEasyPanel;
+    Splitter2: TSplitter;
+    EasyPanel12: TEasyPanel;
+    tvSysDirectory: TEasyTreeView;
+    EasyPanel13: TEasyPanel;
+    btnAdd: TEasyBitButton;
+    btnInsert: TEasyBitButton;
+    btnEdit: TEasyBitButton;
+    btnRefresh: TEasyBitButton;
+    btnDelete: TEasyBitButton;
+    pgcDirOperate: TEasyPageControl;
+    EasyTabSheet3: TEasyTabSheet;
+    EasyLabel4: TEasyLabel;
+    EasyLabel6: TEasyLabel;
+    lvParamers: TListView;
+    btnParamAdd: TEasyBitButton;
+    btnParamEdit: TEasyBitButton;
+    btnParamDelete: TEasyBitButton;
+    lvDeleted: TListView;
+    btnSave: TEasyBitButton;
+    btnCancel: TEasyBitButton;
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure btnInsertClick(Sender: TObject);
@@ -148,47 +87,30 @@ type
     procedure N7Click(Sender: TObject);
     procedure ppTVRefreshClick(Sender: TObject);
     procedure tvSysDirectoryChange(Sender: TObject; Node: TTreeNode);
-    procedure FormDestroy(Sender: TObject);
     procedure btnParamEditClick(Sender: TObject);
     procedure btnParamDeleteClick(Sender: TObject);
     procedure btnParamAddClick(Sender: TObject);
-    procedure pgcSystemManagerChange(Sender: TObject);
   private
     { Private declarations }
-    tvTmpData: array of PEasytvDirectoryRecord;  //存储从数据库返回的数据
-    tvTmpParamsData: array of PEasytvParamsRecord; //参数列表
-    
-    AAddedTreeGUID: TStrings;
+//    tvTmpData: array of PEasytvDirectoryRecord;  //存储从数据库返回的数据
+//    tvTmpParamsData: array of PEasytvParamsRecord; //参数列表
+
     //初始化树，只生成第一层节点
     procedure GenerateTreeView(ATreeView: TEasyTreeView;
                                var AData: TList;
                                RootFlag: string);
-    procedure GenerateTreeNode(ATreeView: TEasyTreeView;
-                               AData: PEasytvDirectoryRecord;
-                               ParentNode: TTreeNode);
     //加载子节点
     procedure LoadChildTreeNodes(ATreeView: TEasyTreeView;
                                var AData: TList;
                                ParentNode: TTreeNode);
-    
-    procedure InitDirectoryData;
-    function InsertDirectory(AData: PEasytvDirectoryRecord): Boolean;
-    function UpdateDirectory(AData: PEasytvDirectoryRecord): Boolean;
-    function DeleteDirectory(AData: PEasytvDirectoryRecord): Boolean;
+    //刷新树
+    procedure RefreshDirectoryTreeView(AEasyRefreshType: TEasyRefreshType);
 
-    function InsertParam(AData: PEasytvParamsRecord): Boolean;
-    function UpdateParam(AData: PEasytvParamsRecord): Boolean;
-    function DeleteParam(AData: PEasytvParamsRecord): Boolean;
+    procedure InitDirectoryData;
+    //更改节点的上级节点
+    procedure ChangePluginParentGUID(Data: Pointer; ClientDataSet: TClientDataSet);
     //删除生成的临时节点
     procedure DeleteTmpNode(AText: string = '暂无目录结构');
-    //释放数组  0 释放所有数组 1释放为空数组
-    procedure DisposeArrayTvDirectory(AFlag: string = '0');
-    //释放数组  0 释放所有数组 1释放为空数组
-    procedure DisposeArrayTvParams(AFlag: string = '0');
-
-    //模块升级
-    //初始化模块升级页
-    procedure InitTvModules();
   public
     { Public declarations }
   end;
@@ -218,6 +140,7 @@ var
 function ShowBplForm(AParamList: TStrings): TForm;
 begin
   frmEasyPlateManage := TfrmEasyPlateManage.Create(Application);
+  Application.Handle := frmEasyPlateManage.EasyApplicationHandle;
   if frmEasyPlateManage.FormStyle <> fsMDIChild then
     frmEasyPlateManage.FormStyle := fsMDIChild;
   if frmEasyPlateManage.WindowState <> wsMaximized then
@@ -231,13 +154,12 @@ var
   ABitMap: TBitmap;
 begin
   inherited;
-  //已添加到树的节点 提前创建
-  AAddedTreeGUID := TStringList.Create;
+  //插件目录类容器
   APluginDirectoryList := TList.Create;
   
   //初始化分页显示页面
-  pgcSystemManager.ActivePageIndex := 0;
   pgcDirOperate.ActivePageIndex := 0;
+
   //加载树所需要的图片
   ABitMap := TBitmap.Create;
   ABitMap.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\Tree.bmp');
@@ -247,10 +169,8 @@ begin
   InitDirectoryData;
   //生成目录树
   GenerateTreeView(tvSysDirectory, APluginDirectoryList, ParentNodeFlag);
-  //
+  //目录树只读
   tvSysDirectory.ReadOnly := True;
-  mmOPLog.ReadOnly := True;
-
 end;
 
 procedure TfrmEasyPlateManage.GenerateTreeView(ATreeView: TEasyTreeView;
@@ -288,118 +208,21 @@ begin
 //    ATreeView.Items.AddChild(nil, '暂无目录结构');
 end;
 
-function TfrmEasyPlateManage.DeleteDirectory(
-  AData: PEasytvDirectoryRecord): Boolean;
-var
-  DelSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    DelSQL := ' DELETE FROM sysPluginsDirectory WHERE GUID = ' + QuotedStr(AData^.sGUID);
-    cdsDirManager.CommandText := DelSQL;
-    cdsDirManager.Execute;
-  //  AData^.sFlag := '';
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除】'
-                      + AData^.sCName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('删除【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
-function TfrmEasyPlateManage.InsertDirectory(
-  AData: PEasytvDirectoryRecord): Boolean;
-
-  function Boolean2String(ABoolean: Boolean): string;
-  begin
-    if ABoolean then
-      Result := 'True'
-    else
-      Result := 'False';
-  end;  
-var
-  InsSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    InsSQL := ' INSERT INTO sysPluginsDirectory (GUID, sEName, sCName, iOrder,'
-              + 'iImage1, iImage2, iFlag, bDir, sParentGUID, sPluginFileName) VALUES ('
-              + QuotedStr(AData^.sGUID)
-              + ',' + QuotedStr(AData^.sEName)
-              + ',' + QuotedStr(AData^.sCName)
-              + ',' + QuotedStr(IntToStr(AData^.iOrder))
-              + ',' + QuotedStr(IntToStr(AData^.iImage1))
-              + ',' + QuotedStr(IntToStr(AData^.iImage2))
-              + ',' + QuotedStr(IntToStr(AData^.iFlag))
-              + ',' + QuotedStr(IntToStr(AData^.bDir))
-              + ',' + QuotedStr(AData^.sParentGUID)
-              + ',' + QuotedStr(AData^.sPluginFileName)
-              + ')';
-    cdsDirManager.CommandText := InsSQL;
-    cdsDirManager.Execute;
-    AData^.sFlag := '';
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增】'
-                        + AData^.sCName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('插入【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
-function TfrmEasyPlateManage.UpdateDirectory(
-  AData: PEasytvDirectoryRecord): Boolean;
-var
-  UdpSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    UdpSQL := ' Update sysPluginsDirectory SET '
-              + ' sEName = ' + QuotedStr(AData^.sEName) + ','
-              + ' sCName = ' + QuotedStr(AData^.sCName) + ','
-              + ' iOrder = ' + QuotedStr(IntToStr(AData^.iOrder)) + ','
-              + ' iImage1 = ' + QuotedStr(IntToStr(AData^.iImage1))+ ','
-              + ' iImage2 = ' + QuotedStr(IntToStr(AData^.iImage2))+ ','
-              + ' iFlag = ' + QuotedStr(IntToStr(AData^.iFlag))  + ','
-              + ' bDir = ' + QuotedStr(IntToStr(AData^.bDir))   + ','
-              + ' sParentGUID = ' + QuotedStr(AData^.sParentGUID) + ','
-              + ' sPluginFileName = ' + QuotedStr(AData^.sPluginFileName) + ' '
-              + ' WHERE GUID = ' + QuotedStr(AData^.sGUID);
-    cdsDirManager.CommandText := UdpSQL;
-    cdsDirManager.Execute;
-    AData^.sFlag := '';
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改】'
-                        + AData^.sCName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('更新【' + AData^.sCName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
 procedure TfrmEasyPlateManage.btnAddClick(Sender: TObject);
+var
+  AEasysysPluginsDirectory: TEasysysPluginsDirectory;
 begin
   inherited;
   DeleteTmpNode;
-  SetLength(tvTmpData, Length(tvTmpData) + 1);
-  New(tvTmpData[High(tvTmpData)]);
-  tvTmpData[High(tvTmpData)]^.sGUID := GenerateGUID;
-  tvTmpData[High(tvTmpData)]^.sParentGUID := ParentNodeFlag;
-  tvTmpData[High(tvTmpData)]^.sFlag := Easy_Add;
-
-  ShowfrmTvDirectoryOper(tvTmpData[High(tvTmpData)], Easy_Add);
-  if tvTmpData[High(tvTmpData)]^.sCName <> '' then
-    GenerateTreeNode(tvSysDirectory, tvTmpData[High(tvTmpData)], nil);
+  AEasysysPluginsDirectory := TEasysysPluginsDirectory.Create;
+  ShowfrmTvDirectoryOper(AEasysysPluginsDirectory, Easy_Add);
+//  if tvTmpData[High(tvTmpData)]^.sCName <> '' then
+//    GenerateTreeNode(tvSysDirectory, tvTmpData[High(tvTmpData)], nil);
+  if frmEasyPlateManage.cdsDirManager.ChangeCount > 0 then
+    frmEasyPlateManage.cdsDirManager.CancelUpdates;
 end;
 
-procedure TfrmEasyPlateManage.GenerateTreeNode(ATreeView: TEasyTreeView;
+{procedure TfrmEasyPlateManage.GenerateTreeNode(ATreeView: TEasyTreeView;
   AData: PEasytvDirectoryRecord; ParentNode: TTreeNode);
 var
   AResultNode: TTreeNode;
@@ -410,12 +233,12 @@ begin
   //生成生必须选中生成节点
   if AResultNode <> nil then
     ATreeView.Selected := AResultNode;
-end;
+end;    }
 
 procedure TfrmEasyPlateManage.btnInsertClick(Sender: TObject);
 begin
   inherited;
-  DeleteTmpNode;
+ { DeleteTmpNode;
   if tvSysDirectory.Selected = nil then
   begin
     Application.MessageBox('请选择一个节点做为挂靠节点！', '提示', MB_OK + 
@@ -431,15 +254,13 @@ begin
   ShowfrmTvDirectoryOper(tvTmpData[High(tvTmpData)], Easy_Add,
                    PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sCName);
   if tvTmpData[High(tvTmpData)]^.sCName <> '' then
-    GenerateTreeNode(tvSysDirectory, tvTmpData[High(tvTmpData)], tvSysDirectory.Selected);
+    GenerateTreeNode(tvSysDirectory, tvTmpData[High(tvTmpData)], tvSysDirectory.Selected); }
 end;
 
 procedure TfrmEasyPlateManage.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   inherited;
-  DisposeArrayTvDirectory;
-  DisposeArrayTvParams;
 
   EasyFreeAndNilList(APluginDirectoryList);
 end;
@@ -447,10 +268,10 @@ end;
 procedure TfrmEasyPlateManage.btnEditClick(Sender: TObject);
 var
   ASelectedNode: TTreeNode;
-  TmpData      : PEasytvDirectoryRecord;
+//  TmpData      : PEasytvDirectoryRecord;
 begin
   inherited;
-  DeleteTmpNode;
+ { DeleteTmpNode;
   ASelectedNode := tvSysDirectory.Selected;
   if ASelectedNode = nil then
   begin
@@ -463,7 +284,7 @@ begin
     TmpData^.sFlag := Easy_Edit;
     
   ShowfrmTvDirectoryOper(TmpData, Easy_Edit);
-  ASelectedNode.Text := TmpData^.sCName;
+  ASelectedNode.Text := TmpData^.sCName;    }
 end;
 
 procedure TfrmEasyPlateManage.btnSaveClick(Sender: TObject);
@@ -472,7 +293,7 @@ var
   ADivValue: Integer; //进度条的幅度
 begin
   inherited;
-  J := 0;
+{  J := 0;
   ADivValue := 100 div High(tvTmpData);
   //新增 修改 删除 保存操作
   try
@@ -519,7 +340,7 @@ begin
       lvDeleted.Items.Clear;
     end;  
     //将未操作数据处理                                
-  end;
+  end;  }
 end;
 
 procedure TfrmEasyPlateManage.DeleteTmpNode;
@@ -548,29 +369,35 @@ begin
     Exit;  
   end;
   TmpListItem := lvDeleted.Items.Add;
-  TmpListItem.Caption := PEasytvDirectoryRecord(ASelectedNode.Data)^.sCName;
-  for I := Low(tvTmpData) to High(tvTmpData) do
+//  TmpListItem.Caption := PEasytvDirectoryRecord(ASelectedNode.Data)^.sCName;
+  {for I := Low(tvTmpData) to High(tvTmpData) do
   begin
     if tvTmpData[I]^.sGUID = PEasytvDirectoryRecord(ASelectedNode.Data)^.sGUID then
       tvTmpData[I]^.sFlag := Easy_Del;
   end;  
-  tvSysDirectory.Items.Delete(ASelectedNode);
+  tvSysDirectory.Items.Delete(ASelectedNode);   }
 end;
 
 procedure TfrmEasyPlateManage.btnRefreshClick(Sender: TObject);
 begin
   inherited;
-  tvSysDirectory.Items.Clear;
-  AAddedTreeGUID.Clear;
-
-  DisposeArrayTvDirectory('0');
-  //2010-10-31 18:30:41 + 
-  DisposeArrayTvParams('0');
-  lvParamers.Items.Clear;
-
-  InitDirectoryData;
-  //生成目录树
-  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
+  if cdsDirManager.ChangeCount > 0 then
+  begin
+    case Application.MessageBox(PChar('目录结构已发生更改,是否保存?'), PChar('提示'),
+      MB_YESNOCANCEL + MB_ICONQUESTION) of
+      IDYES:
+        begin
+          //保存并刷新树
+          frmEasyPlateManage.RefreshDirectoryTreeView(ertSaveRefresh);
+        end;
+      IDNO:
+        begin
+          //取消更新并刷新树
+          frmEasyPlateManage.RefreshDirectoryTreeView(ertNoSaveRefresh);
+        end;
+    end;
+  end else
+    RefreshDirectoryTreeView(ertNoSaveRefresh);
 end;
 
 procedure TfrmEasyPlateManage.btnCancelClick(Sender: TObject);
@@ -578,41 +405,18 @@ var
   I: Integer;
 begin
   inherited;
-  DisposeArrayTvDirectory('1');
 
   lvParamers.Items.Clear;
-  AAddedTreeGUID.Clear;
   lvDeleted.Items.Clear;
 
-  for I := Low(tvTmpData) to High(tvTmpData) do
-  begin
-    if tvTmpData[I]^.sFlag <> '' then
-      tvTmpData[I]^.sFlag := '';
-  end;  
+//  for I := Low(tvTmpData) to High(tvTmpData) do
+//  begin
+//    if tvTmpData[I]^.sFlag <> '' then
+//      tvTmpData[I]^.sFlag := '';
+//  end;
 
   //生成目录树
-  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
-end;
-
-procedure TfrmEasyPlateManage.DisposeArrayTvDirectory(AFlag: string = '0');
-var
-  I: Integer;
-begin
-  if AFlag = '0' then
-  begin
-    for I := Low(tvTmpData) to High(tvTmpData) do
-      Dispose(tvTmpData[I]);
-    SetLength(tvTmpData, 0);
-  end
-  else
-  if AFlag = '1' then
-  begin
-    for I := Low(tvTmpData) to High(tvTmpData) do
-    begin
-      if tvTmpData[I]^.sCName = '' then
-        Dispose(tvTmpData[I]);
-    end;
-  end;
+//  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
 end;
 
 procedure TfrmEasyPlateManage.InitDirectoryData;
@@ -623,6 +427,7 @@ begin
     cdsDirManager.Close;
   //初始化系统目录数组
   cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder');
+  cdsDirManager.Active := True;
   ATmpData := cdsDirManager.Data;
   TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
 end;
@@ -671,9 +476,11 @@ end;
 procedure TfrmEasyPlateManage.tvSysDirectoryDragDrop(Sender,
   Source: TObject; X, Y: Integer);
 var 
-  AnItem: TTreeNode;
+  AnItem    : TTreeNode;            //目标节点
   AttachMode: TNodeAttachMode;
-  HT: THitTests;
+  HT        : THitTests;
+  SelectedPluginGUID,
+  NewParentGUID: string;
 begin
   if tvSysDirectory.Selected = nil then Exit;
   AttachMode := naAdd;
@@ -690,14 +497,37 @@ begin
     if htOnIndent in HT then
       AttachMode := naInsert;
     tvSysDirectory.Selected.MoveTo(AnItem, AttachMode);
+
+    SelectedPluginGUID := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginGUID;
     //更改移动节点的上级节点 并设置更新状态
-    if AnItem.Data <> nil then
+    if AnItem = nil then  //上级节点为空，将选中节点设置为根节点
     begin
-      PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sParentGUID :=
-                             PEasytvDirectoryRecord(AnItem.Data)^.sGUID;
-      //如果不是新增的节点就将更标志改为编辑状态
-      if PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sFlag <> Easy_Add then
-        PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sFlag := Easy_Edit;
+      //更新对象的同时更新数据集
+      TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).ParentPluginGUID := ParentNodeFlag;
+      with cdsDirManager do
+      begin
+        if Locate('PluginGUID', VarArrayOf([SelectedPluginGUID]), [loCaseInsensitive]) then
+        begin
+          Edit;
+          FieldByName('ParentPluginGUID').AsString := ParentNodeFlag;
+          Post;
+        end;
+      end;
+    end else //上级节点不为空，将选中节点设置为子节点
+    begin
+      //新上级节点GUDI
+      NewParentGUID := TEasysysPluginsDirectory(AnItem.Data).PluginGUID;
+      //更新对象的同时更新数据集
+      TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).ParentPluginGUID := NewParentGUID;
+      with cdsDirManager do
+      begin
+        if Locate('PluginGUID', VarArrayOf([SelectedPluginGUID]), [loCaseInsensitive]) then
+        begin
+          Edit;
+          FieldByName('ParentPluginGUID').AsString := NewParentGUID;
+          Post;
+        end;
+      end;
     end;
   end;
 end;
@@ -749,10 +579,10 @@ var
   I          : Integer;
 begin
   inherited;
-  DeleteTmpNode();
-  lvParamers.Items.Clear;
+//  DeleteTmpNode();
+//  lvParamers.Items.Clear;
 
-  if PEasytvDirectoryRecord(Node.Data)^.bDir = 1 then
+ { if PEasytvDirectoryRecord(Node.Data)^.bDir = 1 then
   begin
     for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
     begin
@@ -766,22 +596,16 @@ begin
         TmpListItem.SubItems.Add(PEasytvParamsRecord(tvTmpParamsData[I])^.sValue);
       end;
     end;
-  end;
-end;
-
-procedure TfrmEasyPlateManage.FormDestroy(Sender: TObject);
-begin
-  inherited;
-  AAddedTreeGUID.Free;
+  end;  }
 end;
 
 procedure TfrmEasyPlateManage.btnParamEditClick(Sender: TObject);
 var
   I       : Integer;
-  ATmpParamData: PEasytvParamsRecord;
+//  ATmpParamData: PEasytvParamsRecord;
 begin
   inherited;
-  if lvParamers.Selected <> nil then
+ { if lvParamers.Selected <> nil then
   begin
     for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
     begin
@@ -807,16 +631,16 @@ begin
     UpdateParam(ATmpParamData);
     lvParamers.Selected.Caption := ATmpParamData^.sParamEName;
     lvParamers.Selected.SubItems[0] := ATmpParamData^.sValue;
-  end;  
+  end;   }
 end;
 
 procedure TfrmEasyPlateManage.btnParamDeleteClick(Sender: TObject);
 var
   I:  Integer;
-  ATmpParamData: PEasytvParamsRecord;
+//  ATmpParamData: PEasytvParamsRecord;
 begin
   inherited;
-  if lvParamers.Selected <> nil then
+ { if lvParamers.Selected <> nil then
   begin
     if Application.MessageBox(PChar('确定要删除【' + lvParamers.Selected.Caption
              + '】参数吗？'), '提示', MB_OKCANCEL + MB_ICONQUESTION) = IDOK then
@@ -843,16 +667,16 @@ begin
     Application.MessageBox('请选择要【删除】的参数！', '提示', MB_OK +
       MB_ICONINFORMATION);
     Exit;
-  end;
+  end;  }
 end;
 
 procedure TfrmEasyPlateManage.btnParamAddClick(Sender: TObject);
 var
-  ATmpParamData: PEasytvParamsRecord;
+//  ATmpParamData: PEasytvParamsRecord;
   TmpListItem: TListItem;
 begin
   inherited;
-  if tvSysDirectory.Selected <> nil then
+{  if tvSysDirectory.Selected <> nil then
   begin
     if PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.bDir = 1 then
     begin
@@ -890,122 +714,48 @@ begin
         TmpListItem.SubItems.Add(tvTmpParamsData[High(tvTmpParamsData)]^.sValue);
       end;
     end;
-  end;   
+  end;}
 end;
 
-procedure TfrmEasyPlateManage.DisposeArrayTvParams(AFlag: string);
-var
-  I: Integer;
+procedure TfrmEasyPlateManage.ChangePluginParentGUID(Data: Pointer;
+  ClientDataSet: TClientDataSet);
 begin
-  if AFlag = '0' then
+
+end;
+
+procedure TfrmEasyPlateManage.RefreshDirectoryTreeView(AEasyRefreshType: TEasyRefreshType);
+var
+  ATmpData: OleVariant;
+  AErrorCode: Integer;
+begin
+  //清空树
+  tvSysDirectory.Items.Clear;
+  //如果已加载插件容器必须先释放
+  while (APluginDirectoryList.Count > 0) do
   begin
-    for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
-      Dispose(tvTmpParamsData[I]);
-    SetLength(tvTmpParamsData, 0);
-  end
-  else
-  if AFlag = '1' then
+    TEasysysPluginsDirectory(APluginDirectoryList[0]).Free;
+    APluginDirectoryList.Delete(0);
+  end;
+  //先保存 初始化数据
+  if AEasyRefreshType = ertSaveRefresh then
+  begin   //sysPluginsDirectory
+    cdsDirManager.Data := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode);
+    cdsDirManager.SaveToFile('c:\error.xml', dfXMLUTF8);
+    ShowMessage(IntToStr(AErrorCode));
+    InitDirectoryData;
+  end else
+  if AEasyRefreshType = ertNoSaveRefresh then
   begin
-    for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
-    begin
-      if tvTmpParamsData[I]^.sParamEName = '' then
-        Dispose(tvTmpParamsData[I]);
-    end;
+    //取消更新，重新生成对象
+    frmEasyPlateManage.cdsDirManager.CancelUpdates;
+    ATmpData := frmEasyPlateManage.cdsDirManager.Data;
+    TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
   end;
-end;
-
-function TfrmEasyPlateManage.DeleteParam(
-  AData: PEasytvParamsRecord): Boolean;
-var
-  DelSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    DelSQL := ' DELETE FROM sysPluginParams WHERE GUID = ' + QuotedStr(AData^.ParamGUID);
-    cdsDirManager.CommandText := DelSQL;
-    cdsDirManager.Execute;
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【删除参数】'
-                      + AData^.sParamEName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('删除【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
-function TfrmEasyPlateManage.InsertParam(
-  AData: PEasytvParamsRecord): Boolean;
-var
-  InsSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    InsSQL := ' INSERT INTO sysPluginParams (GUID, PlugGUID, sEName, sCName, sValueType,'
-              + ' sValue) VALUES ('
-              + QuotedStr(AData^.ParamGUID)
-              + ',' + QuotedStr(AData^.sPluginGUID)
-              + ',' + QuotedStr(AData^.sParamEName)
-              + ',' + QuotedStr(AData^.sParamCName)
-              + ',' + QuotedStr(AData^.sValueType)
-              + ',' + QuotedStr(AData^.sValue)
-              + ')';
-    cdsDirManager.CommandText := InsSQL;
-    cdsDirManager.Execute;
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【新增参数】'
-                        + AData^.sParamEName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('插入【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
-function TfrmEasyPlateManage.UpdateParam(
-  AData: PEasytvParamsRecord): Boolean;
-var
-  UdpSQL: string;
-begin
-  Result := False;
-  try
-    cdsDirManager.Close;
-    UdpSQL := ' Update sysPluginParams SET '
-              + ' sEName = ' + QuotedStr(AData^.sParamEName) + ','
-              + ' sValue = ' + QuotedStr(AData^.sValue) + ' '
-              + ' WHERE GUID = ' + QuotedStr(AData^.ParamGUID);
-    cdsDirManager.CommandText := UdpSQL;
-    cdsDirManager.Execute;
-    //执行日志输出
-    mmOPLog.Lines.Add(FormatDateTime('YYYY-MM-DD HH:NN:SS', Now) + '【修改参数】'
-                        + AData^.sParamEName);
-    Result := True;
-  except on e: Exception do
-    Application.MessageBox(PChar('更新【' + AData^.sParamEName +'】出错,原因:' + e.Message), '提示',
-                            MB_OK + MB_ICONSTOP);
-  end;
-end;
-
-procedure TfrmEasyPlateManage.pgcSystemManagerChange(Sender: TObject);
-begin
-  inherited;
-  //切换到模块升级
-  if pgcSystemManager.ActivePage = tbsModulesUpdate then
-  begin
-    if tvModules.Items.Count <= 0 then
-    begin
-      AAddedTreeGUID.Clear;
-      InitTvModules;
-    end;
-  end;
-end;
-
-procedure TfrmEasyPlateManage.InitTvModules;
-begin
   //生成目录树
-  GenerateTreeView(tvModules, PluginDirectoryList, ParentNodeFlag);
+  GenerateTreeView(tvSysDirectory, APluginDirectoryList, ParentNodeFlag);
+  //2010-10-31 18:30:41 +
+  //清空已删除的参数树
+  lvParamers.Items.Clear;
 end;
 
 end.

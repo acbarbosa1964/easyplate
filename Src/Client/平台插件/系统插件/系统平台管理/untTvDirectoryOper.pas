@@ -24,7 +24,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, untEasyEdit, untEasySpinEdit, untEasyEditExt,
   untEasyGroupBox, untEasyButtons, untEasyPlateManager, untEasyLabel,
-  unEasyComboBox, ImgList;
+  unEasyComboBox, ImgList, untEasyClassPluginDirectory;
 
 type
   TfrmTvDirectoryOper = class(TForm)
@@ -51,7 +51,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FAData: PEasytvDirectoryRecord;
+    FAData: TEasysysPluginsDirectory;
     function CheckNotNullControl: Boolean;
   public
     { Public declarations }
@@ -60,7 +60,7 @@ type
 var
   frmTvDirectoryOper: TfrmTvDirectoryOper;
 
-  procedure ShowfrmTvDirectoryOper(var AData: PEasytvDirectoryRecord; AFlag: string;
+  procedure ShowfrmTvDirectoryOper(var AData: TEasysysPluginsDirectory; AFlag: string;
                                   ParentCName: string = '');
 
 implementation
@@ -69,7 +69,7 @@ uses untImagesSelect;
 
 {$R *.dfm}
 
-procedure ShowfrmTvDirectoryOper(var AData: PEasytvDirectoryRecord; AFlag: string;
+procedure ShowfrmTvDirectoryOper(var AData: TEasysysPluginsDirectory; AFlag: string;
                                   ParentCName: string = '');
 begin
   try
@@ -86,20 +86,16 @@ begin
       frmTvDirectoryOper.Caption := frmTvDirectoryOper.Caption + '-[编辑]';
       with frmTvDirectoryOper do
       begin
-        edtEName.Text := AData^.sEName;
-        edtCName.Text := AData^.sCName;
-        speOrder.Value := AData^.iOrder;
-        edtImage1.Text := IntToStr(AData^.iImage1);
-        edtImage2.Text := IntToStr(AData^.iImage2);
-        if AData^.bDir = 0 then
+        edtCName.Text := AData.PluginName;
+        speOrder.Value := AData.iOrder;
+        edtImage1.Text := IntToStr(AData.ImageIndex);
+        edtImage2.Text := IntToStr(AData.SelectedImageIndex);
+        if AData.IsDirectory then
           rbDirectory.Checked
-        else
-        if AData^.bDir = 1 then
-        begin
+        else begin
           rbModules.Checked;
-          edtFileName.Text := AData^.sPluginFileName;
+          edtFileName.Text := AData.PluginFileName;
         end;
-        speFlag.Value := AData^.iFlag;
       end;
     end;
     //引出交换数据
@@ -108,7 +104,7 @@ begin
   finally
     FreeAndNil(frmTvDirectoryOper);
   end;
-end;
+end; 
   
 procedure TfrmTvDirectoryOper.btnCancelClick(Sender: TObject);
 begin
@@ -117,7 +113,7 @@ end;
 
 procedure TfrmTvDirectoryOper.btnSaveClick(Sender: TObject);
 begin
-  if CheckNotNullControl then Exit;
+ { if CheckNotNullControl then Exit;
   FAData^.sEName := Trim(edtEName.Text);
   FAData^.sCName := Trim(edtCName.Text);
   FAData^.iOrder := StrToInt(speOrder.Text);
@@ -130,7 +126,7 @@ begin
   FAData^.iFlag := StrToInt(speFlag.Text);
   if not rbDirectory.Checked then
     FAData^.sPluginFileName := ExtractFileName(edtFileName.Text);
-  Close;
+  Close;    }
 end;
 
 procedure TfrmTvDirectoryOper.FormCreate(Sender: TObject);
