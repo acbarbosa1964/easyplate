@@ -36,10 +36,10 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         Height = 582
         SelectionPen.Color = clBtnShadow
         Align = alClient
-        Images = imgTv
+        Images = DMEasyDBConnection.img16
         Indent = 19
         PopupMenu = tvNavPP
-        StateImages = imgTv
+        StateImages = DMEasyDBConnection.img16
         TabOrder = 1
         OnChange = tvSysDirectoryChange
         OnDragDrop = tvSysDirectoryDragDrop
@@ -173,7 +173,6 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           ShowHint = True
           Style = bsModern
           TabOrder = 1
-          OnClick = btnInsertClick
         end
         object btnEdit: TEasyBitButton
           Left = 70
@@ -676,10 +675,6 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
     Params = <>
     Left = 359
     Top = 336
-  end
-  object imgTv: TImageList
-    Left = 359
-    Top = 368
   end
   object tvNavPP: TEasyPopupMenu
     AutoHotkeys = maManual

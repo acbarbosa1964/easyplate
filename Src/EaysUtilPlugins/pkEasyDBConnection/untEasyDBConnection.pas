@@ -29,9 +29,9 @@ unit untEasyDBConnection;
 interface
 
 uses
-  Windows, SysUtils, Classes, DB, ADODB, IniFiles, Forms, untEasyUtilRWIni,
+  Windows, SysUtils, Classes, DB, ADODB, IniFiles, Forms, Graphics, untEasyUtilRWIni,
   Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB,
-  AppEvnts;
+  AppEvnts, ImgList, Controls;
 
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
          exports GenrateEasyDBConnection;
@@ -43,6 +43,8 @@ type
     EasySOB: TSimpleObjectBroker;
     EasyQry: TADOQuery;
     EasyDsp: TDataSetProvider;
+    img16: TImageList;
+    img32: TImageList;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -76,6 +78,8 @@ type
     procedure LoadSOBServers;
     //读取负载均衡服务器
     procedure ReadSOBFile(AFileName, ASeed: string);
+    //装载系统资源图像
+    procedure LoadImageList;
     
     procedure LoadConnectString;
     procedure SetDBDataBase(const Value: string);
@@ -180,10 +184,19 @@ begin
     if OpenEasyScktConnection = 1 then
     //如果是三层就获取远程的服务接口
       EasyIRDMEasyPlateServerDisp := IRDMEasyPlateServerDisp((IDispatch(EasyScktConn.AppServer)));
+    if EasyIRDMEasyPlateServerDisp = nil then
+    begin
+      Application.MessageBox('远程数据模块接口获取失败,系统将终止运行!', 
+        '提示', MB_OK + MB_ICONSTOP);
+      Application.Terminate;  
+    end;  
   end
   else
     //打开ADO两层数据连接
     OpenEasyADOConnection();
+
+  //
+  LoadImageList;
 end;
 
 procedure TDMEasyDBConnection.DataModuleDestroy(Sender: TObject);
@@ -444,10 +457,35 @@ begin
   AList.Free;
 end;
 
+procedure TDMEasyDBConnection.LoadImageList;
+var
+  BmpMask16,
+  BmpMask32,
+  Bmp16, Bmp32: TBitmap;
+begin
+  Bmp16 := TBitmap.Create;
+  Bmp32 := TBitmap.Create;
+  BmpMask16 := TBitmap.Create;
+  BmpMask32 := TBitmap.Create;
+
+  Bmp16.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img16.bmp');
+  Bmp32.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img32.bmp');
+  BmpMask16.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img16Mask.bmp');
+  BmpMask32.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img32Mask.bmp');
+
+  img16.Add(Bmp16, BmpMask16);
+  img32.Add(Bmp32, BmpMask32);
+  Bmp16.Free;
+  Bmp32.Free;
+  BmpMask16.Free;
+  BmpMask32.Free;  
+end;
+
 initialization
   CoInitialize(nil);
   DMEasyDBConnection := TDMEasyDBConnection.Create(Application);
   Application.Handle := DMEasyDBConnection.EasyApplicationHandle;
+//  DMEasyDBConnection.EasyApplicationHandle := Application.Handle;
 
 finalization
   CoUninitialize;

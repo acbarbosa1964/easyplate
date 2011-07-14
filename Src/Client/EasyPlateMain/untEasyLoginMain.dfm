@@ -2909,14 +2909,7 @@ object frmEasyLoginMain: TfrmEasyLoginMain
   object cdsLogin: TClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'DataSetProvider1'
     Left = 216
     Top = 240
-  end
-  object dspLogin: TDataSetProvider
-    DataSet = DMEasyDBConnection.EasyQry
-    Options = [poAllowCommandText]
-    Left = 216
-    Top = 280
   end
 end

@@ -24,11 +24,10 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, untEasyEdit, untEasySpinEdit, untEasyEditExt,
   untEasyGroupBox, untEasyButtons, untEasyPlateManager, untEasyLabel,
-  unEasyComboBox, ImgList, untEasyClassPluginDirectory;
+  unEasyComboBox, ImgList, untEasyClassPluginDirectory, ExtCtrls;
 
 type
   TfrmTvDirectoryOper = class(TForm)
-    edtEName: TEasyLabelEdit;
     edtCName: TEasyLabelEdit;
     speOrder: TEasySpinEdit;
     edtImage1: TEasyButtonEdit;
@@ -38,9 +37,10 @@ type
     edtFileName: TEasyFileNameEdit;
     btnSave: TEasyBitButton;
     btnCancel: TEasyBitButton;
-    speFlag: TEasySpinEdit;
     lblParentNode: TEasyLabel;
     ImageList1: TImageList;
+    rgShowModal: TEasyRadioGroup;
+    rgModuleEnable: TEasyRadioGroup;
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -65,7 +65,7 @@ var
 
 implementation
 
-uses untImagesSelect;
+uses untImagesSelect, untEasyUtilMethod;
 
 {$R *.dfm}
 
@@ -113,20 +113,39 @@ end;
 
 procedure TfrmTvDirectoryOper.btnSaveClick(Sender: TObject);
 begin
- { if CheckNotNullControl then Exit;
-  FAData^.sEName := Trim(edtEName.Text);
-  FAData^.sCName := Trim(edtCName.Text);
-  FAData^.iOrder := StrToInt(speOrder.Text);
-  FAData^.iImage1 := StrToInt(edtImage1.Text);
-  FAData^.iImage2 := StrToInt(edtImage2.Text);
+  if CheckNotNullControl then Exit;
+  FAData.PluginGUID := GenerateGUID;
+  FAData.PluginName := Trim(edtCName.Text);
+  FAData.iOrder := StrToInt(speOrder.Text);
+  FAData.ImageIndex := StrToInt(edtImage1.Text);
+  FAData.SelectedImageIndex := StrToInt(edtImage2.Text);
+
+  //先设置模块是否目录属性，后面有使用
   if rbDirectory.Checked then
-    FAData^.bDir := 0
+    FAData.IsDirectory := True
   else
-    FAData^.bDir := 1;
-  FAData^.iFlag := StrToInt(speFlag.Text);
+    FAData.IsDirectory := False;
+  //模态显示
+  if rgShowModal.ItemIndex = 0 then
+    FAData.ShowModal := True
+  else
+    FAData.ShowModal := False;
+
   if not rbDirectory.Checked then
-    FAData^.sPluginFileName := ExtractFileName(edtFileName.Text);
-  Close;    }
+    FAData.PluginFileName := edtFileName.Text;
+//    FAData.PluginFileName := ExtractFileName(edtFileName.Text);
+
+  //目录不能被停用
+  if FAData.IsDirectory then
+    FAData.IsEnable := True
+  else
+  begin
+    if rgModuleEnable.ItemIndex = 0 then
+      FAData.IsEnable := True
+    else
+      FAData.IsEnable := False;
+  end;
+  Close;
 end;
 
 procedure TfrmTvDirectoryOper.FormCreate(Sender: TObject);
@@ -197,13 +216,6 @@ begin
     Result := True;
     Exit;  
   end;  
-  if Trim(edtEName.Text) = '' then
-  begin
-    Application.MessageBox('模块英文名称不能为空!', '提示', MB_OK + 
-      MB_ICONWARNING);
-    Result := True;
-    Exit;  
-  end;  
   if Trim(speOrder.Text) = '' then
   begin
     Application.MessageBox('模块序号不能为空!', '提示', MB_OK + 
@@ -221,13 +233,6 @@ begin
       Exit;
     end;
   end;
-  if Trim(speFlag.Text) = '' then
-  begin
-    Application.MessageBox('模块标志不能为空!', '提示', MB_OK + 
-      MB_ICONWARNING);
-    Result := True;
-    Exit;  
-  end;  
 end;
 
 procedure TfrmTvDirectoryOper.FormShow(Sender: TObject);
@@ -235,12 +240,8 @@ begin
   edtCName.EditLabel.Font.Color  := clBlue;
   speOrder.EditLabel.Font.Color  := clBlue;
   edtFileName.EditLabel.Font.Color  := clBlue;
-  speFlag.EditLabel.Font.Color  := clBlue;
-  edtEName.EditLabel.Font.Color  := clBlue;
 
-  edtEName.EditLabel.Transparent := True;
   edtCName.EditLabel.Transparent := True;
-  speFlag.EditLabel.Transparent := True;
   speOrder.EditLabel.Transparent := True;
   edtFileName.EditLabel.Transparent := True;
   //默认选中目录 置文件选择框不可用

@@ -25,7 +25,7 @@ unit untEasyClassPluginDirectory;
 interface
 
 uses
-  Classes, DB, DBClient;
+  Classes, DB, DBClient, Variants;
 
 type
 
@@ -61,6 +61,9 @@ type
 
     class procedure GeneratePluginDirectory(var Data: OleVariant);
     class procedure GeneratePluginDirectoryList(var Data: OleVariant; AResult: TList);
+    class procedure AppendClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+    class procedure EditClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+    class procedure DeleteClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
   end;
 
   { TEasysysPluginParam }
@@ -172,6 +175,57 @@ begin
   finally
     AClientDataSet.Free;
   end;
+end;
+
+class procedure TEasysysPluginsDirectory.AppendClientDataSet(
+   ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+begin
+  with ACds do
+  begin
+    Append;
+    FieldByName('PluginGUID').AsString := AObj.PluginGUID;
+    FieldByName('PluginName').AsString := AObj.PluginName;
+    FieldByName('iOrder').AsInteger := AObj.iOrder;
+    FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
+    FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
+    FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
+    FieldByName('IsDirectory').AsBoolean := AObj.IsDirectory;
+    FieldByName('PluginFileName').AsString := AObj.PluginFileName;
+    FieldByName('ParentPluginGUID').AsString := AObj.ParentPluginGUID;
+    FieldByName('IsEnable').AsBoolean := AObj.IsEnable;
+    FieldByName('ShowModal').AsBoolean := AObj.ShowModal;
+    Post;
+  end;
+end;
+
+class procedure TEasysysPluginsDirectory.EditClientDataSet(
+  ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+begin
+  if ACds.Locate('PluginGUID', VarArrayOf([AObj.PluginGUID]), [loCaseInsensitive]) then
+  begin
+    with ACds do
+    begin
+      Edit;
+      FieldByName('PluginName').AsString := AObj.PluginName;
+      FieldByName('iOrder').AsInteger := AObj.iOrder;
+      FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
+      FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
+      FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
+      FieldByName('IsDirectory').AsBoolean := AObj.IsDirectory;
+      FieldByName('PluginFileName').AsString := AObj.PluginFileName;
+      FieldByName('ParentPluginGUID').AsString := AObj.ParentPluginGUID;
+      FieldByName('IsEnable').AsBoolean := AObj.IsEnable;
+      FieldByName('ShowModal').AsBoolean := AObj.ShowModal;
+      Post;
+    end;
+  end;
+end;
+
+class procedure TEasysysPluginsDirectory.DeleteClientDataSet(
+  ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+begin
+  if ACds.Locate('PluginGUID', VarArrayOf([AObj.PluginGUID]), [loCaseInsensitive]) then
+    ACds.Delete;
 end;
 
 { TEasysysPluginParam }

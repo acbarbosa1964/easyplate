@@ -3,8 +3,8 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   Top = 211
   BorderStyle = bsDialog
   Caption = #30446#24405#31649#29702
-  ClientHeight = 333
-  ClientWidth = 342
+  ClientHeight = 367
+  ClientWidth = 360
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -39,7 +39,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Effect3D.ShadowedColor = clGray
     PenWidth = 1
   end
-  object edtEName: TEasyLabelEdit
+  object edtCName: TEasyLabelEdit
     Left = 88
     Top = 32
     Width = 217
@@ -49,31 +49,15 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
-    EditLabel.Width = 57
+    EditLabel.Width = 60
     EditLabel.Height = 13
-    EditLabel.Caption = #33521#25991#21517#31216'   '
-    LabelPosition = lpLeft
-    LabelSpacing = 3
-  end
-  object edtCName: TEasyLabelEdit
-    Left = 88
-    Top = 64
-    Width = 217
-    Height = 19
-    BorderColor = clGray
-    TabOrder = 1
-    TextRightAlign = False
-    EnterTAB = True
-    FocusColor = clInfoBk
-    EditLabel.Width = 57
-    EditLabel.Height = 13
-    EditLabel.Caption = #20013#25991#21517#31216'   '
+    EditLabel.Caption = #21517'         '#31216'   '
     LabelPosition = lpLeft
     LabelSpacing = 3
   end
   object speOrder: TEasySpinEdit
     Left = 88
-    Top = 96
+    Top = 64
     Width = 121
     Height = 22
     EditLabel.Width = 57
@@ -86,18 +70,18 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Precision = 0
     SpinKind = sptNormal
     Value = 0
-    DateValue = 40559.928866817130000000
+    DateValue = 40738.982338217590000000
     BorderColor = clGray
     IncrementFloat = 0.100000000000000000
     MaxValue = 100
     MinValue = 0
     MaxFloatValue = 100.000000000000000000
     ParentCtl3D = False
-    TabOrder = 2
+    TabOrder = 1
   end
   object edtImage1: TEasyButtonEdit
     Left = 88
-    Top = 136
+    Top = 104
     Width = 121
     Height = 19
     BorderColor = clGray
@@ -191,7 +175,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Button.Width = 16
     OnButtonClick = edtImage1ButtonClick
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 2
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -203,7 +187,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object edtImage2: TEasyButtonEdit
     Left = 88
-    Top = 168
+    Top = 136
     Width = 121
     Height = 19
     BorderColor = clGray
@@ -297,7 +281,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Button.Width = 16
     OnButtonClick = edtImage2ButtonClick
     ReadOnly = True
-    TabOrder = 4
+    TabOrder = 3
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -309,27 +293,28 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object rbDirectory: TEasyRadioButton
     Left = 88
-    Top = 200
+    Top = 168
     Width = 65
     Height = 17
     Caption = #30446#24405
     Checked = True
-    TabOrder = 5
+    TabOrder = 4
     TabStop = True
+    Transparent = True
     OnClick = rbDirectoryClick
   end
   object rbModules: TEasyRadioButton
     Left = 160
-    Top = 200
+    Top = 168
     Width = 65
     Height = 17
     Caption = #27169#22359
-    TabOrder = 6
+    TabOrder = 5
     OnClick = rbModulesClick
   end
   object edtFileName: TEasyFileNameEdit
     Left = 88
-    Top = 224
+    Top = 192
     Width = 217
     Height = 19
     Button.Color = clBtnFace
@@ -432,7 +417,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object btnSave: TEasyBitButton
     Left = 104
-    Top = 296
+    Top = 328
     Width = 65
     Height = 25
     Caption = #30830#23450
@@ -468,12 +453,12 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 9
+    TabOrder = 7
     OnClick = btnSaveClick
   end
   object btnCancel: TEasyBitButton
     Left = 200
-    Top = 296
+    Top = 328
     Width = 65
     Height = 25
     Caption = #21462#28040
@@ -509,35 +494,41 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 10
+    TabOrder = 8
     OnClick = btnCancelClick
   end
-  object speFlag: TEasySpinEdit
+  object rgShowModal: TEasyRadioGroup
     Left = 88
-    Top = 256
-    Width = 121
-    Height = 22
-    EditLabel.Width = 33
-    EditLabel.Height = 13
-    EditLabel.Caption = #26631#24535'   '
-    LabelPosition = lpLeft
-    LabelSpacing = 3
-    ExcelStyleDecimalSeparator = False
-    ReturnIsTab = False
-    Precision = 0
-    SpinKind = sptNormal
-    Value = 0
-    DateValue = 40559.928866817130000000
-    BorderColor = clGray
-    IncrementFloat = 0.100000000000000000
-    MaxValue = 100
-    MinValue = 0
-    MaxFloatValue = 100.000000000000000000
-    ParentCtl3D = False
-    TabOrder = 8
+    Top = 224
+    Width = 193
+    Height = 49
+    Caption = #31383#20307#26174#31034#27169#24335
+    Columns = 2
+    GroupStyle = gsBanner
+    ItemIndex = 0
+    Items.Strings = (
+      #27169#24577
+      #38750#27169#24577)
+    TabOrder = 9
+    Transparent = True
+  end
+  object rgModuleEnable: TEasyRadioGroup
+    Left = 88
+    Top = 272
+    Width = 193
+    Height = 49
+    Caption = #27169#22359#21551#29992'/'#20572#29992
+    Columns = 2
+    GroupStyle = gsBanner
+    ItemIndex = 0
+    Items.Strings = (
+      #27169#24577
+      #38750#27169#24577)
+    TabOrder = 10
+    Transparent = True
   end
   object ImageList1: TImageList
-    Left = 216
-    Top = 88
+    Left = 224
+    Top = 64
   end
 end

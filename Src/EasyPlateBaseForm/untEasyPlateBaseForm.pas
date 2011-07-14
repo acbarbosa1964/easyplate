@@ -54,6 +54,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FEasyApplicationHandle: THandle;
     FFormId      : String;
     FLangID      : string;           //语言类别
     FEasyAppPath : string;           //应用程序运行路径
@@ -89,6 +90,8 @@ type
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
+    //系统局柄
+    property EasyApplicationHandle: Cardinal read FEasyApplicationHandle;
     property FormId: string read GetFormId write SetFormId;
     property IsKeyPreView: Boolean read GetKeyPreView write SetIsKeyPreView;
     //系统提示信息
@@ -200,6 +203,7 @@ begin
   FIsKeyPreView := True;
   FFormId := '{00000000-0000-0000-0000-000000000000}';
   FLegalCompanyName := '一轩软件研发有限公司';
+  FEasyApplicationHandle := DMEasyDBConnection.EasyApplicationHandle;
 end;
 
 function TfrmEasyPlateBaseForm.GetFileVersion: string;
@@ -255,19 +259,18 @@ begin
         end;
 
         (Components[I] as TClientDataSet).ProviderName := ATmpDsp.Name;
+      end
+    end else if DMEasyDBConnection.EasyAppType = 'CAS' then
+    begin
+      if Components[I] is TClientDataSet then
+      begin
+        with Components[I] as TClientDataSet do
+        begin
+          RemoteServer := DMEasyDBConnection.EasyScktConn;
+          ProviderName := 'EasyRDMDsp';
+        end;
       end;
-//    end
-//    else if DMEasyDBConnection.EasyAppType = 'CAS' then
-//    begin
-//      if Components[I] is TClientDataSet then     
-//      begin
-//        with Components[I] as TClientDataSet do
-//        begin
-//          RemoteServer := DMEasyDBConnection.EasyScktConn;
-//          ProviderName := 'EasyRDMDsp';
-//        end;
-//      end;
-    end;                                               
+    end;
   end;
 end;
 

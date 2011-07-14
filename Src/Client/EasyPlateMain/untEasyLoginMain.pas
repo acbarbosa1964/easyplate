@@ -45,7 +45,6 @@ type
     EasyLabel2: TEasyLabel;
     hintBall: TEasyHintBalloonForm;
     cdsLogin: TClientDataSet;
-    dspLogin: TDataSetProvider;
     edtPassWord: TEasyLabelEdit;
     procedure bbtnCancelClick(Sender: TObject);
     procedure bbtnLoginClick(Sender: TObject);
@@ -100,9 +99,7 @@ begin
     begin
       if UpperCase(DMEasyDBConnection.EasyAppType) = 'CAS' then
       begin
-        cdsLogin.Data := EasyRDMDisp.EasyGetRDMData('SELECT SQLContext FROM sysSQL WHERE IsEnable = 1 AND SQLName = ''UserLoginCheck''');
-//        cdsLogin.RemoteServer := DMEasyDBConnection.EasyScktConn;
-//        cdsLogin.ProviderName := 'EasyRDMDsp';
+        Data := EasyRDMDisp.EasyGetRDMData('SELECT SQLContext FROM sysSQL WHERE IsEnable = 1 AND SQLName = ''UserLoginCheck''');
       end
       else
       begin

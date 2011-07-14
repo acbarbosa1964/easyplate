@@ -2,8 +2,8 @@ object DMEasyDBConnection: TDMEasyDBConnection
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Left = 458
-  Top = 176
+  Left = 432
+  Top = 263
   Height = 250
   Width = 371
   object EasyADOConn: TADOConnection
@@ -16,10 +16,6 @@ object DMEasyDBConnection: TDMEasyDBConnection
     Top = 32
   end
   object EasyScktConn: TSocketConnection
-    ServerGUID = '{4F1AC7AF-01E3-46AC-BB37-7C11C2D3B5E3}'
-    ServerName = 'EasyPlateServer.RDMEasyPlateServer'
-    InterceptGUID = '{01913E60-9C6D-4F35-83C3-5E7A8A41CDEB}'
-    InterceptName = 'intrcpt.DataCompressor'
     ObjectBroker = EasySOB
     Left = 48
     Top = 88
@@ -38,5 +34,13 @@ object DMEasyDBConnection: TDMEasyDBConnection
     DataSet = EasyQry
     Left = 160
     Top = 32
+  end
+  object img16: TImageList
+    Left = 168
+    Top = 88
+  end
+  object img32: TImageList
+    Left = 216
+    Top = 88
   end
 end
