@@ -50,7 +50,6 @@ type
     tvSysDirectory: TEasyTreeView;
     EasyPanel13: TEasyPanel;
     btnAdd: TEasyBitButton;
-    btnInsert: TEasyBitButton;
     btnEdit: TEasyBitButton;
     btnRefresh: TEasyBitButton;
     btnDelete: TEasyBitButton;
@@ -65,11 +64,12 @@ type
     lvDeleted: TListView;
     btnSave: TEasyBitButton;
     btnCancel: TEasyBitButton;
+    btnExit: TEasyBitButton;
+    cdsParam: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnEditClick(Sender: TObject);
-    procedure btnSaveClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnRefreshClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -84,10 +84,11 @@ type
     procedure N6Click(Sender: TObject);
     procedure N7Click(Sender: TObject);
     procedure ppTVRefreshClick(Sender: TObject);
-    procedure tvSysDirectoryChange(Sender: TObject; Node: TTreeNode);
     procedure btnParamEditClick(Sender: TObject);
     procedure btnParamDeleteClick(Sender: TObject);
     procedure btnParamAddClick(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
   private
     { Private declarations }
     //初始化树，只生成第一层节点
@@ -253,67 +254,10 @@ begin
   TEasysysPluginsDirectory.EditClientDataSet(cdsDirManager, TmpData);
 end;
 
-procedure TfrmEasyPlateManage.btnSaveClick(Sender: TObject);
-var
-  I, J: Integer;
-  ADivValue: Integer; //进度条的幅度
-begin
-  inherited;
-{  J := 0;
-  ADivValue := 100 div High(tvTmpData);
-  //新增 修改 删除 保存操作
-  try
-    for I := Low(tvTmpData) to High(tvTmpData) do
-    begin
-      if Trim(tvTmpData[I]^.sCName) <> '' then
-      begin
-        if tvTmpData[I]^.sFlag = Easy_Add then
-        begin
-          inc(J);
-          InsertDirectory(tvTmpData[I]);
-        end;
-        if tvTmpData[I]^.sFlag = Easy_Del then
-        begin
-          inc(J);
-          DeleteDirectory(tvTmpData[I]);
-        end;
-        if tvTmpData[I]^.sFlag = Easy_Edit then
-        begin
-          inc(J);
-          UpdateDirectory(tvTmpData[I]);
-        end;
-      end;
-    end;
-    if J > 0 then
-    begin
-      Application.MessageBox('提交完成！', '提示', MB_OK + MB_ICONINFORMATION);
-      btnRefreshClick(Sender);
-      lvDeleted.Items.Clear;
-    end
-    else
-    begin
-      Application.MessageBox('没有要提交的更改！', '提示', MB_OK + MB_ICONINFORMATION);
-    end;
-  except on e:Exception do
-    if Application.MessageBox(PChar('提交出错,原因：' + e.Message
-              + '具体可查看【操作日志】！'), '提示', MB_OKCANCEL + MB_ICONWARNING) = IDOK then
-    begin
-      pgcSystemManager.ActivePage := tbsOPLog;
-      lvDeleted.Items.Clear;
-    end
-    else
-    begin
-      lvDeleted.Items.Clear;
-    end;  
-    //将未操作数据处理                                
-  end;  }
-end;
-
 procedure TfrmEasyPlateManage.btnDeleteClick(Sender: TObject);
 var
   ASelectedNode: TTreeNode;
   TmpListItem  : TListItem;
-  I            : Integer;
 begin
   inherited;
   ASelectedNode := tvSysDirectory.Selected;
@@ -353,22 +297,17 @@ begin
 end;
 
 procedure TfrmEasyPlateManage.btnCancelClick(Sender: TObject);
-var
-  I: Integer;
 begin
   inherited;
 
   lvParamers.Items.Clear;
   lvDeleted.Items.Clear;
 
-//  for I := Low(tvTmpData) to High(tvTmpData) do
-//  begin
-//    if tvTmpData[I]^.sFlag <> '' then
-//      tvTmpData[I]^.sFlag := '';
-//  end;
-
-  //生成目录树
-//  GenerateTreeView(tvSysDirectory, PluginDirectoryList, ParentNodeFlag);
+  if cdsDirManager.ChangeCount > 0 then
+    cdsDirManager.CancelUpdates;
+  if cdsParam.ChangeCount > 0 then
+    cdsParam.CancelUpdates;
+  RefreshDirectoryTreeView(ertNoSaveRefresh);
 end;
 
 procedure TfrmEasyPlateManage.InitDirectoryData;
@@ -378,7 +317,7 @@ begin
   if cdsDirManager.Active then
     cdsDirManager.Close;
   //初始化系统目录数组
-  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder');
+  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('EXEC sp_SysPluginsDirectory');
   cdsDirManager.Active := True;
   ATmpData := cdsDirManager.Data;
   TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
@@ -524,33 +463,6 @@ begin
   btnRefreshClick(Sender);
 end;
 
-procedure TfrmEasyPlateManage.tvSysDirectoryChange(Sender: TObject;
-  Node: TTreeNode);
-var
-  TmpListItem: TListItem;
-  I          : Integer;
-begin
-  inherited;
-//  DeleteTmpNode();
-//  lvParamers.Items.Clear;
-
- { if PEasytvDirectoryRecord(Node.Data)^.bDir = 1 then
-  begin
-    for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
-    begin
-      if (PEasytvParamsRecord(tvTmpParamsData[I])^.sPluginGUID
-         = PEasytvDirectoryRecord(Node.Data)^.sGUID)
-         and (PEasytvParamsRecord(tvTmpParamsData[I])^.sParamEName <> '') then
-      begin
-        TmpListItem := lvParamers.Items.Add;
-        //2010-10-31 18:29:46  参数改为显示英文名称
-        TmpListItem.Caption := PEasytvParamsRecord(tvTmpParamsData[I])^.sParamEName;
-        TmpListItem.SubItems.Add(PEasytvParamsRecord(tvTmpParamsData[I])^.sValue);
-      end;
-    end;
-  end;  }
-end;
-
 procedure TfrmEasyPlateManage.btnParamEditClick(Sender: TObject);
 var
   I       : Integer;
@@ -691,14 +603,15 @@ begin
   //先保存 初始化数据
   if AEasyRefreshType = ertSaveRefresh then
   begin   //sysPluginsDirectory
-    cdsDirManager.Data := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode);
+   { cdsDirManager.Data := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode);
     cdsDirManager.SaveToFile('c:\error.xml', dfXMLUTF8);
     ShowMessage(IntToStr(AErrorCode));
     if AErrorCode > 0 then
     begin
       ShowMessage('保存出错:' + cdsDirManager.fieldbyname('ERROR_MESSAGE').AsString);
     end ELSE 
-    InitDirectoryData;
+    InitDirectoryData; }
+    btnSaveClick(nil);
   end else
   if AEasyRefreshType = ertNoSaveRefresh then
   begin
@@ -714,6 +627,72 @@ begin
   lvParamers.Items.Clear;
   //清空已删除的列表
   lvDeleted.Items.Clear;
+end;
+
+procedure TfrmEasyPlateManage.btnExitClick(Sender: TObject);
+begin
+  inherited;
+  Close;
+end;
+
+procedure TfrmEasyPlateManage.btnSaveClick(Sender: TObject);
+var
+  AErrorCode: Integer;
+  TableNameOle,
+  KeyFieldOle,
+  DeltaOle,
+  ReturnOle : OleVariant;
+  cdsError  : TClientDataSet;
+begin
+  inherited;
+  try
+    if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount = 0) then
+      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode)
+    else
+    if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount > 0) then
+      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginParams', cdsParam.Delta, 'PluginParamGUID', AErrorCode)
+    else
+    if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount > 0) then
+    begin
+      AErrorCode := 0;
+      TableNameOle := VarArrayCreate([0, 1], varVariant);
+      TableNameOle[0] := 'sysPluginsDirectory';
+      TableNameOle[1] := 'sysPluginParams';
+
+      KeyFieldOle := VarArrayCreate([0, 1], varVariant);
+      KeyFieldOle[0] := 'PluginGUID';
+      KeyFieldOle[1] := 'PluginParamGUID';
+
+      DeltaOle := VarArrayCreate([0, 1], varVariant);
+      DeltaOle[0] := cdsDirManager.Delta;
+      DeltaOle[1] := cdsParam.Delta;
+
+      ReturnOle := EasyRDMDisp.EasySaveRDMDatas(TableNameOle, DeltaOle, KeyFieldOle, AErrorCode);
+    end;
+    if AErrorCode <> 0 then
+    begin
+      cdsError := TClientDataSet.Create(Self);
+      try
+        cdsError.Data := ReturnOle;
+        Application.MessageBox(PChar('保存出错,原因：' + #13
+           + cdsError.fieldbyname('ERROR_MESSAGE').AsString), '提示', MB_OK + MB_ICONERROR);
+      finally
+        cdsError.Free;
+      end;
+    end else
+    begin
+      Application.MessageBox('保存成功！', '提示', MB_OK +
+        MB_ICONINFORMATION);
+      if cdsDirManager.ChangeCount > 0 then
+        cdsDirManager.MergeChangeLog;
+      if cdsParam.ChangeCount > 0 then
+        cdsParam.MergeChangeLog;
+//      btnRefreshClick(Sender);
+    end;
+  except on E: Exception do
+    Application.MessageBox(PChar('保存出错,原因：' + E.message), '提示', MB_OK +
+      MB_ICONERROR);
+  end;
 end;
 
 end.
