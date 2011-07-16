@@ -31,3 +31,6 @@ alter table sysPluginsDirectory
 go
 --插件显示样式
 ALTER TABLE sysPluginsDirectory ADD ShowModal BIT NOT NULL DEFAULT 0
+
+--删除PluginParamGUID不应当存在此表中
+ALTER TABLE sysPluginsDirectory DROP COLUMN PluginParamGUID
