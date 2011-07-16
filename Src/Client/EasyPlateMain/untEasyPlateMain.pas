@@ -80,12 +80,6 @@ type
     Exit1: TMenuItem;
     N1: TMenuItem;
     PrintSetup1: TMenuItem;
-    Print1: TMenuItem;
-    N2: TMenuItem;
-    SaveAs1: TMenuItem;
-    Save1: TMenuItem;
-    Open1: TMenuItem;
-    New1: TMenuItem;
     Help1: TMenuItem;
     About1: TMenuItem;
     EpResourceManage: TMenuItem;
@@ -98,7 +92,6 @@ type
     ArrangeAll1: TMenuItem;
     Cascade1: TMenuItem;
     ile1: TMenuItem;
-    NewWindow1: TMenuItem;
     T1: TMenuItem;
     img16: TImageList;
     img16_d: TImageList;
@@ -140,6 +133,9 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure EpResourceManageClick(Sender: TObject);
     procedure actConnectDBExecute(Sender: TObject);
+    procedure ile1Click(Sender: TObject);
+    procedure Cascade1Click(Sender: TObject);
+    procedure ArrangeAll1Click(Sender: TObject);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -211,11 +207,11 @@ begin
     cdsMain.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vw_inituser  WHERE UserName = ' + QuotedStr(UserID));
     if cdsMain.RecordCount = 1 then
     begin
-      stbMain.Panels[0].Text := '<a color="clblue">' + EASY_DISPLAYUSERINFO_WELCOME
-                                + '</a>'
-                                + fieldbyname('EmployeeCName').AsString;
-      stbMain.Panels[1].Text := '<a color="clblue">' + EASY_DISPLAYUSERINFO_DEPT
-                                + '</a>';
+      stbMain.Panels[0].Text := '<p color="clblue">' + EASY_DISPLAYUSERINFO_WELCOME
+                                + fieldbyname('EmployeeCName').AsString
+                                + '</p>';
+      stbMain.Panels[1].Text := '<p color="clblue">' + EASY_DISPLAYUSERINFO_DEPT
+                                + '</p>';
       Close;
     end else
     if cdsMain.RecordCount > 1 then
@@ -289,8 +285,8 @@ end;
 procedure TfrmEasyPlateMain.InitStbMain;
 begin
   //本地时间初始化
-  stbMain.Panels[2].Text:='<a color="clblue"> ' + GetChinaDay + '  ' + FormatDateTime('YYYY-MM-DD', Date)
-            + '</a>';
+  stbMain.Panels[2].Text:='<p color="clblue"> ' + GetChinaDay + '  ' + FormatDateTime('YYYY-MM-DD', Date)
+            + '</p>';
   //网络连接信息
   with stbMain.Panels[7] do
   begin
@@ -303,12 +299,12 @@ begin
       ImageIndex := 8;
   end;
   //服务器信息
-  stbMain.Panels[8].Text := '<a color="clblue">' + EASY_STATUBAR_APP
+  stbMain.Panels[8].Text := '<p color="clblue">' + EASY_STATUBAR_APP
                           + DMEasyDBConnection.EasyAppType
 
                          + EASY_STATUBAR_DBHOST
                          + DMEasyDBConnection.EasyDBHost
-                         + ':' + DMEasyDBConnection.EasyDBPort + '</a>';
+                         + ':' + DMEasyDBConnection.EasyDBPort + '</p>';
 end;
 
 procedure TfrmEasyPlateMain.InitToolBar;
@@ -540,8 +536,7 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.LoadChildTreeNodes(ATreeView: TEasyTreeView;
-                               ADataList: TList{array of PEasytvNavRecord};
-                               ParentNode: TTreeNode);
+                               ADataList: TList; ParentNode: TTreeNode);
 var
   I       : Integer;
   ATmpNode: TTreeNode;
@@ -630,5 +625,23 @@ end;
 //      MB_ICONINFORMATION);
 //  else
 //    raise E;
+
+procedure TfrmEasyPlateMain.ile1Click(Sender: TObject);
+begin
+  inherited;
+  Self.Tile;
+end;
+
+procedure TfrmEasyPlateMain.Cascade1Click(Sender: TObject);
+begin
+  inherited;
+  Self.Cascade;
+end;
+
+procedure TfrmEasyPlateMain.ArrangeAll1Click(Sender: TObject);
+begin
+  inherited;
+  Self.ArrangeIcons;
+end;
 
 end.

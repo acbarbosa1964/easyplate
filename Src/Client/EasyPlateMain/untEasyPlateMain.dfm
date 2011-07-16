@@ -1496,24 +1496,6 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Top = 143
     object File1: TMenuItem
       Caption = #25991#20214'(&F)'
-      object New1: TMenuItem
-        Caption = '&New'
-      end
-      object Open1: TMenuItem
-        Caption = '&Open...'
-      end
-      object Save1: TMenuItem
-        Caption = '&Save'
-      end
-      object SaveAs1: TMenuItem
-        Caption = 'Save &As...'
-      end
-      object N2: TMenuItem
-        Caption = '-'
-      end
-      object Print1: TMenuItem
-        Caption = '&Print...'
-      end
       object PrintSetup1: TMenuItem
         Action = actConnectDB
       end
@@ -1532,17 +1514,17 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     end
     object Window1: TMenuItem
       Caption = #31383#21475'(&W)'
-      object NewWindow1: TMenuItem
-        Caption = '&New Window'
-      end
       object ile1: TMenuItem
-        Caption = '&Tile'
+        Caption = #24179#38138
+        OnClick = ile1Click
       end
       object Cascade1: TMenuItem
-        Caption = '&Cascade'
+        Caption = #23618#21472
+        OnClick = Cascade1Click
       end
       object ArrangeAll1: TMenuItem
-        Caption = '&Arrange All'
+        Caption = #25490#21015#22270#26631
+        OnClick = ArrangeAll1Click
       end
       object N3: TMenuItem
         Caption = '-'
@@ -1557,10 +1539,11 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     object Help1: TMenuItem
       Caption = #24110#21161'(&H)'
       object Contents1: TMenuItem
-        Caption = '&Contents'
+        Caption = #24110#21161'(&H)'
+        ShortCut = 112
       end
       object SearchforHelpOn1: TMenuItem
-        Caption = '&Search for Help On...'
+        Caption = #23448#26041#32593#31449
       end
       object EpResourceManage: TMenuItem
         Caption = #24179#21488#36164#28304#31649#29702

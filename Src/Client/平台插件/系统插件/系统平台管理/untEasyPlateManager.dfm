@@ -36,9 +36,12 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         Height = 582
         SelectionPen.Color = clBtnShadow
         Align = alClient
+        Images = imgtv
         Indent = 19
         PopupMenu = tvNavPP
+        StateImages = imgtv
         TabOrder = 1
+        OnChange = tvSysDirectoryChange
         OnDragDrop = tvSysDirectoryDragDrop
         OnDragOver = tvSysDirectoryDragOver
         OnExpanding = tvSysDirectoryExpanding
@@ -1043,6 +1046,10 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
     Aggregates = <>
     Params = <>
     Left = 359
+    Top = 368
+  end
+  object imgtv: TImageList
+    Left = 455
     Top = 368
   end
 end

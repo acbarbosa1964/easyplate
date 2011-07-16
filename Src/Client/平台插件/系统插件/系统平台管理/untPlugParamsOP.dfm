@@ -15,9 +15,9 @@ object frmPlugParamsOP: TfrmPlugParamsOP
   Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
-  object edtEName: TEasyLabelEdit
+  object edtCName: TEasyLabelEdit
     Left = 88
-    Top = 16
+    Top = 24
     Width = 153
     Height = 19
     BorderColor = clGray
@@ -27,24 +27,7 @@ object frmPlugParamsOP: TfrmPlugParamsOP
     FocusColor = clInfoBk
     EditLabel.Width = 57
     EditLabel.Height = 13
-    EditLabel.Caption = #33521#25991#21517#31216'   '
-    LabelPosition = lpLeft
-    LabelSpacing = 3
-  end
-  object edtCName: TEasyLabelEdit
-    Left = 88
-    Top = 80
-    Width = 153
-    Height = 19
-    BorderColor = clGray
-    TabOrder = 2
-    Visible = False
-    TextRightAlign = False
-    EnterTAB = True
-    FocusColor = clInfoBk
-    EditLabel.Width = 57
-    EditLabel.Height = 13
-    EditLabel.Caption = #20013#25991#21517#31216'   '
+    EditLabel.Caption = #21442#25968#21517#31216'   '
     LabelPosition = lpLeft
     LabelSpacing = 3
   end
@@ -102,7 +85,7 @@ object frmPlugParamsOP: TfrmPlugParamsOP
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnOKClick
   end
   object btnCancel: TEasyBitButton
@@ -143,7 +126,7 @@ object frmPlugParamsOP: TfrmPlugParamsOP
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnCancelClick
   end
 end

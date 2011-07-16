@@ -1004,6 +1004,9 @@ var
   ASQL: string;
   ACds : TClientDataSet;
 begin
+  if not DirectoryExists(AppServerPath + 'Cache\Table\') then
+    CreateDir_H(AppServerPath + 'Cache\Table\');
+    
   ASQL := 'SELECT [name] FROM sys.all_objects WHERE type = ' + QuotedStr('U');
   with DMLocal.EasyLocalCds do
   begin
@@ -1018,7 +1021,7 @@ begin
         Screen.Cursor := crHourGlass;
         for I := 0 to ACds.RecordCount - 1 do
         begin
-          with DMLocal.EasyLocalCds do
+          {with DMLocal.EasyLocalCds do
           begin
             Close;
             CommandText :=  'SELECT * FROM ' + ACds.fieldbyname('name').AsString
@@ -1028,9 +1031,19 @@ begin
             begin
               if CreateDir_H(AppServerPath + 'Cache\Table\') then
             end;
-            SaveToFile(AppServerPath + 'Cache\Table\'
-                       + ACds.fieldbyname('name').AsString + '.xml', dfXMLUTF8);
-          end;
+//            SaveToFile(AppServerPath + 'Cache\Table\'
+//                       + ACds.fieldbyname('name').AsString + '.xml', dfXMLUTF8);
+          end;      }
+          with DMLocal.EasyLocalQry do
+          begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT * FROM ' + ACds.fieldbyname('name').AsString
+                                    + ' WHERE 1 = 2');
+            Open;
+            DMLocal.EasyLocalQry.SaveToFile(AppServerPath + 'Cache\Table\'
+                       + ACds.fieldbyname('name').AsString + '.xml');
+          end;  
           ACds.Next;
         end;
         Forms.Application.MessageBox('表缓存更新成功!', '', MB_OK + MB_ICONINFORMATION);

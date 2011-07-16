@@ -103,4 +103,16 @@ object RDMEasyPlateServer: TRDMEasyPlateServer
     Left = 56
     Top = 88
   end
+  object cdsError: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 144
+    Top = 280
+  end
+  object cdsSaveDetailMessage: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 240
+    Top = 280
+  end
 end

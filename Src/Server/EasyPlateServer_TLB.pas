@@ -12,7 +12,7 @@ unit EasyPlateServer_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2011/7/13 22:21:52 from Type Library described below.
+// File generated on 2011/7/16 13:02:08 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: E:\MyProject\E1Dev\Src\Server\EasyPlateServer.tlb (1)
@@ -21,7 +21,7 @@ unit EasyPlateServer_TLB;
 // Helpfile: 
 // HelpString: EasyPlateServer Library
 // DepndLst: 
-//   (1) v1.0 Midas, (d:\Program Files\Embarcadero\RAD Studio\9.0\bin\midas.dll)
+//   (1) v1.0 Midas, (C:\Windows\system32\midas.dll)
 //   (2) v2.0 stdole, (C:\Windows\system32\stdole2.tlb)
 // ************************************************************************ //
 {$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 

@@ -22,11 +22,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, untEasyEdit, untEasyButtons, untEasyPlateManager;
+  Dialogs, StdCtrls, untEasyEdit, untEasyButtons, untEasyPlateManager,
+  untEasyClassPluginDirectory;
 
 type
   TfrmPlugParamsOP = class(TForm)
-    edtEName: TEasyLabelEdit;
     edtCName: TEasyLabelEdit;
     edtParam: TEasyLabelEdit;
     btnOK: TEasyBitButton;
@@ -35,7 +35,7 @@ type
     procedure btnOKClick(Sender: TObject);
   private
     { Private declarations }
-//    FAData: PEasytvParamsRecord;
+    FAData: TEasysysPluginParam;
   public
     { Public declarations }
   end;
@@ -43,7 +43,7 @@ type
 var
   frmPlugParamsOP: TfrmPlugParamsOP;
 
-//  procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
+  procedure ShowfrmPlugParamsOP(var AData: TEasysysPluginParam; AFlag: string);
 
 implementation
 
@@ -52,9 +52,9 @@ implementation
 uses
   untEasyUtilMethod;
 
-//procedure ShowfrmPlugParamsOP(var AData: PEasytvParamsRecord; AFlag: string);
-//begin
- { try
+procedure ShowfrmPlugParamsOP(var AData: TEasysysPluginParam; AFlag: string);
+begin
+  try
     frmPlugParamsOP := TfrmPlugParamsOP.Create(Application);
     if AFlag = 'Add' then
     begin
@@ -67,17 +67,16 @@ uses
       with frmPlugParamsOP do
       begin
         Caption := frmPlugParamsOP.Caption + '-【编辑】';
-        edtEName.Text := AData^.sParamEName;
-        edtCName.Text := AData^.sParamCName;
-        edtParam.Text := AData^.sValue;
+        edtCName.Text := AData.ParamName;
+        edtParam.Text := AData.Value;
       end;
       frmPlugParamsOP.FAData := AData;
     end;
     frmPlugParamsOP.ShowModal;
   finally
     FreeAndNil(frmPlugParamsOP);
-  end;  }
-//end;
+  end;  
+end;
 
 procedure TfrmPlugParamsOP.btnCancelClick(Sender: TObject);
 begin
@@ -86,10 +85,21 @@ end;
 
 procedure TfrmPlugParamsOP.btnOKClick(Sender: TObject);
 begin
-//  FAData^.sParamEName := Trim(edtEName.Text);
-//  FAData^.sParamCName := Trim(edtCName.Text);
-//  FAData^.sValueType := 'S';
-//  FAData^.sValue := Trim(edtParam.Text);
+  if Trim(edtCName.Text) = '' then
+  begin
+    Application.MessageBox('参数名称不能为空!', '提示', MB_OK +
+      MB_ICONINFORMATION);
+    Exit;
+  end;
+  if Trim(edtParam.Text) = '' then
+  begin
+    Application.MessageBox('参数值不能为空!', '提示', MB_OK +
+      MB_ICONINFORMATION);
+    Exit;
+  end;
+  FAData.ParamName := Trim(edtCName.Text);
+  FAData.ValueType := 'S';
+  FAData.Value := Trim(edtParam.Text);
   Close;
 end;
 

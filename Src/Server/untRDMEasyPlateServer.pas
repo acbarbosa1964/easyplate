@@ -49,6 +49,8 @@ type
     cdsTable: TClientDataSet;
     QryTable: TADOQuery;
     ApplicationEvents1: TApplicationEvents;
+    cdsError: TClientDataSet;
+    cdsSaveDetailMessage: TClientDataSet;
     procedure RemoteDataModuleCreate(Sender: TObject);
     procedure RemoteDataModuleDestroy(Sender: TObject);
     procedure EasyRDMDspUpdateError(Sender: TObject;
@@ -66,7 +68,7 @@ type
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
   private
     { Private declarations }
-    FTableName,
+//    FTableName,
     FConnectString: string;
     //服务器地址、用户名、密码、数据库、端口
     FDBHost,
@@ -123,6 +125,9 @@ uses untEasyPlateServerMain, Variants, untEasyUtilMethod, untEasyUtilConst;
 
 {$R *.DFM}
 
+var
+  TableCachePath: WideString;
+  
 class procedure TRDMEasyPlateServer.UpdateRegistry(Register: Boolean; const ClassID, ProgID: string);
 begin
   if Register then
@@ -139,6 +144,8 @@ begin
 end;
 
 procedure TRDMEasyPlateServer.RemoteDataModuleCreate(Sender: TObject);
+var
+  TmpPath: WideString;
 begin
   //调整查询缓存大小
   EasyRDMQry.CacheSize :=1000;
@@ -151,6 +158,11 @@ begin
   //打开数据连接
   OpenEasyADOConnection();
   PostMessage(frmEasyPlateServerMain.Handle, WM_USER + 99, 0, 0);
+  //表缓存路径
+  TmpPath := ExtractFilePath(Application.ExeName) + 'Cache\Table\';
+  if not DirectoryExists(TmpPath) then
+    ForceDirectories(TmpPath);
+  TableCachePath := TmpPath;
 end;
 
 procedure TRDMEasyPlateServer.SetDBDataBase(const Value: string);
@@ -225,6 +237,8 @@ function TRDMEasyPlateServer.EasySaveRDMData(const ATableName: WideString;
   out AErrorCode: SYSINT): OleVariant;
 var
   KeyField: TField;
+  I, J: Integer;
+  TmpMessage: WideString;
 begin
   //执行之前检查要更新的字段是否存在
   EasyRDMCds.Data := ADelta;
@@ -236,11 +250,35 @@ begin
     Exit;
   end;
   { TODO : 表结构如果在缓存目录中存在就从缓存中更新 }
-  EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
-  EasyRDMQry.Open;
+//  if FileExists(TableCachePath + ATableName + '.xml') then
+//    EasyRDMQry.LoadFromFile(TableCachePath + ATableName + '.xml')
+//  else
+  begin
+    EasyRDMQry.SQL.Text := 'SELECT * FROM ' + ATableName + ' WHERE 1 > 2';
+    EasyRDMQry.Open;
+  end;
   with EasyRDMQry.FieldByName(AKeyField) do
     ProviderFlags := ProviderFlags + [pfInKey];
   EasyRDMDsp.UpdateMode := upWhereKeyOnly;
+  //输出详细执行信息
+  if frmEasyPlateServerMain.mmDetailLog.Checked then
+  begin
+    cdsSaveDetailMessage.Data := ADelta;
+    AddExecLog(' 操作表:' + ATableName + ' 主键:' + AKeyField);
+    for I := 0 to cdsSaveDetailMessage.RecordCount - 1 do
+    begin
+      TmpMessage := '';
+      for J := 0 to cdsSaveDetailMessage.FieldCount - 1 do
+      begin
+        if not cdsSaveDetailMessage.Fields[J].IsBlob then
+          TmpMessage := TmpMessage + ',' + cdsSaveDetailMessage.Fields[J].AsString
+        else
+          TmpMessage := TmpMessage + ',Blob';
+      end;
+      AddExecLog(TmpMessage);
+      cdsSaveDetailMessage.Next;
+    end;
+  end;  
   Result := InnerPostData(ADelta, AErrorCode);
 end;
 
@@ -360,15 +398,15 @@ begin
   case UpdateKind of
     ukInsert:
       begin
-        AddExecLog('Insert' + FTableName + TmpString);
+        AddExecLog('Insert');
       end;
     ukModify:
       begin
-        AddExecLog('Modify' + FTableName + TmpString);
+        AddExecLog('Modify');
       end;
     ukDelete:
       begin
-        AddExecLog('Delete' + FTableName + TmpString);
+        AddExecLog('Delete');
       end;  
   end;
 end;

@@ -37,7 +37,6 @@ type
     FPluginGUID: string;
     FPluginName: string;
     FiOrder: Integer;
-    FPluginParamGUID: string;
     FImageIndex: Integer;
     FSelectedImageIndex: Integer;
     FIsDirectory: Boolean;
@@ -50,7 +49,6 @@ type
     property PluginGUID: string read FPluginGUID write FPluginGUID;
     property PluginName: string read FPluginName write FPluginName;
     property iOrder: Integer read FiOrder write FiOrder;
-    property PluginParamGUID: string read FPluginParamGUID write FPluginParamGUID;
     property ImageIndex: Integer read FImageIndex write FImageIndex;
     property SelectedImageIndex: Integer read FSelectedImageIndex write FSelectedImageIndex;
     property IsDirectory: Boolean read FIsDirectory write FIsDirectory;
@@ -61,9 +59,9 @@ type
 
     class procedure GeneratePluginDirectory(var Data: OleVariant);
     class procedure GeneratePluginDirectoryList(var Data: OleVariant; AResult: TList);
-    class procedure AppendClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+    class procedure AppendClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory; var AObjList: TList);
     class procedure EditClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
-    class procedure DeleteClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+    class procedure DeleteClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginsDirectory; var AObjList: TList);
   end;
 
   { TEasysysPluginParam }
@@ -86,6 +84,9 @@ type
 
     class procedure GeneratePluginParam(var Data: OleVariant);
     class procedure GeneratePluginParamList(var Data: OleVariant; AResult: TList);
+    class procedure AppendClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginParam; var AObjList: TList);
+    class procedure EditClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginParam);
+    class procedure DeleteClientDataSet(ACds: TClientDataSet; AObj: TEasysysPluginParam; var AObjList: TList);
   end;
 
 var
@@ -117,7 +118,6 @@ begin
         PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
         PluginName := AClientDataSet.FieldByName('PluginName').AsString;
         iOrder := AClientDataSet.FieldByName('iOrder').AsInteger;
-        PluginParamGUID := AClientDataSet.FieldByName('PluginParamGUID').AsString;
         ImageIndex := AClientDataSet.FieldByName('ImageIndex').AsInteger;
         SelectedImageIndex := AClientDataSet.FieldByName('SelectedImageIndex').AsInteger;
         IsDirectory := AClientDataSet.FieldByName('IsDirectory').AsBoolean;
@@ -158,7 +158,6 @@ begin
         PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
         PluginName := AClientDataSet.FieldByName('PluginName').AsString;
         iOrder := AClientDataSet.FieldByName('iOrder').AsInteger;
-        PluginParamGUID := AClientDataSet.FieldByName('PluginParamGUID').AsString;
         ImageIndex := AClientDataSet.FieldByName('ImageIndex').AsInteger;
         SelectedImageIndex := AClientDataSet.FieldByName('SelectedImageIndex').AsInteger;
         IsDirectory := AClientDataSet.FieldByName('IsDirectory').AsBoolean;
@@ -178,7 +177,7 @@ begin
 end;
 
 class procedure TEasysysPluginsDirectory.AppendClientDataSet(
-   ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+   ACds: TClientDataSet; AObj: TEasysysPluginsDirectory; var AObjList: TList);
 begin
   with ACds do
   begin
@@ -186,7 +185,6 @@ begin
     FieldByName('PluginGUID').AsString := AObj.PluginGUID;
     FieldByName('PluginName').AsString := AObj.PluginName;
     FieldByName('iOrder').AsInteger := AObj.iOrder;
-    FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
     FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
     FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
     FieldByName('IsDirectory').AsBoolean := AObj.IsDirectory;
@@ -196,6 +194,7 @@ begin
     FieldByName('ShowModal').AsBoolean := AObj.ShowModal;
     Post;
   end;
+  AObjList.Add(AObj)
 end;
 
 class procedure TEasysysPluginsDirectory.EditClientDataSet(
@@ -208,7 +207,6 @@ begin
       Edit;
       FieldByName('PluginName').AsString := AObj.PluginName;
       FieldByName('iOrder').AsInteger := AObj.iOrder;
-      FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
       FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
       FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
       FieldByName('IsDirectory').AsBoolean := AObj.IsDirectory;
@@ -222,13 +220,88 @@ begin
 end;
 
 class procedure TEasysysPluginsDirectory.DeleteClientDataSet(
-  ACds: TClientDataSet; AObj: TEasysysPluginsDirectory);
+  ACds: TClientDataSet; AObj: TEasysysPluginsDirectory; var AObjList: TList);
+var
+  I,
+  DelIndex: Integer;
 begin
+  DelIndex := -1;
   if ACds.Locate('PluginGUID', VarArrayOf([AObj.PluginGUID]), [loCaseInsensitive]) then
     ACds.Delete;
+  for I := 0 to AObjList.Count - 1 do
+  begin
+    if TEasysysPluginParam(AObjList[I]).PluginParamGUID = TEasysysPluginParam(AObj).PluginParamGUID then
+    begin
+      DelIndex := I;
+      Break;
+    end;
+  end;
+  if DelIndex <> -1 then
+  begin
+    TEasysysPluginParam(AObjList[DelIndex]).Free;
+    AObjList.Delete(DelIndex);
+  end;  
 end;
 
 { TEasysysPluginParam }
+
+class procedure TEasysysPluginParam.AppendClientDataSet(
+  ACds: TClientDataSet; AObj: TEasysysPluginParam; var AObjList: TList);
+begin
+  with ACds do
+  begin
+    Append;
+    FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
+    FieldByName('ParamName').AsString := AObj.ParamName;
+    FieldByName('ValueType').AsString := AObj.ValueType;
+    FieldByName('Value').AsString := AObj.Value;
+    FieldByName('PluginGUID').AsString := AObj.PluginGUID;
+    Post;
+  end;
+  AObjList.Add(AObj);
+end;
+
+class procedure TEasysysPluginParam.DeleteClientDataSet(
+  ACds: TClientDataSet; AObj: TEasysysPluginParam; var AObjList: TList);
+var
+  I,
+  DelIndex: Integer;
+begin
+  DelIndex := -1;
+  if ACds.Locate('PluginParamGUID', VarArrayOf([AObj.PluginParamGUID]), [loCaseInsensitive]) then
+    ACds.Delete;
+  for I := 0 to AObjList.Count - 1 do
+  begin
+    if TEasysysPluginParam(AObjList[I]).PluginParamGUID = TEasysysPluginParam(AObj).PluginParamGUID then
+    begin
+      DelIndex := I;
+      Break;
+    end;
+  end;
+  if DelIndex <> -1 then
+  begin
+    TEasysysPluginParam(AObjList[DelIndex]).Free;
+    AObjList.Delete(DelIndex);
+  end;  
+end;
+
+class procedure TEasysysPluginParam.EditClientDataSet(ACds: TClientDataSet;
+  AObj: TEasysysPluginParam);
+begin
+  if ACds.Locate('PluginParamGUID', VarArrayOf([AObj.PluginParamGUID]), [loCaseInsensitive]) then
+  begin
+    with ACds do
+    begin
+      Edit;
+      FieldByName('PluginParamGUID').AsString := AObj.PluginParamGUID;
+      FieldByName('ParamName').AsString := AObj.ParamName;
+      FieldByName('ValueType').AsString := AObj.ValueType;
+      FieldByName('Value').AsString := AObj.Value;
+      FieldByName('PluginGUID').AsString := AObj.PluginGUID;
+      Post;
+    end;
+  end;  
+end;
 
 class procedure TEasysysPluginParam.GeneratePluginParam(var Data: OleVariant);
 var

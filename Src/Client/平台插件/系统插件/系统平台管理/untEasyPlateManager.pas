@@ -66,6 +66,7 @@ type
     btnCancel: TEasyBitButton;
     btnExit: TEasyBitButton;
     cdsParam: TClientDataSet;
+    imgtv: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -89,6 +90,7 @@ type
     procedure btnParamAddClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
+    procedure tvSysDirectoryChange(Sender: TObject; Node: TTreeNode);
   private
     { Private declarations }
     //初始化树，只生成第一层节点
@@ -103,8 +105,6 @@ type
     procedure RefreshDirectoryTreeView(AEasyRefreshType: TEasyRefreshType);
 
     procedure InitDirectoryData;
-    //更改节点的上级节点
-    procedure ChangePluginParentGUID(Data: Pointer; ClientDataSet: TClientDataSet);
   public
     { Public declarations }
   end;
@@ -128,6 +128,7 @@ var
   Easy_Del :string= 'Del';
 
   ParentNodeFlag :string = '{00000000-0000-0000-0000-000000000000}';
+  APluginParamsList,
   APluginDirectoryList: TList;
   
 //引出函数实现
@@ -146,9 +147,12 @@ end;
 procedure TfrmEasyPlateManage.FormCreate(Sender: TObject);
 begin
   inherited;
+  //在初始
+  imgtv.Clear;
+  imgtv.Assign(DMEasyDBConnection.img16);
   //插件目录类容器
   APluginDirectoryList := TList.Create;
-
+  APluginParamsList := TList.Create;
   //初始化分页显示页面
   pgcDirOperate.ActivePageIndex := 0;
 
@@ -166,33 +170,38 @@ var
   I       : Integer;
   ATmpNode: TTreeNode;
 begin
-  ATreeView.Items.Clear;
-  with ATreeView do
-  begin
-    for I := 0 to AData.Count - 1 do
+  ATreeView.Items.BeginUpdate;
+  try
+    ATreeView.Items.Clear;
+    with ATreeView do
     begin
-      with TEasysysPluginsDirectory(AData[I]) do
+      for I := 0 to AData.Count - 1 do
       begin
-        if (ParentPluginGUID = RootFlag) and (PluginName <> '') then
+        with TEasysysPluginsDirectory(AData[I]) do
         begin
-          ATmpNode := ATreeView.Items.AddChildObject(nil, PluginName, AData[I]);
-          ATmpNode.ImageIndex := ImageIndex;
-          ATmpNode.SelectedIndex := SelectedImageIndex;
+          if (ParentPluginGUID = RootFlag) and (PluginName <> '') then
+          begin
+            ATmpNode := ATreeView.Items.AddChildObject(nil, PluginName, AData[I]);
+            ATmpNode.ImageIndex := ImageIndex;
+            ATmpNode.SelectedIndex := SelectedImageIndex;
 
-          //生成临时节点 只有目录
-          if IsDirectory then
-            ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
+            //生成临时节点 只有目录
+            if IsDirectory then
+              ATreeView.Items.AddChildFirst(ATmpNode, 'TempChildNode');
+          end;
         end;
-      end;  
-    end;  
+      end;
+    end;
+    if ATreeView.Items.Count = 0 then
+    begin
+       Application.MessageBox('暂无目录结构数据！', '提示', MB_OK
+         + MB_ICONWARNING);
+       Exit;
+    end;
+  //    ATreeView.Items.AddChild(nil, '暂无目录结构');
+  finally
+    ATreeView.Items.EndUpdate;
   end;
-  if ATreeView.Items.Count = 0 then
-  begin
-     Application.MessageBox('暂无目录结构数据！', '提示', MB_OK 
-       + MB_ICONWARNING);
-     Exit;
-  end;
-//    ATreeView.Items.AddChild(nil, '暂无目录结构');
 end;
 
 procedure TfrmEasyPlateManage.btnAddClick(Sender: TObject);
@@ -207,7 +216,8 @@ begin
     //如果是模块则不能增加子节点
     if not TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).IsDirectory then
       Exit;
-    AEasysysPluginsDirectory.ParentPluginGUID := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginGUID;
+    AEasysysPluginsDirectory.ParentPluginGUID :=
+              TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginGUID;
     AParentNodeName := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginName;
     ShowfrmTvDirectoryOper(AEasysysPluginsDirectory, Easy_Add, AParentNodeName);
   end else
@@ -220,7 +230,8 @@ begin
   begin
     tvSysDirectory.Items.AddChildObject(tvSysDirectory.Selected,
                           AEasysysPluginsDirectory.PluginName, AEasysysPluginsDirectory);
-    TEasysysPluginsDirectory.AppendClientDataSet(cdsDirManager, AEasysysPluginsDirectory);
+    TEasysysPluginsDirectory.AppendClientDataSet(cdsDirManager, AEasysysPluginsDirectory,
+                          APluginDirectoryList);
   end else
     AEasysysPluginsDirectory.Free;  
 end;
@@ -231,6 +242,7 @@ begin
   inherited;
 
   EasyFreeAndNilList(APluginDirectoryList);
+  EasyFreeAndNilList(APluginParamsList);
 end;
 
 procedure TfrmEasyPlateManage.btnEditClick(Sender: TObject);
@@ -263,15 +275,31 @@ begin
   ASelectedNode := tvSysDirectory.Selected;
   if ASelectedNode = nil then
   begin
-    Application.MessageBox('请选择要删除的节点！', '提示', MB_OK + 
+    Application.MessageBox('请选择要删除的节点！', '提示', MB_OK +
       MB_ICONINFORMATION);
-    Exit;  
+    Exit;
   end;
+  if ASelectedNode.HasChildren then
+  begin
+    tvSysDirectory.Selected.Expand(True);
+    if ASelectedNode.getFirstChild.Text <> 'TempChildNode' then
+    begin
+      Application.MessageBox('存在子节点,不能进行删除操作！', '提示', MB_OK +
+        MB_ICONINFORMATION);
+      Exit;
+    end;
+  end;
+  if Application.MessageBox(PChar('确定要删除节点【'
+             + TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginName
+             +'】吗?'), '提示', MB_OKCANCEL + MB_ICONQUESTION) <> IDOK then
+    Exit;
+    
   TmpListItem := lvDeleted.Items.Add;
   //删除
   tvSysDirectory.Items.Delete(ASelectedNode);
   TmpListItem.Caption := TEasysysPluginsDirectory(ASelectedNode.Data).PluginName;
-  TEasysysPluginsDirectory.DeleteClientDataSet(cdsDirManager, TEasysysPluginsDirectory(ASelectedNode.Data));
+  TEasysysPluginsDirectory.DeleteClientDataSet(cdsDirManager,
+            TEasysysPluginsDirectory(ASelectedNode.Data), APluginDirectoryList);
 end;
 
 procedure TfrmEasyPlateManage.btnRefreshClick(Sender: TObject);
@@ -299,7 +327,12 @@ end;
 procedure TfrmEasyPlateManage.btnCancelClick(Sender: TObject);
 begin
   inherited;
-
+  if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount = 0) then
+  begin
+    Application.MessageBox('数据未发生变更,操作无效!', '提示', MB_OK + 
+      MB_ICONINFORMATION);
+    Exit;  
+  end;  
   lvParamers.Items.Clear;
   lvDeleted.Items.Clear;
 
@@ -312,15 +345,19 @@ end;
 
 procedure TfrmEasyPlateManage.InitDirectoryData;
 var
-  ATmpData: OleVariant;
+  ATmpData,
+  ATmpDataParam: OleVariant;
 begin
   if cdsDirManager.Active then
     cdsDirManager.Close;
   //初始化系统目录数组
   cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('EXEC sp_SysPluginsDirectory');
-  cdsDirManager.Active := True;
   ATmpData := cdsDirManager.Data;
   TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
+  //同进也提取参数数据集
+  cdsParam.Data := EasyRDMDisp.EasyGetRDMData('EXEC sp_SysPluginParams');
+  ATmpDataParam := cdsParam.Data;
+  TEasysysPluginParam.GeneratePluginParamList(ATmpDataParam, APluginParamsList);
 end;
 
 procedure TfrmEasyPlateManage.LoadChildTreeNodes(ATreeView: TEasyTreeView;
@@ -465,22 +502,12 @@ end;
 
 procedure TfrmEasyPlateManage.btnParamEditClick(Sender: TObject);
 var
-  I       : Integer;
-//  ATmpParamData: PEasytvParamsRecord;
+  ATmpParamData: TEasysysPluginParam;
 begin
   inherited;
- { if lvParamers.Selected <> nil then
+  if lvParamers.Selected <> nil then
   begin
-    for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
-    begin
-      if (tvTmpParamsData[I]^.sPluginGUID
-        = PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sGUID)
-        and (tvTmpParamsData[I]^.sParamEName = lvParamers.Selected.Caption) then
-      begin
-        ATmpParamData := tvTmpParamsData[I];
-        Break;
-      end;  
-    end;
+    ATmpParamData := TEasysysPluginParam(lvParamers.Selected.Data);
     if ATmpParamData <> nil then
       ShowfrmPlugParamsOP(ATmpParamData, Easy_Edit);
   end
@@ -490,40 +517,26 @@ begin
       MB_ICONINFORMATION);
     Exit;  
   end;
-  if ATmpParamData <> nil then
-  begin
-    UpdateParam(ATmpParamData);
-    lvParamers.Selected.Caption := ATmpParamData^.sParamEName;
-    lvParamers.Selected.SubItems[0] := ATmpParamData^.sValue;
-  end;   }
+
+  TEasysysPluginParam.EditClientDataSet(cdsParam, ATmpParamData);
+  lvParamers.Selected.Caption := ATmpParamData.ParamName;
+  lvParamers.Selected.SubItems[0] := ATmpParamData.Value;
 end;
 
 procedure TfrmEasyPlateManage.btnParamDeleteClick(Sender: TObject);
 var
-  I:  Integer;
-//  ATmpParamData: PEasytvParamsRecord;
+  ATmpParamData: TEasysysPluginParam;
 begin
   inherited;
- { if lvParamers.Selected <> nil then
+  if lvParamers.Selected <> nil then
   begin
     if Application.MessageBox(PChar('确定要删除【' + lvParamers.Selected.Caption
              + '】参数吗？'), '提示', MB_OKCANCEL + MB_ICONQUESTION) = IDOK then
     begin
-      for I := Low(tvTmpParamsData) to High(tvTmpParamsData) do
-      begin
-        if (tvTmpParamsData[I]^.sPluginGUID
-          = PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sGUID)
-          and (tvTmpParamsData[I]^.sParamEName = lvParamers.Selected.Caption) then
-        begin
-          ATmpParamData := tvTmpParamsData[I];
-          Break;
-        end;
-      end;
-      if ATmpParamData <> nil then
-      begin
-        if DeleteParam(ATmpParamData) then
-          lvParamers.DeleteSelected;
-      end;  
+      ATmpParamData := TEasysysPluginParam(lvParamers.Selected.Data);
+
+      TEasysysPluginParam.DeleteClientDataSet(cdsParam, ATmpParamData, APluginParamsList);
+      lvParamers.DeleteSelected;
     end;
   end
   else
@@ -531,25 +544,23 @@ begin
     Application.MessageBox('请选择要【删除】的参数！', '提示', MB_OK +
       MB_ICONINFORMATION);
     Exit;
-  end;  }
+  end;  
 end;
 
 procedure TfrmEasyPlateManage.btnParamAddClick(Sender: TObject);
 var
-//  ATmpParamData: PEasytvParamsRecord;
+  ATmpParamData: TEasysysPluginParam;
   TmpListItem: TListItem;
 begin
   inherited;
-{  if tvSysDirectory.Selected <> nil then
+  if tvSysDirectory.Selected <> nil then
   begin
-    if PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.bDir = 1 then
+    if not TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).IsDirectory then
     begin
-      SetLength(tvTmpParamsData, Length(tvTmpParamsData) + 1);
-      New(tvTmpParamsData[High(tvTmpParamsData)]);
-      ATmpParamData := tvTmpParamsData[High(tvTmpParamsData)];
+      ATmpParamData := TEasysysPluginParam.Create;
       //新增时初始化
-      ATmpParamData^.ParamGUID := GenerateGUID;
-      ATmpParamData^.sPluginGUID := PEasytvDirectoryRecord(tvSysDirectory.Selected.Data)^.sGUID;
+      ATmpParamData.PluginParamGUID := GenerateGUID;
+      ATmpParamData.PluginGUID := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginGUID;
 
       ShowfrmPlugParamsOP(ATmpParamData, Easy_Add);
     end
@@ -567,30 +578,21 @@ begin
       Exit;
   end;
   //执行保存
-  if Trim(tvTmpParamsData[High(tvTmpParamsData)]^.sParamEName) <> '' then
+  if ATmpParamData.ParamName <> '' then
   begin
-    if tvTmpParamsData[High(tvTmpParamsData)] <> nil then
-    begin
-      if InsertParam(tvTmpParamsData[High(tvTmpParamsData)]) then
-      begin
-        TmpListItem := lvParamers.Items.Add;
-        TmpListItem.Caption := tvTmpParamsData[High(tvTmpParamsData)]^.sParamEName;
-        TmpListItem.SubItems.Add(tvTmpParamsData[High(tvTmpParamsData)]^.sValue);
-      end;
-    end;
-  end;}
-end;
-
-procedure TfrmEasyPlateManage.ChangePluginParentGUID(Data: Pointer;
-  ClientDataSet: TClientDataSet);
-begin
-
+    TmpListItem := lvParamers.Items.Add;
+    TEasysysPluginParam.AppendClientDataSet(cdsParam, ATmpParamData, APluginParamsList);
+    //列表指向对应
+    TmpListItem.Data := ATmpParamData;
+    TmpListItem.Caption := ATmpParamData.ParamName;
+    TmpListItem.SubItems.Add(ATmpParamData.Value);
+  end else
+    ATmpParamData.Free;
 end;
 
 procedure TfrmEasyPlateManage.RefreshDirectoryTreeView(AEasyRefreshType: TEasyRefreshType);
 var
   ATmpData: OleVariant;
-  AErrorCode: Integer;
 begin
   //清空树
   tvSysDirectory.Items.Clear;
@@ -603,14 +605,6 @@ begin
   //先保存 初始化数据
   if AEasyRefreshType = ertSaveRefresh then
   begin   //sysPluginsDirectory
-   { cdsDirManager.Data := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode);
-    cdsDirManager.SaveToFile('c:\error.xml', dfXMLUTF8);
-    ShowMessage(IntToStr(AErrorCode));
-    if AErrorCode > 0 then
-    begin
-      ShowMessage('保存出错:' + cdsDirManager.fieldbyname('ERROR_MESSAGE').AsString);
-    end ELSE 
-    InitDirectoryData; }
     btnSaveClick(nil);
   end else
   if AEasyRefreshType = ertNoSaveRefresh then
@@ -645,12 +639,20 @@ var
   cdsError  : TClientDataSet;
 begin
   inherited;
+  if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount = 0) then
+  begin
+    Application.MessageBox('数据未发生变更,操作无效!', '提示', MB_OK + 
+      MB_ICONINFORMATION);
+    Exit;  
+  end;  
   try
     if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount = 0) then
-      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory', cdsDirManager.Delta, 'PluginGUID', AErrorCode)
+      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory',
+                                  cdsDirManager.Delta, 'PluginGUID', AErrorCode)
     else
     if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount > 0) then
-      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginParams', cdsParam.Delta, 'PluginParamGUID', AErrorCode)
+      ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginParams', cdsParam.Delta,
+                                  'PluginParamGUID', AErrorCode)
     else
     if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount > 0) then
     begin
@@ -693,6 +695,32 @@ begin
     Application.MessageBox(PChar('保存出错,原因：' + E.message), '提示', MB_OK +
       MB_ICONERROR);
   end;
+end;
+
+procedure TfrmEasyPlateManage.tvSysDirectoryChange(Sender: TObject;
+  Node: TTreeNode);
+var
+  I: Integer;
+  TmpListItem: TListItem;
+begin
+  inherited;
+  lvParamers.Items.Clear;
+
+  if not TEasysysPluginsDirectory(Node.Data).IsDirectory then
+  begin
+    for I := 0 to APluginParamsList.Count - 1 do
+    begin
+      if TEasysysPluginParam(APluginParamsList[I]).PluginGUID =
+         TEasysysPluginsDirectory(Node.Data).PluginGUID then
+      begin
+        TmpListItem := lvParamers.Items.Add;
+        TmpListItem.Data := TEasysysPluginParam(APluginParamsList[I]);
+        //2010-10-31 18:29:46  参数改为显示英文名称
+        TmpListItem.Caption := TEasysysPluginParam(APluginParamsList[I]).ParamName;
+        TmpListItem.SubItems.Add(TEasysysPluginParam(APluginParamsList[I]).Value);
+      end;
+    end;
+  end;  
 end;
 
 end.

@@ -34,13 +34,14 @@ type
     edtImage2: TEasyButtonEdit;
     rbDirectory: TEasyRadioButton;
     rbModules: TEasyRadioButton;
-    edtFileName: TEasyFileNameEdit;
     btnSave: TEasyBitButton;
     btnCancel: TEasyBitButton;
     lblParentNode: TEasyLabel;
     ImageList1: TImageList;
     rgShowModal: TEasyRadioGroup;
     rgModuleEnable: TEasyRadioGroup;
+    edtFileName: TEasyButtonEdit;
+    dlgBpl: TOpenDialog;
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -49,6 +50,7 @@ type
     procedure rbDirectoryClick(Sender: TObject);
     procedure rbModulesClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure edtFileNameButtonClick(Sender: TObject);
   private
     { Private declarations }
     FAData: TEasysysPluginsDirectory;
@@ -91,11 +93,15 @@ begin
         edtImage1.Text := IntToStr(AData.ImageIndex);
         edtImage2.Text := IntToStr(AData.SelectedImageIndex);
         if AData.IsDirectory then
-          rbDirectory.Checked
+          rbDirectory.Checked := True
         else begin
-          rbModules.Checked;
+          rbModules.Checked := True;
           edtFileName.Text := AData.PluginFileName;
         end;
+        if AData.ShowModal then
+          rgShowModal.ItemIndex := 0;
+        if AData.IsEnable then
+          rgModuleEnable.ItemIndex := 0;
       end;
     end;
     //引出交换数据
@@ -114,7 +120,8 @@ end;
 procedure TfrmTvDirectoryOper.btnSaveClick(Sender: TObject);
 begin
   if CheckNotNullControl then Exit;
-  FAData.PluginGUID := GenerateGUID;
+  if trim(FAData.PluginGUID) = '' then //新增时生成GUID
+    FAData.PluginGUID := GenerateGUID;
   FAData.PluginName := Trim(edtCName.Text);
   FAData.iOrder := StrToInt(speOrder.Text);
   FAData.ImageIndex := StrToInt(edtImage1.Text);
@@ -132,8 +139,8 @@ begin
     FAData.ShowModal := False;
 
   if not rbDirectory.Checked then
-    FAData.PluginFileName := edtFileName.Text;
-//    FAData.PluginFileName := ExtractFileName(edtFileName.Text);
+//    FAData.PluginFileName := edtFileName.Text;
+    FAData.PluginFileName := ExtractFileName(edtFileName.Text);
 
   //目录不能被停用
   if FAData.IsDirectory then
@@ -152,6 +159,7 @@ procedure TfrmTvDirectoryOper.FormCreate(Sender: TObject);
 begin
   edtImage1.Text := '-1';
   edtImage2.Text := '-1';
+  rbDirectoryClick(Sender);
 end;
 
 procedure TfrmTvDirectoryOper.edtImage1ButtonClick(Sender: TObject);
@@ -193,17 +201,27 @@ end;
 procedure TfrmTvDirectoryOper.rbDirectoryClick(Sender: TObject);
 begin
   if rbDirectory.Checked then
-    edtFileName.Enabled := False
-  else
-    edtFileName.Enabled := True
+  begin
+    edtFileName.Enabled := False;
+    rgShowModal.Enabled := False;
+  end else
+  begin
+    edtFileName.Enabled := True;
+    rgShowModal.Enabled := True;
+  end;
 end;
 
 procedure TfrmTvDirectoryOper.rbModulesClick(Sender: TObject);
 begin
   if rbModules.Checked then
-    edtFileName.Enabled := True
-  else
+  begin
+    edtFileName.Enabled := True;
+    rgShowModal.Enabled := True;
+  end else
+  begin
     edtFileName.Enabled := False;
+    rgShowModal.Enabled := False;
+  end;
 end;
 
 function TfrmTvDirectoryOper.CheckNotNullControl: Boolean;
@@ -246,6 +264,16 @@ begin
   edtFileName.EditLabel.Transparent := True;
   //默认选中目录 置文件选择框不可用
   edtFileName.Enabled := False;
+end;
+
+procedure TfrmTvDirectoryOper.edtFileNameButtonClick(Sender: TObject);
+begin
+  if rbModules.Checked then
+  begin
+    dlgBpl.InitialDir := ExtractFilePath(Application.ExeName) + 'plugins\';
+    if dlgBpl.Execute then
+      edtFileName.Text := dlgBpl.FileName;
+  end;    
 end;
 
 end.
