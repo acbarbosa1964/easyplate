@@ -1,10 +1,9 @@
 object frmImagesSelect: TfrmImagesSelect
   Left = 377
   Top = 261
-  BorderStyle = bsNone
+  Width = 506
+  Height = 398
   Caption = #22270#24418#36873#25321
-  ClientHeight = 360
-  ClientWidth = 490
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -81,6 +80,7 @@ object frmImagesSelect: TfrmImagesSelect
       ParentColor = False
       Style = bsModern
       TabOrder = 0
+      OnClick = btnCancelClick
     end
     object btnOk: TEasyBitButton
       Left = 384

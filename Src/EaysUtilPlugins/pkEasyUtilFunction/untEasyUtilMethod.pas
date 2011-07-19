@@ -848,9 +848,7 @@ var
   BplHandle   : THandle;
   AShowBplForm: TShowBplForm;
   TmpForm     : TForm;
-  ATmpMenuItem: TMenuItem;
-  AExitsForm  : TForm; //判断一个窗体是否存在
-//  I           : Integer;
+  ATabCollectionItem: TOfficeTabCollectionItem;
 begin
   if not FileExists(APluginFile) then
   begin
@@ -871,43 +869,27 @@ begin
       if @AShowBplForm = nil then
         raise Exception.Create(Format(EASY_PLUGIN_CANNOT_LOAD, [APluginFile]))
       else
-      begin
         TmpForm := AShowBplForm(ATmpStrings);
+      //进度窗体进度
+      AEasyProgressBar.Position := 60;
+      Application.FreeNotification(TmpForm);
+      if AType <> 0 then
+      begin
+        //增加MDITabSet
+        ATabCollectionItem := AMDITabSet.AddTab(TmpForm);
+        ATabCollectionItem.OfficeHint.Title := ExtractFileName(APluginFile);
+        ATabCollectionItem.Tag := BplHandle;
+        TmpForm.OnClose := AMDICloseNotify;
       end;
-      //判断此窗体是否已经加载过
-//      for I := 0 to AMDITabSet.EasyOfficeTabCount - 1 do
-//      begin
-//        if TmpForm.Caption = TForm(AMDITabSet.GetChildForm(AMDITabSet.EasyOfficeTabs[I])).Caption then
-//        begin
-//          AExitsForm := AMDITabSet.GetChildForm(AMDITabSet.EasyOfficeTabs[I]);
-//          Break;
-//        end;
-//      end;
-//      if AExitsForm <> nil then
-//      begin
-//        Application.FreeNotification(TmpForm);
-//        FreeAndNil(TmpForm);
-//        AMDITabSet.ActiveTabIndex := I;
-//        进度窗体进度
-//        AEasyProgressBar.Position := 80;
-//      end
-//      else
-      begin                       //找不到就呈现新建的
-        //进度窗体进度
-        AEasyProgressBar.Position := 60;
-        Application.FreeNotification(TmpForm);
-        if AType <> 0 then
-        begin
-          //增加MDITabSet
-          AMDITabSet.AddTab(TmpForm);
-          TmpForm.OnClose := AMDICloseNotify;
-        end;
-        //进度窗体进度
-        AEasyProgressBar.Position := 80;
-        TmpForm.Show;
+      //进度窗体进度
+      AEasyProgressBar.Position := 80;
+      TmpForm.Show;
+    except on E: Exception do
+      begin
+        UnloadPackage(BplHandle);
+        raise Exception.Create(e.Message);
+        Exit;
       end;
-    finally
-//      UnloadPackage(BplHandle);
     end;
   end;
   Result := True;

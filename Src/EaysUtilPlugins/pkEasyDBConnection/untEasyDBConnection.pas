@@ -459,26 +459,26 @@ end;
 
 procedure TDMEasyDBConnection.LoadImageList;
 var
-  BmpMask16,
-  BmpMask32,
+//  BmpMask16,
+//  BmpMask32,
   Bmp16, Bmp32: TBitmap;
 begin
   Bmp16 := TBitmap.Create;
   Bmp32 := TBitmap.Create;
-  BmpMask16 := TBitmap.Create;
-  BmpMask32 := TBitmap.Create;
+//  BmpMask16 := TBitmap.Create;
+//  BmpMask32 := TBitmap.Create;
 
   Bmp16.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img16.bmp');
   Bmp32.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img32.bmp');
-  BmpMask16.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img16Mask.bmp');
-  BmpMask32.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img32Mask.bmp');
+//  BmpMask16.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img16Mask.bmp');
+//  BmpMask32.LoadFromFile(ExtractFilePath(Application.ExeName) + 'images\img32Mask.bmp');
 
-  img16.Add(Bmp16, BmpMask16);
-  img32.Add(Bmp32, BmpMask32);
+  img16.Add(Bmp16, nil);
+  img32.Add(Bmp32, nil);
   Bmp16.Free;
   Bmp32.Free;
-  BmpMask16.Free;
-  BmpMask32.Free;  
+//  BmpMask16.Free;
+//  BmpMask32.Free;
 end;
 
 initialization

@@ -35,7 +35,8 @@ type
   private
   { Private declarations } 
     FPluginGUID: string;
-    FPluginName: string;
+    FPluginCName: string;
+    FPluginEName: string;
     FiOrder: Integer;
     FImageIndex: Integer;
     FSelectedImageIndex: Integer;
@@ -44,10 +45,12 @@ type
     FParentPluginGUID: string;
     FIsEnable: Boolean;
     FShowModal: Boolean;
+    FRemark: string;
   public
   { Public declarations } 
     property PluginGUID: string read FPluginGUID write FPluginGUID;
-    property PluginName: string read FPluginName write FPluginName;
+    property PluginCName: string read FPluginCName write FPluginCName;
+    property PluginEName: string read FPluginEName write FPluginEName;
     property iOrder: Integer read FiOrder write FiOrder;
     property ImageIndex: Integer read FImageIndex write FImageIndex;
     property SelectedImageIndex: Integer read FSelectedImageIndex write FSelectedImageIndex;
@@ -56,6 +59,7 @@ type
     property ParentPluginGUID: string read FParentPluginGUID write FParentPluginGUID;
     property IsEnable: Boolean read FIsEnable write FIsEnable;
     property ShowModal: Boolean read FShowModal write FShowModal;
+    property Remark: string read FRemark write FRemark;
 
     class procedure GeneratePluginDirectory(var Data: OleVariant);
     class procedure GeneratePluginDirectoryList(var Data: OleVariant; AResult: TList);
@@ -116,7 +120,8 @@ begin
       with AEasysysPluginsDirectory do
       begin
         PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
-        PluginName := AClientDataSet.FieldByName('PluginName').AsString;
+        PluginCName := AClientDataSet.FieldByName('PluginCName').AsString;
+        PluginEName := AClientDataSet.FieldByName('PluginEName').AsString;
         iOrder := AClientDataSet.FieldByName('iOrder').AsInteger;
         ImageIndex := AClientDataSet.FieldByName('ImageIndex').AsInteger;
         SelectedImageIndex := AClientDataSet.FieldByName('SelectedImageIndex').AsInteger;
@@ -125,6 +130,7 @@ begin
         ParentPluginGUID := AClientDataSet.FieldByName('ParentPluginGUID').AsString;
         IsEnable := AClientDataSet.FieldByName('IsEnable').AsBoolean;
         ShowModal := AClientDataSet.FieldByName('ShowModal').AsBoolean;
+        Remark := AClientDataSet.FieldByName('Remark').AsString;
       end;
      //在此添加将对象存放到指定容器的代码
       AResult.Add(AEasysysPluginsDirectory);
@@ -156,7 +162,8 @@ begin
       with AEasysysPluginsDirectory do
       begin
         PluginGUID := AClientDataSet.FieldByName('PluginGUID').AsString;
-        PluginName := AClientDataSet.FieldByName('PluginName').AsString;
+        PluginCName := AClientDataSet.FieldByName('PluginCName').AsString;
+        PluginEName := AClientDataSet.FieldByName('PluginEName').AsString;
         iOrder := AClientDataSet.FieldByName('iOrder').AsInteger;
         ImageIndex := AClientDataSet.FieldByName('ImageIndex').AsInteger;
         SelectedImageIndex := AClientDataSet.FieldByName('SelectedImageIndex').AsInteger;
@@ -165,6 +172,7 @@ begin
         ParentPluginGUID := AClientDataSet.FieldByName('ParentPluginGUID').AsString;
         IsEnable := AClientDataSet.FieldByName('IsEnable').AsBoolean;
         ShowModal := AClientDataSet.FieldByName('ShowModal').AsBoolean;
+        Remark := AClientDataSet.FieldByName('Remark').AsString;
       end;
      //在此添加将对象存放到指定容器的代码
       PluginDirectoryList.Add(AEasysysPluginsDirectory);
@@ -183,7 +191,8 @@ begin
   begin
     Append;
     FieldByName('PluginGUID').AsString := AObj.PluginGUID;
-    FieldByName('PluginName').AsString := AObj.PluginName;
+    FieldByName('PluginCName').AsString := AObj.PluginCName;
+    FieldByName('PluginEName').AsString := AObj.PluginEName;
     FieldByName('iOrder').AsInteger := AObj.iOrder;
     FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
     FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
@@ -192,6 +201,7 @@ begin
     FieldByName('ParentPluginGUID').AsString := AObj.ParentPluginGUID;
     FieldByName('IsEnable').AsBoolean := AObj.IsEnable;
     FieldByName('ShowModal').AsBoolean := AObj.ShowModal;
+    FieldByName('Remark').AsString := AObj.Remark;
     Post;
   end;
   AObjList.Add(AObj)
@@ -205,7 +215,8 @@ begin
     with ACds do
     begin
       Edit;
-      FieldByName('PluginName').AsString := AObj.PluginName;
+      FieldByName('PluginCName').AsString := AObj.PluginCName;
+      FieldByName('PluginEName').AsString := AObj.PluginEName;
       FieldByName('iOrder').AsInteger := AObj.iOrder;
       FieldByName('ImageIndex').AsInteger := AObj.ImageIndex;
       FieldByName('SelectedImageIndex').AsInteger := AObj.SelectedImageIndex;
@@ -214,6 +225,7 @@ begin
       FieldByName('ParentPluginGUID').AsString := AObj.ParentPluginGUID;
       FieldByName('IsEnable').AsBoolean := AObj.IsEnable;
       FieldByName('ShowModal').AsBoolean := AObj.ShowModal;
+      FieldByName('Remark').AsString := AObj.Remark;
       Post;
     end;
   end;

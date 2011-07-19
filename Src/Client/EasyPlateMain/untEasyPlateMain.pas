@@ -32,23 +32,23 @@ uses
   untEasyPageControl, ExtCtrls, untEasyTrayIcon, ImgList, ComCtrls,
   untEasyTreeView, untEasyWaterImage, jpeg, StdCtrls, ActnList, Provider,
   DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc, untEasyPlateDBBaseForm,
-  AppEvnts;
+  AppEvnts, untEasyClassPluginDirectory;
 
 type
 
-  PEasytvNavRecord = ^TEasytvNavRecord;
-  TEasytvNavRecord = record
-    sGUID,
-    sEName,
-    sCName,
-    sParentGUID  : string;
-    iOrder,
-    iImage1,
-    iImage2,
-    bDir,
-    iFlag        : Integer;
-    sPluginFileName: string;  
-  end;
+//  PEasytvNavRecord = ^TEasytvNavRecord;
+//  TEasytvNavRecord = record
+//    sGUID,
+//    sEName,
+//    sCName,
+//    sParentGUID  : string;
+//    iOrder,
+//    iImage1,
+//    iImage2,
+//    bDir,
+//    iFlag        : Integer;
+//    sPluginFileName: string;
+//  end;
 
   TfrmEasyPlateMain = class(TfrmEasyPlateDBBaseForm)
     mmMain: TEasyMainMenu;
@@ -116,7 +116,6 @@ type
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
     actConnectDB: TAction;
-    ApplicationEvents1: TApplicationEvents;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -142,8 +141,6 @@ type
     NotCloseTab: TStrings;
     //传递到插件中的参数列表
     FPluginParams: TStrings;
-    //插件容器
-    FPluginsList: array of PEasytvNavRecord;
     //显示当前用户信息
     procedure DisplayCurrUserInfo(UserID: string);
     //初始化状态栏
@@ -172,8 +169,8 @@ type
     procedure LoadChildTreeNodes(ATreeView: TEasyTreeView;
                                ADataList: TList;
                                ParentNode: TTreeNode);
-    //释放插件存放数组
-    procedure DisposePlugArray;
+    //判断插件是否已经加载过，如果加载过则激活
+    function CheckHasLoaded(APluginFile: string): Boolean;
   public
     { Public declarations }
     EasyLoginUserID: string; //登录用户编号/名
@@ -188,13 +185,12 @@ implementation
 uses
   untEasyUtilInit, untEasyDBConnection, untEasyUtilDLL, untEasyUtilMethod,
   untEasyUtilClasses, untEasyPlateLoading, untEasyUtilConst, 
-  untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage,
-  untEasyClassPluginDirectory;
+  untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage;
 
 const
-  PluginDirectorySQL = 'SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder';
-  PluginParamSQL = 'SELECT * FROM vwSysPluginParams';
-  
+  PluginDirectorySQL = 'EXEC sp_SysPluginsDirectory';
+  PluginParamSQL = 'EXEC sp_SysPluginParams';
+
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);
 begin
   //为空时按下的可能是取消 在按下取消时将登录用户名置空
@@ -232,7 +228,6 @@ end;
 
 procedure TfrmEasyPlateMain.FormDestroy(Sender: TObject);
 begin
-  DisposePlugArray;
   FPluginParams.Free;
   //不允许关闭的子窗体列表
   NotCloseTab.Free;
@@ -262,7 +257,7 @@ begin
         TmpMenuItem := TMenuItem.Create(mmMain);
         with TmpMenuItem do
         begin
-          Caption := PluginName;
+          Caption := PluginCName;
         end;
         DestMenuItem := mmMain.Items.Find('模块(&M)');
         if DestMenuItem <> nil then
@@ -329,7 +324,7 @@ begin
       //如果是是根节点 且为目录 此处可不判断，在程序输入目录时作限制
       if (ParentPluginGUID = EasyRootGUID) and (IsDirectory = True) then
       begin
-        ATmpNode := tvNav.Items.AddChildObject(nil, PluginName, PluginDirectoryList[I]);
+        ATmpNode := tvNav.Items.AddChildObject(nil, PluginCName, PluginDirectoryList[I]);
         ATmpNode.ImageIndex := ImageIndex;
         ATmpNode.SelectedIndex := SelectedImageIndex;
         //增加临时子节点
@@ -380,15 +375,16 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.FormCreate(Sender: TObject);
-var
-  ABitMap: TBitmap;
+//var
+//  ABitMap: TBitmap;
 begin
   inherited;
   //加载导航树所需要的图像
-  ABitMap := TBitmap.Create;
-  ABitMap.LoadFromFile(EasyImagePath + 'Tree.bmp');
-  imgtv.Add(ABitMap, nil);
-  ABitMap.Free;
+//  ABitMap := TBitmap.Create;
+//  ABitMap.LoadFromFile(EasyImagePath + 'Tree.bmp');
+//  imgtv.Add(ABitMap, nil);
+//  ABitMap.Free;
+  imgtv.Assign(DMEasyDBConnection.img16);
   
   //打开双缓冲
   Self.DoubleBuffered := True;
@@ -446,13 +442,16 @@ begin
   if not TEasysysPluginsDirectory(tvNav.Selected.Data).IsDirectory then
   begin
     TmpPlugFileName := TEasysysPluginsDirectory(tvNav.Selected.Data).PluginFileName;
-    if FileExists(EasyPlugPath + TmpPlugFileName) then
-      CreatePG_Plug(LoadPlugFile, '正在加载插件,请稍后...', tvNav.Selected)
-    else
+    if not CheckHasLoaded(TmpPlugFileName) then
     begin
-      Application.MessageBox(PChar('插件文件【'+ TmpPlugFileName +'】未找到,请检查系统完整性或通知系统管理员！'),
-        '提示', MB_OK + MB_ICONSTOP);
-      Exit;
+      if FileExists(EasyPlugPath + TmpPlugFileName) then
+        CreatePG_Plug(LoadPlugFile, '正在加载插件,请稍后...', tvNav.Selected)
+      else
+      begin
+        Application.MessageBox(PChar('插件文件【'+ TmpPlugFileName +'】未找到,请检查系统完整性或通知系统管理员！'),
+          '提示', MB_OK + MB_ICONSTOP);
+        Exit;
+      end;
     end;
   end;
 end;
@@ -507,8 +506,15 @@ begin
     TmpPluginFile := TmpPluginFile + '.bpl';
   if (pos('.bpl', TmpPluginFile) > 0) and (FileExists(TmpPluginFile)) then
   begin
-    LoadPkg(TmpPluginFile, FPluginParams, EasyMDITabSet1,
-            frmEasyPlateLoading.EasyProgressBar1, ChildFormClose, 1);
+    try
+      LoadPkg(TmpPluginFile, FPluginParams, EasyMDITabSet1,
+              frmEasyPlateLoading.EasyProgressBar1, ChildFormClose, 1);
+    except on E: Exception do
+      begin
+        raise Exception.Create(E.Message);
+        Exit;
+      end;
+    end;
   end;
   Result := True;
   //进度窗体进度
@@ -549,7 +555,7 @@ begin
       begin
         if ParentPluginGUID = TEasysysPluginsDirectory(ParentNode.Data).PluginGUID then
         begin
-          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginName, ADataList[I]);
+          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginCName, ADataList[I]);
           ATmpNode.ImageIndex := ImageIndex;
           ATmpNode.SelectedIndex := SelectedImageIndex;
 
@@ -562,20 +568,9 @@ begin
   end;
 end;
 
-procedure TfrmEasyPlateMain.DisposePlugArray;
-var
-  I: Integer;
-begin
-  //从插件容器FPluginsList释放所有插件
-  for I := Low(FPluginsList) to High(FPluginsList) do
-    Dispose(PEasytvNavRecord(FPluginsList[I])); 
-end;
-
 procedure TfrmEasyPlateMain.ppTVRefreshClick(Sender: TObject);
 begin
   inherited;
-  DisposePlugArray;
-  SetLength(FPluginsList, 0);
   InitTreeViewNav;
 end;
 
@@ -619,13 +614,6 @@ begin
   LoadPkg_Normal('pkEasyconnDB.bpl', FPluginParams);
 end;
 
-//  inherited;
-//  if E.ClassType.ClassName = 'ESocketConnectionError' then
-//    Application.MessageBox('与服务器失去连接,请重新登录客户端!', '提示', MB_OK +
-//      MB_ICONINFORMATION);
-//  else
-//    raise E;
-
 procedure TfrmEasyPlateMain.ile1Click(Sender: TObject);
 begin
   inherited;
@@ -643,5 +631,30 @@ begin
   inherited;
   Self.ArrangeIcons;
 end;
+
+function TfrmEasyPlateMain.CheckHasLoaded(APluginFile: string): Boolean;
+var
+  ATabCollectionItem: TOfficeTabCollectionItem;
+  I           : Integer;
+begin
+  Result := False;
+  //判断插件是否已经加载过，如果加载过则激活
+  for I := 0 to EasyMDITabSet1.EasyOfficeTabCount - 1 do
+  begin
+    ATabCollectionItem := EasyMDITabSet1.EasyOfficeTabs[I];
+    if ATabCollectionItem.OfficeHint.Title = APluginFile then
+    begin
+      EasyMDITabSet1.ActiveTabIndex := I;
+      Result := True;
+      Break;
+    end;
+  end;
+end;
+
+//  if E.ClassType.ClassName = 'ESocketConnectionError' then
+//    Application.MessageBox('与服务器失去连接,请重新登录客户端!', '提示', MB_OK +
+//      MB_ICONINFORMATION)
+//  else
+//    raise Exception.Create(E.Message);
 
 end.

@@ -11325,8 +11325,4 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
     Left = 413
     Top = 143
   end
-  object ApplicationEvents1: TApplicationEvents
-    Left = 381
-    Top = 143
-  end
 end

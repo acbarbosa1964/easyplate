@@ -24,7 +24,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, untEasyEdit, untEasySpinEdit, untEasyEditExt,
   untEasyGroupBox, untEasyButtons, untEasyPlateManager, untEasyLabel,
-  unEasyComboBox, ImgList, untEasyClassPluginDirectory, ExtCtrls;
+  unEasyComboBox, ImgList, untEasyClassPluginDirectory, ExtCtrls,
+  untEasyMemo;
 
 type
   TfrmTvDirectoryOper = class(TForm)
@@ -42,6 +43,8 @@ type
     rgModuleEnable: TEasyRadioGroup;
     edtFileName: TEasyButtonEdit;
     dlgBpl: TOpenDialog;
+    edtEName: TEasyLabelEdit;
+    mmRemark: TEasyMemo;
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -67,10 +70,13 @@ var
 
 implementation
 
-uses untImagesSelect, untEasyUtilMethod;
+uses untEasyUtilMethod, untEasyImageSelect;
 
 {$R *.dfm}
 
+const
+  Remark_NULL = '暂无说明';
+  
 procedure ShowfrmTvDirectoryOper(var AData: TEasysysPluginsDirectory; AFlag: string;
                                   ParentCName: string = '');
 begin
@@ -88,7 +94,8 @@ begin
       frmTvDirectoryOper.Caption := frmTvDirectoryOper.Caption + '-[编辑]';
       with frmTvDirectoryOper do
       begin
-        edtCName.Text := AData.PluginName;
+        edtCName.Text := AData.PluginCName;
+        edtEName.Text := AData.PluginEName;
         speOrder.Value := AData.iOrder;
         edtImage1.Text := IntToStr(AData.ImageIndex);
         edtImage2.Text := IntToStr(AData.SelectedImageIndex);
@@ -102,6 +109,8 @@ begin
           rgShowModal.ItemIndex := 0;
         if AData.IsEnable then
           rgModuleEnable.ItemIndex := 0;
+        if Trim(AData.Remark) = '' then
+          mmRemark.Text := Remark_NULL;
       end;
     end;
     //引出交换数据
@@ -122,11 +131,13 @@ begin
   if CheckNotNullControl then Exit;
   if trim(FAData.PluginGUID) = '' then //新增时生成GUID
     FAData.PluginGUID := GenerateGUID;
-  FAData.PluginName := Trim(edtCName.Text);
+  FAData.PluginCName := Trim(edtCName.Text);
+  FAData.PluginEName := Trim(edtEName.Text);
   FAData.iOrder := StrToInt(speOrder.Text);
   FAData.ImageIndex := StrToInt(edtImage1.Text);
   FAData.SelectedImageIndex := StrToInt(edtImage2.Text);
-
+  if mmRemark.Lines.Text <> Remark_NULL then
+    FAData.Remark := mmRemark.Lines.Text;
   //先设置模块是否目录属性，后面有使用
   if rbDirectory.Checked then
     FAData.IsDirectory := True
@@ -163,39 +174,13 @@ begin
 end;
 
 procedure TfrmTvDirectoryOper.edtImage1ButtonClick(Sender: TObject);
-var
-  APt: TPoint;
 begin
-  APt.X := edtImage1.Left;
-  APt.Y := edtImage1.Top + edtImage1.Height;
-  APt := ClientToScreen(APt);
-  frmImagesSelect := TfrmImagesSelect.Create(frmTvDirectoryOper);
-  with frmImagesSelect do
-  begin
-    frmImagesSelect.Top :=  APt.Y;
-    frmImagesSelect.Left := APt.X;
-  end;
-  frmImagesSelect.Width := edtImage1.Width;
-  frmImagesSelect.FControlFlag := 1;
-  frmImagesSelect.Show;
+  edtImage1.Text := IntToStr(EasySelectImage);
 end;
 
 procedure TfrmTvDirectoryOper.edtImage2ButtonClick(Sender: TObject);
-var
-  APt: TPoint;
 begin
-  APt.X := edtImage2.Left;
-  APt.Y := edtImage2.Top + edtImage2.Height;
-  APt := ClientToScreen(APt);
-  frmImagesSelect := TfrmImagesSelect.Create(frmTvDirectoryOper);
-  with frmImagesSelect do
-  begin
-    frmImagesSelect.Top :=  APt.Y;
-    frmImagesSelect.Left := APt.X;
-  end;
-  frmImagesSelect.Width := edtImage2.Width;
-  frmImagesSelect.FControlFlag := 2;
-  frmImagesSelect.Show;
+  edtImage2.Text := IntToStr(EasySelectImage);
 end;
 
 procedure TfrmTvDirectoryOper.rbDirectoryClick(Sender: TObject);
@@ -204,6 +189,11 @@ begin
   begin
     edtFileName.Enabled := False;
     rgShowModal.Enabled := False;
+    if Pos('新增', Caption) > 0 then
+    begin
+      edtImage1.Text := '0';
+      edtImage2.Text := '1';
+    end;
   end else
   begin
     edtFileName.Enabled := True;
@@ -217,6 +207,11 @@ begin
   begin
     edtFileName.Enabled := True;
     rgShowModal.Enabled := True;
+    if Pos('新增', Caption) > 0 then
+    begin
+      edtImage1.Text := '2';
+      edtImage2.Text := '2';
+    end;
   end else
   begin
     edtFileName.Enabled := False;

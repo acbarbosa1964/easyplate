@@ -179,9 +179,9 @@ begin
       begin
         with TEasysysPluginsDirectory(AData[I]) do
         begin
-          if (ParentPluginGUID = RootFlag) and (PluginName <> '') then
+          if (ParentPluginGUID = RootFlag) and (PluginCName <> '') then
           begin
-            ATmpNode := ATreeView.Items.AddChildObject(nil, PluginName, AData[I]);
+            ATmpNode := ATreeView.Items.AddChildObject(nil, PluginCName, AData[I]);
             ATmpNode.ImageIndex := ImageIndex;
             ATmpNode.SelectedIndex := SelectedImageIndex;
 
@@ -218,7 +218,7 @@ begin
       Exit;
     AEasysysPluginsDirectory.ParentPluginGUID :=
               TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginGUID;
-    AParentNodeName := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginName;
+    AParentNodeName := TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginCName;
     ShowfrmTvDirectoryOper(AEasysysPluginsDirectory, Easy_Add, AParentNodeName);
   end else
   begin
@@ -229,7 +229,7 @@ begin
   if AEasysysPluginsDirectory.PluginGUID <> '' then
   begin
     tvSysDirectory.Items.AddChildObject(tvSysDirectory.Selected,
-                          AEasysysPluginsDirectory.PluginName, AEasysysPluginsDirectory);
+                          AEasysysPluginsDirectory.PluginCName, AEasysysPluginsDirectory);
     TEasysysPluginsDirectory.AppendClientDataSet(cdsDirManager, AEasysysPluginsDirectory,
                           APluginDirectoryList);
   end else
@@ -262,7 +262,7 @@ begin
 
   ShowfrmTvDirectoryOper(TmpData, Easy_Edit);
   //修改
-  ASelectedNode.Text := TmpData.PluginName;
+  ASelectedNode.Text := TmpData.PluginCName;
   TEasysysPluginsDirectory.EditClientDataSet(cdsDirManager, TmpData);
 end;
 
@@ -290,14 +290,14 @@ begin
     end;
   end;
   if Application.MessageBox(PChar('确定要删除节点【'
-             + TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginName
+             + TEasysysPluginsDirectory(tvSysDirectory.Selected.Data).PluginCName
              +'】吗?'), '提示', MB_OKCANCEL + MB_ICONQUESTION) <> IDOK then
     Exit;
     
   TmpListItem := lvDeleted.Items.Add;
   //删除
   tvSysDirectory.Items.Delete(ASelectedNode);
-  TmpListItem.Caption := TEasysysPluginsDirectory(ASelectedNode.Data).PluginName;
+  TmpListItem.Caption := TEasysysPluginsDirectory(ASelectedNode.Data).PluginCName;
   TEasysysPluginsDirectory.DeleteClientDataSet(cdsDirManager,
             TEasysysPluginsDirectory(ASelectedNode.Data), APluginDirectoryList);
 end;
@@ -374,7 +374,7 @@ begin
       begin
         if ParentPluginGUID = TEasysysPluginsDirectory(ParentNode.Data).PluginGUID then
         begin
-          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginName, AData[I]);
+          ATmpNode := ATreeView.Items.AddChildObject(ParentNode, PluginCName, AData[I]);
           ATmpNode.ImageIndex := ImageIndex;
           ATmpNode.SelectedIndex := SelectedImageIndex;
 

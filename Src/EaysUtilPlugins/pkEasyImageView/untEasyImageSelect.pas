@@ -39,6 +39,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -71,6 +72,7 @@ function EasySelectImage: Integer;
 begin
   Result := -1;
   frmImagesSelect := TfrmImagesSelect.Create(Application);
+  frmImagesSelect.BorderStyle := bsDialog;
   frmImagesSelect.ShowModal;
   with frmImagesSelect do
   begin
@@ -115,6 +117,12 @@ begin
     else
       Beep;
   end;
+end;
+
+procedure TfrmImagesSelect.btnCancelClick(Sender: TObject);
+begin
+  inherited;
+  Close;
 end;
 
 end.

@@ -41,11 +41,11 @@ requires
   pkEasyUtilFunction,
   pkEasyDBConnection,
   pkEasyPlateBaseForm,
-  pkEasyUtilClasses;
+  pkEasyUtilClasses,
+  pkEasyImageView;
 
 contains
   untEasyPlateManager in 'untEasyPlateManager.pas' {frmEasyPlateManage},
-  untImagesSelect in 'untImagesSelect.pas' {frmImagesSelect},
   untPlugParamsOP in 'untPlugParamsOP.pas' {frmPlugParamsOP},
   untTvDirectoryOper in 'untTvDirectoryOper.pas' {frmTvDirectoryOper};
 

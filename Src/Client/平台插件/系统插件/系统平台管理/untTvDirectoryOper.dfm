@@ -1,10 +1,10 @@
 object frmTvDirectoryOper: TfrmTvDirectoryOper
-  Left = 385
-  Top = 211
+  Left = 328
+  Top = 170
   BorderStyle = bsDialog
   Caption = #30446#24405#31649#29702
-  ClientHeight = 367
-  ClientWidth = 360
+  ClientHeight = 403
+  ClientWidth = 341
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -49,15 +49,15 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
-    EditLabel.Width = 60
+    EditLabel.Width = 57
     EditLabel.Height = 13
-    EditLabel.Caption = #21517'         '#31216'   '
+    EditLabel.Caption = #20013#25991#21517#31216'   '
     LabelPosition = lpLeft
     LabelSpacing = 3
   end
   object speOrder: TEasySpinEdit
     Left = 88
-    Top = 64
+    Top = 88
     Width = 121
     Height = 22
     EditLabel.Width = 57
@@ -70,21 +70,20 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Precision = 0
     SpinKind = sptNormal
     Value = 0
-    DateValue = 40740.798873090280000000
+    DateValue = 40743.902623819440000000
     BorderColor = clGray
     IncrementFloat = 0.100000000000000000
     MaxValue = 100
     MinValue = 0
     MaxFloatValue = 100.000000000000000000
     ParentCtl3D = False
-    TabOrder = 1
+    TabOrder = 2
   end
   object edtImage1: TEasyButtonEdit
     Left = 88
-    Top = 104
+    Top = 128
     Width = 121
     Height = 19
-    Cursor = crHandPoint
     BorderColor = clGray
     Button.Color = clBtnFace
     Button.ColorTo = clBtnFace
@@ -176,7 +175,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Button.Width = 16
     OnButtonClick = edtImage1ButtonClick
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 3
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -188,10 +187,9 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object edtImage2: TEasyButtonEdit
     Left = 88
-    Top = 136
+    Top = 160
     Width = 121
     Height = 19
-    Cursor = crHandPoint
     BorderColor = clGray
     Button.Color = clBtnFace
     Button.ColorTo = clBtnFace
@@ -283,7 +281,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Button.Width = 16
     OnButtonClick = edtImage2ButtonClick
     ReadOnly = True
-    TabOrder = 3
+    TabOrder = 4
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -295,28 +293,28 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object rbDirectory: TEasyRadioButton
     Left = 88
-    Top = 168
+    Top = 192
     Width = 65
     Height = 17
     Caption = #30446#24405
     Checked = True
-    TabOrder = 4
+    TabOrder = 5
     TabStop = True
     Transparent = True
     OnClick = rbDirectoryClick
   end
   object rbModules: TEasyRadioButton
     Left = 160
-    Top = 168
+    Top = 192
     Width = 65
     Height = 17
     Caption = #27169#22359
-    TabOrder = 5
+    TabOrder = 6
     OnClick = rbModulesClick
   end
   object btnSave: TEasyBitButton
-    Left = 104
-    Top = 328
+    Left = 184
+    Top = 368
     Width = 65
     Height = 25
     Caption = #30830#23450
@@ -352,12 +350,12 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 6
+    TabOrder = 12
     OnClick = btnSaveClick
   end
   object btnCancel: TEasyBitButton
-    Left = 200
-    Top = 328
+    Left = 96
+    Top = 368
     Width = 65
     Height = 25
     Caption = #21462#28040
@@ -393,13 +391,13 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     NumGlyphs = 1
     ParentColor = False
     Style = bsModern
-    TabOrder = 7
+    TabOrder = 11
     OnClick = btnCancelClick
   end
   object rgShowModal: TEasyRadioGroup
-    Left = 88
-    Top = 224
-    Width = 193
+    Left = 32
+    Top = 248
+    Width = 137
     Height = 49
     Caption = #31383#20307#26174#31034#27169#24335
     Columns = 2
@@ -412,9 +410,9 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Transparent = True
   end
   object rgModuleEnable: TEasyRadioGroup
-    Left = 88
-    Top = 272
-    Width = 193
+    Left = 184
+    Top = 248
+    Width = 121
     Height = 49
     Caption = #27169#22359#21551#29992'/'#20572#29992
     Columns = 2
@@ -428,7 +426,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
   end
   object edtFileName: TEasyButtonEdit
     Left = 88
-    Top = 192
+    Top = 216
     Width = 217
     Height = 19
     BorderColor = clGray
@@ -522,7 +520,7 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     Button.Width = 16
     OnButtonClick = edtFileNameButtonClick
     ReadOnly = True
-    TabOrder = 10
+    TabOrder = 7
     TextRightAlign = False
     EnterTAB = True
     FocusColor = clInfoBk
@@ -532,14 +530,49 @@ object frmTvDirectoryOper: TfrmTvDirectoryOper
     LabelPosition = lpLeft
     LabelSpacing = 3
   end
+  object edtEName: TEasyLabelEdit
+    Left = 88
+    Top = 59
+    Width = 217
+    Height = 19
+    BorderColor = clGray
+    TabOrder = 1
+    TextRightAlign = False
+    EnterTAB = True
+    FocusColor = clInfoBk
+    EditLabel.Width = 57
+    EditLabel.Height = 13
+    EditLabel.Caption = #33521#25991#21517#31216'   '
+    LabelPosition = lpLeft
+    LabelSpacing = 3
+  end
+  object mmRemark: TEasyMemo
+    Left = 32
+    Top = 296
+    Width = 273
+    Height = 65
+    EditLabel.Width = 3
+    EditLabel.Height = 13
+    EditLabel.Caption = ' '
+    LabelPosition = lpLeft
+    LabelSpacing = 16
+    VertScrollBar.BarColor = clGray
+    VertScrollBar.ArrowColor = clBlack
+    VertScrollBar.BorderColor = clGray
+    BorderColor = clGray
+    TabOrder = 10
+    DesignSize = (
+      273
+      65)
+  end
   object ImageList1: TImageList
     Left = 224
-    Top = 64
+    Top = 88
   end
   object dlgBpl: TOpenDialog
     Filter = #25554#20214#21253'(*.bpl)|*.bpl|'#25152#26377#25991#20214'(*.*)|*.*'
     Title = 'EasyPlate'#25554#20214#25991#20214
     Left = 256
-    Top = 64
+    Top = 88
   end
 end
