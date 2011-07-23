@@ -161,8 +161,8 @@ Count=1
 Item0=.\bin
 [HistoryLists\hlBPLOutput]
 Count=2
-Item0=$(EPP)\bin
-Item1=$(EPP)\bin\plugins
+Item0=$(EPP)\bin\plugins
+Item1=$(EPP)\bin
 [HistoryLists\hlDCPOutput]
 Count=1
 Item0=$(EPP)\Src\dcp
