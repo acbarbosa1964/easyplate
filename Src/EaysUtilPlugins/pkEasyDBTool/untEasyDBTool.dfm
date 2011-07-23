@@ -1,7 +1,7 @@
 inherited frmEasyDBTool: TfrmEasyDBTool
-  Left = 202
-  Top = 134
-  Caption = 'frmEasyDBTool'
+  Left = 178
+  Top = 80
+  Caption = #34920#32467#26500#32500#25252
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -78,7 +78,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
           TabOrder = 0
           FixedDimension = 19
           object tsbTableField: TEasyTabSheet
-            Caption = 'TableField'
+            Caption = #34920#32467#26500
             object sgrdTableField: TEasyStringGrid
               Left = 0
               Top = 28
@@ -244,7 +244,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   OnClick = btnNewClick
                 end
                 object EasyToolBarButton3: TEasyToolBarButton
-                  Left = 137
+                  Left = 381
                   Top = 2
                   Width = 76
                   Height = 24
@@ -253,7 +253,7 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   Appearance.CaptionFont.Height = -11
                   Appearance.CaptionFont.Name = 'Tahoma'
                   Appearance.CaptionFont.Style = []
-                  Caption = #36171#20540#23545#35937
+                  Caption = #21024#38500#20989#25968
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clWindowText
                   Font.Height = -11
@@ -287,57 +287,71 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   ShowCaption = True
                   OnClick = EasyToolBarButton1Click
                 end
-              end
-            end
-          end
-          object EasyTabSheet1: TEasyTabSheet
-            Caption = 'EasyTabSheet1'
-            object EasyDockPanel2: TEasyDockPanel
-              Left = 0
-              Top = 0
-              Width = 662
-              Height = 28
-              MinimumSize = 3
-              LockHeight = False
-              Persistence.Location = plRegistry
-              Persistence.Enabled = False
-              ToolBarStyler = EasyToolBarOfficeStyler1
-              UseRunTimeHeight = True
-              object EasyToolBar2: TEasyToolBar
-                Left = 3
-                Top = 1
-                Width = 656
-                Height = 26
-                AllowFloating = True
-                CaptionFont.Charset = DEFAULT_CHARSET
-                CaptionFont.Color = clWindowText
-                CaptionFont.Height = -11
-                CaptionFont.Name = 'MS Sans Serif'
-                CaptionFont.Style = []
-                CompactImageIndex = -1
-                FullSize = True
-                TextAutoOptionMenu = 'Add or Remove Buttons'
-                TextOptionMenu = 'Options'
-                ToolBarStyler = EasyToolBarOfficeStyler1
-                ParentOptionPicture = True
-                ToolBarIndex = -1
                 object EasyToolBarButton2: TEasyToolBarButton
-                  Left = 9
+                  Left = 305
                   Top = 2
-                  Width = 15
-                  Height = 22
+                  Width = 76
+                  Height = 24
                   Appearance.CaptionFont.Charset = DEFAULT_CHARSET
                   Appearance.CaptionFont.Color = clWindowText
                   Appearance.CaptionFont.Height = -11
                   Appearance.CaptionFont.Name = 'Tahoma'
                   Appearance.CaptionFont.Style = []
+                  Caption = #32534#36753#20989#25968
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clWindowText
                   Font.Height = -11
                   Font.Name = 'Tahoma'
                   Font.Style = []
+                  ImageIndex = 13
                   ParentFont = False
                   Position = daTop
+                  ShowCaption = True
+                  OnClick = EasyToolBarButton2Click
+                end
+                object EasyToolBarButton4: TEasyToolBarButton
+                  Left = 229
+                  Top = 2
+                  Width = 76
+                  Height = 24
+                  Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+                  Appearance.CaptionFont.Color = clWindowText
+                  Appearance.CaptionFont.Height = -11
+                  Appearance.CaptionFont.Name = 'Tahoma'
+                  Appearance.CaptionFont.Style = []
+                  Caption = #22686#21152#20989#25968
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Tahoma'
+                  Font.Style = []
+                  ImageIndex = 13
+                  ParentFont = False
+                  Position = daTop
+                  ShowCaption = True
+                  OnClick = EasyToolBarButton4Click
+                end
+                object EasyToolBarButton5: TEasyToolBarButton
+                  Left = 137
+                  Top = 2
+                  Width = 92
+                  Height = 24
+                  Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+                  Appearance.CaptionFont.Color = clWindowText
+                  Appearance.CaptionFont.Height = -11
+                  Appearance.CaptionFont.Name = 'Tahoma'
+                  Appearance.CaptionFont.Style = []
+                  Caption = #29983#25104'List'#20989#25968
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Tahoma'
+                  Font.Style = []
+                  ImageIndex = 13
+                  ParentFont = False
+                  Position = daTop
+                  ShowCaption = True
+                  OnClick = EasyToolBarButton5Click
                 end
               end
             end

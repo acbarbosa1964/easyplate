@@ -38,12 +38,19 @@ uses
   Classes, Graphics, Controls, Forms, Dialogs, ActnList, ComCtrls,
   Menus, StdCtrls, ImgList, Buttons, ExtCtrls, Tabs, ExtDlgs, Mask,
   Grids, CheckLst, AppEvnts, MPlayer, OleCtnrs,
-  StdDsnEditors, DesignEditors, DesignIntf, untEasyDevExt, untEasyDBDevExt,
-  untEasyGrid, untEasyDBGrid;
+  StdDsnEditors, DesignEditors, DesignIntf, untEasyGrid, untEasyDBGrid,
+  cxControls, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, dxLayoutControl,
+  cxEdit, cxTextEdit, cxMaskEdit, cxMemo, cxDropDownEdit, cxCalendar, cxButtonEdit,
+  cxButtons, cxCheckBox, cxColorComboBox, cxImageComboBox, cxSpinEdit;
 
 procedure StandardRegister;
 begin
-  RegisterComponents('Easy Standard', [TEasyDevTextEdit, TEasyDevMaskEdit, TEasyDevMemo,
+  RegisterComponents('Easy Standard', [TcxTextEdit, TcxMaskEdit, TcxMemo, TcxDateEdit,
+                      TcxButtonEdit, TcxCheckBox, TcxComboBox, TcxImageComboBox,
+                      TcxSpinEdit]);
+//  RegisterComponents('Easy LayOut', [TdxLayoutItem, TdxLayoutControlCustomCustomizeForm,
+//  TdxLayoutTabbedGroupTabControl, TdxLayoutControl]);
+  {RegisterComponents('Easy Standard', [TEasyDevTextEdit, TEasyDevMaskEdit, TEasyDevMemo,
     TEasyDevDateEdit, TEasyDevTimeEdit, TEasyDevButtonEdit, TEasyDevComboBox,
     TEasyDevImageComboBox, TEasyDevLookupComboBox, TEasyDevLookupComboBoxExt,
     TEasyDevColorComboBox, TEasyDevFontNameComboBox, TEasyDevCheckComboBox,
@@ -60,7 +67,7 @@ begin
     TEasyDevDBCurrencyEdit, TEasyDevDBBlobEdit, TEasyDevDBMRUEdit, TEasyDevDBPopupEdit,
     TEasyDevDBListBox, TEasyDevDBCheckListBox, TEasyDevDBRichEdit, TEasyDevDBLabel,
     TEasyDevDBImage, TEasyDevDBCheckBox, TEasyDevDBCheckGroup, TEasyDevDBRadioButton,
-    TEasyDevDBRadioGroup{, TEasyDevSQL}, TEasyDBGrid]);
+    TEasyDevDBRadioGroup, TEasyDevSQL, TEasyDBGrid]); }
 
 //±ê×¼¿Ø¼þ
   RegisterComponents('Standard', [TMainMenu, TPopupMenu, TLabel, TEdit,

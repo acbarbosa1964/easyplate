@@ -26,7 +26,9 @@ uses
   untEasyToolBar, untEasyToolBarStylers, untEasyStatusBar, untFrmDsnEdit,
   untEasyStatusBarStylers, Menus, eddPaletteFrame, eddObjInspFrm,
   eddObjTreeFrame, edActns, ActnList, ImgList, ed_DsnBase, ed_Designer,
-  ed_dsncont, untEasyPlateDBBaseForm;
+  ed_dsncont, untEasyPlateDBBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxTextEdit,
+  cxMaskEdit, cxDropDownEdit, cxCalendar;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
@@ -171,6 +173,8 @@ type
     N16: TMenuItem;
     EasyToolBar3: TEasyToolBar;
     EasyToolBarButton22: TEasyToolBarButton;
+    cxDateEdit1: TcxDateEdit;
+    cxComboBox1: TcxComboBox;
     procedure FileNewExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileOpenExecute(Sender: TObject);

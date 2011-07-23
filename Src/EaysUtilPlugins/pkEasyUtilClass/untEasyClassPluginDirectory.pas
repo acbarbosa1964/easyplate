@@ -148,7 +148,11 @@ var
   AEasysysPluginsDirectory: TEasysysPluginsDirectory;
   AClientDataSet: TClientDataSet;
 begin
-  if PluginDirectoryList.Count > 0 then Exit;
+  while (PluginDirectoryList.Count > 0) do
+  begin
+    TEasysysPluginsDirectory(PluginDirectoryList[0]).Free;
+    PluginDirectoryList.Delete(0);
+  end;
 
   //创建数据源，并获取数据
   AClientDataSet := TClientDataSet.Create(nil);

@@ -170,7 +170,6 @@ procedure TfrmTvDirectoryOper.FormCreate(Sender: TObject);
 begin
   edtImage1.Text := '-1';
   edtImage2.Text := '-1';
-  rbDirectoryClick(Sender);
 end;
 
 procedure TfrmTvDirectoryOper.edtImage1ButtonClick(Sender: TObject);
@@ -259,6 +258,7 @@ begin
   edtFileName.EditLabel.Transparent := True;
   //默认选中目录 置文件选择框不可用
   edtFileName.Enabled := False;
+  rbDirectoryClick(Sender);
 end;
 
 procedure TfrmTvDirectoryOper.edtFileNameButtonClick(Sender: TObject);

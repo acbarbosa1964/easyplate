@@ -18,18 +18,18 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
   object Splitter1: TSplitter
     Left = 225
     Top = 30
-    Height = 424
+    Height = 412
   end
   object Splitter2: TSplitter
-    Left = 825
+    Left = 817
     Top = 30
-    Height = 424
+    Height = 412
     Align = alRight
   end
   object EasyDockPanel1: TEasyDockPanel
     Left = 0
     Top = 0
-    Width = 1042
+    Width = 1034
     Height = 30
     MinimumSize = 3
     LockHeight = False
@@ -595,7 +595,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
     Left = 0
     Top = 30
     Width = 225
-    Height = 424
+    Height = 412
     ActivePage = tbsToolBox
     Align = alLeft
     TabIndex = 0
@@ -607,13 +607,13 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         Left = 0
         Top = 0
         Width = 221
-        Height = 401
+        Height = 389
         Align = alClient
         TabOrder = 0
         PaletteToolList.Left = 0
         PaletteToolList.Top = 27
         PaletteToolList.Width = 221
-        PaletteToolList.Height = 374
+        PaletteToolList.Height = 362
         PaletteToolList.ItemHeight = 26
         PaletteToolList.FoldingIcon.Data = {
           12050000424D12050000000000003604000028000000120000000B0000000100
@@ -736,10 +736,10 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
     end
   end
   object pgcRight: TEasyPageControl
-    Left = 828
+    Left = 820
     Top = 30
     Width = 214
-    Height = 424
+    Height = 412
     ActivePage = tbsInspector
     Align = alRight
     TabIndex = 0
@@ -751,7 +751,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         Left = 0
         Top = 0
         Width = 210
-        Height = 401
+        Height = 389
         Align = alClient
         TabOrder = 0
         ComponnentCombo.Left = 0
@@ -767,7 +767,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         PropertyList.Left = 0
         PropertyList.Top = 0
         PropertyList.Width = 202
-        PropertyList.Height = 332
+        PropertyList.Height = 320
         PropertyList.TabStop = True
         PropertyList.TabOrder = 0
         PropertyList.TypeKinds = [tkInteger, tkChar, tkEnumeration, tkFloat, tkString, tkSet, tkClass, tkWChar, tkLString, tkWString, tkVariant, tkInt64]
@@ -886,13 +886,26 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
   object pgcCenter: TEasyPageControl
     Left = 228
     Top = 30
-    Width = 597
-    Height = 424
+    Width = 589
+    Height = 412
     Align = alClient
     TabOrder = 4
     OnChange = pgcCenterChange
     OnDblClick = pgcCenterDblClick
     FixedDimension = 0
+  end
+  object cxDateEdit1: TcxDateEdit
+    Left = 328
+    Top = 160
+    TabOrder = 6
+    Width = 121
+  end
+  object cxComboBox1: TcxComboBox
+    Left = 528
+    Top = 160
+    TabOrder = 7
+    Text = 'cxComboBox1'
+    Width = 121
   end
   object EasyToolBarOfficeStyler1: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181

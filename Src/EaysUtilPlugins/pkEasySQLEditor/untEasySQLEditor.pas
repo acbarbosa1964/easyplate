@@ -27,7 +27,8 @@ uses
   ecExtHighlight, ecSpell, ImgList, cxStyles, cxCustomData, cxGraphics,
   cxFilter, cxData, cxDataStorage, cxEdit, cxDBData, cxGridLevel,
   cxClasses, cxControls, cxGridCustomView, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxGrid;
+  cxGridTableView, cxGridDBTableView, cxGrid, cxLookAndFeels,
+  cxLookAndFeelPainters;
 
   //插件导出函数
   function ShowBplForm(var AParamList: TStrings): TForm; stdcall; exports ShowBplForm;

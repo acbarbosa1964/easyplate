@@ -116,6 +116,9 @@ type
     N11: TMenuItem;
     cdsMainTV: TClientDataSet;
     actConnectDB: TAction;
+    N2: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actVisibleNavExecute(Sender: TObject);
@@ -135,6 +138,8 @@ type
     procedure ile1Click(Sender: TObject);
     procedure Cascade1Click(Sender: TObject);
     procedure ArrangeAll1Click(Sender: TObject);
+    procedure N12Click(Sender: TObject);
+    procedure N13Click(Sender: TObject);
   private
     { Private declarations }
     //不允许关闭的Tab列表 以Caption为准
@@ -375,15 +380,9 @@ begin
 end;
 
 procedure TfrmEasyPlateMain.FormCreate(Sender: TObject);
-//var
-//  ABitMap: TBitmap;
 begin
   inherited;
   //加载导航树所需要的图像
-//  ABitMap := TBitmap.Create;
-//  ABitMap.LoadFromFile(EasyImagePath + 'Tree.bmp');
-//  imgtv.Add(ABitMap, nil);
-//  ABitMap.Free;
   imgtv.Assign(DMEasyDBConnection.img16);
   
   //打开双缓冲
@@ -649,6 +648,20 @@ begin
       Break;
     end;
   end;
+end;
+
+procedure TfrmEasyPlateMain.N12Click(Sender: TObject);
+begin
+  inherited;
+  if tvNav.Selected <> nil then
+    tvNav.Selected.Expand(True);
+end;
+
+procedure TfrmEasyPlateMain.N13Click(Sender: TObject);
+begin
+  inherited;
+  if tvNav.Selected <> nil then
+    tvNav.Selected.Collapse(True);
 end;
 
 //  if E.ClassType.ClassName = 'ESocketConnectionError' then

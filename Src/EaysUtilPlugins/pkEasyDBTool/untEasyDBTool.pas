@@ -56,12 +56,11 @@ type
     EasyDockPanel1: TEasyDockPanel;
     EasyToolBar1: TEasyToolBar;
     btnNew: TEasyToolBarButton;
-    EasyTabSheet1: TEasyTabSheet;
-    EasyDockPanel2: TEasyDockPanel;
-    EasyToolBar2: TEasyToolBar;
-    EasyToolBarButton2: TEasyToolBarButton;
     EasyToolBarButton3: TEasyToolBarButton;
     EasyToolBarButton1: TEasyToolBarButton;
+    EasyToolBarButton2: TEasyToolBarButton;
+    EasyToolBarButton4: TEasyToolBarButton;
+    EasyToolBarButton5: TEasyToolBarButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -73,17 +72,22 @@ type
     procedure btnNewClick(Sender: TObject);
     procedure EasyToolBarButton3Click(Sender: TObject);
     procedure EasyToolBarButton1Click(Sender: TObject);
+    procedure EasyToolBarButton4Click(Sender: TObject);
+    procedure EasyToolBarButton2Click(Sender: TObject);
+    procedure EasyToolBarButton5Click(Sender: TObject);
   private
     { Private declarations }
     FEasyDataBase,
     FEasyTableField: TList;
 
-    procedure GenerateObject(AObject: TObject; AClientDataSet: TClientDataSet);
     procedure InitFieldGrid;
     procedure DisplayTableFieldGrid(AClientDataSet: TClientDataSet; ANode: TTreeNode);
     //根据Grid中的字段名称生成对象
     procedure GenerateObjFile(AObjPre: string);
     procedure GenerateObjValueFile(AObjPre: string);
+    procedure AppendObjValueFile(AObjPre: string);
+    procedure EditObjValueFile(AObjPre: string);
+    procedure DeleteObjValueFile(AObjPre: string);
   public
     { Public declarations }
   end;
@@ -122,11 +126,6 @@ begin
   inherited;
   EasyFreeAndNilList(FEasyDataBase);
   EasyFreeAndNilList(FEasyTableField);
-end;
-
-procedure TfrmEasyDBTool.GenerateObject(AObject: TObject;
-  AClientDataSet: TClientDataSet);
-begin
 end;
 
 procedure TfrmEasyDBTool.FormShow(Sender: TObject);
@@ -256,8 +255,7 @@ end;
 procedure TfrmEasyDBTool.EasyToolBarButton3Click(Sender: TObject);
 begin
   inherited;
-  GenerateObjValueFile('Easy');
-  //
+  DeleteObjValueFile('Easy');
 end;
 
 procedure TfrmEasyDBTool.GenerateObjFile(AObjPre: string);
@@ -282,38 +280,45 @@ begin
       //varchar
       if Cells[2, I + 1] = 'varchar' then
       begin
-        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'string');
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'string;');
         ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'string'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
       end
       //int bigint
       else if (Cells[2, I + 1] = 'int') or (Cells[2, I + 1] = 'bigint') then
       begin
-        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Integer');
-        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'string'
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Integer;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'Integer'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
       end
       //bit
       else if Cells[2, I + 1] = 'bit' then
       begin
-        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Boolean');
-        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'string'
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Boolean;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'Boolean'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
       end
       //decimal numeric
       else if (Cells[2, I + 1] = 'decimal') then
       begin
-        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Double');
-        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'string'
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Double;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'Double'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
       end
       //DateTime
-      else if Cells[2, I + 1] = 'DateTime' then
+      else if Cells[2, I + 1] = 'datetime' then
       begin
-        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'TDateTime');
-        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'string'
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'TDateTime;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'TDateTime'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
-      end;
+      end
+      //
+      else
+      begin
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'EasyNULLType;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'EasyNULLType'
+                            + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
+      end
     end;
   end;
   ATmpResult.Add(ATmpPublicResult.Text);
@@ -332,47 +337,71 @@ var
 begin
   ATmpResult := TStringList.Create;
 
-  ATmpResult.Add(' //此句为实例化指定的对象');
-  ATmpResult.Add('A' + AObjPre + tvDataBase.Selected.Text
-                  + ' := T' + AObjPre + tvDataBase.Selected.Text + '.Create');
-  ATmpResult.Add(' AClientDataSet.First;');
-  ATmpResult.Add('for I := 0 to AClientDataSet.RecordCount - 1 do');
+  ATmpResult.Add('class procedure T' + AObjPre + tvDataBase.Selected.Text + '.Generate' + tvDataBase.Selected.Text
+                 +'(var Data: OleVariant; AResult: TList)');
+  ATmpResult.Add('var');
+  ATmpResult.Add('  I: Integer;');
+  ATmpResult.Add('  A' + AObjPre + tvDataBase.Selected.Text + ': T' + AObjPre + tvDataBase.Selected.Text + ';');
+  ATmpResult.Add('  AClientDataSet: TClientDataSet;');
   ATmpResult.Add('begin');
-  ATmpResult.Add('  with ' + 'A' + AObjPre + tvDataBase.Selected.Text + ' do ');
-  ATmpResult.Add('  begin');
+  ATmpResult.Add('  //创建数据源，并获取数据');
+  ATmpResult.Add('  AClientDataSet := TClientDataSet.Create(nil);');
+  ATmpResult.Add('  AClientDataSet.Data := Data;');
+  ATmpResult.Add('  AClientDataSet.First;');
+  ATmpResult.Add('  try');
+  ATmpResult.Add('    for I := 0 to AClientDataSet.RecordCount - 1 do');
+  ATmpResult.Add('    begin');
+  ATmpResult.Add('      //此句为实例化指定的对象');
+  ATmpResult.Add('      A' + AObjPre + tvDataBase.Selected.Text
+                  + ' := T' + AObjPre + tvDataBase.Selected.Text + '.Create;');
+  ATmpResult.Add('      with ' + 'A' + AObjPre + tvDataBase.Selected.Text + ' do ');
+  ATmpResult.Add('      begin');
 
-  for I := 0 to sgrdTableField.RowCount - 1 do
+  for I := 0 to sgrdTableField.RowCount - 2 do
   begin
     with sgrdTableField do
     begin
+       ATmpResult.Add('      ' + '//' + IntToStr(I + 1) + ' ' + Cells[1, I + 1]);
       //varchar
       if Cells[2, I + 1] = 'varchar' then
-        ATmpResult.Add('    ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
-                              + '' + Cells[1, I + 1] + '' +').AsString;')
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsString;')
       //int bigint
       else if (Cells[2, I + 1] = 'int') or (Cells[2, I + 1] = 'bigint') then
-        ATmpResult.Add('    ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
-                              + '' + Cells[1, I + 1] + '' +').AsInteger;')
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsInteger;')
       //bit
       else if Cells[2, I + 1] = 'bit' then
-        ATmpResult.Add('    ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
-                              + '' + Cells[1, I + 1] + '' +').AsBoolean;')
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsBoolean;')
       //decimal numeric
       else if (Cells[2, I + 1] = 'decimal') then
-        ATmpResult.Add('    ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
-                              + '' + Cells[1, I + 1] + '' +').AsFloat;')
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsFloat;')
       //DateTime
-      else if Cells[2, I + 1] = 'DateTime' then
-        ATmpResult.Add('    ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
-                              + '' + Cells[1, I + 1] + '' +').AsDateTime;');
+      else if Cells[2, I + 1] = 'datetime' then
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsDateTime;')
+      //numeric
+      else if (Cells[2, I + 1] = 'numeric') then
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsFloat;')
+      else
+        ATmpResult.Add('        ' + Cells[1, I + 1] + ' := ' + 'AClientDataSet.FieldByName('
+                              + '''' + Cells[1, I + 1] + '''' +').AsEasyNullType;');
     end;
   end;
+  ATmpResult.Add('      end;');
+  ATmpResult.Add('      //在此添加将对象存放到指定容器的代码');
+  ATmpResult.Add('      AResult.Add(A' + AObjPre + tvDataBase.Selected.Text + ')');
+  ATmpResult.Add('      //如果要关联树也在此添加相应代码');
+  ATmpResult.Add('      AClientDataSet.Next;');
+  ATmpResult.Add('    end;');
+  ATmpResult.Add('  finally');
+  ATmpResult.Add('    AClientDataSet.Free;');
   ATmpResult.Add('  end;');
-  ATmpResult.Add(' AClientDataSet.Next;');
-  ATmpResult.Add(' //在此添加将对象存放到指定容器的代码');
-  ATmpResult.Add(' //如果要关联树也在此添加相应代码');
   ATmpResult.Add('end;');
-  
+
   frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
   frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
   frmEasyDBToolObjectPas.ShowModal;
@@ -385,6 +414,197 @@ procedure TfrmEasyDBTool.EasyToolBarButton1Click(Sender: TObject);
 begin
   inherited;
   GenerateObjFile('Easy');
+end;
+
+procedure TfrmEasyDBTool.AppendObjValueFile(AObjPre: string);
+var
+  I: Integer;
+  ATmpResult: TStrings;
+  ObjClassName: string;
+begin
+  ATmpResult := TStringList.Create;
+
+  ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
+  ATmpResult.Add('class procedure ' + ObjClassName + '.AppendClientDataSet'
+                 + '(ACds: TClientDataSet; AObj: ' + ObjClassName + '; var AObjList: TList);');
+  ATmpResult.Add('begin');
+  ATmpResult.Add('  with ACds do');
+  ATmpResult.Add('  begin');
+  ATmpResult.Add('    Append;');
+  //
+  for I := 0 to sgrdTableField.RowCount - 2 do
+  begin
+    with sgrdTableField do
+    begin
+       ATmpResult.Add('      ' + '//' + IntToStr(I + 1) + ' ' + Cells[1, I + 1]);
+      //varchar
+      if Cells[2, I + 1] = 'varchar' then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsString := AObj.' + Cells[1, I + 1] + ';')
+      //int bigint
+      else if (Cells[2, I + 1] = 'int') or (Cells[2, I + 1] = 'bigint') then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsInteger := AObj.' + Cells[1, I + 1] + ';')
+      //bit
+      else if Cells[2, I + 1] = 'bit' then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsBoolean := AObj.' + Cells[1, I + 1] + ';')
+      //decimal numeric
+      else if (Cells[2, I + 1] = 'decimal') then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsFloat := AObj.' + Cells[1, I + 1] + ';')
+      //DateTime
+      else if Cells[2, I + 1] = 'DateTime' then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsDateTime := AObj.' + Cells[1, I + 1] + ';')
+      //numeric
+      else if (Cells[2, I + 1] = 'numeric') then
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsFloat := AObj.' + Cells[1, I + 1] + ';')
+      else
+        ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsEasyNullType := AObj.' + Cells[1, I + 1] + ';');
+    end;
+  end;
+  ATmpResult.Add('    post;');
+  ATmpResult.Add('  end;');
+  ATmpResult.Add('  AObjList.Add(AObj);');
+  ATmpResult.Add('end;');
+
+  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+  frmEasyDBToolObjectPas.ShowModal;
+  frmEasyDBToolObjectPas.Free;
+
+  ATmpResult.Free;
+end;
+
+procedure TfrmEasyDBTool.DeleteObjValueFile(AObjPre: string);
+var
+  ATmpResult: TStrings;
+  ObjClassName: string;
+  KeyField: string;
+begin
+  ATmpResult := TStringList.Create;
+  KeyField := sgrdTableField.Cells[1, 1];
+  ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
+  ATmpResult.Add('class procedure ' + ObjClassName + '.EditClientDataSet'
+                 + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
+                 + ' var AObjList: TList);');
+  ATmpResult.Add('var');
+  ATmpResult.Add('  I,');
+  ATmpResult.Add('  DelIndex: Integer;');
+  ATmpResult.Add('begin');
+  ATmpResult.Add('  DelIndex := -1;');
+  ATmpResult.Add('  if ACds.Locate(' + KeyField + ', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
+  ATmpResult.Add('    ACds.Delete;');
+  ATmpResult.Add('  for I := 0 to AObjList.Count - 1 do');
+  ATmpResult.Add('  begin');
+  ATmpResult.Add('    if ' + ObjClassName + '(AObjList[I]).' + KeyField + ' = ' + ObjClassName + '(AObj).' + KeyField + ' then');
+  ATmpResult.Add('    begin');
+  ATmpResult.Add('      DelIndex := I;');
+  ATmpResult.Add('      Break;');
+  ATmpResult.Add('    end;');
+  ATmpResult.Add('  end;');
+  ATmpResult.Add('  if DelIndex <> -1 then');
+  ATmpResult.Add('  begin');
+  ATmpResult.Add('    ' + ObjClassName + '(AObjList[DelIndex]).Free;');
+  ATmpResult.Add('    AObjList.Delete(DelIndex);');
+  ATmpResult.Add('  end; ');
+  ATmpResult.Add('end; ');
+
+  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+  frmEasyDBToolObjectPas.ShowModal;
+  frmEasyDBToolObjectPas.Free;
+
+  ATmpResult.Free;
+end;
+
+procedure TfrmEasyDBTool.EditObjValueFile(AObjPre: string);
+var
+  I: Integer;
+  ATmpResult: TStrings;
+  ObjClassName: string;
+  KeyField: string;
+begin
+  ATmpResult := TStringList.Create;
+  KeyField := sgrdTableField.Cells[1, 1];
+  ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
+  ATmpResult.Add('class procedure ' + ObjClassName + '.EditClientDataSet'
+                 + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
+                 + ' var AObjList: TList);');
+  ATmpResult.Add('begin');
+  ATmpResult.Add('  if ACds.Locate(' + KeyField + ', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
+  ATmpResult.Add('  begin');
+  ATmpResult.Add('    with ACds do');
+  ATmpResult.Add('    begin');
+  ATmpResult.Add('      Edit;');
+  //
+  for I := 0 to sgrdTableField.RowCount - 2 do
+  begin
+    with sgrdTableField do
+    begin
+       ATmpResult.Add('      ' + '//' + IntToStr(I + 1) + ' ' + Cells[1, I + 1]);
+      //varchar
+      if Cells[2, I + 1] = 'varchar' then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsString := AObj.' + Cells[1, I + 1] + ';')
+      //int bigint
+      else if (Cells[2, I + 1] = 'int') or (Cells[2, I + 1] = 'bigint') then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsInteger := AObj.' + Cells[1, I + 1] + ';')
+      //bit
+      else if Cells[2, I + 1] = 'bit' then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsBoolean := AObj.' + Cells[1, I + 1] + ';')
+      //decimal numeric
+      else if (Cells[2, I + 1] = 'decimal') then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsFloat := AObj.' + Cells[1, I + 1] + ';')
+      //DateTime
+      else if Cells[2, I + 1] = 'DateTime' then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsDateTime := AObj.' + Cells[1, I + 1] + ';')
+      //numeric
+      else if (Cells[2, I + 1] = 'numeric') then
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsFloat := AObj.' + Cells[1, I + 1] + ';')
+      else
+        ATmpResult.Add('      ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
+                                +').AsEasyNullType := AObj.' + Cells[1, I + 1] + ';');
+    end;
+  end;
+  ATmpResult.Add('      post;');
+  ATmpResult.Add('    end;');
+  ATmpResult.Add('  end;');
+  ATmpResult.Add('end;');
+
+  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+  frmEasyDBToolObjectPas.ShowModal;
+  frmEasyDBToolObjectPas.Free;
+
+  ATmpResult.Free;
+end;
+
+procedure TfrmEasyDBTool.EasyToolBarButton4Click(Sender: TObject);
+begin
+  inherited;
+  AppendObjValueFile('Easy');
+end;
+
+
+procedure TfrmEasyDBTool.EasyToolBarButton2Click(Sender: TObject);
+begin
+  inherited;
+  EditObjValueFile('Easy');
+end;
+
+procedure TfrmEasyDBTool.EasyToolBarButton5Click(Sender: TObject);
+begin
+  inherited;
+  GenerateObjValueFile('Easy');
 end;
 
 end.

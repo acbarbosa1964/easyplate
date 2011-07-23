@@ -67,6 +67,9 @@ type
     btnExit: TEasyBitButton;
     cdsParam: TClientDataSet;
     imgtv: TImageList;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -91,6 +94,10 @@ type
     procedure btnExitClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure tvSysDirectoryChange(Sender: TObject; Node: TTreeNode);
+    procedure N2Click(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     //初始化树，只生成第一层节点
@@ -208,6 +215,7 @@ procedure TfrmEasyPlateManage.btnAddClick(Sender: TObject);
 var
   AEasysysPluginsDirectory: TEasysysPluginsDirectory;
   AParentNodeName: string;
+  ATmpNode: TTreeNode;
 begin
   inherited;
   AEasysysPluginsDirectory := TEasysysPluginsDirectory.Create;
@@ -228,12 +236,14 @@ begin
   //确定新增
   if AEasysysPluginsDirectory.PluginGUID <> '' then
   begin
-    tvSysDirectory.Items.AddChildObject(tvSysDirectory.Selected,
+    ATmpNode := tvSysDirectory.Items.AddChildObject(tvSysDirectory.Selected,
                           AEasysysPluginsDirectory.PluginCName, AEasysysPluginsDirectory);
+    ATmpNode.ImageIndex := AEasysysPluginsDirectory.ImageIndex;
+    ATmpNode.SelectedIndex := AEasysysPluginsDirectory.SelectedImageIndex;
     TEasysysPluginsDirectory.AppendClientDataSet(cdsDirManager, AEasysysPluginsDirectory,
                           APluginDirectoryList);
   end else
-    AEasysysPluginsDirectory.Free;  
+    AEasysysPluginsDirectory.Free;
 end;
 
 procedure TfrmEasyPlateManage.FormClose(Sender: TObject;
@@ -626,7 +636,13 @@ end;
 procedure TfrmEasyPlateManage.btnExitClick(Sender: TObject);
 begin
   inherited;
-  Close;
+  if (cdsDirManager.ChangeCount > 0) or (cdsParam.ChangeCount > 0) then
+  begin
+    Application.MessageBox('数据已发生变更,请先进行保存或取消操作以后,再关闭本窗口!',
+                          '提示', MB_OK + MB_ICONINFORMATION);
+    Exit;
+  end else
+    Close;
 end;
 
 procedure TfrmEasyPlateManage.btnSaveClick(Sender: TObject);
@@ -689,6 +705,7 @@ begin
         cdsDirManager.MergeChangeLog;
       if cdsParam.ChangeCount > 0 then
         cdsParam.MergeChangeLog;
+      lvDeleted.Clear;
 //      btnRefreshClick(Sender);
     end;
   except on E: Exception do
@@ -721,6 +738,44 @@ begin
       end;
     end;
   end;  
+end;
+
+procedure TfrmEasyPlateManage.N2Click(Sender: TObject);
+begin
+  inherited;
+  if tvSysDirectory.Selected <> nil then
+    tvSysDirectory.Selected.Expanded := True;
+end;
+
+procedure TfrmEasyPlateManage.N3Click(Sender: TObject);
+begin
+  inherited;
+  if tvSysDirectory.Selected <> nil then
+    tvSysDirectory.Selected.Collapse(True);
+end;
+
+procedure TfrmEasyPlateManage.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  //KeyPreview TRUE
+  if (ssCtrl in Shift) and (Key = ord('N')) then //Ctrl + N
+    btnAddClick(Sender)
+  else
+  if (ssCtrl in Shift) and (Key = ord('E')) then //Ctrl + E
+    btnEditClick(Sender)
+  else
+  if (ssCtrl in Shift) and (Key = ord('D')) then //Ctrl + D
+    btnDeleteClick(Sender)
+  else
+  if (ssCtrl in Shift) and (Key = ord('S')) then //Ctrl + S
+    btnSaveClick(Sender)
+  else
+  if (ssCtrl in Shift) and (Key = ord('Z')) then //Ctrl + Z
+    btnCancelClick(Sender)
+  else
+  if (ssAlt in Shift) and (Key = ord('F')) then //Alt + F
+    btnRefreshClick(Sender);
 end;
 
 end.

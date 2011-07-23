@@ -5,9 +5,11 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
   Height = 659
   Caption = #31995#32479#24179#21488#32500#25252
   FormStyle = fsMDIChild
+  KeyPreview = True
   Position = poDefault
   Visible = True
   OnClose = FormClose
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object EasyPanel11: TEasyPanel
@@ -60,7 +62,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Top = 3
           Width = 25
           Height = 25
-          Hint = #26032#24314
+          Hint = #26032#24314'(Ctrl+N)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -120,7 +122,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Top = 3
           Width = 25
           Height = 25
-          Hint = #20462#25913
+          Hint = #20462#25913'(Ctrl+E)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -164,7 +166,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Top = 3
           Width = 25
           Height = 25
-          Hint = #21047#26032
+          Hint = #21047#26032'(Alt+F)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -208,7 +210,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           Top = 3
           Width = 25
           Height = 25
-          Hint = #21024#38500
+          Hint = #21024#38500'(Ctrl+D)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -569,11 +571,11 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
           ViewStyle = vsList
         end
         object btnSave: TEasyBitButton
-          Left = 32
+          Left = 24
           Top = 459
-          Width = 89
+          Width = 105
           Height = 25
-          Caption = #25552#20132#26356#25913
+          Caption = #25552#20132#26356#25913'(Ctrl+S)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -613,9 +615,9 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
         object btnCancel: TEasyBitButton
           Left = 144
           Top = 459
-          Width = 97
+          Width = 121
           Height = 25
-          Caption = #21462#28040#24182#21047#26032
+          Caption = #21462#28040#24182#21047#26032'(Ctrl+Z)'
           Color = clSilver
           Flat = True
           Glyph.Data = {
@@ -666,14 +668,29 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
     MenuStyler = EasyMenuOfficeStyler1
     Left = 423
     Top = 336
+    object N2: TMenuItem
+      Caption = #23637#24320#32467#28857
+      ShortCut = 32837
+      OnClick = N2Click
+    end
+    object N3: TMenuItem
+      Caption = #21512#25314#33410#28857
+      ShortCut = 32835
+      OnClick = N3Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
     object N6: TMenuItem
       Caption = #20840#37096#23637#24320
       ImageIndex = 2
+      ShortCut = 49221
       OnClick = N6Click
     end
     object N7: TMenuItem
       Caption = #20840#37096#21512#25314
       ImageIndex = 1
+      ShortCut = 49219
       OnClick = N7Click
     end
     object N10: TMenuItem
@@ -682,6 +699,7 @@ inherited frmEasyPlateManage: TfrmEasyPlateManage
     object ppTVRefresh: TMenuItem
       Caption = #21047#26032
       ImageIndex = 4
+      ShortCut = 32838
       OnClick = ppTVRefreshClick
     end
   end

@@ -1504,6 +1504,7 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
       end
       object Exit1: TMenuItem
         Action = actExit
+        ShortCut = 49233
       end
     end
     object mmNew: TMenuItem
@@ -11271,10 +11272,20 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
   end
   object tvNavPP: TEasyPopupMenu
     AutoHotkeys = maManual
-    Images = imgtv
     MenuStyler = mmstyleMain
     Left = 445
     Top = 175
+    object N12: TMenuItem
+      Caption = #23637#24320#33410#28857
+      OnClick = N12Click
+    end
+    object N13: TMenuItem
+      Caption = #21512#25314#33410#28857
+      OnClick = N13Click
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
     object N6: TMenuItem
       Caption = #20840#37096#23637#24320
       ImageIndex = 3
