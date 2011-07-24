@@ -137,7 +137,7 @@ begin
   GroupDescendentsWith(TCustomADODataSet, Controls.TControl);
   GroupDescendentsWith(TRDSConnection, Controls.TControl);
   RegisterComponents('Easy dbGo', [TADOConnection, TADOQuery, TADOTable, TADOCommand,
-                                   TADODataSet, TADOStoredProc, TDataSource, TClientDataSet]);
+                                   TADODataSet, TADOStoredProc, {TDataSource, }TClientDataSet]);
   RegisterPropertyEditor(TypeInfo(WideString), TADOConnection, 'Provider', TProviderProperty);
   RegisterPropertyEditor(TypeInfo(WideString), TADOConnection, 'ConnectionString', TConnectionStringProperty);
   RegisterPropertyEditor(TypeInfo(WideString), TADOCommand, 'ConnectionString', TConnectionStringProperty);
@@ -209,7 +209,7 @@ begin
 //  RegisterNoIcon([TcxGridTableViewStyleSheet, TcxGridBandedTableViewStyleSheet, TcxGridCardViewStyleSheet]);
 //  
 //±ê×¼¿Ø¼þ
-  RegisterComponents('Standard', [TMainMenu, TPopupMenu, TLabel, TEdit,
+ { RegisterComponents('Standard', [TMainMenu, TPopupMenu, TLabel, TEdit,
     TMemo, TButton, TCheckBox, TRadioButton, TListBox, TComboBox, TScrollBar,
     TGroupBox, TRadioGroup, TPanel, TActionList]);
   RegisterNoIcon([TMenuItem]);
@@ -220,12 +220,12 @@ begin
     TTrackBar, TProgressBar, TUpDown, THotKey, TAnimate, TDateTimePicker,
     TMonthCalendar, TTreeView, TListView, THeaderControl, TStatusBar, TToolBar,
     TCoolBar, TPageScroller]);
-  RegisterClasses([TToolButton, TTabSheet]);
-  RegisterComponents('System', [TTimer, TPaintBox, TMediaPlayer, TOleContainer]);
-  RegisterComponents('Dialogs', [TOpenDialog, TSaveDialog, TOpenPictureDialog,
-    TSavePictureDialog, TFontDialog, TColorDialog, TPrintDialog, TPrinterSetupDialog,
-    TFindDialog, TReplaceDialog]);
-                                                           
+  RegisterClasses([TToolButton, TTabSheet]); }
+//  RegisterComponents('System', [TTimer, TPaintBox, TMediaPlayer, TOleContainer]);
+//  RegisterComponents('Dialogs', [TOpenDialog, TSaveDialog, TOpenPictureDialog,
+//    TSavePictureDialog, TFontDialog, TColorDialog, TPrintDialog, TPrinterSetupDialog,
+//    TFindDialog, TReplaceDialog]);
+
   RegisterPropertiesInCategory('Action',
       ['Action', 'Caption', 'Checked', 'Enabled', 'HelpContext', 'Hint', 'ImageIndex',
        'ShortCut', 'Visible']);
@@ -295,7 +295,7 @@ begin
   RegisterPropertiesInCategory('Localizable', TOpenPictureDialog, ['Filter']);
   RegisterPropertiesInCategory('Localizable', TOpenPictureDialog, ['Title']);
   RegisterPropertiesInCategory('Localizable', TSavePictureDialog, ['Filter']);
-  RegisterPropertiesInCategory('Localizable', TSavePictureDialog, ['Title']);
+  RegisterPropertiesInCategory('Localizable', TSavePictureDialog, ['Title']); 
 
 end;
 

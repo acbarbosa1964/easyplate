@@ -81,7 +81,12 @@ requires
   dclcxTreeListD7,
   cxTreeListD7,
   dclcxVerticalGridVCLD7,
-  cxVerticalGridVCLD7;
+  cxVerticalGridVCLD7,
+  cxSchedulerD7,
+  cxSchedulerGridD7,
+  dclbde,
+  dbx,
+  vcldbx;
 
 contains
   untEasyFormDesigner in 'untEasyFormDesigner.pas' {frmEasyFormDesigner},
@@ -99,6 +104,8 @@ contains
   untEasyDesignerTLReg in 'untEasyDesignerTLReg.pas',
   untEasyDesignerVGridReg in 'untEasyDesignerVGridReg.pas',
   untEasyDesignerPageControlReg in 'untEasyDesignerPageControlReg.pas',
-  untEasyDesignerSchedulerReg in 'untEasyDesignerSchedulerReg.pas';
+  untEasyDesignerSchedulerReg in 'untEasyDesignerSchedulerReg.pas',
+  untEasyDesignerDataSourceReg in 'untEasyDesignerDataSourceReg.pas',
+  untEasyDesignerBDEReg in 'untEasyDesignerBDEReg.pas';
 
 end.
