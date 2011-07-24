@@ -894,19 +894,6 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
     OnDblClick = pgcCenterDblClick
     FixedDimension = 0
   end
-  object cxDateEdit1: TcxDateEdit
-    Left = 328
-    Top = 160
-    TabOrder = 6
-    Width = 121
-  end
-  object cxComboBox1: TcxComboBox
-    Left = 528
-    Top = 160
-    TabOrder = 7
-    Text = 'cxComboBox1'
-    Width = 121
-  end
   object EasyToolBarOfficeStyler1: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181
     ButtonAppearance.Color = 16640730
@@ -2441,5 +2428,9 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
       Action = dsnPaste1
       SubMenuImages = ImageList1
     end
+  end
+  object ADOConnection1: TADOConnection
+    Left = 400
+    Top = 152
   end
 end

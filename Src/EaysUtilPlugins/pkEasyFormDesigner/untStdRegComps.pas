@@ -33,42 +33,181 @@ interface
 
 implementation
 {$R DclStd.res}
-
+{$R ./dcr/cxGridReg.dcr}
 uses
   Classes, Graphics, Controls, Forms, Dialogs, ActnList, ComCtrls,
   Menus, StdCtrls, ImgList, Buttons, ExtCtrls, Tabs, ExtDlgs, Mask,
-  Grids, CheckLst, AppEvnts, MPlayer, OleCtnrs,
-  StdDsnEditors, DesignEditors, DesignIntf, untEasyGrid, untEasyDBGrid,
-  cxControls, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, dxLayoutControl,
-  cxEdit, cxTextEdit, cxMaskEdit, cxMemo, cxDropDownEdit, cxCalendar, cxButtonEdit,
-  cxButtons, cxCheckBox, cxColorComboBox, cxImageComboBox, cxSpinEdit;
+  Grids, CheckLst, AppEvnts, MPlayer, OleCtnrs, ADODB, DB, DBClient, 
+  StdDsnEditors, DesignEditors, DesignIntf, untEasyGrid, untEasyDBGrid, 
+  cxControls, cxBlobEdit, cxButtonEdit, cxButtons, cxCalc, cxCalendar, cxCheckBox,
+  cxContainer, cxCurrencyEdit, cxDB, cxDBEdit, cxDBEditRepository, cxDBLookupComboBox,
+  cxDBNavigator, cxDropDownEdit, cxEditConsts, cxEditRepositoryEditor,
+  cxEditRepositoryItems, cxGraphics, cxGroupBox, cxHyperLinkEdit, cxImage,
+  cxImageComboBox, cxLibraryReg, cxListBox, cxLookAndFeels, cxLookupDBGrid,
+  cxLookupGrid, cxMaskEdit, cxMemo, cxMRUEdit, cxNavigator, cxPropEditors,
+  cxRadioGroup, cxSpinEdit, cxTextEdit, cxTimeEdit, dxtree, dxDBTree, dxDBTrel,
+  cxCheckComboBox, cxCheckGroup,
+  cxCheckGroupStatesEditor, cxCheckListBox, cxClasses, cxColorComboBox,
+  cxDBCheckComboBox, cxDBCheckGroup, cxDBCheckListBox,
+  cxDBColorComboBox, cxDBFontNameComboBox, cxDBLabel, cxDBProgressBar,
+  cxDBRichEdit, cxDBTrackBar, cxEdit, 
+  cxExtEditConsts, cxExtEditRepositoryItems, cxFontNameComboBox, cxHeader, cxHint,
+  cxHintEditor, cxLabel, cxListView, cxMCListBox, cxProgressBar,
+  cxRichEdit, cxScrollBar, cxSpinButton, cxSplitter, cxSplitterEditor,
+  cxTrackBar, cxTreeView,
+  cxFilterControl,
+  cxDBFilterControl, cxEditPropEditors,
+  dxCore, cxDBShellComboBox,
+  cxShellBrowserDialog, cxShellComboBox,
+  cxShellCommon, cxShellEditRepositoryItems, cxShellListView, cxShellTreeView,
+  cxGrid, cxGridBandedTableView,
+  cxGridCardView, cxGridCommon, cxGridCustomTableView, cxGridCustomView, cxGridChartView,
+  cxGridEditor, cxGridLevel, cxGridStrs, cxGridStructureNavigator,
+  cxGridTableView, cxBandedTableViewEditor, cxCardViewEditor,
+  cxChartViewEditor, cxGridPredefinedStyles, cxGridStyleSheetsPreview, cxGridExportLink,
+  cxDBData, cxDBExtLookupComboBox, cxGridDBBandedTableView,
+  cxGridDBCardView, cxGridDBDataDefinitions, cxGridDBTableView, cxGridDBChartView,
+  dxLayoutCommon, dxLayoutLookAndFeels, dxLayoutEditForm, dxLayoutControl,
+  dxLayoutLookAndFeelListDesignForm, dxLayoutSelection, dxLayoutImport,
+  untStdRegEditors, dxorgchr, dxdborgc, dxorgced, cxGridPopupMenu, cxGridCustomPopUpMenu,
+  untEasyADOReg, TreeIntf, DiagramSupport, DsnDb,
+  untEasyDesignerGridPopuMenuReg;
+
+procedure RegisterEditRepositoryItems;
+begin
+  RegisterEditRepositoryItem(TcxEditRepositoryTextItem, scxSEditRepositoryTextItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryButtonItem, scxSEditRepositoryButtonItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryImageItem, scxSEditRepositoryImageItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryComboBoxItem, scxSEditRepositoryComboBoxItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryMaskItem, scxSEditRepositoryMaskItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryPopupItem, scxSEditRepositoryPopupItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryCalcItem, scxSEditRepositoryCalcItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryDateItem, scxSEditRepositoryDateItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryCurrencyItem, scxSEditRepositoryCurrencyItem);
+  RegisterEditRepositoryItem(TcxEditRepositorySpinItem, scxSEditRepositorySpinItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryMemoItem, scxSEditRepositoryMemoItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryImageComboBoxItem, scxSEditRepositoryImageComboBoxItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryBlobItem, scxSEditRepositoryBlobItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryCheckBoxItem, scxSEditRepositoryCheckBoxItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryTimeItem, scxSEditRepositoryTimeItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryMRUItem, scxSEditRepositoryMRUItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryHyperLinkItem, scxSEditRepositoryHyperLinkItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryLookupComboBoxItem, scxSEditRepositoryLookupComboBoxItem);
+  RegisterEditRepositoryItem(TcxEditRepositoryRadioGroupItem, scxSEditRepositoryRadioGroupItem);
+end;
 
 procedure StandardRegister;
 begin
-  RegisterComponents('Easy Standard', [TcxTextEdit, TcxMaskEdit, TcxMemo, TcxDateEdit,
-                      TcxButtonEdit, TcxCheckBox, TcxComboBox, TcxImageComboBox,
-                      TcxSpinEdit]);
-//  RegisterComponents('Easy LayOut', [TdxLayoutItem, TdxLayoutControlCustomCustomizeForm,
-//  TdxLayoutTabbedGroupTabControl, TdxLayoutControl]);
-  {RegisterComponents('Easy Standard', [TEasyDevTextEdit, TEasyDevMaskEdit, TEasyDevMemo,
-    TEasyDevDateEdit, TEasyDevTimeEdit, TEasyDevButtonEdit, TEasyDevComboBox,
-    TEasyDevImageComboBox, TEasyDevLookupComboBox, TEasyDevLookupComboBoxExt,
-    TEasyDevColorComboBox, TEasyDevFontNameComboBox, TEasyDevCheckComboBox,
-    TEasyDevShellComboBox, TEasyDevSpinEdit, TEasyDevCalcEdit, TEasyDevHyperLinkEdit,
-    TEasyDevCurrencyEdit, TEasyDevBlobEdit, TEasyDevMRUEdit, TEasyDevPopupEdit,
-    TEasyDevListBox, TEasyDevCheckListBox, TEasyDevRichEdit, TEasyDevLabel,
-    TEasyDevImage, TEasyDevCheckBox, TEasyDevCheckGroup, TEasyDevRadioButton,
-    TEasyDevRadioGroup, TEasyStringGrid]);
-  RegisterComponents('Easy DB', [TEasyDevDBTextEdit, TEasyDevDBMaskEdit, TEasyDevDBMemo,
-    TEasyDevDBDateEdit, TEasyDevDBTimeEdit, TEasyDevDBButtonEdit, TEasyDevDBComboBox,
-    TEasyDevDBImageComboBox, TEasyDevDBLookupComboBox, TEasyDevDBLookupComboBoxExt,
-    TEasyDevDBColorComboBox, TEasyDevDBFontNameComboBox, TEasyDevDBCheckComboBox,
-    TEasyDevDBShellComboBox, TEasyDevDBSpinEdit, TEasyDevDBCalcEdit, TEasyDevDBHyperLinkEdit,
-    TEasyDevDBCurrencyEdit, TEasyDevDBBlobEdit, TEasyDevDBMRUEdit, TEasyDevDBPopupEdit,
-    TEasyDevDBListBox, TEasyDevDBCheckListBox, TEasyDevDBRichEdit, TEasyDevDBLabel,
-    TEasyDevDBImage, TEasyDevDBCheckBox, TEasyDevDBCheckGroup, TEasyDevDBRadioButton,
-    TEasyDevDBRadioGroup, TEasyDevSQL, TEasyDBGrid]); }
+  RegisterComponents('Easy Standard', [{TcxTextEdit, TcxMaskEdit, TcxMemo,
+    TcxDateEdit, TcxButtonEdit, TcxCheckBox, TcxComboBox, TcxImageComboBox,
+    TcxSpinEdit, TcxCalcEdit, TcxHyperLinkEdit, TcxTimeEdit, TcxCurrencyEdit,
+    TcxImage, TcxBlobEdit, TcxMRUEdit, TcxPopupEdit, TcxLookupComboBox,
+    TcxRadioButton, TcxRadioGroup, TcxListBox, TcxNavigator,
+    TcxLabel, TcxProgressBar, TcxTrackBar,
+    TcxCheckListBox, TcxColorComboBox, TcxFontNameComboBox, TcxCheckComboBox,
+    TcxCheckGroup, TcxRichEdit, TcxExtLookupComboBox}]);
+  RegisterComponents('Easy DB', [{TcxDBTextEdit, TcxDBMaskEdit, TcxDBMemo,
+    TcxDBDateEdit, TcxDBButtonEdit, TcxDBCheckBox, TcxDBComboBox, TcxDBImageComboBox,
+    TcxDBSpinEdit, TcxDBCalcEdit, TcxDBHyperLinkEdit, TcxDBTimeEdit, TcxDBCurrencyEdit,
+    TcxDBImage, TcxDBBlobEdit, TcxDBMRUEdit, TcxDBPopupEdit, TcxDBLookupComboBox,
+    TcxDBRadioGroup, TcxDBListBox, TcxDBNavigator,
+    TcxDBLabel, TcxDBProgressBar, TcxDBTrackBar,
+    TcxDBCheckListBox, TcxDBColorComboBox, TcxDBFontNameComboBox, TcxDBCheckComboBox,
+    TcxDBCheckGroup, TcxDBRichEdit, TcxDBExtLookupComboBox}]);
+  RegisterComponents('Easy Utilities', [{TcxButton, TcxGroupBox,
+    TcxHintStyleController, TcxSpinButton,
+    TcxMCListBox, TcxListView, TcxTreeView, TcxHeader, TcxSplitter}]);
+  RegisterComponents('Easy Filter', [TcxFilterControl, TcxDBFilterControl]);
 
+  RegisterComponents('Easy Shell', [TcxShellComboBox, TcxDBShellComboBox,
+                                    TcxShellListView, TcxShellTreeView, TcxShellBrowserDialog]);
+  RegisterComponentEditor(TcxShellBrowserDialog, TcxShellBrowserEditor);
+  RegisterPropertyEditor(TypeInfo(Boolean), TcxDragDropSettings, 'Scroll', nil);
+  RegisterPropertyEditor(TypeInfo(Boolean), TcxCustomShellTreeView, 'RightClickSelect', nil);
+
+//  RegisterComponents('Easy TreeView', [TdxTreeView, TdxDBTreeView, TdxTreeViewEdit,
+//                      TdxDBTreeViewEdit, TdxLookUpTreeView, TdxDBLookUpTreeView]);
+  //Grid
+  RegisterComponents('Easy Grid', [ TEasyStringGrid, TEasyDBGrid]);
+
+  //ADO                                  
+  // Restrict these components to only be used with VCL components.
+  GroupDescendentsWith(TADOConnection, Controls.TControl);
+  GroupDescendentsWith(TADOCommand, Controls.TControl);
+  GroupDescendentsWith(TCustomADODataSet, Controls.TControl);
+  GroupDescendentsWith(TRDSConnection, Controls.TControl);
+  RegisterComponents('Easy dbGo', [TADOConnection, TADOQuery, TADOTable, TADOCommand,
+                                   TADODataSet, TADOStoredProc, TDataSource, TClientDataSet]);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOConnection, 'Provider', TProviderProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOConnection, 'ConnectionString', TConnectionStringProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOCommand, 'ConnectionString', TConnectionStringProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TCustomADODataSet, 'ConnectionString', TConnectionStringProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADODataSet, 'CommandText', TCommandTextProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOCommand, 'CommandText', TCommandTextProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOTable, 'TableName', TTableNameProperty);
+  RegisterPropertyEditor(TypeInfo(WideString), TADOStoredProc, 'ProcedureName', TProcedureNameProperty);
+  RegisterPropertyEditor(TypeInfo(TParameters), TCustomADODataSet, 'Parameters', TParametersProperty);
+  RegisterPropertyEditor(TypeInfo(TParameters), TADOCommand, 'Parameters', TParametersProperty);
+  RegisterPropertyEditor(TypeInfo(string), TCustomADODataSet, 'IndexName', TADOIndexNameProperty);
+  RegisterComponentEditor(TADOConnection, TADOConnectionEditor);
+  RegisterComponentEditor(TADOCommand, TADOCommandEditor);
+  RegisterComponentEditor(TADODataSet, TADODataSetEditor);
+
+  RegisterPropertyEditor(TypeInfo(string), TADODataSet, 'MasterFields', TADODataSetFieldLinkProperty);
+  RegisterPropertyEditor(TypeInfo(string), TADOTable, 'MasterFields', TADOTableFieldLinkProperty);
+
+  RegisterPropertiesInCategory(sDatabaseCategoryName, TADOConnection,
+      ['Attributes','Command*','Connect*','DefaultDatabase','IsolationLevel',
+       'LoginPrompt','Mode','Provider']);
+
+  RegisterPropertiesInCategory(sDatabaseCategoryName, TADOCommand,
+      ['Command*','Connect*','Cursor*','ExecuteOptions','Param*','Prepared']);
+
+  RegisterPropertiesInCategory(sDatabaseCategoryName, TCustomADODataSet,
+      ['CacheSize', 'ConnectionString', 'ExecuteOptions', 'MarshalOptions',
+       'MaxRecords', 'Prepared', 'ProcedureName', 'Command*']);
+
+  RegisterSprigType(TADOConnection, TADOConnectionSprig);
+  RegisterSprigType(TRDSConnection, TRDSConnectionSprig);
+  RegisterSprigType(TADOCommand, TADOCommandSprig);
+
+  RegisterSprigType(TCustomADODataSet, TCustomADODataSetSprig);
+  RegisterSprigType(TADODataSet, TADODataSetSprig);
+  RegisterSprigType(TADOTable, TADOTableSprig);
+  RegisterSprigType(TADOStoredProc, TADOStoredProcSprig);
+  RegisterSprigType(TADOQuery, TADOQuerySprig);
+
+  RegisterIslandType(TADOCommandSprig, TADOCommandIsland);
+  RegisterIslandType(TCustomADODataSetSprig, TCustomADODataSetIsland);
+  RegisterIslandType(TADODataSetSprig, TADODataSetIsland);
+  RegisterIslandType(TADOTableSprig, TADOTableIsland);
+  RegisterIslandType(TADOQuerySprig, TADOQueryIsland);
+
+  RegisterBridgeType(TDataSetIsland, TADODataSetIsland, TADODataSetMasterDetailBridge);
+  RegisterBridgeType(TDataSetIsland, TADOTableIsland, TADOTableMasterDetailBridge);
+  RegisterBridgeType(TDataSetIsland, TADOQueryIsland, TADOQueryMasterDetailBridge);
+
+  RegisterComponents('Easy LayOut', []);
+
+  RegisterComponents('Easy OrgChart', [TdxOrgChart, TdxDbOrgChart]);
+  RegisterComponentEditor(TdxOrgChart,TdxOrgChartEditor);
+  RegisterPropertyEditor(TypeInfo(String),TdxDbOrgChart,'KeyFieldName',TFieldProperty);
+  RegisterPropertyEditor(TypeInfo(String),TdxDbOrgChart,'ParentFieldName',TFieldProperty);
+  RegisterPropertyEditor(TypeInfo(String),TdxDbOrgChart,'TextFieldName',TFieldProperty);
+  RegisterPropertyEditor(TypeInfo(String),TdxDbOrgChart,'OrderFieldName',TFieldProperty);
+  RegisterPropertyEditor(TypeInfo(String),TdxDbOrgChart,'ImageFieldName',TFieldProperty);
+  RegisterComponentEditor(TdxDBOrgChart,TdxDBOrgChartEditor);
+
+//  RegisterNoIcon([TcxGridLevel,
+//    TcxGridTableView, {$IFNDEF NONDB}TcxGridDBTableView,{$ENDIF}
+//    TcxGridBandedTableView, {$IFNDEF NONDB}TcxGridDBBandedTableView,{$ENDIF}
+//    TcxGridCardView{$IFNDEF NONDB}, TcxGridDBCardView{$ENDIF}]);
+//  RegisterNoIcon([
+//    TcxGridColumn, {$IFNDEF NONDB}TcxGridDBColumn,{$ENDIF}
+//    TcxGridBandedColumn, {$IFNDEF NONDB}TcxGridDBBandedColumn,{$ENDIF}
+//    TcxGridCardViewRow{$IFNDEF NONDB}, TcxGridDBCardViewRow{$ENDIF}]);
+//  RegisterNoIcon([TcxGridTableViewStyleSheet, TcxGridBandedTableViewStyleSheet, TcxGridCardViewStyleSheet]);
+//  
 //±ê×¼¿Ø¼þ
   RegisterComponents('Standard', [TMainMenu, TPopupMenu, TLabel, TEdit,
     TMemo, TButton, TCheckBox, TRadioButton, TListBox, TComboBox, TScrollBar,
