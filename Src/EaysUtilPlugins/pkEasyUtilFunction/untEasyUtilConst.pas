@@ -21,6 +21,8 @@ unit untEasyUtilConst;
 interface
 
 const
+  EASY_RootGUID = '{00000000-0000-0000-0000-000000000000}';
+  
   EASY_OPERATE_ADD   = 'Ôö¼Ó';
   EASY_OPERATE_EDIT   = 'ÐÞ¸Ä';
   EASY_OPERATE_DELETE   = 'É¾³ý';

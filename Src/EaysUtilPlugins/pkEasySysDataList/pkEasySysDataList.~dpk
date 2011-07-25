@@ -34,10 +34,11 @@ requires
   indy,
   pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilFunction,
-  pkEasyPlateBaseForm;
+  pkEasyPlateBaseForm,
+  pkEasyGrid,
+  dxdbtrD7;
 
 contains
-  untEasyUnitTemplate in 'untEasyUnitTemplate.pas' {frmEasyReportCenter};
+  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList};
 
 end.

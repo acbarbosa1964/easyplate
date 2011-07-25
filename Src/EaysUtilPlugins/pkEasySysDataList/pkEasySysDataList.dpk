@@ -34,8 +34,8 @@ requires
   indy,
   pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilFunction,
-  pkEasyPlateBaseForm;
+  pkEasyPlateBaseForm,
+  pkEasyGrid;
 
 contains
   untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList};

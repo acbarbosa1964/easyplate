@@ -101,7 +101,7 @@ DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=
+HostApplication=E:\MyProject\E1Dev\bin\EasyPlateMain.exe
 Launcher=
 UseLauncher=0
 DebugCWD=

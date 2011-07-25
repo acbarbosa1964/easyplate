@@ -30,7 +30,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxTextEdit,
   cxMaskEdit, cxDropDownEdit, cxCalendar, ComCtrls, ShlObj, cxShellCommon,
   cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox, cxShellComboBox, DB,
-  ADODB;
+  ADODB, ecActns;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
@@ -175,7 +175,21 @@ type
     N16: TMenuItem;
     EasyToolBar3: TEasyToolBar;
     EasyToolBarButton22: TEasyToolBarButton;
-    ADOConnection1: TADOConnection;
+    ecCommandAction1: TecCommandAction;
+    ecCopy1: TecCopy;
+    ecCut1: TecCut;
+    ecPaste1: TecPaste;
+    ecClear1: TecClear;
+    ecSelectAll1: TecSelectAll;
+    ecUndo1: TecUndo;
+    ecRedo1: TecRedo;
+    ecCopyAsRTF1: TecCopyAsRTF;
+    ecIndent1: TecIndent;
+    ecUnindent1: TecUnindent;
+    ecLowerCase1: TecLowerCase;
+    ecUpperCase1: TecUpperCase;
+    ecToggleCase1: TecToggleCase;
+    ecSyntMemoAction1: TecSyntMemoAction;
     procedure FileNewExecute(Sender: TObject);
     procedure FileCloseExecute(Sender: TObject);
     procedure FileOpenExecute(Sender: TObject);

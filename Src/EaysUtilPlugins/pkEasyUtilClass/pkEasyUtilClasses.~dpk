@@ -27,9 +27,19 @@ package pkEasyUtilClasses;
 requires
   rtl,
   dbrtl,
-  dsnap;
+  dsnap,
+  vcljpg,
+  vcl,
+  vclx,
+  indy,
+  dsnapcon,
+  vcldb,
+  adortl,
+  pkEasyStardard,
+  pkEasyAdditional;
 
 contains
-  untEasyUtilClasses in 'untEasyUtilClasses.pas';
+  untEasyUtilClasses in 'untEasyUtilClasses.pas',
+  untEasyClassPluginDirectory in 'untEasyClassPluginDirectory.pas';
 
 end.

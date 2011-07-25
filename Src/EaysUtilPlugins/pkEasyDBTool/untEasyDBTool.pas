@@ -272,7 +272,7 @@ begin
   //增加公共属性
   ATmpPublicResult.Add('  public');
   ATmpPublicResult.Add('  { Public declarations } ');
-  for I := 0 to sgrdTableField.RowCount - 1 do
+  for I := 0 to sgrdTableField.RowCount - 2 do
   begin
     with sgrdTableField do
     begin
@@ -393,7 +393,7 @@ begin
   end;
   ATmpResult.Add('      end;');
   ATmpResult.Add('      //在此添加将对象存放到指定容器的代码');
-  ATmpResult.Add('      AResult.Add(A' + AObjPre + tvDataBase.Selected.Text + ')');
+  ATmpResult.Add('      AResult.Add(A' + AObjPre + tvDataBase.Selected.Text + ');');
   ATmpResult.Add('      //如果要关联树也在此添加相应代码');
   ATmpResult.Add('      AClientDataSet.Next;');
   ATmpResult.Add('    end;');
@@ -488,7 +488,7 @@ begin
   ATmpResult := TStringList.Create;
   KeyField := sgrdTableField.Cells[1, 1];
   ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
-  ATmpResult.Add('class procedure ' + ObjClassName + '.EditClientDataSet'
+  ATmpResult.Add('class procedure ' + ObjClassName + '.DeleteClientDataSet'
                  + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
                  + ' var AObjList: TList);');
   ATmpResult.Add('var');
@@ -496,7 +496,7 @@ begin
   ATmpResult.Add('  DelIndex: Integer;');
   ATmpResult.Add('begin');
   ATmpResult.Add('  DelIndex := -1;');
-  ATmpResult.Add('  if ACds.Locate(' + KeyField + ', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
+  ATmpResult.Add('  if ACds.Locate(''' + KeyField + ''', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
   ATmpResult.Add('    ACds.Delete;');
   ATmpResult.Add('  for I := 0 to AObjList.Count - 1 do');
   ATmpResult.Add('  begin');
@@ -535,7 +535,7 @@ begin
                  + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
                  + ' var AObjList: TList);');
   ATmpResult.Add('begin');
-  ATmpResult.Add('  if ACds.Locate(' + KeyField + ', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
+  ATmpResult.Add('  if ACds.Locate(''' + KeyField + ''', VarArrayOf([AObj.' + KeyField + ']), [loCaseInsensitive]) then');
   ATmpResult.Add('  begin');
   ATmpResult.Add('    with ACds do');
   ATmpResult.Add('    begin');
