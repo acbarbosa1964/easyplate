@@ -35,10 +35,10 @@ requires
   pkEasyStardard,
   pkEasyAdditional,
   pkEasyPlateBaseForm,
-  pkEasyGrid,
-  dxdbtrD7;
+  pkEasyGrid;
 
 contains
-  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList};
+  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList},
+  untEasySysDataListOP in 'untEasySysDataListOP.pas' {frmEasySysDataListOP};
 
 end.

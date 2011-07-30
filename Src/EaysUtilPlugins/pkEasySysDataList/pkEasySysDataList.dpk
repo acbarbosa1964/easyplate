@@ -35,9 +35,11 @@ requires
   pkEasyStardard,
   pkEasyAdditional,
   pkEasyPlateBaseForm,
-  pkEasyGrid;
+  pkEasyGrid,
+  pkEasyUtilClasses;
 
 contains
-  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList};
+  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList},
+  untEasySysDataListOP in 'untEasySysDataListOP.pas' {frmEasySysDataListOP};
 
 end.
