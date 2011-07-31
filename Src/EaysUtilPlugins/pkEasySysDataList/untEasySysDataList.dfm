@@ -1,5 +1,6 @@
 inherited frmEasySysDataList: TfrmEasySysDataList
   Caption = #25968#25454#23383#20856
+  KeyPreview = True
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
@@ -103,120 +104,15 @@ inherited frmEasySysDataList: TfrmEasySysDataList
         Height = 23
         LineColor = clBtnShadow
       end
-      object EasyToolBarButton4: TEasyToolBarButton
-        Left = 139
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actCopy
-        AutoSize = False
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 0
-        ParentFont = False
-        Position = daTop
-      end
-      object EasyToolBarButton5: TEasyToolBarButton
-        Left = 163
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actUndo
-        AutoSize = False
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 14
-        ParentFont = False
-        Position = daTop
-      end
-      object EasyToolBarButton6: TEasyToolBarButton
-        Left = 187
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actRedo
-        AutoSize = False
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 11
-        ParentFont = False
-        Position = daTop
-      end
-      object EasyToolBarButton7: TEasyToolBarButton
-        Left = 211
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actFind
-        AutoSize = False
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 9
-        ParentFont = False
-        Position = daTop
-      end
-      object EasyToolBarButton8: TEasyToolBarButton
-        Left = 235
-        Top = 2
-        Width = 24
-        Height = 24
-        Action = actPrint
-        AutoSize = False
-        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-        Appearance.CaptionFont.Color = clWindowText
-        Appearance.CaptionFont.Height = -11
-        Appearance.CaptionFont.Name = 'Tahoma'
-        Appearance.CaptionFont.Style = []
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ImageIndex = 10
-        ParentFont = False
-        Position = daTop
-      end
       object EasyToolBarSeparator2: TEasyToolBarSeparator
-        Left = 259
+        Left = 163
         Top = 2
         Width = 10
         Height = 23
         LineColor = clBtnShadow
       end
       object EasyToolBarButton9: TEasyToolBarButton
-        Left = 269
+        Left = 173
         Top = 2
         Width = 24
         Height = 24
@@ -278,6 +174,27 @@ inherited frmEasySysDataList: TfrmEasySysDataList
         ParentFont = False
         Position = daTop
       end
+      object EasyToolBarButton7: TEasyToolBarButton
+        Left = 139
+        Top = 2
+        Width = 24
+        Height = 24
+        Action = actFind
+        AutoSize = False
+        Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+        Appearance.CaptionFont.Color = clWindowText
+        Appearance.CaptionFont.Height = -11
+        Appearance.CaptionFont.Name = 'Tahoma'
+        Appearance.CaptionFont.Style = []
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ImageIndex = 9
+        ParentFont = False
+        Position = daTop
+      end
     end
   end
   object EasyPanel1: TEasyPanel
@@ -314,6 +231,7 @@ inherited frmEasySysDataList: TfrmEasySysDataList
         StateImages = imgDataList
         TabOrder = 0
         OnChange = tvDataListMainChange
+        OnKeyDown = tvDataListMainKeyDown
       end
     end
     object EasyPanel3: TEasyPanel
@@ -343,6 +261,7 @@ inherited frmEasySysDataList: TfrmEasySysDataList
         ParentFont = False
         ScrollBars = ssBoth
         TabOrder = 1
+        OnEditingDone = EasyDBGrid1EditingDone
         DragDropSettings.ShowCells = False
         ActiveCellFont.Charset = DEFAULT_CHARSET
         ActiveCellFont.Color = clWindowText
@@ -613,34 +532,6 @@ inherited frmEasySysDataList: TfrmEasySysDataList
             Font.Name = 'Tahoma'
             Font.Style = []
             ImageIndex = 3
-            ParentFont = False
-            Position = daTop
-          end
-          object EasyToolBarSeparator3: TEasyToolBarSeparator
-            Left = 80
-            Top = 2
-            Width = 10
-            Height = 23
-            LineColor = clBtnShadow
-          end
-          object EasyToolBarButton13: TEasyToolBarButton
-            Left = 90
-            Top = 2
-            Width = 24
-            Height = 24
-            Action = actCopyDtl
-            AutoSize = False
-            Appearance.CaptionFont.Charset = DEFAULT_CHARSET
-            Appearance.CaptionFont.Color = clWindowText
-            Appearance.CaptionFont.Height = -11
-            Appearance.CaptionFont.Name = 'Tahoma'
-            Appearance.CaptionFont.Style = []
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ImageIndex = 0
             ParentFont = False
             Position = daTop
           end
@@ -1082,7 +973,7 @@ inherited frmEasySysDataList: TfrmEasySysDataList
     Left = 477
     Top = 201
     Bitmap = {
-      494C010111001300040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010111001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000C2A6A400C2A6
       A400C2A6A400C2A6A400C2A6A400C2A6A400C2A6A400C2A6A400C2A6A400C2A6
@@ -1746,7 +1637,8 @@ inherited frmEasySysDataList: TfrmEasySysDataList
       F80180708007C03FF80100210000800300010003000080030001000700008003
       0001000F00008003000100070007801F000100070007801F000300070007801F
       0007000F003F801F000F000F003F801F003F003F003F801F007F003F003F801F
-      00FF807F807FC03F01FFC0FFC0FFE07F}
+      00FF807F807FC03F01FFC0FFC0FFE07F00000000000000000000000000000000
+      000000000000}
   end
   object actDataList: TActionList
     Images = imgToolBar
@@ -1796,6 +1688,8 @@ inherited frmEasySysDataList: TfrmEasySysDataList
       Caption = #26597#25214
       Hint = #26597#25214
       ImageIndex = 9
+      OnExecute = actFindExecute
+      OnUpdate = actFindUpdate
     end
     object actPrint: TAction
       Caption = #25171#21360

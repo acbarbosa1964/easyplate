@@ -17,10 +17,9 @@
 //            MSN     ：YiXuan-SoftWare@hotmail.com                                   
 //------------------------------------------------------------------------------
 //单元说明：
-//    报表中心
+//    数据字典
 //主要实现：
-//    报表的增加、设计等
-//    系统的所有报表均在此管理
+//    系统所用选择列表均在些管理
 //-----------------------------------------------------------------------------}
 unit untEasySysDataList;
 
@@ -71,17 +70,10 @@ type
     actCopyDtl: TAction;
     EasyToolBarButton3: TEasyToolBarButton;
     EasyToolBarSeparator1: TEasyToolBarSeparator;
-    EasyToolBarButton4: TEasyToolBarButton;
-    EasyToolBarButton5: TEasyToolBarButton;
-    EasyToolBarButton6: TEasyToolBarButton;
-    EasyToolBarButton7: TEasyToolBarButton;
-    EasyToolBarButton8: TEasyToolBarButton;
     EasyToolBarSeparator2: TEasyToolBarSeparator;
     EasyToolBarButton9: TEasyToolBarButton;
     EasyToolBarButton10: TEasyToolBarButton;
     EasyToolBarButton12: TEasyToolBarButton;
-    EasyToolBarSeparator3: TEasyToolBarSeparator;
-    EasyToolBarButton13: TEasyToolBarButton;
     actRedoDtl: TAction;
     actUndoDtl: TAction;
     cdsCloneData: TClientDataSet;
@@ -90,6 +82,7 @@ type
     EasyToolBarButton14: TEasyToolBarButton;
     actRefresh: TAction;
     EasyToolBarButton15: TEasyToolBarButton;
+    EasyToolBarButton7: TEasyToolBarButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -110,11 +103,17 @@ type
     procedure actAddDtlUpdate(Sender: TObject);
     procedure actEditDtlUpdate(Sender: TObject);
     procedure actDeleteDtlUpdate(Sender: TObject);
+    procedure EasyDBGrid1EditingDone(Sender: TObject);
+    procedure actFindUpdate(Sender: TObject);
+    procedure actFindExecute(Sender: TObject);
+    procedure tvDataListMainKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     FSysDataListList: TList;
     procedure InitDataSet;
     procedure InitSysDataListTreeView;
+    procedure FindTV(tv: TEasyTreeView);
   public
     { Public declarations }
   end;
@@ -127,10 +126,13 @@ implementation
 {$R *.dfm}
 
 uses
-  untEasyClassSysDataList, untEasySysDataListOP;
+  untEasyClassSysDataList, untEasySysDataListOP, untEasyInputQuery;
 
 var
   SysDataListRoot : string = '{00000000-0000-0000-0000-000000000000}';
+  FindText: string;
+  FindCurrIndex: Integer;
+
 //引出函数实现
 function ShowBplForm(AParamList: TStrings): TForm;
 begin
@@ -150,7 +152,7 @@ var
 begin
   ASysDataList := ' Exec sp_SysDataList ';
   cdsDataListMain.Data := EasyRDMDisp.EasyGetRDMData(ASysDataList);
-  cdsDataListMain.IndexFieldNames := 'iOrder';
+  cdsDataListMain.IndexFieldNames := 'ParentDataListGUID;iOrder';
 
   cdsCloneData.Data := cdsDataListMain.Data;
   cdsCloneData.IndexFieldNames := 'iOrder';
@@ -167,6 +169,11 @@ begin
   TEasySysDataList.GenerateSysDataList(AOle, FSysDataListList);
   //初始化树
   InitSysDataListTreeView;
+  //导航树不可编辑
+  tvDataListMain.ReadOnly := True;
+  //
+  FindCurrIndex := -1;
+  FindText := '';
 end;
 
 procedure TfrmEasySysDataList.FormCreate(Sender: TObject);
@@ -234,14 +241,28 @@ end;
 procedure TfrmEasySysDataList.actExitExecute(Sender: TObject);
 begin
   inherited;
-  if cdsDataListMain.ChangeCount > 0 then
-    ShowMessage(IntToStr(cdsDataListMain.ChangeCount));
-  Close;
+  if (cdsDataListMain.ChangeCount > 0)  or (cdsCloneData.ChangeCount > 0) then
+  begin
+    case Application.MessageBox('数据已发生改变是否保存?', '提示',
+      MB_YESNOCANCEL + MB_ICONQUESTION) of
+      IDYES:
+        begin
+          actSaveExecute(Sender);
+          Close;
+        end;
+      IDNO:
+        begin
+          Close;
+        end;
+    end;
+  end else
+    Close;
 end;
 
 procedure TfrmEasySysDataList.actAddDtlExecute(Sender: TObject);
 begin
   inherited;
+  cdsCloneData.Last;
   EasyDBGrid1.Options := EasyDBGrid1.Options + [goEditing];
   with cdsCloneData do
   begin
@@ -273,7 +294,7 @@ begin
         + '】吗?'), '提示', MB_OKCANCEL + MB_ICONQUESTION) = IDOK then
     begin
       cdsCloneData.Delete;
-      EasyDBGrid1.AutoNumberCol(0);
+//      EasyDBGrid1.AutoNumberCol(0);
     end;
   end;
 end;
@@ -325,7 +346,6 @@ begin
       FieldByName('Remark').AsString := ACloneDataSet.FieldByName('Remark').AsString;
       Post;
     end;
-//    cdsDataListMain.AppendData(ACloneDataSet.Data, True);
   finally
     cdsDataListMain.FreeBookmark(ABookMark);
     ACloneDataSet.Free;
@@ -375,6 +395,8 @@ begin
   inherited;
   AData := TEasySysDataList(tvDataListMain.Selected.Data);
   ShowfrmuntEasySysDataListOP(AData, eotEdit);
+  TEasySysDataList.EditClientDataSet(cdsDataListMain, AData, FSysDataListList);
+  tvDataListMain.Selected.Text := AData.SysDataName;
 end;
 
 procedure TfrmEasySysDataList.actDeleteUpdate(Sender: TObject);
@@ -490,13 +512,25 @@ var
   AOle: OleVariant;
 begin
   inherited;
-  EasyFreeAndNilList(FSysDataListList);
+  while (FSysDataListList.Count > 0) do
+  begin
+    TEasySysDataList(FSysDataListList[0]).Free;
+    FSysDataListList.Delete(0);
+  end;
+
   //初始化数据
   InitDataSet;
   AOle := cdsDataListMain.Data;
   TEasySysDataList.GenerateSysDataList(AOle, FSysDataListList);
   //初始化树
   InitSysDataListTreeView;
+  //
+  with cdsCloneData do
+  begin
+    Filtered := False;
+    Filter := '1=2';
+    Filtered := True;        
+  end;
 end;
 
 procedure TfrmEasySysDataList.actAddDtlUpdate(Sender: TObject);
@@ -515,6 +549,53 @@ procedure TfrmEasySysDataList.actDeleteDtlUpdate(Sender: TObject);
 begin
   inherited;
   actDeleteDtl.Enabled := cdsCloneData.FieldByName('DataListGUID').AsString <> '';
+end;
+
+procedure TfrmEasySysDataList.EasyDBGrid1EditingDone(Sender: TObject);
+begin
+  inherited;
+  cdsCloneData.Edit;
+end;
+
+procedure TfrmEasySysDataList.actFindUpdate(Sender: TObject);
+begin
+  inherited;
+  actFind.Enabled := tvDataListMain.Items.Count > 0;
+end;
+
+procedure TfrmEasySysDataList.FindTV(tv: TEasyTreeView);
+var
+  I: Integer;
+begin
+  for I := FindCurrIndex + 1 to tv.Items.Count - 1 do
+  begin
+    if Pos(FindText, tv.Items.Item[I].Text) > 0 then
+    begin
+      tv.Items.Item[I].Selected := True;
+      FindCurrIndex := I;
+      Break;
+    end;  
+  end;
+  if I = tv.Items.Count - 1 then
+    FindCurrIndex := -1; 
+end;
+
+procedure TfrmEasySysDataList.actFindExecute(Sender: TObject);
+begin
+  inherited;
+  if EasyInputQuery('查询', '内容', FindText) then
+    FindTV(tvDataListMain);
+end;
+
+procedure TfrmEasySysDataList.tvDataListMainKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F3 then
+  begin
+    if Trim(FindText) <> '' then
+      FindTV(tvDataListMain);
+  end;  
 end;
 
 end.

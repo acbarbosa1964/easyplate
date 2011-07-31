@@ -45,7 +45,8 @@ contains
   untEasyIODFM in 'untEasyIODFM.pas',
   untEasyUtilCompression in 'untEasyUtilCompression.pas',
   untEasyUtilFile in 'untEasyUtilFile.pas',
-  untEasyUtilCrypt in 'untEasyUtilCrypt.pas';
+  untEasyUtilCrypt in 'untEasyUtilCrypt.pas',
+  untEasyInputQuery in 'untEasyInputQuery.pas' {frmEasyInputQuery};
 
 end.
 

@@ -36,7 +36,8 @@ requires
   pkEasyAdditional,
   pkEasyPlateBaseForm,
   pkEasyGrid,
-  pkEasyUtilClasses;
+  pkEasyUtilClasses,
+  pkEasyUtilFunction;
 
 contains
   untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList},

@@ -260,7 +260,7 @@ begin
 
         (Components[I] as TClientDataSet).ProviderName := ATmpDsp.Name;
       end
-    end else if DMEasyDBConnection.EasyAppType = 'CAS' then
+    end{ else if DMEasyDBConnection.EasyAppType = 'CAS' then
     begin
       if Components[I] is TClientDataSet then
       begin
@@ -270,7 +270,7 @@ begin
           ProviderName := 'EasyRDMDsp';
         end;
       end;
-    end;
+    end};
   end;
 end;
 
