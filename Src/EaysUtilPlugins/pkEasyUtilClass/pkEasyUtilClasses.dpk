@@ -41,6 +41,7 @@ requires
 contains
   untEasyUtilClasses in 'untEasyUtilClasses.pas',
   untEasyClassPluginDirectory in 'untEasyClassPluginDirectory.pas',
-  untEasyClassSysDataList in 'untEasyClassSysDataList.pas';
+  untEasyClassSysDataList in 'untEasyClassSysDataList.pas',
+  untEasyClassSysConst in 'untEasyClassSysConst.pas';
 
 end.

@@ -31,15 +31,11 @@ requires
   dsnap,
   vclx,
   indy,
-  adortl,
   vcljpg,
   vcldb,
   pkEasyStardard,
   pkEasyAdditional,
-  cxLibraryVCLD7,
-  dxThemeD7,
-  cxEditorsVCLD7,
-  cxDataD7;
+  adortl;
 
 contains
   untEasyUtilDLL in 'untEasyUtilDLL.pas',
@@ -48,7 +44,9 @@ contains
   untEasyUtilConst in 'untEasyUtilConst.pas',
   untEasyIODFM in 'untEasyIODFM.pas',
   untEasyUtilCompression in 'untEasyUtilCompression.pas',
-  untEasyUtilFile in 'untEasyUtilFile.pas';
+  untEasyUtilFile in 'untEasyUtilFile.pas',
+  untEasyUtilCrypt in 'untEasyUtilCrypt.pas',
+  untEasyInputQuery in 'untEasyInputQuery.pas' {Form3};
 
 end.
 

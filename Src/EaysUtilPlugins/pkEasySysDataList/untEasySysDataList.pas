@@ -83,6 +83,7 @@ type
     actRefresh: TAction;
     EasyToolBarButton15: TEasyToolBarButton;
     EasyToolBarButton7: TEasyToolBarButton;
+    cdsMain: TClientDataSet;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -90,7 +91,6 @@ type
     procedure actExitExecute(Sender: TObject);
     procedure actAddDtlExecute(Sender: TObject);
     procedure actDeleteDtlExecute(Sender: TObject);
-    procedure actCopyDtlExecute(Sender: TObject);
     procedure actNewMstExecute(Sender: TObject);
     procedure actEditUpdate(Sender: TObject);
     procedure actEditExecute(Sender: TObject);
@@ -151,10 +151,27 @@ var
   ASysDataList: string;
 begin
   ASysDataList := ' Exec sp_SysDataList ';
+  cdsDataListMain.Close;
   cdsDataListMain.Data := EasyRDMDisp.EasyGetRDMData(ASysDataList);
-  cdsDataListMain.IndexFieldNames := 'ParentDataListGUID;iOrder';
 
-  cdsCloneData.Data := cdsDataListMain.Data;
+  with cdsDataListMain do
+  begin
+    Filtered := False;
+    Filter := 'ParentDataListGUID = ' + QuotedStr(SysDataListRoot);
+    Filtered := True;
+  end;
+  cdsMain.Close;
+  cdsMain.CloneCursor(cdsDataListMain, False);
+  cdsMain.IndexFieldNames := 'ParentDataListGUID;iOrder';
+
+  with cdsDataListMain do
+  begin
+    Filtered := False;
+    Filter := 'ParentDataListGUID <> ' + QuotedStr(SysDataListRoot);
+    Filtered := True;
+  end;
+  cdsCloneData.Close;
+  cdsCloneData.CloneCursor(cdsDataListMain, False);
   cdsCloneData.IndexFieldNames := 'iOrder';
 end;
 
@@ -165,7 +182,7 @@ begin
   inherited;
   //初始化数据
   InitDataSet;
-  AOle := cdsDataListMain.Data;
+  AOle := cdsMain.Data;
   TEasySysDataList.GenerateSysDataList(AOle, FSysDataListList);
   //初始化树
   InitSysDataListTreeView;
@@ -241,7 +258,7 @@ end;
 procedure TfrmEasySysDataList.actExitExecute(Sender: TObject);
 begin
   inherited;
-  if (cdsDataListMain.ChangeCount > 0)  or (cdsCloneData.ChangeCount > 0) then
+  if (cdsMain.ChangeCount > 0)  or (cdsCloneData.ChangeCount > 0) then
   begin
     case Application.MessageBox('数据已发生改变是否保存?', '提示',
       MB_YESNOCANCEL + MB_ICONQUESTION) of
@@ -299,59 +316,6 @@ begin
   end;
 end;
 
-procedure TfrmEasySysDataList.actCopyDtlExecute(Sender: TObject);
-var
-  ACloneDataSet: TClientDataSet;
-  ABookMark    : TBookmark;
-  AKeyGUID,
-  AParentGUID  : string;
-begin
-  inherited;
-  ACloneDataSet := TClientDataSet.Create(Application);
-  try
-    ABookMark := cdsDataListMain.GetBookmark;
-    AKeyGUID := cdsDataListMain.fieldbyname('DataListGUID').AsString;
-    AParentGUID := cdsDataListMain.fieldbyname('ParentDataListGUID').AsString;
-    with cdsDataListMain do
-    begin
-      Filtered := False;
-      Filter := 'DataListGUID = ' + QuotedStr(AKeyGUID);
-      Filtered := True;
-    end;
-    ACloneDataSet.CloneCursor(cdsDataListMain, False);
-    //将记录还原为刷新状态
-    with cdsDataListMain do
-    begin
-      Filtered := False;
-      Filter := 'ParentDataListGUID = ' + QuotedStr(AParentGUID);
-      Filtered := True;
-    end;
-    //更改Clone记录的属性
-    with cdsDataListMain do
-    begin
-      Append;
-      //1 DataListGUID
-      FieldByName('DataListGUID').AsString := GenerateGUID;
-      //2 SysDataName
-      FieldByName('SysDataName').AsString := '';
-      //3 SysDataValue
-      FieldByName('SysDataValue').AsString := ACloneDataSet.FieldByName('SysDataValue').AsString;
-      //4 ParentDataListGUID
-      FieldByName('ParentDataListGUID').AsString := ACloneDataSet.FieldByName('ParentDataListGUID').AsString;
-      //5 bEnable
-      FieldByName('bEnable').AsBoolean := ACloneDataSet.FieldByName('bEnable').AsBoolean;
-      //6 iOrder
-      FieldByName('iOrder').AsInteger := ACloneDataSet.FieldByName('iOrder').AsInteger + 1;
-      //7 Remark
-      FieldByName('Remark').AsString := ACloneDataSet.FieldByName('Remark').AsString;
-      Post;
-    end;
-  finally
-    cdsDataListMain.FreeBookmark(ABookMark);
-    ACloneDataSet.Free;
-  end;
-end;
-
 procedure TfrmEasySysDataList.actNewMstExecute(Sender: TObject);
 var
   ASysDataList: TEasySysDataList;
@@ -366,7 +330,7 @@ begin
       ASysDataList.Free
     else
     begin
-      TEasySysDataList.AppendClientDataSet(cdsDataListMain, ASysDataList, FSysDataListList);
+      TEasySysDataList.AppendClientDataSet(cdsMain, ASysDataList, FSysDataListList);
       ATreeNode := tvDataListMain.Items.AddChild(nil,
                    IntToStr(tvDataListMain.Items.Count + 1) + '、' + ASysDataList.SysDataName);
       ATreeNode.ImageIndex := 2;
@@ -395,7 +359,7 @@ begin
   inherited;
   AData := TEasySysDataList(tvDataListMain.Selected.Data);
   ShowfrmuntEasySysDataListOP(AData, eotEdit);
-  TEasySysDataList.EditClientDataSet(cdsDataListMain, AData, FSysDataListList);
+  TEasySysDataList.EditClientDataSet(cdsMain, AData, FSysDataListList);
   tvDataListMain.Selected.Text := AData.SysDataName;
 end;
 
@@ -420,7 +384,7 @@ begin
     Exit
   else
   begin
-    TEasySysDataList.DeleteClientDataSet(cdsDataListMain,
+    TEasySysDataList.DeleteClientDataSet(cdsMain,
             TEasySysDataList(tvDataListMain.Selected.Data), FSysDataListList);
     tvDataListMain.Items.Delete(tvDataListMain.Selected);
   end;
@@ -429,7 +393,7 @@ end;
 procedure TfrmEasySysDataList.actSaveUpdate(Sender: TObject);
 begin
   inherited;
-  actSave.Enabled := (cdsCloneData.ChangeCount > 0) or (cdsDataListMain.ChangeCount > 0);
+  actSave.Enabled := (cdsCloneData.ChangeCount > 0) or (cdsMain.ChangeCount > 0);
 end;
 
 procedure TfrmEasySysDataList.actSaveExecute(Sender: TObject);
@@ -447,12 +411,12 @@ begin
   inherited;
   __Error := False;
 
-  if (cdsDataListMain.ChangeCount > 0) and (cdsCloneData.ChangeCount = 0) then
-    AResultOle := EasyRDMDisp.EasySaveRDMData('SysDataList', cdsDataListMain.Delta, 'DataListGUID', AErrorCode)
+  if (cdsMain.ChangeCount > 0) and (cdsCloneData.ChangeCount = 0) then
+    AResultOle := EasyRDMDisp.EasySaveRDMData('SysDataList', cdsMain.Delta, 'DataListGUID', AErrorCode)
   else
-  if (cdsDataListMain.ChangeCount = 0) and (cdsCloneData.ChangeCount > 0) then
+  if (cdsMain.ChangeCount = 0) and (cdsCloneData.ChangeCount > 0) then
     AResultOle := EasyRDMDisp.EasySaveRDMData('SysDataList', cdsCloneData.Delta, 'DataListGUID', AErrorCode)
-  else if (cdsDataListMain.ChangeCount > 0) and (cdsCloneData.ChangeCount > 0) then
+  else if (cdsMain.ChangeCount > 0) and (cdsCloneData.ChangeCount > 0) then
   begin
     ATableOle := VarArrayCreate([0, 1], varVariant);
     ATableOle[0] := 'SysDataList';
@@ -463,7 +427,7 @@ begin
     AKeyFieldOle[1] := 'DataListGUID';
 
     ADeltaOle := VarArrayCreate([0, 1], varVariant);
-    ADeltaOle[0] := cdsDataListMain.Delta;
+    ADeltaOle[0] := cdsMain.Delta;
     ADeltaOle[1] := cdsCloneData.Delta;
 
     ACodeErrorOle := VarArrayCreate([0, 1], varVariant);
@@ -490,8 +454,8 @@ begin
     end;
   end else
   begin
-    if cdsDataListMain.ChangeCount > 0 then
-      cdsDataListMain.MergeChangeLog;
+    if cdsMain.ChangeCount > 0 then
+      cdsMain.MergeChangeLog;
     if cdsCloneData.ChangeCount > 0 then
       cdsCloneData.MergeChangeLog;
     Application.MessageBox(EASY_SYS_SAVE_SUCCESS, EASY_SYS_HINT, MB_OK + MB_ICONINFORMATION);
@@ -508,20 +472,8 @@ begin
 end;
 
 procedure TfrmEasySysDataList.actRefreshExecute(Sender: TObject);
-var
-  AOle: OleVariant;
 begin
   inherited;
-  while (FSysDataListList.Count > 0) do
-  begin
-    TEasySysDataList(FSysDataListList[0]).Free;
-    FSysDataListList.Delete(0);
-  end;
-
-  //初始化数据
-  InitDataSet;
-  AOle := cdsDataListMain.Data;
-  TEasySysDataList.GenerateSysDataList(AOle, FSysDataListList);
   //初始化树
   InitSysDataListTreeView;
   //
@@ -577,7 +529,7 @@ begin
     end;  
   end;
   if I = tv.Items.Count - 1 then
-    FindCurrIndex := -1; 
+    FindCurrIndex := -1;
 end;
 
 procedure TfrmEasySysDataList.actFindExecute(Sender: TObject);

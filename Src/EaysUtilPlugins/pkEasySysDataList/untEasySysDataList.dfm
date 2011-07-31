@@ -1726,7 +1726,6 @@ inherited frmEasySysDataList: TfrmEasySysDataList
       Caption = #22797#21046
       Hint = #22797#21046
       ImageIndex = 0
-      OnExecute = actCopyDtlExecute
     end
     object actRedoDtl: TAction
       Caption = #37325#20570
@@ -1756,5 +1755,11 @@ inherited frmEasySysDataList: TfrmEasySysDataList
     Params = <>
     Left = 381
     Top = 233
+  end
+  object cdsMain: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 412
+    Top = 236
   end
 end

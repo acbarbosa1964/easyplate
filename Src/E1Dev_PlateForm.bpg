@@ -14,7 +14,8 @@ PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkgEasyPlateManager.bpl \
   pkgGroupRights.bpl EasyPlateServer.exe pkEasyUnit.bpl pkEasyFormDesigner.bpl \
   pkEasySQLEditor.bpl pkEasyconnDB.bpl EasyconnDB.exe EasyconnDB_Server.exe \
   pkEasyAboutUS.bpl pkEasyReportCenter.bpl pkEasyDBTool.bpl EasyMail.exe \
-  pkEasyGrid.bpl TestProj.exe pkEasyImageView.bpl pkEasySysDataList.bpl
+  pkEasyGrid.bpl TestProj.exe pkEasyImageView.bpl pkEasySysDataList.bpl \
+  pkEasySysConst.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -83,6 +84,9 @@ pkEasyImageView.bpl: EaysUtilPlugins\pkEasyImageView\pkEasyImageView.dpk
   $(DCC)
 
 pkEasySysDataList.bpl: EaysUtilPlugins\pkEasySysDataList\pkEasySysDataList.dpk
+  $(DCC)
+
+pkEasySysConst.bpl: EaysUtilPlugins\pkEasySysConst\pkEasySysConst.dpk
   $(DCC)
 
 

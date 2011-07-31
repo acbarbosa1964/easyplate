@@ -1,4 +1,4 @@
-package pkEasySysDataList;
+package pkEasySysConst;
 
 {$R *.res}
 {$ALIGN 8}
@@ -34,11 +34,12 @@ requires
   indy,
   pkEasyStardard,
   pkEasyAdditional,
+  pkEasyUtilFunction,
   pkEasyPlateBaseForm,
-  pkEasyGrid;
+  pkEasyGrid,
+  pkEasyUtilClasses;
 
 contains
-  untEasySysDataList in 'untEasySysDataList.pas' {frmEasySysDataList},
-  untEasySysDataListOP in 'untEasySysDataListOP.pas' {frmEasySysDataListOP};
+  untEasySysConst in 'untEasySysConst.pas' {frmEasySysConst};
 
 end.
