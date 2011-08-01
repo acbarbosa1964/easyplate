@@ -83,9 +83,13 @@ type
     procedure actRefreshUpdate(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actSaveUpdate(Sender: TObject);
+    procedure actUndoUpdate(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure EasyDBGrid1EditingDone(Sender: TObject);
   private
     { Private declarations }
     procedure InitData;
+    function CheckNotNULL: Boolean;
   public
     { Public declarations }
   end;
@@ -128,6 +132,7 @@ end;
 procedure TfrmEasySysConst.actNewMstExecute(Sender: TObject);
 begin
   inherited;
+  cdsSysConstMain.Last;
   EasyDBGrid1.Options := EasyDBGrid1.Options + [goEditing];
   with cdsSysConstMain do
   begin
@@ -147,13 +152,30 @@ begin
     FieldByName('Updater').AsString := '';
       //8 UpdateTime
     FieldByName('UpdateTime').AsDateTime := Now;
+    Post;
   end;
+  EasyDBGrid1.AutoNumberCol(0);
 end;
 
 procedure TfrmEasySysConst.actExitExecute(Sender: TObject);
 begin
   inherited;
-  Close;
+  if cdsSysConstMain.ChangeCount > 0 then
+  begin
+    case Application.MessageBox('数据已发生改变是否保存?', '提示',
+      MB_YESNOCANCEL + MB_ICONQUESTION) of
+      IDYES:
+        begin
+          actSaveExecute(Sender);
+          Close;
+        end;
+      IDNO:
+        begin
+          Close;
+        end;
+    end;
+  end else
+    Close;
 end;
 
 procedure TfrmEasySysConst.actEditExecute(Sender: TObject);
@@ -171,7 +193,7 @@ end;
 procedure TfrmEasySysConst.actDeleteUpdate(Sender: TObject);
 begin
   inherited;
-  actDelete.Enabled := cdsSysConstMain.RecNo > 0;
+  actDelete.Enabled := cdsSysConstMain.RecordCount > 0;
 end;
 
 procedure TfrmEasySysConst.actDeleteExecute(Sender: TObject);
@@ -203,6 +225,7 @@ var
   AErrorCode: Integer;
 begin
   inherited;
+  if not CheckNotNULL then Exit;
   AErrorCode := 0;
   if cdsSysConstMain.ChangeCount > 0 then
   begin
@@ -231,6 +254,74 @@ procedure TfrmEasySysConst.actSaveUpdate(Sender: TObject);
 begin
   inherited;
   actSave.Enabled := cdsSysConstMain.ChangeCount > 0;
+end;
+
+function TfrmEasySysConst.CheckNotNULL: Boolean;
+var
+  I: Integer;
+  Flag: Boolean;
+begin
+//  Result := False;
+  Flag := False;
+  if cdsSysConstMain.State = dsEdit then cdsSysConstMain.Post;
+  try
+    cdsSysConstMain.DisableControls;
+    cdsSysConstMain.First;
+    for I := 0 to cdsSysConstMain.RecordCount - 1 do
+    begin
+      if Trim(cdsSysConstMain.FieldByName('EName').AsString) = '' then
+      begin
+        Application.MessageBox(PChar('第' + inttostr(I + 1) + '行记录,常量【英文名称】不能为空!'),
+                              '提示', MB_OK + MB_ICONINFORMATION);
+        Flag := True;
+      end else
+      if Trim(cdsSysConstMain.FieldByName('Value').AsString) = '' then
+      begin
+        Application.MessageBox(PChar('第' + inttostr(I + 1) + '行记录,常量【值】不能为空!'),
+                              '提示', MB_OK + MB_ICONINFORMATION);
+        Flag := True;
+      end;
+      if Flag then
+        Break
+      else
+        cdsSysConstMain.Next;
+    end;
+  finally
+    cdsSysConstMain.EnableControls;
+  end;
+  Result := not Flag;
+end;
+
+procedure TfrmEasySysConst.actUndoUpdate(Sender: TObject);
+begin
+  inherited;
+  actUndo.Enabled := cdsSysConstMain.ChangeCount > 0;
+end;
+
+procedure TfrmEasySysConst.actRefreshExecute(Sender: TObject);
+begin
+  inherited;
+  if cdsSysConstMain.ChangeCount > 0 then
+  begin
+    case Application.MessageBox('数据已发生改变是否先保存再刷新?', '提示',
+      MB_YESNO + MB_ICONQUESTION) of
+      IDYES:
+        begin
+          actSaveExecute(Sender);
+        end;
+      IDNO:
+        begin
+          cdsSysConstMain.CancelUpdates;
+        end;
+    end;
+  end else
+    cdsSysConstMain.Refresh;
+end;
+
+procedure TfrmEasySysConst.EasyDBGrid1EditingDone(Sender: TObject);
+begin
+  inherited;
+  cdsSysConstMain.Edit;
 end;
 
 end.

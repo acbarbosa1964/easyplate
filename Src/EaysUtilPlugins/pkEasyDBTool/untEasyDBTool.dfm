@@ -1,6 +1,6 @@
 inherited frmEasyDBTool: TfrmEasyDBTool
-  Left = 178
-  Top = 80
+  Left = 139
+  Top = 146
   Caption = #34920#32467#26500#32500#25252
   OnClose = FormClose
   PixelsPerInch = 96
@@ -352,6 +352,28 @@ inherited frmEasyDBTool: TfrmEasyDBTool
                   Position = daTop
                   ShowCaption = True
                   OnClick = EasyToolBarButton5Click
+                end
+                object EasyToolBarButton6: TEasyToolBarButton
+                  Left = 457
+                  Top = 2
+                  Width = 64
+                  Height = 24
+                  Appearance.CaptionFont.Charset = DEFAULT_CHARSET
+                  Appearance.CaptionFont.Color = clWindowText
+                  Appearance.CaptionFont.Height = -11
+                  Appearance.CaptionFont.Name = 'Tahoma'
+                  Appearance.CaptionFont.Style = []
+                  Caption = #31867#21333#20803
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -11
+                  Font.Name = 'Tahoma'
+                  Font.Style = []
+                  ImageIndex = 13
+                  ParentFont = False
+                  Position = daTop
+                  ShowCaption = True
+                  OnClick = EasyToolBarButton6Click
                 end
               end
             end
@@ -1313,5 +1335,10 @@ inherited frmEasyDBTool: TfrmEasyDBTool
     Params = <>
     Left = 316
     Top = 164
+  end
+  object SaveDialog1: TSaveDialog
+    Filter = 'Delphi'#21333#20803#25991#20214'(*.pas)|*.pas|'#25152#26377#25991#20214'(*.*)|*.*'
+    Left = 461
+    Top = 200
   end
 end

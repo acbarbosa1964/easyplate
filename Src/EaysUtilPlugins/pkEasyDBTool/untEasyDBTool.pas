@@ -61,6 +61,8 @@ type
     EasyToolBarButton2: TEasyToolBarButton;
     EasyToolBarButton4: TEasyToolBarButton;
     EasyToolBarButton5: TEasyToolBarButton;
+    EasyToolBarButton6: TEasyToolBarButton;
+    SaveDialog1: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -75,19 +77,21 @@ type
     procedure EasyToolBarButton4Click(Sender: TObject);
     procedure EasyToolBarButton2Click(Sender: TObject);
     procedure EasyToolBarButton5Click(Sender: TObject);
+    procedure EasyToolBarButton6Click(Sender: TObject);
   private
     { Private declarations }
     FEasyDataBase,
     FEasyTableField: TList;
+    FUnitContext   : TStrings;
 
     procedure InitFieldGrid;
     procedure DisplayTableFieldGrid(AClientDataSet: TClientDataSet; ANode: TTreeNode);
     //根据Grid中的字段名称生成对象
-    procedure GenerateObjFile(AObjPre: string);
-    procedure GenerateObjValueFile(AObjPre: string);
-    procedure AppendObjValueFile(AObjPre: string);
-    procedure EditObjValueFile(AObjPre: string);
-    procedure DeleteObjValueFile(AObjPre: string);
+    procedure GenerateObjFile(AObjPre: string; AType: Integer = 0);
+    procedure GenerateObjValueFile(AObjPre: string; AType: Integer = 0);
+    procedure AppendObjValueFile(AObjPre: string; AType: Integer = 0);
+    procedure EditObjValueFile(AObjPre: string; AType: Integer = 0);
+    procedure DeleteObjValueFile(AObjPre: string; AType: Integer = 0);
   public
     { Public declarations }
   end;
@@ -118,6 +122,8 @@ begin
   inherited;
   FEasyDataBase := TList.Create;
   FEasyTableField := TList.Create;
+
+  FUnitContext := TStringList.Create;
 end;
 
 procedure TfrmEasyDBTool.FormClose(Sender: TObject;
@@ -126,6 +132,8 @@ begin
   inherited;
   EasyFreeAndNilList(FEasyDataBase);
   EasyFreeAndNilList(FEasyTableField);
+
+  FUnitContext.Free;
 end;
 
 procedure TfrmEasyDBTool.FormShow(Sender: TObject);
@@ -258,11 +266,12 @@ begin
   DeleteObjValueFile('Easy');
 end;
 
-procedure TfrmEasyDBTool.GenerateObjFile(AObjPre: string);
+procedure TfrmEasyDBTool.GenerateObjFile(AObjPre: string; AType: Integer = 0);
 var
   I: Integer;
   ATmpResult, ATmpPublicResult: TStrings;
 begin
+  if tvDataBase.Selected = nil then Exit;
   ATmpResult := TStringList.Create;
   ATmpPublicResult := TStringList.Create;
   ATmpResult.Add('  T' + AObjPre + tvDataBase.Selected.Text + ' = class');
@@ -322,19 +331,29 @@ begin
     end;
   end;
   ATmpResult.Add(ATmpPublicResult.Text);
-  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
-  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
-  frmEasyDBToolObjectPas.ShowModal;
-  frmEasyDBToolObjectPas.Free;
+  
+  if AType = 1 then
+  begin
+    FUnitContext.Add('');
+    FUnitContext.AddStrings(ATmpResult);
+  end else
+  begin
+    frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+    frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+    frmEasyDBToolObjectPas.ShowModal;
+    frmEasyDBToolObjectPas.Free;
+  end;
+  
   ATmpResult.Free;
   ATmpPublicResult.Free;
 end;
 
-procedure TfrmEasyDBTool.GenerateObjValueFile(AObjPre: string);
+procedure TfrmEasyDBTool.GenerateObjValueFile(AObjPre: string; AType: Integer = 0);
 var
   I: Integer;
   ATmpResult: TStrings;
 begin
+  if tvDataBase.Selected = nil then Exit;
   ATmpResult := TStringList.Create;
 
   ATmpResult.Add('class procedure T' + AObjPre + tvDataBase.Selected.Text + '.Generate' + tvDataBase.Selected.Text
@@ -402,10 +421,17 @@ begin
   ATmpResult.Add('  end;');
   ATmpResult.Add('end;');
 
-  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
-  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
-  frmEasyDBToolObjectPas.ShowModal;
-  frmEasyDBToolObjectPas.Free;
+  if AType = 1 then
+  begin
+//    FUnitContext.Add('');
+    FUnitContext.AddStrings(ATmpResult);
+  end else
+  begin
+    frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+    frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+    frmEasyDBToolObjectPas.ShowModal;
+    frmEasyDBToolObjectPas.Free;
+  end;
 
   ATmpResult.Free;
 end;
@@ -416,12 +442,13 @@ begin
   GenerateObjFile('Easy');
 end;
 
-procedure TfrmEasyDBTool.AppendObjValueFile(AObjPre: string);
+procedure TfrmEasyDBTool.AppendObjValueFile(AObjPre: string; AType: Integer = 0);
 var
   I: Integer;
   ATmpResult: TStrings;
   ObjClassName: string;
 begin
+  if tvDataBase.Selected = nil then Exit;
   ATmpResult := TStringList.Create;
 
   ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
@@ -471,20 +498,28 @@ begin
   ATmpResult.Add('  AObjList.Add(AObj);');
   ATmpResult.Add('end;');
 
-  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
-  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
-  frmEasyDBToolObjectPas.ShowModal;
-  frmEasyDBToolObjectPas.Free;
+  if AType = 1 then
+  begin
+    FUnitContext.Add('');
+    FUnitContext.AddStrings(ATmpResult);
+  end else
+  begin
+    frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+    frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+    frmEasyDBToolObjectPas.ShowModal;
+    frmEasyDBToolObjectPas.Free;
+  end;
 
   ATmpResult.Free;
 end;
 
-procedure TfrmEasyDBTool.DeleteObjValueFile(AObjPre: string);
+procedure TfrmEasyDBTool.DeleteObjValueFile(AObjPre: string; AType: Integer = 0);
 var
   ATmpResult: TStrings;
   ObjClassName: string;
   KeyField: string;
 begin
+  if tvDataBase.Selected = nil then Exit;
   ATmpResult := TStringList.Create;
   KeyField := sgrdTableField.Cells[1, 1];
   ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
@@ -513,21 +548,29 @@ begin
   ATmpResult.Add('  end; ');
   ATmpResult.Add('end; ');
 
-  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
-  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
-  frmEasyDBToolObjectPas.ShowModal;
-  frmEasyDBToolObjectPas.Free;
-
+  if AType = 1 then
+  begin
+    FUnitContext.Add('');
+    FUnitContext.AddStrings(ATmpResult);
+  end else
+  begin
+    frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+    frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+    frmEasyDBToolObjectPas.ShowModal;
+    frmEasyDBToolObjectPas.Free;
+  end;
+  
   ATmpResult.Free;
 end;
 
-procedure TfrmEasyDBTool.EditObjValueFile(AObjPre: string);
+procedure TfrmEasyDBTool.EditObjValueFile(AObjPre: string; AType: Integer = 0);
 var
   I: Integer;
   ATmpResult: TStrings;
   ObjClassName: string;
   KeyField: string;
 begin
+  if tvDataBase.Selected = nil then Exit;
   ATmpResult := TStringList.Create;
   KeyField := sgrdTableField.Cells[1, 1];
   ObjClassName := 'T' + AObjPre + tvDataBase.Selected.Text;
@@ -580,10 +623,17 @@ begin
   ATmpResult.Add('  end;');
   ATmpResult.Add('end;');
 
-  frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
-  frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
-  frmEasyDBToolObjectPas.ShowModal;
-  frmEasyDBToolObjectPas.Free;
+  if AType = 1 then
+  begin
+    FUnitContext.Add('');
+    FUnitContext.AddStrings(ATmpResult);
+  end else
+  begin
+    frmEasyDBToolObjectPas := TfrmEasyDBToolObjectPas.Create(Self);
+    frmEasyDBToolObjectPas.mmResult.Lines.Text := ATmpResult.Text;
+    frmEasyDBToolObjectPas.ShowModal;
+    frmEasyDBToolObjectPas.Free;
+  end;
 
   ATmpResult.Free;
 end;
@@ -605,6 +655,79 @@ procedure TfrmEasyDBTool.EasyToolBarButton5Click(Sender: TObject);
 begin
   inherited;
   GenerateObjValueFile('Easy');
+end;
+
+procedure TfrmEasyDBTool.EasyToolBarButton6Click(Sender: TObject);
+var
+  ObjClassName: string;
+begin
+  inherited;
+  if tvDataBase.Selected = nil then Exit;
+
+  FUnitContext.Clear;
+  ObjClassName := 'T' + 'Easy' + tvDataBase.Selected.Text;
+  SaveDialog1.FileName := 'untEasyClass' + tvDataBase.Selected.Text;
+  if SaveDialog1.Execute then
+  begin
+    FUnitContext.Add('{-------------------------------------------------------------------------------');
+    FUnitContext.Add('//                       EasyComponents For Delphi 7                            ');
+    FUnitContext.Add('//                         一轩软研第三方开发包                                 ');
+    FUnitContext.Add('//                         @Copyright 2010 hehf                                 ');
+    FUnitContext.Add('//                   ------------------------------------                       ');
+    FUnitContext.Add('//                                                                              ');
+    FUnitContext.Add('//           本开发包是公司内部使用,作为开发工具使用任何,何海锋个人负责开发,任何');
+    FUnitContext.Add('//       人不得外泄,否则后果自负.                                               ');
+    FUnitContext.Add('//                                                                              ');
+    FUnitContext.Add('//            使用权限以及相关解释请联系何海锋                                  ');
+    FUnitContext.Add('//                                                                              ');
+    FUnitContext.Add('//                                                                              ');
+    FUnitContext.Add('//            网站地址：http://www.YiXuan-SoftWare.com                          ');
+    FUnitContext.Add('//            电子邮件：hehaifeng1984@126.com                                   ');
+    FUnitContext.Add('//                      YiXuan-SoftWare@hotmail.com                             ');
+    FUnitContext.Add('//            QQ      ：383530895                                               ');
+    FUnitContext.Add('//            MSN     ：YiXuan-SoftWare@hotmail.com                             ');
+    FUnitContext.Add('//------------------------------------------------------------------------------');
+    FUnitContext.Add('//单元说明：                                                                    ');
+    FUnitContext.Add('//                                                                              ');
+    FUnitContext.Add('//主要实现：                                                                    ');
+    FUnitContext.Add('//-----------------------------------------------------------------------------}');
+    FUnitContext.Add('unit untEasyClass' + tvDataBase.Selected.Text);
+    FUnitContext.Add('');
+    FUnitContext.Add('interface');
+    FUnitContext.Add('');
+    FUnitContext.Add('uses');
+    FUnitContext.Add('  Classes, DB, DBClient, Variants;');
+    FUnitContext.Add('');
+    FUnitContext.Add('type');
+    //class type
+    GenerateObjFile('Easy', 1);
+    FUnitContext.Add('');
+    //Append, edit, delete, Generate
+    FUnitContext.Add('    class procedure Generate' + tvDataBase.Selected.Text
+                   +'(var Data: OleVariant; AResult: TList)');
+    FUnitContext.Add('    class procedure AppendClientDataSet'
+                   + '(ACds: TClientDataSet; AObj: ' + ObjClassName + '; var AObjList: TList);');
+    FUnitContext.Add('    class procedure EditClientDataSet'
+                   + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
+                   + ' var AObjList: TList);');
+    FUnitContext.Add('    class procedure DeleteClientDataSet'
+                   + '(ACds: TClientDataSet; AObj: ' + ObjClassName + ';'
+                   + ' var AObjList: TList);');
+    FUnitContext.Add('  end;');
+    FUnitContext.Add('');
+    FUnitContext.Add('implementation');
+    FUnitContext.Add('');
+    FUnitContext.Add('{' + ObjClassName +'}');
+    GenerateObjValueFile('Easy', 1);
+    //Append, edit, delete
+    AppendObjValueFile('Easy', 1);
+    EditObjValueFile('Easy', 1);
+    DeleteObjValueFile('Easy', 1);
+    if pos('.pas', SaveDialog1.FileName) > 0 then
+      FUnitContext.SaveToFile(SaveDialog1.FileName)
+    else
+      FUnitContext.SaveToFile(SaveDialog1.FileName + '.pas');
+  end;
 end;
 
 end.

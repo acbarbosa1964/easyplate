@@ -238,6 +238,7 @@ inherited frmEasySysConst: TfrmEasySysConst
     ScrollBars = ssBoth
     TabOrder = 2
     GridFixedLineColor = 13947601
+    OnEditingDone = EasyDBGrid1EditingDone
     DragDropSettings.ShowCells = False
     ActiveCellFont.Charset = DEFAULT_CHARSET
     ActiveCellFont.Color = clWindowText
@@ -495,6 +496,7 @@ inherited frmEasySysConst: TfrmEasySysConst
       Hint = #25764#38144
       ImageIndex = 14
       OnExecute = actUndoExecute
+      OnUpdate = actUndoUpdate
     end
     object actFind: TAction
       Caption = #26597#25214
@@ -551,6 +553,7 @@ inherited frmEasySysConst: TfrmEasySysConst
       Caption = #21047#26032
       Hint = #21047#26032
       ImageIndex = 16
+      OnExecute = actRefreshExecute
       OnUpdate = actRefreshUpdate
     end
   end
