@@ -15,7 +15,8 @@ PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkgEasyPlateManager.bpl \
   pkEasySQLEditor.bpl pkEasyconnDB.bpl EasyconnDB.exe EasyconnDB_Server.exe \
   pkEasyAboutUS.bpl pkEasyReportCenter.bpl pkEasyDBTool.bpl EasyMail.exe \
   pkEasyGrid.bpl TestProj.exe pkEasyImageView.bpl pkEasySysDataList.bpl \
-  pkEasySysConst.bpl
+  pkEasySysConst.bpl pkEasySysCurrency.bpl pkEasyReportFileMaintain.bpl \
+  pkEasyReportTemplateDesign.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -87,6 +88,15 @@ pkEasySysDataList.bpl: EaysUtilPlugins\pkEasySysDataList\pkEasySysDataList.dpk
   $(DCC)
 
 pkEasySysConst.bpl: EaysUtilPlugins\pkEasySysConst\pkEasySysConst.dpk
+  $(DCC)
+
+pkEasySysCurrency.bpl: EaysUtilPlugins\pkEasySysCurrency\pkEasySysCurrency.dpk
+  $(DCC)
+
+pkEasyReportFileMaintain.bpl: EaysUtilPlugins\ReportCenter\pkReportFileMainTain\pkEasyReportFileMaintain.dpk
+  $(DCC)
+
+pkEasyReportTemplateDesign.bpl: EaysUtilPlugins\ReportCenter\pkReportTemplateDesign\pkEasyReportTemplateDesign.dpk
   $(DCC)
 
 

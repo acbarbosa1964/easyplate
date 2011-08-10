@@ -38,6 +38,6 @@ requires
   pkEasyPlateBaseForm;
 
 contains
-  untEasyUnitTemplate in 'untEasyUnitTemplate.pas' {frmEasyReportCenter};
+  untEasyReportFileMaintain in '..\..\EaysUtilPlugins\ReportCenter\pkReportFileMainTain\untEasyReportFileMaintain.pas' {frmEasyReportFileMaintain};
 
 end.

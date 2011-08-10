@@ -31,7 +31,7 @@ interface
 uses
   Windows, SysUtils, Classes, DB, ADODB, IniFiles, Forms, Graphics, untEasyUtilRWIni,
   Provider, MConnect, ObjBrkr, DBClient, SConnect, Dialogs, EasyPlateServer_TLB,
-  AppEvnts, ImgList, Controls;
+  AppEvnts, ImgList, Controls, untEasyClasssysUser, untEasyClasshrEmployee;
 
 function GenrateEasyDBConnection(AHandle: THandle): Integer; stdcall;
          exports GenrateEasyDBConnection;
@@ -49,6 +49,8 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
+    FEasyCurrLoginSysUser: TEasysysUser;
+    FEasyCurrLoginHrEmployee: TEasyhrEmployee;
     //当前程序运行模式：CS两层 CAS三层
     FAppType: string;
     //服务器地址、用户名、密码、数据库、端口
@@ -132,7 +134,9 @@ type
     //存储当前登录的用户ID和数据模块句柄
     property EasyCurrLoginUserID: string read GetCurrLoginUserID write SetCurrLoginUserID;
     property EasyCurrLoginDBHandle: Cardinal read GetCurrLoginDBHandle write SetCurrLoginDBHandle;
-
+    //
+    property EasyCurrLoginSysUser: TEasysysUser read FEasyCurrLoginSysUser write FEasyCurrLoginSysUser;
+    property EasyCurrLoginHrEmployee: TEasyhrEmployee read FEasyCurrLoginHrEmployee write FEasyCurrLoginHrEmployee;
   end;
 
 var
@@ -197,10 +201,16 @@ begin
 
   //
   LoadImageList;
+  //
+  FEasyCurrLoginSysUser := TEasysysUser.Create;
+  FEasyCurrLoginHrEmployee := TEasyhrEmployee.Create;
 end;
 
 procedure TDMEasyDBConnection.DataModuleDestroy(Sender: TObject);
 begin
+  FEasyCurrLoginSysUser.Free;
+  FEasyCurrLoginHrEmployee.Free;
+  
   if EasyADOConn.Connected then
     EasyADOConn.Close;
   if Assigned(FEasyDBIni) then
@@ -275,7 +285,10 @@ end;
 
 procedure TDMEasyDBConnection.SetCurrLoginUserID(const Value: string);
 begin
-  FCurrLoginUserID := Value;
+  if FCurrLoginUserID <> Value then
+  begin
+    FCurrLoginUserID := Value;
+  end;
 end;
 
 function TDMEasyDBConnection.GetAppType: string;

@@ -40,7 +40,8 @@ requires
   designide,
   vclactnband,
   vclx,
-  vcldb;
+  vcldb,
+  pkEasyUtilClasses;
 
 contains
   untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},

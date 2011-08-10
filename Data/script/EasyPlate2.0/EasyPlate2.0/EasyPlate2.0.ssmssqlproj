@@ -25,6 +25,30 @@
           <AssociatedConnUserName />
           <FullPath>CreateDataBase.sql</FullPath>
         </FileNode>
+        <FileNode Name="sysCurrency.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysCurrency.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SysConst.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SysConst.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sp_SysDataList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sp_SysDataList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SysDataList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SysDataList.sql</FullPath>
+        </FileNode>
         <FileNode Name="sysRole_Permission.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>

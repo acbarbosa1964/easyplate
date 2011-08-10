@@ -1,0 +1,68 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = dclfs7.bpl dclfsDB7.bpl dclfsBDE7.bpl dclfsADO7.bpl dclfsIBX7.bpl \
+  dclfsTee7.bpl dclfrx7.bpl dclfrxDB7.bpl dclfrxBDE7.bpl dclfrxADO7.bpl \
+  dclfrxDBX7.bpl dclfrxFIB7.bpl dclfrxIBX7.bpl dclfrxTee7.bpl dclfrxe7.bpl \
+  frxFIB7.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+dclfs7.bpl: FastScript\dclfs7.dpk
+  $(DCC)
+
+dclfsDB7.bpl: FastScript\dclfsDB7.dpk
+  $(DCC)
+
+dclfsBDE7.bpl: FastScript\dclfsBDE7.dpk
+  $(DCC)
+
+dclfsADO7.bpl: FastScript\dclfsADO7.dpk
+  $(DCC)
+
+dclfsIBX7.bpl: FastScript\dclfsIBX7.dpk
+  $(DCC)
+
+dclfsTee7.bpl: FastScript\dclfsTee7.dpk
+  $(DCC)
+
+dclfrx7.bpl: Source\dclfrx7.dpk
+  $(DCC)
+
+dclfrxDB7.bpl: Source\dclfrxDB7.dpk
+  $(DCC)
+
+dclfrxBDE7.bpl: Source\BDE\dclfrxBDE7.dpk
+  $(DCC)
+
+dclfrxADO7.bpl: Source\ADO\dclfrxADO7.dpk
+  $(DCC)
+
+dclfrxDBX7.bpl: Source\DBX\dclfrxDBX7.dpk
+  $(DCC)
+
+dclfrxFIB7.bpl: Source\FIB\dclfrxFIB7.dpk
+  $(DCC)
+
+dclfrxIBX7.bpl: Source\IBX\dclfrxIBX7.dpk
+  $(DCC)
+
+dclfrxTee7.bpl: Source\dclfrxTee7.dpk
+  $(DCC)
+
+dclfrxe7.bpl: Source\ExportPack\dclfrxe7.dpk
+  $(DCC)
+
+frxFIB7.bpl: Source\FIB\frxFIB7.dpk
+  $(DCC)
+
+

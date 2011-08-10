@@ -86,6 +86,7 @@ type
     procedure actUndoUpdate(Sender: TObject);
     procedure actRefreshExecute(Sender: TObject);
     procedure EasyDBGrid1EditingDone(Sender: TObject);
+    procedure cdsSysConstMainAfterEdit(DataSet: TDataSet);
   private
     { Private declarations }
     procedure InitData;
@@ -100,6 +101,9 @@ var
 implementation
 
 {$R *.dfm}
+
+uses
+  untEasyDBConnection;
 
 //引出函数实现
 function ShowBplForm(AParamList: TStrings): TForm;
@@ -127,6 +131,7 @@ begin
   inherited;
   InitData;
   EasyDBGrid1.Options := EasyDBGrid1.Options - [goEditing];
+  EasyDBGrid1.AutoNumberCol(0);
 end;
 
 procedure TfrmEasySysConst.actNewMstExecute(Sender: TObject);
@@ -134,6 +139,7 @@ begin
   inherited;
   cdsSysConstMain.Last;
   EasyDBGrid1.Options := EasyDBGrid1.Options + [goEditing];
+  EasyDBGrid1.Refresh;
   with cdsSysConstMain do
   begin
     Append;
@@ -147,9 +153,9 @@ begin
       //5 CreateTime
     FieldByName('CreateTime').AsDateTime := Now;
       //6 Creater
-    FieldByName('Creater').AsString := '';
+    FieldByName('Creater').AsString := EasyCurrLoginSysUser.UserGUID;
       //7 Updater
-    FieldByName('Updater').AsString := '';
+    FieldByName('Updater').AsString := EasyCurrLoginSysUser.UserGUID;
       //8 UpdateTime
     FieldByName('UpdateTime').AsDateTime := Now;
     Post;
@@ -314,14 +320,27 @@ begin
           cdsSysConstMain.CancelUpdates;
         end;
     end;
-  end else
-    cdsSysConstMain.Refresh;
+  end;
 end;
 
 procedure TfrmEasySysConst.EasyDBGrid1EditingDone(Sender: TObject);
 begin
   inherited;
   cdsSysConstMain.Edit;
+end;
+
+procedure TfrmEasySysConst.cdsSysConstMainAfterEdit(DataSet: TDataSet);
+begin
+  inherited;
+  with cdsSysConstMain do
+  begin
+    Edit;
+      //7 Updater
+    FieldByName('Updater').AsString := EasyCurrLoginSysUser.UserGUID;
+      //8 UpdateTime
+    FieldByName('UpdateTime').AsDateTime := Now;
+    Post;
+  end;
 end;
 
 end.

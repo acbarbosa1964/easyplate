@@ -314,6 +314,13 @@ begin
         ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'Double'
                             + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
       end
+      //numeric
+      else if (Cells[2, I + 1] = 'numeric') then
+      begin
+        ATmpResult.Add('    F' + Cells[1, I + 1] + ': ' + 'Double;');
+        ATmpPublicResult.Add('    property ' + Cells[1, I + 1] + ': ' + 'Double'
+                            + ' read F' + Cells[1, I + 1] + ' write F' + Cells[1, I + 1] +';');
+      end
       //DateTime
       else if Cells[2, I + 1] = 'datetime' then
       begin
@@ -481,7 +488,7 @@ begin
         ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
                                 +').AsFloat := AObj.' + Cells[1, I + 1] + ';')
       //DateTime
-      else if Cells[2, I + 1] = 'DateTime' then
+      else if Cells[2, I + 1] = 'datetime' then
         ATmpResult.Add('    ' + 'FieldByName(' + '''' + Cells[1, I + 1] + ''''
                                 +').AsDateTime := AObj.' + Cells[1, I + 1] + ';')
       //numeric
@@ -691,7 +698,7 @@ begin
     FUnitContext.Add('//                                                                              ');
     FUnitContext.Add('//主要实现：                                                                    ');
     FUnitContext.Add('//-----------------------------------------------------------------------------}');
-    FUnitContext.Add('unit untEasyClass' + tvDataBase.Selected.Text);
+    FUnitContext.Add('unit untEasyClass' + tvDataBase.Selected.Text + ';');
     FUnitContext.Add('');
     FUnitContext.Add('interface');
     FUnitContext.Add('');
@@ -704,7 +711,7 @@ begin
     FUnitContext.Add('');
     //Append, edit, delete, Generate
     FUnitContext.Add('    class procedure Generate' + tvDataBase.Selected.Text
-                   +'(var Data: OleVariant; AResult: TList)');
+                   +'(var Data: OleVariant; AResult: TList);');
     FUnitContext.Add('    class procedure AppendClientDataSet'
                    + '(ACds: TClientDataSet; AObj: ' + ObjClassName + '; var AObjList: TList);');
     FUnitContext.Add('    class procedure EditClientDataSet'
@@ -723,6 +730,8 @@ begin
     AppendObjValueFile('Easy', 1);
     EditObjValueFile('Easy', 1);
     DeleteObjValueFile('Easy', 1);
+    FUnitContext.Add('');
+    FUnitContext.Add('end.');
     if pos('.pas', SaveDialog1.FileName) > 0 then
       FUnitContext.SaveToFile(SaveDialog1.FileName)
     else

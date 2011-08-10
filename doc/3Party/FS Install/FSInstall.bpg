@@ -1,0 +1,61 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = fs7.bpl fsDB7.bpl fsBDE7.bpl fsADO7.bpl fsIBX7.bpl fsTee7.bpl \
+  frx7.bpl frxDB7.bpl frxADO7.bpl frxBDE7.bpl frxIBX7.bpl frxDBX7.bpl frxTee7.bpl \
+  frxe7.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+fs7.bpl: FastScript\fs7.dpk
+  $(DCC)
+
+fsDB7.bpl: FastScript\fsDB7.dpk
+  $(DCC)
+
+fsBDE7.bpl: FastScript\fsBDE7.dpk
+  $(DCC)
+
+fsADO7.bpl: FastScript\fsADO7.dpk
+  $(DCC)
+
+fsIBX7.bpl: FastScript\fsIBX7.dpk
+  $(DCC)
+
+fsTee7.bpl: FastScript\fsTee7.dpk
+  $(DCC)
+
+frx7.bpl: Source\frx7.dpk
+  $(DCC)
+
+frxDB7.bpl: Source\frxDB7.dpk
+  $(DCC)
+
+frxADO7.bpl: Source\ADO\frxADO7.dpk
+  $(DCC)
+
+frxBDE7.bpl: Source\BDE\frxBDE7.dpk
+  $(DCC)
+
+frxIBX7.bpl: Source\IBX\frxIBX7.dpk
+  $(DCC)
+
+frxDBX7.bpl: Source\DBX\frxDBX7.dpk
+  $(DCC)
+
+frxTee7.bpl: Source\frxTee7.dpk
+  $(DCC)
+
+frxe7.bpl: Source\ExportPack\frxe7.dpk
+  $(DCC)
+
+

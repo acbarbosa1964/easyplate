@@ -1037,7 +1037,6 @@ inherited frmEasyPlateMain: TfrmEasyPlateMain
         Progress.ShowBorder = False
         Progress.Stacked = False
         Style = psNumLock
-        Text = 'NUM'
         TimeFormat = 'h:mm:ss'
         Width = 35
       end

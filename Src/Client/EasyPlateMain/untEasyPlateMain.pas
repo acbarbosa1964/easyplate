@@ -32,24 +32,9 @@ uses
   untEasyPageControl, ExtCtrls, untEasyTrayIcon, ImgList, ComCtrls,
   untEasyTreeView, untEasyWaterImage, jpeg, StdCtrls, ActnList, Provider,
   DB, DBClient, xmldom, XMLIntf, msxmldom, XMLDoc, untEasyPlateDBBaseForm,
-  AppEvnts, untEasyClassPluginDirectory;
+  AppEvnts, untEasyClassPluginDirectory, untEasyClasssysUser, untEasyClasshrEmployee;
 
 type
-
-//  PEasytvNavRecord = ^TEasytvNavRecord;
-//  TEasytvNavRecord = record
-//    sGUID,
-//    sEName,
-//    sCName,
-//    sParentGUID  : string;
-//    iOrder,
-//    iImage1,
-//    iImage2,
-//    bDir,
-//    iFlag        : Integer;
-//    sPluginFileName: string;
-//  end;
-
   TfrmEasyPlateMain = class(TfrmEasyPlateDBBaseForm)
     mmMain: TEasyMainMenu;
     pmMain: TEasyPopupMenu;
@@ -160,6 +145,8 @@ type
     procedure InitWorks;
     //即时通讯
     procedure InitEIM;
+    //初始化当前登录用户信息、员工信息
+    procedure InitCurrLoginUserInfo(ACds: TClientDataSet; ASysUser: TEasysysUser);
 
     //关闭子窗体时的事件
     procedure ChildFormClose(Sender: TObject; var Action: TCloseAction);
@@ -193,8 +180,8 @@ uses
   untEasyProgressBar, untEasyLoginMain, untEasyPlateResourceManage;
 
 const
-  PluginDirectorySQL = 'EXEC sp_SysPluginsDirectory';
-  PluginParamSQL = 'EXEC sp_SysPluginParams';
+  PluginDirectorySQL = 'SELECT * FROM vwSysPluginsDirectory ORDER BY IsDirectory, iOrder';
+  PluginParamSQL = 'SELECT * FROM vwSysPluginParams ORDER BY ParamName';
 
 procedure TfrmEasyPlateMain.DisplayCurrUserInfo(UserID: string);
 begin
@@ -213,7 +200,7 @@ begin
                                 + '</p>';
       stbMain.Panels[1].Text := '<p color="clblue">' + EASY_DISPLAYUSERINFO_DEPT
                                 + '</p>';
-      Close;
+//      Close;
     end else
     if cdsMain.RecordCount > 1 then
     begin    //一个帐户对应多个员工系统，一般不会发生，防止更改数据库出错
@@ -228,6 +215,29 @@ begin
                              MB_OK + MB_ICONWARNING);
       Application.Terminate;
     end;
+    //设置到DM
+    DMEasyDBConnection.EasyCurrLoginUserID := UserID;
+    with DMEasyDBConnection.EasyCurrLoginSysUser do
+    begin
+      //1 UserGUID
+        UserGUID := cdsMain.FieldByName('UserGUID').AsString;
+      //2 UserName
+        UserName := cdsMain.FieldByName('UserName').AsString;
+      //3 PassWord
+        PassWord := cdsMain.FieldByName('PassWord').AsString;
+      //4 EmployeeGUID
+        EmployeeGUID := cdsMain.FieldByName('EmployeeGUID').AsString;
+      //5 IsEnable
+        IsEnable := cdsMain.FieldByName('IsEnable').AsBoolean;
+      //6 EndDate
+        EndDate := cdsMain.FieldByName('EndDate').AsDateTime;
+      //7 RoleGUID
+        RoleGUID := cdsMain.FieldByName('RoleGUID').AsString;
+      //8 CreateTime
+        CreateTime := cdsMain.FieldByName('CreateTime').AsDateTime;
+      //9 CreaterGUID
+        CreaterGUID := cdsMain.FieldByName('CreaterGUID').AsString;
+    end;  
   end;
 end;
 
@@ -370,6 +380,8 @@ begin
     CreatePG(Init_LoadPlugs, '系统初始化...');
     //显示用户信息：当前登录用户、部门
     DisplayCurrUserInfo(EasyLoginUserID);
+    //
+//    InitCurrLoginUserInfo(cdsMain, EasyCurrLoginUser);
     //补充状态栏位
     InitStbMain;
   end;
@@ -669,5 +681,11 @@ end;
 //      MB_ICONINFORMATION)
 //  else
 //    raise Exception.Create(E.Message);
+
+procedure TfrmEasyPlateMain.InitCurrLoginUserInfo(ACds: TClientDataSet;
+  ASysUser: TEasysysUser);
+begin
+  TEasysysUser.InitSingleSysUser(cdsMain, ASysUser);
+end;
 
 end.

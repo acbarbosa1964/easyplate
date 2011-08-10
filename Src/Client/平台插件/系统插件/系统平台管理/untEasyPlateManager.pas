@@ -361,11 +361,11 @@ begin
   if cdsDirManager.Active then
     cdsDirManager.Close;
   //初始化系统目录数组
-  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('EXEC sp_SysPluginsDirectory');
+  cdsDirManager.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginsDirectory ORDER BY ParentPluginGUID,  iOrder');
   ATmpData := cdsDirManager.Data;
   TEasysysPluginsDirectory.GeneratePluginDirectoryList(ATmpData, APluginDirectoryList);
   //同进也提取参数数据集
-  cdsParam.Data := EasyRDMDisp.EasyGetRDMData('EXEC sp_SysPluginParams');
+  cdsParam.Data := EasyRDMDisp.EasyGetRDMData('SELECT * FROM vwSysPluginParams ORDER BY ParamName');
   ATmpDataParam := cdsParam.Data;
   TEasysysPluginParam.GeneratePluginParamList(ATmpDataParam, APluginParamsList);
 end;
@@ -647,14 +647,18 @@ end;
 
 procedure TfrmEasyPlateManage.btnSaveClick(Sender: TObject);
 var
-  AErrorCode: Integer;
+  IAErrorCode, I: Integer;
+  AErrorCode,
   TableNameOle,
   KeyFieldOle,
   DeltaOle,
   ReturnOle : OleVariant;
   cdsError  : TClientDataSet;
+  __Error   : Boolean;
 begin
   inherited;
+  __Error := False;
+
   if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount = 0) then
   begin
     Application.MessageBox('数据未发生变更,操作无效!', '提示', MB_OK + 
@@ -664,11 +668,11 @@ begin
   try
     if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount = 0) then
       ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginsDirectory',
-                                  cdsDirManager.Delta, 'PluginGUID', AErrorCode)
+                                  cdsDirManager.Delta, 'PluginGUID', IAErrorCode)
     else
     if (cdsDirManager.ChangeCount = 0) and (cdsParam.ChangeCount > 0) then
       ReturnOle := EasyRDMDisp.EasySaveRDMData('sysPluginParams', cdsParam.Delta,
-                                  'PluginParamGUID', AErrorCode)
+                                  'PluginParamGUID', IAErrorCode)
     else
     if (cdsDirManager.ChangeCount > 0) and (cdsParam.ChangeCount > 0) then
     begin
@@ -685,9 +689,19 @@ begin
       DeltaOle[0] := cdsDirManager.Delta;
       DeltaOle[1] := cdsParam.Delta;
 
+      AErrorCode := VarArrayCreate([0, 1], varVariant);
       ReturnOle := EasyRDMDisp.EasySaveRDMDatas(TableNameOle, DeltaOle, KeyFieldOle, AErrorCode);
+      //如果 ACodeErrorOle > 0 即发生错误
+      for I := VarArrayLowBound(AErrorCode, 1) to VarArrayHighBound(AErrorCode, 1) do
+      begin
+        if AErrorCode[I] <> 0 then
+        begin
+          __Error := True;
+          Break;
+        end;
+      end;
     end;
-    if AErrorCode <> 0 then
+    if (IAErrorCode <> 0) or __Error then
     begin
       cdsError := TClientDataSet.Create(Self);
       try

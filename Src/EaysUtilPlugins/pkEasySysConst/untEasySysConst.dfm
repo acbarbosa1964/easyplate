@@ -560,6 +560,7 @@ inherited frmEasySysConst: TfrmEasySysConst
   object cdsSysConstMain: TClientDataSet
     Aggregates = <>
     Params = <>
+    AfterEdit = cdsSysConstMainAfterEdit
     Left = 381
     Top = 201
   end

@@ -37,7 +37,8 @@ requires
   adortl,
   pkEasyStardard,
   pkEasyAdditional,
-  pkEasyUtilFunction;
+  pkEasyUtilFunction,
+  pkEasyUtilClasses;
 
 contains
   untEasyDBConnection in 'untEasyDBConnection.pas' {DMEasyDBConnection: TDataModule},

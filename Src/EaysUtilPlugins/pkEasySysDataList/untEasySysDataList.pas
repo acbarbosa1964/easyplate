@@ -150,7 +150,7 @@ procedure TfrmEasySysDataList.InitDataSet;
 var
   ASysDataList: string;
 begin
-  ASysDataList := ' Exec sp_SysDataList ';
+  ASysDataList := 'SELECT * FROM SysDataList ORDER BY ParentDataListGUID,iOrder';
   cdsDataListMain.Close;
   cdsDataListMain.Data := EasyRDMDisp.EasyGetRDMData(ASysDataList);
 

@@ -30,8 +30,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage,
-  untEasyPlateBaseForm, EasyPlateServer_TLB;
+  Dialogs, DB, ADODB, ExtCtrls, untEasyGroupBox, untEasyWaterImage, DBClient,
+  untEasyPlateBaseForm, EasyPlateServer_TLB, untEasyClasssysUser, untEasyClasshrEmployee;
 
 type
   TfrmEasyPlateDBBaseForm = class(TfrmEasyPlateBaseForm)
@@ -42,6 +42,7 @@ type
     function GetUtilADOConn: TADOConnection;
     procedure SetUtilADOConn(const Value: TADOConnection);
     function GetRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
+    function GetEasyCurrLoginSysUser: TEasysysUser;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); override;
@@ -51,6 +52,8 @@ type
     //发布远程数据服务接口
     //客户端调用服务端函数均使用此属性
     property EasyRDMDisp: IRDMEasyPlateServerDisp read GetRDMEasyPlateServerDisp;
+    //当前登录用户
+    property EasyCurrLoginSysUser: TEasysysUser read GetEasyCurrLoginSysUser;
   end;
 
 var
@@ -65,73 +68,27 @@ uses untEasyDBConnection;
 constructor TfrmEasyPlateDBBaseForm.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-
 end;
 
 destructor TfrmEasyPlateDBBaseForm.Destroy;
 begin
-
   inherited;
 end;
 
 procedure TfrmEasyPlateDBBaseForm.FormCreate(Sender: TObject);
-//var
-//  I       : Integer;
 begin
   inherited;
   FEasyDBConn := DMEasyDBConnection.EasyADOConn;
-  {for i := 0 to ComponentCount - 1 do
-  begin
-    if Self.Components[i] is TEasyDevDBTextEdit then
-    begin
-       (Components[i] as TEasyDevDBTextEdit).ImeName := '';
-       (Components[i] as TEasyDevDBTextEdit).ImeMode := imDontCare
-    end
-    else if Components[i] is TEasyDevDBMemo then
-    begin
-       (Components[i] as TEasyDevDBMemo).ImeName := '';
-       (Components[i] as TEasyDevDBMemo).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBDateEdit then
-    begin
-       (Components[i] as TEasyDevDBDateEdit).ImeName := '';
-       (Components[i] as TEasyDevDBDateEdit).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBTimeEdit then
-    begin
-       (Components[i] as TEasyDevDBTimeEdit).ImeName := '';
-       (Components[i] as TEasyDevDBTimeEdit).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBButtonEdit then
-    begin
-       (Components[i] as TEasyDevDBButtonEdit).ImeName := '';
-       (Components[i] as TEasyDevDBButtonEdit).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBImageComboBox then
-    begin
-       (Components[i] as TEasyDevDBImageComboBox).ImeName := '';
-       (Components[i] as TEasyDevDBImageComboBox).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBLookupComboBox then
-    begin
-       (Components[i] as TEasyDevDBLookupComboBox).ImeName := '';
-       (Components[i] as TEasyDevDBLookupComboBox).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBSpinEdit then
-    begin
-       (Components[i] as TEasyDevDBSpinEdit).ImeName := '';
-       (Components[i] as TEasyDevDBSpinEdit).ImeMode := imDontCare;
-    end
-    else if Components[i] is TEasyDevDBCalcEdit then
-    begin
-       (Components[i] as TEasyDevDBCalcEdit).ImeName := '';
-       (Components[i] as TEasyDevDBCalcEdit).ImeMode := imDontCare;
-    end;
-  end;}
+end;
+
+function TfrmEasyPlateDBBaseForm.GetEasyCurrLoginSysUser: TEasysysUser;
+begin
+  Result := DMEasyDBConnection.EasyCurrLoginSysUser;
 end;
 
 function TfrmEasyPlateDBBaseForm.GetRDMEasyPlateServerDisp: IRDMEasyPlateServerDisp;
 begin
+  //获取COM接口
   Result := DMEasyDBConnection.EasyIRDMEasyPlateServerDisp;
 end;
 

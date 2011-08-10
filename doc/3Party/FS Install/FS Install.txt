@@ -1,0 +1,11 @@
+FastReport4
+
+$(FastReport4)\FastScript
+$(FastReport4)\Source
+$(FastReport4)\Source\BDE
+$(FastReport4)\Source\ADO
+$(FastReport4)\Source\IBX
+$(FastReport4)\Source\DBX
+$(FastReport4)\Source\Source\ExportPack
+
+$(FastReport4)\FastScript;$(FastReport4)\Source;$(FastReport4)\Source\BDE;$(FastReport4)\Source\ADO;$(FastReport4)\Source\IBX;$(FastReport4)\Source\DBX;$(FastReport4)\Source\Source\ExportPack
