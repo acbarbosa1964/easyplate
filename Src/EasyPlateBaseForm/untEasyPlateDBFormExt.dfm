@@ -1,8 +1,5 @@
-inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
-  Caption = 'frmEasyPlateDBForm'
-  OnClose = FormClose
-  OnDestroy = FormDestroy
-  OnKeyUp = FormKeyUp
+inherited frmEasyPlateDBFormExt: TfrmEasyPlateDBFormExt
+  Caption = 'frmEasyPlateDBFormExt'
   PixelsPerInch = 96
   TextHeight = 13
   object dkpDBForm: TEasyDockPanel
@@ -41,12 +38,12 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         Top = 2
         Width = 52
         Height = 24
+        Action = actNew
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #26032#22686
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -56,19 +53,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnNewClick
       end
       object btnEdit: TEasyToolBarButton
         Left = 61
         Top = 2
         Width = 52
         Height = 24
+        Action = actEdit
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #20462#25913
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -78,19 +74,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnEditClick
       end
       object btnCancel: TEasyToolBarButton
         Left = 165
         Top = 2
         Width = 52
         Height = 24
+        Action = actUndo
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #25764#38144
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -100,19 +95,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnCancelClick
       end
       object btnDelete: TEasyToolBarButton
         Left = 113
         Top = 2
         Width = 52
         Height = 24
+        Action = actDelete
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #21024#38500
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -122,19 +116,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnDeleteClick
       end
       object btnCopy: TEasyToolBarButton
         Left = 217
         Top = 2
         Width = 52
         Height = 24
+        Action = actCopy
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #22797#21046
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -144,19 +137,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnCopyClick
       end
       object btnFind: TEasyToolBarButton
         Left = 373
         Top = 2
         Width = 52
         Height = 24
+        Action = actFind
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #26597#25214
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -166,19 +158,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnFindClick
       end
       object btnPrint: TEasyToolBarButton
         Left = 425
         Top = 2
         Width = 52
         Height = 24
+        Action = actPrint
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #25171#21360
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -188,19 +179,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnPrintClick
       end
       object btnExit: TEasyToolBarButton
         Left = 477
         Top = 2
         Width = 52
         Height = 24
+        Action = actExit
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #36864#20986
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -210,19 +200,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnExitClick
       end
       object btnRefresh: TEasyToolBarButton
         Left = 321
         Top = 2
         Width = 52
         Height = 24
+        Action = actRefresh
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #21047#26032
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -232,19 +221,18 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnRefreshClick
       end
       object btnSave: TEasyToolBarButton
         Left = 269
         Top = 2
         Width = 52
         Height = 24
+        Action = actSave
         Appearance.CaptionFont.Charset = DEFAULT_CHARSET
         Appearance.CaptionFont.Color = clWindowText
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
-        Caption = #20445#23384
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -254,7 +242,6 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
         ParentFont = False
         Position = daTop
         ShowCaption = True
-        OnClick = btnSaveClick
       end
     end
   end
@@ -266,15 +253,6 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
     Align = alTop
     BorderOuter = fsGroove
     TabOrder = 2
-    object pgcContainer: TEasyPageControl
-      Left = 2
-      Top = 2
-      Width = 850
-      Height = 241
-      Align = alClient
-      TabOrder = 0
-      FixedDimension = 0
-    end
   end
   object tlbStyDBForm: TEasyToolBarOfficeStyler
     BorderColorHot = 14731181
@@ -1070,17 +1048,79 @@ inherited frmEasyPlateDBForm: TfrmEasyPlateDBForm
       C01FFF873FFFFFFFC03FFFCFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object cdsMain: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    OnReconcileError = cdsMainReconcileError
-    Left = 384
-    Top = 128
-  end
-  object dsMain: TDataSource
-    DataSet = cdsMain
-    OnStateChange = dsMainStateChange
+  object actlstMain: TActionList
+    Images = imgTlbDBForm
     Left = 416
-    Top = 126
+    Top = 84
+    object actNew: TAction
+      Caption = #26032#22686
+      Hint = #26032#22686
+      ImageIndex = 0
+      ShortCut = 16462
+      OnExecute = actNewExecute
+      OnUpdate = actNewUpdate
+    end
+    object actEdit: TAction
+      Caption = #20462#25913
+      Hint = #20462#25913
+      ImageIndex = 1
+      ShortCut = 16453
+      OnUpdate = actEditUpdate
+    end
+    object actDelete: TAction
+      Caption = #21024#38500
+      Hint = #21024#38500
+      ImageIndex = 2
+      ShortCut = 16452
+      OnUpdate = actDeleteUpdate
+    end
+    object actUndo: TAction
+      Caption = #25764#38144
+      Hint = #25764#38144
+      ImageIndex = 3
+      ShortCut = 16474
+      OnUpdate = actUndoUpdate
+    end
+    object actCopy: TAction
+      Caption = #22797#21046
+      Hint = #22797#21046
+      ImageIndex = 4
+      ShortCut = 16451
+      OnUpdate = actCopyUpdate
+    end
+    object actSave: TAction
+      Caption = #20445#23384
+      Hint = #20445#23384
+      ImageIndex = 5
+      ShortCut = 16467
+      OnUpdate = actSaveUpdate
+    end
+    object actRefresh: TAction
+      Caption = #21047#26032
+      Hint = #21047#26032
+      ImageIndex = 6
+      ShortCut = 116
+      OnUpdate = actRefreshUpdate
+    end
+    object actFind: TAction
+      Caption = #26597#25214
+      Hint = #26597#25214
+      ImageIndex = 7
+      ShortCut = 16454
+      OnUpdate = actFindUpdate
+    end
+    object actPrint: TAction
+      Caption = #25171#21360
+      Hint = #25171#21360
+      ImageIndex = 8
+      ShortCut = 16464
+      OnUpdate = actPrintUpdate
+    end
+    object actExit: TAction
+      Caption = #36864#20986
+      Hint = #36864#20986
+      ImageIndex = 9
+      ShortCut = 16465
+    end
   end
 end

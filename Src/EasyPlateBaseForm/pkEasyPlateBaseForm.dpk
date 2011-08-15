@@ -41,7 +41,29 @@ requires
   vclactnband,
   vclx,
   vcldb,
-  pkEasyUtilClasses;
+  pkEasyUtilClasses,
+  pkEasyGrid,
+  dxCoreD7,
+  dxGDIPlusD7,
+  cxLibraryVCLD7,
+  dxThemeD7,
+  cxEditorsVCLD7,
+  cxDataD7,
+  cxExtEditorsVCLD7,
+  dxmdsD7,
+  cxPageControlVCLD7,
+  dxLayoutControlD7,
+  dcldxorgcD7,
+  dxorgcD7,
+  dxdborD7,
+  cxGridD7,
+  cxPivotGridD7,
+  cxPivotGridChartD7,
+  cxPivotGridOLAPD7,
+  cxTreeListD7,
+  cxSchedulerD7,
+  cxSchedulerGridD7,
+  cxVerticalGridVCLD7;
 
 contains
   untEasyPlateBaseForm in 'untEasyPlateBaseForm.pas' {frmEasyPlateBaseForm},
@@ -51,6 +73,7 @@ contains
   untReconcileError in 'untReconcileError.pas' {frmReconcileError},
   untEasyPlateSingleForm in 'untEasyPlateSingleForm.pas' {EasyPlateSingleForm},
   untEasyStdCmpsReg in 'untEasyStdCmpsReg.pas',
-  untEasyPlateLang in 'Util\untEasyPlateLang.pas';
+  untEasyPlateLang in 'Util\untEasyPlateLang.pas',
+  untEasyPlateDBFormExt in 'untEasyPlateDBFormExt.pas' {frmEasyPlateDBFormExt};
 
 end.
