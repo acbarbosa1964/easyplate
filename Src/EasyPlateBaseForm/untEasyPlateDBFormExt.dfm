@@ -1058,69 +1058,78 @@ inherited frmEasyPlateDBFormExt: TfrmEasyPlateDBFormExt
       ImageIndex = 0
       ShortCut = 16462
       OnExecute = actNewExecute
-      OnUpdate = actNewUpdate
     end
     object actEdit: TAction
       Caption = #20462#25913
       Hint = #20462#25913
       ImageIndex = 1
       ShortCut = 16453
-      OnUpdate = actEditUpdate
+      OnExecute = actEditExecute
     end
     object actDelete: TAction
       Caption = #21024#38500
       Hint = #21024#38500
       ImageIndex = 2
       ShortCut = 16452
-      OnUpdate = actDeleteUpdate
+      OnExecute = actDeleteExecute
     end
     object actUndo: TAction
       Caption = #25764#38144
       Hint = #25764#38144
       ImageIndex = 3
       ShortCut = 16474
-      OnUpdate = actUndoUpdate
+      OnExecute = actUndoExecute
     end
     object actCopy: TAction
       Caption = #22797#21046
       Hint = #22797#21046
       ImageIndex = 4
       ShortCut = 16451
-      OnUpdate = actCopyUpdate
     end
     object actSave: TAction
       Caption = #20445#23384
       Hint = #20445#23384
       ImageIndex = 5
       ShortCut = 16467
-      OnUpdate = actSaveUpdate
+      OnExecute = actSaveExecute
     end
     object actRefresh: TAction
       Caption = #21047#26032
       Hint = #21047#26032
       ImageIndex = 6
       ShortCut = 116
-      OnUpdate = actRefreshUpdate
+      OnExecute = actRefreshExecute
     end
     object actFind: TAction
       Caption = #26597#25214
       Hint = #26597#25214
       ImageIndex = 7
       ShortCut = 16454
-      OnUpdate = actFindUpdate
     end
     object actPrint: TAction
       Caption = #25171#21360
       Hint = #25171#21360
       ImageIndex = 8
       ShortCut = 16464
-      OnUpdate = actPrintUpdate
     end
     object actExit: TAction
       Caption = #36864#20986
       Hint = #36864#20986
       ImageIndex = 9
       ShortCut = 16465
+      OnExecute = actExitExecute
     end
+  end
+  object atScripterMain: TatScripter
+    DefaultLanguage = slPascal
+    SaveCompiledCode = False
+    ShortBooleanEval = True
+    LibOptions.SearchPath.Strings = (
+      '$(CURDIR)'
+      '$(APPDIR)')
+    LibOptions.UseScriptFiles = False
+    CallExecHookEvent = False
+    Left = 216
+    Top = 280
   end
 end
