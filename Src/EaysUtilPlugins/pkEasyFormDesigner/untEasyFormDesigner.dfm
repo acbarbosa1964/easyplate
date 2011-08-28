@@ -86,6 +86,7 @@ object frmEasyFormDesigner: TfrmEasyFormDesigner
         Appearance.CaptionFont.Height = -11
         Appearance.CaptionFont.Name = 'Tahoma'
         Appearance.CaptionFont.Style = []
+        Caption = 'a'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11

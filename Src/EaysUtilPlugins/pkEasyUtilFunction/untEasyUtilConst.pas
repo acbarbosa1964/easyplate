@@ -21,6 +21,11 @@ unit untEasyUtilConst;
 interface
 
 const
+  //插件扩展参数
+  EASY_PLUGIN_EXT = '.dfm';
+  //脚本扩展参数
+  EASY_SCRIPT_EXT = '.psc';
+
   EASY_RootGUID = '{00000000-0000-0000-0000-000000000000}';
   
   EASY_OPERATE_ADD   = '增加';
@@ -80,7 +85,7 @@ const
   EASY_PLUGIN_CANNOT_LOAD = '不能加载插件:%s 原因：未找到插件入口函数!'; 
 type
   //操作数据状态
-  TEasyOperateType = (eotAdd, eotEdit, eotDelete);
+  TEasyOperateType = (eotAdd, eotEdit, eotDelete, eotNone);
   
 implementation
 

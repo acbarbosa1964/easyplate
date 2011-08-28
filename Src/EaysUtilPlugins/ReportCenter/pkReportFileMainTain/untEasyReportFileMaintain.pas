@@ -28,12 +28,50 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, untEasyPlateDBBaseForm;
+  Dialogs, untEasyPlateDBBaseForm, untEasyToolBar, untEasyToolBarStylers,
+  DB, ImgList, DBClient, ActnList, Grids, untEasyBaseGrid, untEasyGrid,
+  untEasyDBGrid;
 
   //插件导出函数
   function ShowBplForm(AParamList: TStrings): TForm; stdcall; exports ShowBplForm;
 type
   TfrmEasyReportFileMaintain = class(TfrmEasyPlateDBBaseForm)
+    edpMain: TEasyDockPanel;
+    tlbMain: TEasyToolBar;
+    EasyToolBarButton2: TEasyToolBarButton;
+    EasyToolBarButton1: TEasyToolBarButton;
+    EasyToolBarButton3: TEasyToolBarButton;
+    EasyToolBarSeparator1: TEasyToolBarSeparator;
+    EasyToolBarSeparator2: TEasyToolBarSeparator;
+    EasyToolBarButton9: TEasyToolBarButton;
+    EasyToolBarButton11: TEasyToolBarButton;
+    EasyToolBarButton15: TEasyToolBarButton;
+    EasyToolBarButton7: TEasyToolBarButton;
+    EasyToolBarButton4: TEasyToolBarButton;
+    EasyDBGrid1: TEasyDBGrid;
+    actDataList: TActionList;
+    actNewMst: TAction;
+    actEdit: TAction;
+    actDelete: TAction;
+    actCopy: TAction;
+    actPaste: TAction;
+    actRedo: TAction;
+    actUndo: TAction;
+    actFind: TAction;
+    actPrint: TAction;
+    actExit: TAction;
+    actAddDtl: TAction;
+    actEditDtl: TAction;
+    actDeleteDtl: TAction;
+    actCopyDtl: TAction;
+    actRedoDtl: TAction;
+    actUndoDtl: TAction;
+    actSave: TAction;
+    actRefresh: TAction;
+    cdsSysConstMain: TClientDataSet;
+    imgToolBar: TImageList;
+    dsSysConstMain: TDataSource;
+    tbosMain: TEasyToolBarOfficeStyler;
   private
     { Private declarations }
   public
