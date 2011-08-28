@@ -16,7 +16,8 @@ PROJECTS = EasyPlateMain.exe pkEasyDBConnection.bpl pkgEasyPlateManager.bpl \
   pkEasyAboutUS.bpl pkEasyReportCenter.bpl pkEasyDBTool.bpl EasyMail.exe \
   pkEasyGrid.bpl TestProj.exe pkEasyImageView.bpl pkEasySysDataList.bpl \
   pkEasySysConst.bpl pkEasySysCurrency.bpl pkEasyReportFileMaintain.bpl \
-  pkEasyReportTemplateDesign.bpl
+  pkEasyReportTemplateDesign.bpl ScriptIDE.exe pkEasyScriptRegister.bpl \
+  pkEasyCompanySet.bpl EasyCompanySet.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -97,6 +98,18 @@ pkEasyReportFileMaintain.bpl: EaysUtilPlugins\ReportCenter\pkReportFileMainTain\
   $(DCC)
 
 pkEasyReportTemplateDesign.bpl: EaysUtilPlugins\ReportCenter\pkReportTemplateDesign\pkEasyReportTemplateDesign.dpk
+  $(DCC)
+
+ScriptIDE.exe: EaysUtilPlugins\EasyScriptIDE\ScriptIDE.dpr
+  $(DCC)
+
+pkEasyScriptRegister.bpl: EaysUtilPlugins\pkEasyScriptRegister\pkEasyScriptRegister.dpk
+  $(DCC)
+
+pkEasyCompanySet.bpl: EaysUtilPlugins\pkEasyCompanySet\pkEasyCompanySet.dpk
+  $(DCC)
+
+EasyCompanySet.exe: ..\PluginsDfm\公司信息设置\EasyCompanySet.dpr
   $(DCC)
 
 
