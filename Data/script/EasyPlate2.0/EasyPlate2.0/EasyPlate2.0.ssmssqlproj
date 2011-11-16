@@ -25,6 +25,54 @@
           <AssociatedConnUserName />
           <FullPath>CreateDataBase.sql</FullPath>
         </FileNode>
+        <FileNode Name="sysCountryAreaInfo.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysCountryAreaInfo.sql</FullPath>
+        </FileNode>
+        <FileNode Name="vwSysUser_Resource.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>vwSysUser_Resource.sql</FullPath>
+        </FileNode>
+        <FileNode Name="WorkFlowChart.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>WorkFlowChart.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysWorkFlow.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysWorkFlow.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysForm.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysForm.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysReportFile.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysReportFile.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysReportDtl.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysReportDtl.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysReportMain.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysReportMain.sql</FullPath>
+        </FileNode>
         <FileNode Name="sysCurrency.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>

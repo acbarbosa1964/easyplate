@@ -25,3 +25,13 @@ go
 --公司GUID外键约束
 ALTER TABLE infCompanyDept ADD CONSTRAINT FK_DEPT_COMPANYGUID FOREIGN KEY(CompanyGUID)
 REFERENCES infCompany(CompanyGUID)
+
+ALTER TABLE infCompanyDept DROP COLUMN iOrder
+
+
+ALTER TABLE infCompanyDept Add OrderNo INT DEFAULT 0
+
+SELECT * FROM infCompany ORDER BY ParentCompanyGUID, OrderNo
+SELECT DeptManagerGUID, DeptTypeGUID, CompanyGUID,* FROM infCompanyDept
+
+SELECT * FROM SysDataList WHERE SysDataName LIKE '%部门%'

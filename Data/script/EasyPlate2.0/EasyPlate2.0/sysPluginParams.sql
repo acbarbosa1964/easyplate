@@ -18,3 +18,5 @@ create unique index Index_PlugParams on sysPluginParams (
 ParamName ASC
 )
 go
+
+SELECT * FROM vwSysPluginParams ORDER BY ParamName

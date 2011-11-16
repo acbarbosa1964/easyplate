@@ -1,11 +1,11 @@
 /*==============================================================*/
-/* Table: sysResource                                           */
+/* Table: sysResource                                         */
 /*==============================================================*/
 create table sysResource (
-   ResourceID           varchar(50)          not null,
-   ParentResourceGUID   varchar(50)          not null,
-   ResourceName         varchar(50)          not null,
-   constraint PK_SYSRESOURCE primary key (ResourceID)
+   ResourceGUID           varchar(50)          not null,
+   FormID               varchar(50)          not null,
+   ControlID            varchar(50)          not null,
+   constraint PK_SYSRESOURCE primary key (ResourceGUID)
 )
 go
 
@@ -13,7 +13,7 @@ go
 /* Index: Index_Operation                                       */
 /*==============================================================*/
 create index Index_Operation on sysResource (
-ResourceID ASC
+ResourceGUID ASC
 )
 go
 
@@ -21,6 +21,34 @@ go
 /* Index: Index_Resource                                        */
 /*==============================================================*/
 create index Index_Resource on sysResource (
-ResourceName ASC
+ControlID ASC
 )
 go
+select * from sysResource
+DELETE from sysResource
+ALTER TABLE sysresource add    FormName             varchar(100)         null
+ ALTER TABLE sysresource add    ControlName          varchar(100)         null
+  ALTER TABLE sysresource add    Checked          integer  default 0
+  
+  ALTER TABLE sysresource DROP COLUMN    FormName 
+  --排序
+  ALTER TABLE sysresource add OrderNo INT DEFAULT 0  
+  ALTER TABLE sysresource add Remark VARCHAR(50)  
+ EXEC sp_RefreshALLView
+ --窗体信息表
+ CREATE TABLE sysFormInfo(
+	FormGUID VARCHAR(50) NOT NULL PRIMARY KEY,
+	Caption VARCHAR(100) NOT NULL
+	)
+CREATE UNIQUE INDEX IX_FormGUID ON sysFormInfo(FormGUID);
+
+DELETE FROM sysRole_Resource
+
+SELECT * FROM vwSysRole ORDER BY RoleName
+SELECT * FROM vwSysResource ORDER BY FormID, ControlID
+SELECT * FROM vwSysRole_Resource ORDER BY RoleGUID, ResourceGUID
+
+SELECT * FROM vwSysResource
+SELECT * FROM SysResource
+
+SELECT * FROM vwSysUser_Resource ORDER BY UserGUID, ResourceGUID

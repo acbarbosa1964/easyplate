@@ -34,3 +34,16 @@ ALTER TABLE sysPluginsDirectory ADD ShowModal BIT NOT NULL DEFAULT 0
 
 --删除PluginParamGUID不应当存在此表中
 ALTER TABLE sysPluginsDirectory DROP COLUMN PluginParamGUID
+
+--增加是否对应流程
+ALTER TABLE sysPluginsDirectory ADD WorkFlowGUID VARCHAR(50)
+
+
+--增加CMD
+ALTER TABLE sysPluginsDirectory ADD CMD VARCHAR(50)
+
+select * from sysPluginsDirectory
+SELECT * FROM vwSysPluginsDirectory
+
+EXEC sp_RefreshALLView
+

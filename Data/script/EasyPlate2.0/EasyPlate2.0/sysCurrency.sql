@@ -8,11 +8,11 @@ create table dbo.sysCurrency (
    ExchangeRate         numeric(10,4)        not null,
    TradeRate            numeric(10,4)        not null,
    CurrencySign         varchar(10)          null,
-   IsBase               bit                  not null,
-   IsVisible            bit                  not null,
+   bBase               bit                  not null,
+   bVisible            bit                  not null,
    UpdateTime           datetime             null,
    Remark               varchar(255)         null,
-   iOrderNo             int                  null,
+   OrderNo              int                  null,
    constraint PK_SYSCURRENCY primary key nonclustered (CurrencyGUID)
 )
 go
@@ -40,3 +40,6 @@ create unique index Index_CurrencyEName on dbo.sysCurrency (
 CurrencyEName ASC
 )
 go
+
+SELECT * FROM vw_sysCurrency
+DROP TABLE sysCurrency

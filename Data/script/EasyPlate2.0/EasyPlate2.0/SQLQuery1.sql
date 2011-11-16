@@ -16,7 +16,7 @@ create table dbo.infCompany (
    Tax                  varchar(50)          null,
    logo                 image                null,
    ParentCompanyGUID    varchar(50)          not null,
-   CompanyTypeGUID      varchar(50)          null,
+   CompnayTypeGUID      varchar(50)          null,
    Remark               varchar(255)         null,
    iOrder               int                  null,
    constraint PK_PuCompany primary key (CompanyGUID)
@@ -31,9 +31,3 @@ CompanyCName ASC,
 CompanyEName ASC
 )
 go
-
-ALTER TABLE infCompany DROP COLUMN iOrder
-
-
-ALTER TABLE infCompany Add OrderNo INT DEFAULT 0
-

@@ -6,10 +6,10 @@ create table sysReportMain (
    ReportCName          varchar(100)         not null,
    ReportEName          varchar(100)         not null,
    FormID               varchar(50)          not null,
-   ReportFileGUID       varchar(50)          not null,
+   ReportFile           iMAGE                not null,
    IsEnable             bit                  not null default 1,
    IsDefault            bit                  not null default 0,
-   iOrder               int                  null default 0,
+   OrderNo               int                  null default 0,
    constraint PK_SYSREPORTMAIN primary key (ReportGUID)
 )
 go
@@ -29,3 +29,14 @@ create unique index Index_ReportEName on sysReportMain (
 ReportEName ASC
 )
 go
+
+create unique index Index_ReportGUID on sysReportMain (
+ReportGUID ASC, FormID ASC
+)
+go
+/*
+ALTER TABLE sysReportMain DROP COLUMN ReportFileGUID
+DROP TABLE sysReportFile
+DROP TABLE sysReportDtl
+DROP TABLE sysReportMain
+sysReportDtl.sql*/

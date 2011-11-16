@@ -21,3 +21,15 @@ SysDataName ASC,
 ParentDataListGUID ASC
 )
 go
+
+create index Index_DataListGUID on dbo.SysDataList (
+DataListGUID ASC
+)
+go
+
+ALTER TABLE SysDataList DROP COLUMN iOrder
+
+
+ALTER TABLE SysDataList Add OrderNo INT DEFAULT 0
+ALTER TABLE SysDataList ALTER COLUMN SysDataValue varchar(100) NULL;
+SELECT * FROM vw_SysDataList
