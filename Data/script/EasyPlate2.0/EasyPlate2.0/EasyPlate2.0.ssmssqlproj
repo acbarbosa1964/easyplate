@@ -25,11 +25,17 @@
           <AssociatedConnUserName />
           <FullPath>CreateDataBase.sql</FullPath>
         </FileNode>
-        <FileNode Name="SQLQuery2.sql">
+        <FileNode Name="数据字典.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>SQLQuery2.sql</FullPath>
+          <FullPath>数据字典.sql</FullPath>
+        </FileNode>
+        <FileNode Name="infDeptPostion.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>infDeptPostion.sql</FullPath>
         </FileNode>
         <FileNode Name="OrgMap.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>

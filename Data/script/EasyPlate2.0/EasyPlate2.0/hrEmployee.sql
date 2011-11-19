@@ -77,3 +77,11 @@ FormalDate ASC,
 EndDate ASC
 )
 go
+
+ALTER TABLE hrEmployee DROP COLUMN EmployeeID;
+ALTER TABLE hrEmployee ADD SpeedCode VARCHAR(20);
+ALTER TABLE hrEmployee ADD EmployeeCode VARCHAR(20);
+
+CREATE UNIQUE INDEX index_EmployeeCode ON hrEmployee(EmployeeCode);
+SELECT * FROM vw_hrEmployee
+

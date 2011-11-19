@@ -21,3 +21,15 @@ CREATE INDEX index_PostDeptGUID ON infDeptPostion(DeptGUID);
 --部门GUID外键约束
 ALTER TABLE infDeptPostion ADD CONSTRAINT FK_PostDeptGUID FOREIGN KEY(DeptGUID)
  REFERENCES infCompanyDept(DeptGUID)
+ 
+ 
+ SELECT * FROM vw_infDeptPostion
+ 
+  
+ SELECT * FROM vw_infCompanyDept
+ 
+ SELECT * FROM vw_SysDataList WHERE SysDataName LIKE '%出勤%'
+ 
+ SELECT * FROM vw_SysDataList WHERE ParentDataListGUID = '{24E73232-9A89-465B-AE87-3D2510F0E4E5}' ORDER BY OrderNo
+ SELECT * FROM vw_SysDataList WHERE ParentDataListGUID = '{2B8E69F4-2D06-4A3B-A9C2-B4B79E698649}' ORDER BY OrderNo
+ 
