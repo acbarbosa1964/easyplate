@@ -37,3 +37,5 @@ ALTER TABLE infCompany DROP COLUMN iOrder
 
 ALTER TABLE infCompany Add OrderNo INT DEFAULT 0
 
+SELECT * FROM infCompany
+

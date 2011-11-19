@@ -25,6 +25,18 @@
           <AssociatedConnUserName />
           <FullPath>CreateDataBase.sql</FullPath>
         </FileNode>
+        <FileNode Name="SQLQuery2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="OrgMap.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>OrgMap.sql</FullPath>
+        </FileNode>
         <FileNode Name="sysCountryAreaInfo.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>

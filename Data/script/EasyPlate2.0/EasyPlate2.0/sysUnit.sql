@@ -33,7 +33,13 @@ go
 /*==============================================================*/
 /* Index: Index_UnitEName                                       */
 /*==============================================================*/
-create unique index Index_UnitEName on dbo.sysUnit (
+create index Index_UnitEName on dbo.sysUnit (
 UnitEName ASC
 )
 go
+
+ALTER TABLE sysUnit DROP INDEX Index_UnitEName
+SELECT * FROM vw_sysUnit
+
+DELETE FROM vw_sysUnit
+
