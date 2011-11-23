@@ -1,3 +1,4 @@
+--系统常量
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{58E94C09-6D77-4FBD-9CC4-17DAE049F34F}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnAdd','新增',0, 0);
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{AD85CDC6-400E-4601-8C34-A9AD4CFA2EFD}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnEdit','修改',0, 1);
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{FA3C4BE8-61C2-49A7-86F0-D792AE824DB5}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnDel','删除',0, 2);
@@ -21,3 +22,13 @@ INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, O
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{FB1312BE-D449-4E29-AF5E-1466F082771D}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnExportHTML','HTML网页',0, 20);
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{A964611A-8D85-4D52-9C7D-5161E69C3C62}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnExportXML','XML数据',0, 21);
 INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES ('{E1188080-FDE3-4225-BD1B-D014C3FD86C4}','{EE1D4573-A66B-4E1F-BCF5-EEFD169A2E36}','btnExportText','文本文件',0, 22);
+--币别信息维护
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnAdd','新增',0, 0);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnEdit','修改',0, 1);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnDel','删除',0, 2);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnSave','保存',0, 3);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnRefresh','刷新',0, 5);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnFind','查找',0, 6);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnImport','导入',0, 7);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnExport','导出',0, 8);
+INSERT INTO sysResource(ResourceGUID, FormID ,ControlID, ControlName, Checked, OrderNo) VALUES (NEWID(),'{F11BC2A2-C240-475B-A0DC-B55B8D8F0F47}','btnPrint','报表',0, 9);

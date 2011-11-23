@@ -17,6 +17,8 @@ ResourceGUID ASC
 )
 go
 
+CREATE INDEX Index_Res_FormID ON sysResource(FormID);
+
 /*==============================================================*/
 /* Index: Index_Resource                                        */
 /*==============================================================*/
@@ -52,3 +54,6 @@ SELECT * FROM vwSysResource
 SELECT * FROM SysResource
 
 SELECT * FROM vwSysUser_Resource ORDER BY UserGUID, ResourceGUID
+--FormIDÍâ¼üÔ¼Êø
+ALTER TABLE sysResource ADD CONSTRAINT FK_Res_FormID
+FOREIGN KEY (FormID) REFERENCES sysFormInfo(FormGUID);

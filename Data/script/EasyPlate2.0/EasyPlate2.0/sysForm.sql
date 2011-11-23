@@ -25,3 +25,5 @@ create index Index_FormGUID on sysForm (
 FormGUID ASC
 )
 go
+
+SELECT * FROM sysFormInfo
