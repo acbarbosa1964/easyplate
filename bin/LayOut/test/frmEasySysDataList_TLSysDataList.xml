@@ -1,0 +1,89 @@
+[Main]
+Version=2
+
+[TLSysDataList.TLSysDataList: TcxDBTreeList]
+=
+
+[TLSysDataList.TLSysDataList/Bands: TcxTreeListBands]
+=
+
+[TLSysDataList.TLSysDataList/Bands/Band0: TcxTreeListBand]
+=
+Caption=""
+RealMinWidth=20
+RealWidth=0
+Visible="True"
+Index=0
+BandIndex=-1
+ColIndex=0
+
+[TLSysDataList.TLSysDataList/TLSysDataListSysDataName: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=0
+LineCount=1
+ColIndex=0
+RowIndex=0
+BandIndex=0
+Caption="名称"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=180
+
+[TLSysDataList.TLSysDataList/TLSysDataListSysDataValue: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=1
+LineCount=1
+ColIndex=1
+RowIndex=0
+BandIndex=0
+Caption="值"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=120
+
+[TLSysDataList.TLSysDataList/TLSysDataListOrderNo: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=2
+LineCount=1
+ColIndex=3
+RowIndex=0
+BandIndex=0
+Caption="序号"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLSysDataList.TLSysDataList/TLSysDataListbEnable: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=3
+LineCount=1
+ColIndex=2
+RowIndex=0
+BandIndex=0
+Caption="启用"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=80
+
+[TLSysDataList.TLSysDataList/TLSysDataListRemark: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=4
+LineCount=1
+ColIndex=4
+RowIndex=0
+BandIndex=0
+Caption="备注"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+

@@ -1,0 +1,77 @@
+[Main]
+Version=2
+
+[Untitled1.grdTVsysFileUpdateManager: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerFileName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerFileContext: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=120
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerFUMType: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=1
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerbEnable: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=1
+Index=3
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerbMust: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=1
+Index=4
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdTVsysFileUpdateManager/grdTVsysFileUpdateManagerCreateTime: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=0
+Index=5
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

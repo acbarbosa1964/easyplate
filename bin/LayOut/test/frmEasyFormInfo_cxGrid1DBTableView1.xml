@@ -1,0 +1,44 @@
+[Main]
+Version=2
+
+[Untitled1.cxGrid1DBTableView1: TcxGridDBTableView]
+=
+Footer="True"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1.cxGrid1DBTableView1/cxGrid1DBTableView1FormGUID: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=260
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.cxGrid1DBTableView1/cxGrid1DBTableView1Caption: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=160
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soAscending"
+SortIndex=0
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.cxGrid1DBTableView1/cxGrid1DBTableView1FileName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
