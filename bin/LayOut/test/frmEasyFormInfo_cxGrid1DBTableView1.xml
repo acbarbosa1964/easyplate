@@ -27,8 +27,8 @@ Width=160
 AlignmentHorz=0
 Index=1
 Visible="True"
-SortOrder="soAscending"
-SortIndex=0
+SortOrder="soNone"
+SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
 [Untitled1.cxGrid1DBTableView1/cxGrid1DBTableView1FileName: TcxGridDBColumn]

@@ -42,3 +42,14 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
+[Untitled1_1.grdDTVSysConst/grdDTVSysConstColumn1: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=0
+Index=3
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
