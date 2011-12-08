@@ -25,6 +25,24 @@
           <AssociatedConnUserName />
           <FullPath>CreateDataBase.sql</FullPath>
         </FileNode>
+        <FileNode Name="whPartClass.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>whPartClass.sql</FullPath>
+        </FileNode>
+        <FileNode Name="sysFileUpdateManager.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>sysFileUpdateManager.sql</FullPath>
+        </FileNode>
+        <FileNode Name="系统资源初始化存储过程.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>系统资源初始化存储过程.sql</FullPath>
+        </FileNode>
         <FileNode Name="sysFormInfo.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:HEHAIFENG-PC:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>HEHAIFENG-PC</AssociatedConnSrvName>
