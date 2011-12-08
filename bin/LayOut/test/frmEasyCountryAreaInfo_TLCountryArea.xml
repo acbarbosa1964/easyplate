@@ -1,0 +1,61 @@
+[Main]
+Version=2
+
+[TLCountryArea.TLCountryArea: TcxDBTreeList]
+=
+
+[TLCountryArea.TLCountryArea/Bands: TcxTreeListBands]
+=
+
+[TLCountryArea.TLCountryArea/Bands/Band0: TcxTreeListBand]
+=
+Caption=""
+RealMinWidth=20
+RealWidth=0
+Visible="True"
+Index=0
+BandIndex=-1
+ColIndex=0
+
+[TLCountryArea.TLCountryArea/TLCountryAreacxDBTreeListColumn1: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=0
+LineCount=1
+ColIndex=0
+RowIndex=0
+BandIndex=0
+Caption="名称"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=500
+
+[TLCountryArea.TLCountryArea/TLCountryAreacxDBTreeListColumn2: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=1
+LineCount=1
+ColIndex=1
+RowIndex=0
+BandIndex=0
+Caption="地区代码"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLCountryArea.TLCountryArea/TLCountryAreacxDBTreeListColumn3: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=2
+LineCount=1
+ColIndex=2
+RowIndex=0
+BandIndex=0
+Caption="邮编"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+

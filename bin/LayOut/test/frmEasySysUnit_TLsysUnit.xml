@@ -1,0 +1,103 @@
+[Main]
+Version=2
+
+[TLsysUnit.TLsysUnit: TcxDBTreeList]
+=
+
+[TLsysUnit.TLsysUnit/Bands: TcxTreeListBands]
+=
+
+[TLsysUnit.TLsysUnit/Bands/Band0: TcxTreeListBand]
+=
+Caption=""
+RealMinWidth=20
+RealWidth=0
+Visible="True"
+Index=0
+BandIndex=-1
+ColIndex=0
+
+[TLsysUnit.TLsysUnit/TLsysUnitUnitCName: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=0
+LineCount=1
+ColIndex=0
+RowIndex=0
+BandIndex=0
+Caption="中文名称"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+
+[TLsysUnit.TLsysUnit/TLsysUnitUnitEName: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=1
+LineCount=1
+ColIndex=1
+RowIndex=0
+BandIndex=0
+Caption="符号"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLsysUnit.TLsysUnit/TLsysUnitbEnable: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=2
+LineCount=1
+ColIndex=4
+RowIndex=0
+BandIndex=0
+Caption="启用"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLsysUnit.TLsysUnit/TLsysUnitfRatio: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=3
+LineCount=1
+ColIndex=2
+RowIndex=0
+BandIndex=0
+Caption="标准换算率"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLsysUnit.TLsysUnit/TLsysUnitOrderNO: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=4
+LineCount=1
+ColIndex=3
+RowIndex=0
+BandIndex=0
+Caption="序号"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[TLsysUnit.TLsysUnit/TLsysUnitRemark: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=5
+LineCount=1
+ColIndex=5
+RowIndex=0
+BandIndex=0
+Caption="备注"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+

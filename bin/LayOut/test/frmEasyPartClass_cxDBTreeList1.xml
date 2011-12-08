@@ -1,0 +1,103 @@
+[Main]
+Version=2
+
+[cxDBTreeList1.cxDBTreeList1: TcxDBTreeList]
+=
+
+[cxDBTreeList1.cxDBTreeList1/Bands: TcxTreeListBands]
+=
+
+[cxDBTreeList1.cxDBTreeList1/Bands/Band0: TcxTreeListBand]
+=
+Caption=""
+RealMinWidth=20
+RealWidth=0
+Visible="True"
+Index=0
+BandIndex=-1
+ColIndex=0
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1PartClassCode: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=0
+LineCount=1
+ColIndex=0
+RowIndex=0
+BandIndex=0
+Caption="类别编码"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1PartClassEName: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=1
+LineCount=1
+ColIndex=1
+RowIndex=0
+BandIndex=0
+Caption="英文名称"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1PartClassCName: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=2
+LineCount=1
+ColIndex=2
+RowIndex=0
+BandIndex=0
+Caption="中文名称"
+SortOrder="soAscending"
+SortIndex=0
+RealMinWidth=20
+RealWidth=160
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1TypeGUID: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=3
+LineCount=1
+ColIndex=3
+RowIndex=0
+BandIndex=0
+Caption="类别类型"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=160
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1IsEnable: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=4
+LineCount=1
+ColIndex=4
+RowIndex=0
+BandIndex=0
+Caption="启用"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+
+[cxDBTreeList1.cxDBTreeList1/cxDBTreeList1OrderNo: TcxDBTreeListColumn]
+=
+Visible="True"
+Index=5
+LineCount=1
+ColIndex=5
+RowIndex=0
+BandIndex=0
+Caption="序号"
+SortOrder="soNone"
+SortIndex=-1
+RealMinWidth=20
+RealWidth=0
+

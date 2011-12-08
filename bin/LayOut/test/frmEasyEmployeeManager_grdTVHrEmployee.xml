@@ -1,0 +1,66 @@
+[Main]
+Version=2
+
+[Form1.grdTVHrEmployee: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Form1.grdTVHrEmployee/grdTVHrEmployeeEmployeeCode: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=73
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Form1.grdTVHrEmployee/grdTVHrEmployeeEmployeeCName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=87
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Form1.grdTVHrEmployee/grdTVHrEmployeeCompanyGUID: TcxGridDBColumn]
+=
+GroupIndex=0
+Width=200
+AlignmentHorz=0
+Index=2
+Visible="False"
+SortOrder="soAscending"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Form1.grdTVHrEmployee/grdTVHrEmployeeDepartmentGUID: TcxGridDBColumn]
+=
+GroupIndex=1
+Width=100
+AlignmentHorz=0
+Index=3
+Visible="False"
+SortOrder="soAscending"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Form1.grdTVHrEmployee/grdTVHrEmployeePositionGUID: TcxGridDBColumn]
+=
+GroupIndex=2
+Width=100
+AlignmentHorz=0
+Index=4
+Visible="False"
+SortOrder="soAscending"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
