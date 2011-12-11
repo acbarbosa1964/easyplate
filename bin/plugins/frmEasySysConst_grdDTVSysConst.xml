@@ -1,7 +1,7 @@
 [Main]
 Version=2
 
-[Untitled1_1.cxGrid1DBTableView1: TcxGridDBTableView]
+[Untitled1_1.grdDTVSysConst: TcxGridDBTableView]
 =
 Footer="True"
 GroupByBox="False"
@@ -9,10 +9,10 @@ GroupFooters=0
 NewItemRow="False"
 Version=1
 
-[Untitled1_1.cxGrid1DBTableView1/cxGrid1DBTableView1FormGUID: TcxGridDBColumn]
+[Untitled1_1.grdDTVSysConst/grdDTVSysConstCName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=260
+Width=120
 AlignmentHorz=0
 Index=0
 Visible="True"
@@ -20,10 +20,10 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.cxGrid1DBTableView1/cxGrid1DBTableView1Caption: TcxGridDBColumn]
+[Untitled1_1.grdDTVSysConst/grdDTVSysConstEName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=160
+Width=100
 AlignmentHorz=0
 Index=1
 Visible="True"
@@ -31,12 +31,23 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.cxGrid1DBTableView1/cxGrid1DBTableView1FileName: TcxGridDBColumn]
+[Untitled1_1.grdDTVSysConst/grdDTVSysConstValue: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=200
 AlignmentHorz=0
 Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdDTVSysConst/grdDTVSysConstColumn1: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=0
+Index=3
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1

@@ -14,7 +14,7 @@ end;
 function EasyGenerateGUID;
 begin
     Result := EasyGenerateGUID_at;
-end;
+end;                                                             
 
 function EasyGenerateTrue;
 begin
@@ -40,8 +40,14 @@ function EasyGenerateFloat(Value);
 begin
     Result := EasyGenerateFloat_at(Value);
 end;
-
+                                          
 function EasyGenerateString(Value);
 begin
     Result := EasyGenerateString_at(Value);
-end;
+end;                      
+
+//╪сть╟Э
+function EasyLoadPackage(Value);
+begin
+    Result := EasyLoadPackage_at(Value);
+end;     
