@@ -1,0 +1,44 @@
+[Main]
+Version=2
+
+[Untitled1_1.grdTVsysTable_Mst: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1_1.grdTVsysTable_Mst/grdTVsysTable_MstTableCName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=150
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Mst/grdTVsysTable_MstTableName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Mst/grdTVsysTable_MstOrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=1
+Index=2
+Visible="False"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

@@ -1,0 +1,132 @@
+[Main]
+Version=2
+
+[Untitled1_1.grdTVsysTable_Dtl: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlEName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=120
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlCName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=120
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldType: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=120
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldLen: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=1
+Index=3
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldPRECISION: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=1
+Index=4
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsPrimaryKey: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=80
+AlignmentHorz=1
+Index=5
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsMust: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=60
+AlignmentHorz=1
+Index=6
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlUniqueIndex: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=80
+AlignmentHorz=1
+Index=7
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIndexName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=8
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFKFieldName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=9
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlOrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=1
+Index=10
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

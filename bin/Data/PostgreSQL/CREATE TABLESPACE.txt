@@ -1,0 +1,7 @@
+-- Tablespace: EasyERP
+
+-- DROP TABLESPACE "EasyERP"
+
+CREATE TABLESPACE "EasyERP"
+  OWNER easyplate
+  LOCATION 'E:/MyProject/E1Dev/bin/Data/PostgreSQL';

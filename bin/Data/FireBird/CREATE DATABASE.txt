@@ -1,0 +1,1 @@
+CREATE DATABASE 'E:\\MyProject\\E1Dev\\bin\\Data\\FireBird\\EasyERP.fdb' page_size 8192 user 'easyplate' PASSWORD 'easyplat';

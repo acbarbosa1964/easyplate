@@ -1,0 +1,77 @@
+[Main]
+Version=2
+
+[Untitled1_1.grdTVDtl: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1_1.grdTVDtl/grdTVDtlDataSetCName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=160
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVDtl/grdTVDtlDataSetEName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=160
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVDtl/grdTVDtlCommandText: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVDtl/grdTVDtlFieldAliasesName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=180
+AlignmentHorz=0
+Index=3
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVDtl/grdTVDtlOrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=80
+AlignmentHorz=1
+Index=4
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1.grdTVDtl/grdTVDtlIsEnable: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=80
+AlignmentHorz=0
+Index=5
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
