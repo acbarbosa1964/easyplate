@@ -1,7 +1,7 @@
 [Main]
 Version=2
 
-[Untitled1_1.grdTVCurrency: TcxGridDBTableView]
+[Untitled1.grdTVCurrency: TcxGridDBTableView]
 =
 Footer="False"
 GroupByBox="False"
@@ -9,7 +9,7 @@ GroupFooters=0
 NewItemRow="False"
 Version=1
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyCurrencyCName: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyCurrencyCName: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=100
@@ -20,10 +20,10 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyCurrencyEName: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyColumn1: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=100
+Width=80
 AlignmentHorz=0
 Index=1
 Visible="True"
@@ -31,21 +31,21 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyExchangeRate: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyCurrencyEName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=70
-AlignmentHorz=1
+Width=100
+AlignmentHorz=0
 Index=2
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyTradeRate: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyExchangeRate: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=70
+Width=64
 AlignmentHorz=1
 Index=3
 Visible="True"
@@ -53,7 +53,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyCurrencySign: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyCurrencySign: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=64
@@ -64,40 +64,40 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyUpdateTime: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyUpdateTime: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=120
-AlignmentHorz=0
+AlignmentHorz=1
 Index=5
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencybBase: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyIsBase: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=70
-AlignmentHorz=0
+AlignmentHorz=1
 Index=6
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencybVisible: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyIsEnable: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=70
-AlignmentHorz=0
+AlignmentHorz=1
 Index=7
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyOrderNo: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyOrderNo: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=80
@@ -108,7 +108,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVCurrency/grdTVCurrencyRemark: TcxGridDBColumn]
+[Untitled1.grdTVCurrency/grdTVCurrencyRemark: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=160

@@ -60,15 +60,15 @@ Width=80
 AlignmentHorz=1
 Index=4
 Visible="True"
-SortOrder="soNone"
-SortIndex=-1
+SortOrder="soAscending"
+SortIndex=0
 WasVisibleBeforeGrouping="False"
 
 [Untitled1_1.grdTVDtl/grdTVDtlIsEnable: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=80
-AlignmentHorz=0
+AlignmentHorz=1
 Index=5
 Visible="True"
 SortOrder="soNone"

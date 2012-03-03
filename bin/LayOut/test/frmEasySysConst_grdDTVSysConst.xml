@@ -49,7 +49,7 @@ Width=64
 AlignmentHorz=0
 Index=3
 Visible="True"
-SortOrder="soNone"
-SortIndex=-1
+SortOrder="soDescending"
+SortIndex=0
 WasVisibleBeforeGrouping="False"
 

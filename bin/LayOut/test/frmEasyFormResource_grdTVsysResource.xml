@@ -16,14 +16,14 @@ Width=130
 AlignmentHorz=0
 Index=0
 Visible="False"
-SortOrder="soDescending"
+SortOrder="soAscending"
 SortIndex=0
 WasVisibleBeforeGrouping="True"
 
 [Untitled2.grdTVsysResource/grdTVsysResourceControlID: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=414
+Width=130
 AlignmentHorz=0
 Index=1
 Visible="True"

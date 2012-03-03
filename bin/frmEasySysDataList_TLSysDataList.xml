@@ -54,8 +54,8 @@ ColIndex=3
 RowIndex=0
 BandIndex=0
 Caption="ÐòºÅ"
-SortOrder="soAscending"
-SortIndex=0
+SortOrder="soNone"
+SortIndex=-1
 RealMinWidth=20
 RealWidth=0
 

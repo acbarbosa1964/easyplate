@@ -4,7 +4,7 @@ Version=2
 [Untitled1_1.grdTVMain: TcxGridDBTableView]
 =
 Footer="False"
-GroupByBox="True"
+GroupByBox="False"
 GroupFooters=0
 NewItemRow="False"
 Version=1
@@ -33,14 +33,14 @@ WasVisibleBeforeGrouping="False"
 
 [Untitled1_1.grdTVMain/grdTVMainFormName: TcxGridDBColumn]
 =
-GroupIndex=0
-Width=113
+GroupIndex=-1
+Width=150
 AlignmentHorz=0
 Index=2
-Visible="False"
-SortOrder="soAscending"
-SortIndex=0
-WasVisibleBeforeGrouping="True"
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
 
 [Untitled1_1.grdTVMain/grdTVMainReportFile: TcxGridDBColumn]
 =

@@ -1,7 +1,7 @@
 [Main]
 Version=2
 
-[Untitled1_1.grdTVsysTable_Dtl: TcxGridDBTableView]
+[Untitled1_1_1.grdTVsysTable_Dtl: TcxGridDBTableView]
 =
 Footer="False"
 GroupByBox="False"
@@ -9,7 +9,7 @@ GroupFooters=0
 NewItemRow="False"
 Version=1
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlEName: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlEName: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=120
@@ -20,7 +20,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlCName: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlCName: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=120
@@ -31,7 +31,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldType: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldType: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=120
@@ -42,7 +42,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldLen: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldLen: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=100
@@ -53,7 +53,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldPRECISION: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldPRECISION: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=100
@@ -64,7 +64,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsPrimaryKey: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsPrimaryKey: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=80
@@ -75,7 +75,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsMust: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsMust: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=60
@@ -86,7 +86,7 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlUniqueIndex: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlUniqueIndex: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=80
@@ -97,18 +97,18 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIndexName: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsClustered: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=200
-AlignmentHorz=0
+Width=80
+AlignmentHorz=1
 Index=8
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFKFieldName: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIndexName: TcxGridDBColumn]
 =
 GroupIndex=-1
 Width=200
@@ -119,14 +119,36 @@ SortOrder="soNone"
 SortIndex=-1
 WasVisibleBeforeGrouping="False"
 
-[Untitled1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlOrderNo: TcxGridDBColumn]
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFKFieldName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=64
-AlignmentHorz=1
+Width=200
+AlignmentHorz=0
 Index=10
 Visible="True"
 SortOrder="soNone"
 SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlDefaultValue: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=100
+AlignmentHorz=0
+Index=11
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlOrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=64
+AlignmentHorz=1
+Index=12
+Visible="True"
+SortOrder="soAscending"
+SortIndex=0
 WasVisibleBeforeGrouping="False"
 
