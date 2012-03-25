@@ -34,7 +34,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldType: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=120
+Width=83
 AlignmentHorz=0
 Index=2
 Visible="True"
@@ -45,7 +45,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldLen: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=100
+Width=63
 AlignmentHorz=1
 Index=3
 Visible="True"
@@ -56,7 +56,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFieldPRECISION: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=100
+Width=52
 AlignmentHorz=1
 Index=4
 Visible="True"
@@ -89,7 +89,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlUniqueIndex: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=80
+Width=60
 AlignmentHorz=1
 Index=7
 Visible="True"
@@ -100,7 +100,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIsClustered: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=80
+Width=63
 AlignmentHorz=1
 Index=8
 Visible="True"
@@ -111,7 +111,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlIndexName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=200
+Width=128
 AlignmentHorz=0
 Index=9
 Visible="True"
@@ -122,7 +122,7 @@ WasVisibleBeforeGrouping="False"
 [Untitled1_1_1.grdTVsysTable_Dtl/grdTVsysTable_DtlFKFieldName: TcxGridDBColumn]
 =
 GroupIndex=-1
-Width=200
+Width=190
 AlignmentHorz=0
 Index=10
 Visible="True"

@@ -16,7 +16,7 @@ Width=130
 AlignmentHorz=0
 Index=0
 Visible="False"
-SortOrder="soAscending"
+SortOrder="soDescending"
 SortIndex=0
 WasVisibleBeforeGrouping="True"
 

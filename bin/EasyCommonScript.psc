@@ -1,3 +1,16 @@
+//同步上下级节点状态
+//AClientDataSet: TClientDataSet; AKeyField, AParentField, AStateField,
+                          //AParentValue: string
+function EasySyncNodeState(Value, Value, Value, Value, Value);
+begin
+	Result := EasySyncNodeState_at(Value, Value, Value, Value, Value);
+end;
+
+//获取汉字首字母拼音
+function EasyGetHZPY(Value);
+begin
+		Result := EasyGetHZPY_at(Value);
+end;
 //当前登录用户GUID
 function EasyGetUserGUID;
 begin          

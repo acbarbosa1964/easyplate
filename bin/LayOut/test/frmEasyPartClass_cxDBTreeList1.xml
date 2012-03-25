@@ -57,7 +57,7 @@ Caption="中文名称"
 SortOrder="soNone"
 SortIndex=-1
 RealMinWidth=20
-RealWidth=160
+RealWidth=375
 
 [cxDBTreeList1.cxDBTreeList1/cxDBTreeList1OrderNo: TcxDBTreeListColumn]
 =
@@ -68,10 +68,10 @@ ColIndex=4
 RowIndex=0
 BandIndex=0
 Caption="序号"
-SortOrder="soAscending"
+SortOrder="soDescending"
 SortIndex=0
 RealMinWidth=20
-RealWidth=0
+RealWidth=100
 
 [cxDBTreeList1.cxDBTreeList1/cxDBTreeList1IsEnable: TcxDBTreeListColumn]
 =
@@ -85,5 +85,5 @@ Caption="启用"
 SortOrder="soNone"
 SortIndex=-1
 RealMinWidth=20
-RealWidth=0
+RealWidth=100
 
