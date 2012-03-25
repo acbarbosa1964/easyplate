@@ -1,0 +1,44 @@
+[Main]
+Version=2
+
+[Untitled1_1_1_1.grdSysFormDBTableView1: TcxGridDBTableView]
+=
+Footer="True"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1_1_1_1.grdSysFormDBTableView1/grdSysFormDBTableView1Caption: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=160
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1_1_1.grdSysFormDBTableView1/grdSysFormDBTableView1FileName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1_1_1_1.grdSysFormDBTableView1/grdSysFormDBTableView1Column1: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=200
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

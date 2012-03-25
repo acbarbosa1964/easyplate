@@ -1,0 +1,44 @@
+[Main]
+Version=2
+
+[Untitled1.grdWorkFlowMstDBTableView1: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1.grdWorkFlowMstDBTableView1/grdWorkFlowMstDBTableView1WorkFlowName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=228
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowMstDBTableView1/grdWorkFlowMstDBTableView1IsEnable: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=104
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowMstDBTableView1/grdWorkFlowMstDBTableView1OrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=102
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+

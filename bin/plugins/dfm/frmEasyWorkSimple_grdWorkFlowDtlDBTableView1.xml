@@ -1,0 +1,88 @@
+[Main]
+Version=2
+
+[Untitled1.grdWorkFlowDtlDBTableView1: TcxGridDBTableView]
+=
+Footer="False"
+GroupByBox="False"
+GroupFooters=0
+NewItemRow="False"
+Version=1
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1NodeType: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=119
+AlignmentHorz=0
+Index=0
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1NodeName: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=147
+AlignmentHorz=0
+Index=1
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1FormID: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=125
+AlignmentHorz=0
+Index=2
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1RightTypeGUID: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=160
+AlignmentHorz=0
+Index=3
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1Operators: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=119
+AlignmentHorz=0
+Index=4
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1IsEnable: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=76
+AlignmentHorz=0
+Index=5
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
+[Untitled1.grdWorkFlowDtlDBTableView1/grdWorkFlowDtlDBTableView1OrderNo: TcxGridDBColumn]
+=
+GroupIndex=-1
+Width=71
+AlignmentHorz=0
+Index=6
+Visible="True"
+SortOrder="soNone"
+SortIndex=-1
+WasVisibleBeforeGrouping="False"
+
